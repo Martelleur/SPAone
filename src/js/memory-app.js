@@ -87,6 +87,8 @@ export class Memory extends window.HTMLElement {
 
       const attributeSrc = this._tiles[event.target.id - 1].getAttribute('src')
       console.log(attributeSrc)
+
+      // storing even.target in temp array
       event.target.setAttribute('src', attributeSrc)
       this._tempArray.push(event.target)
       console.log(this._tempArray)
@@ -108,7 +110,7 @@ export class Memory extends window.HTMLElement {
 
       window.setTimeout(() => {
         this.turnbackPictures()
-      }, 1000)
+      }, 2000)
     })
 
     // eventlistner for this._input

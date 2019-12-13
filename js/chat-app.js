@@ -20,6 +20,8 @@ template.innerHTML = /* html */ `
 :host {
     position: absolute;
     width: 30%;
+    color: white;
+    background-color: black; 
 }
 
 :host #chatConteiner form {

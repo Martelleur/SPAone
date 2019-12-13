@@ -28,6 +28,8 @@ function moveElement (element) {
     // set elements new position
     element.style.top = (element.offsetTop - newPossitionY) + 'px'
     element.style.left = (element.offsetLeft - newPossitionX) + 'px'
+    console.log(element.offsetTop)
+    console.log(element.offsetTop)
   }
 
   function stopElementMove () {

@@ -1,15 +1,51 @@
+const template = document.createElement('template')
+template.innerHTML = /* html */ `
+<div id="chatConteiner">
+<form action="">
+    <fieldset id="chatTitle"></fieldset>
+    
+    <fieldset id="chatTools">
+        <button id="deletChat">Delet chat</button>
+    </fieldset>
+    
+    <fieldset id="messages"></fieldset>
+    
+    <fieldset id="newMessage">
+        <input type="text" id="inputUser" placeholder="Write message here...">
+        <input type="submit" id="sendButton" value="Send">
+    </fieldset>
+</form>
+</div>
+<style>
+:host {
+    position: absolute;
+    width: 30%;
+}
+
+:host #chatConteiner form {
+    border: 2px solid black;
+    padding: 1%;
+}
+
+:host #chatConteiner:hover {
+    cursor: move; 
+}
+</style>
+`
+
 export class Chat extends window.HTMLElement {
   constructor () {
     super()
 
     this.attachShadow({ mode: 'open' })
-    this._template = document.querySelector('#chatTemplate')
-    this._templateImport = document.importNode(this._template.content, true)
-    this.shadowRoot.appendChild(this._templateImport)
+    this.shadowRoot.appendChild(template.content.cloneNode(true))
     this._send = this.shadowRoot.querySelector('#sendButton')
     this._input = this.shadowRoot.querySelector('#inputUser')
     this._messages = this.shadowRoot.querySelector('#messages')
     this._message = undefined
+    this._deletChat = this.shadowRoot.querySelector('#deletChat')
+    this._chatTitle = this.shadowRoot.querySelector('#chatTitle')
+    this._chatCounter = 0
   }
 
   static get observedAttributes () {
@@ -26,9 +62,21 @@ export class Chat extends window.HTMLElement {
       console.log(this._input.value)
     })
 
+    // eventlistner for this._input
+    this._deletChat.addEventListener('click', (event) => {
+      event.preventDefault()
+      event.target.parentNode.parentNode.remove()
+    })
+
     // eventlistner for this._send
     this._send.addEventListener('click', (event) => {
       event.preventDefault()
+
+      this._chatCounter = Math.floor(Math.random() * 10000000)
+      const title = document.createElement('p')
+      title.innerText = `Code for message: ${this._chatCounter}`
+      this._chatTitle.appendChild(title)
+
       const p = document.createElement('p')
       p.innerText = this._message
       this._messages.appendChild(p)

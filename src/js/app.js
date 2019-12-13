@@ -1,5 +1,6 @@
 import './chat-app.js'
 
-const chat = document.createElement('chat-app')
-
-document.querySelector('#chatWrapper').appendChild(chat)
+document.querySelector('#chatButton').addEventListener('click', (event) => {
+  const chat = document.createElement('chat-app')
+  document.querySelector('#chatWrapper').appendChild(chat)
+})

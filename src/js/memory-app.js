@@ -47,7 +47,7 @@ template.innerHTML = /* html */ `
 `
 
 export class Memory extends window.HTMLElement {
-  constructor (rows = 4, columns = 4) {
+  constructor () {
     super()
 
     // Creatig shadowroot
@@ -63,8 +63,8 @@ export class Memory extends window.HTMLElement {
     // Data memory
     this._memoryConteiner = this.shadowRoot.querySelector('#memoryConteiner')
     this._memoryPictures = this.shadowRoot.querySelector('#memoryPictures')
-    this._rows = rows
-    this._columns = columns
+    this._rows = 4
+    this._columns = 4
     this._numberOfPictures = this._rows * this._columns
     this._backOfTilesSrc = '../imageMemory/0.png'
     this._tiles = this.shuffleTiles(this._rows, this._columns)
@@ -73,16 +73,10 @@ export class Memory extends window.HTMLElement {
     this._tempArray = []
     this._paires.innerText = `Paires: ${this._quantityOfPaires}`
 
-    // Displaying 16 copys off image 0.png
-    for (let i = 0; i < (this._rows * this._columns); i++) {
-      const img = document.createElement('img')
-      img.setAttribute('src', '../imageMemory/0.png')
-      const idAttribute = `${i + 1}`
-      img.setAttribute('id', idAttribute)
-      img.style.width = '25%'
-      this._memoryPictures.appendChild(img)
-    }
+    // Building new memory
+    this.setTiles()
   }
+
   /*
   static get observedAttributes () {
     return ['src']
@@ -142,17 +136,9 @@ export class Memory extends window.HTMLElement {
     this._restartMemory.addEventListener('click', (event) => {
       event.preventDefault()
 
-      // 16 new pictures
-      this._memoryPictures.innerHTML = ''
-      for (let i = 0; i < (this._rows * this._columns); i++) {
-        const img = document.createElement('img')
-        img.setAttribute('src', '../imageMemory/0.png')
-        const idAttribute = `${i + 1}`
-        img.setAttribute('id', idAttribute)
-        const pictureWidthValue = `${100 / this._columns}%`
-        img.style.width = pictureWidthValue
-        this._memoryPictures.appendChild(img)
-      }
+      // Building new memory
+      this.setTiles()
+
       // shuffle the tiles
       this._tiles = this.shuffleTiles(this._rows, this._columns)
 
@@ -172,19 +158,14 @@ export class Memory extends window.HTMLElement {
       this._columns = this._sizeMemory.value / this._rows
 
       // Building new memory
-      this._memoryPictures.innerHTML = ''
-      for (let i = 0; i < (this._rows * this._columns); i++) {
-        const img = document.createElement('img')
-        img.setAttribute('src', '../imageMemory/0.png')
-        const idAttribute = `${i + 1}`
-        img.setAttribute('id', idAttribute)
-        const pictureWidthValue = `${100 / this._columns}%`
-        img.style.width = pictureWidthValue
-        this._memoryPictures.appendChild(img)
-      }
+      this.setTiles()
 
       // Shuffle the pictures
       this._tiles = this.shuffleTiles(this._rows, this._columns)
+
+      // reset paires
+      this._quantityOfPaires = 0
+      this._paires.innerText = `Paires: ${this._quantityOfPaires}`
     })
   }
 
@@ -200,6 +181,20 @@ export class Memory extends window.HTMLElement {
         this.shadowRoot.querySelectorAll('#memoryPictures img')[i].setAttribute('src', this._backOfTilesSrc)
         this._tempArray = []
       }
+    }
+  }
+
+  setTiles () {
+    // Building new memory
+    this._memoryPictures.innerHTML = ''
+    for (let i = 0; i < (this._rows * this._columns); i++) {
+      const img = document.createElement('img')
+      img.setAttribute('src', '../imageMemory/0.png')
+      const idAttribute = `${i + 1}`
+      img.setAttribute('id', idAttribute)
+      const pictureWidthValue = `${100 / this._columns}%`
+      img.style.width = pictureWidthValue
+      this._memoryPictures.appendChild(img)
     }
   }
 

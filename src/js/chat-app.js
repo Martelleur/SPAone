@@ -71,7 +71,7 @@ export class Chat extends window.HTMLElement {
     // eventlistner for this._input
     this._deletChat.addEventListener('click', (event) => {
       event.preventDefault()
-      event.target.parentNode.parentNode.remove()
+      event.target.parentNode.parentNode.parentNode.remove()
     })
 
     // eventlistner for this._send

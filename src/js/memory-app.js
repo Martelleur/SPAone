@@ -35,17 +35,6 @@ template.innerHTML = /* html */ `
 :host #memoryPictures:hover {
     cursor: pointer; 
 }
-:host .removed {
-    visibility: hidden;
-}
-:host .finished {
-    display: block;
-    text-align: center;
-    width: 100%;
-    height: 1000px;
-    background-color: black;
-    color: white;
-}
   </style>
 `
 

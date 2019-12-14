@@ -1,5 +1,6 @@
 import './memory-app.js'
 import './chat-app.js'
+import './minehunter-app.js'
 import { moveElement } from './moveElement.js'
 
 // Creating chat-elements
@@ -29,4 +30,15 @@ document.querySelector('#memoryButton').addEventListener('click', (event) => {
   document.querySelector('#wrapper').appendChild(document.createElement('br'))
 
   moveElement(memory)
+})
+
+// Creating minehunter
+document.querySelector('#minehunterButton').addEventListener('click', (event) => {
+  event.preventDefault()
+  const minehunter = document.createElement('minehunter-app')
+  document.querySelector('#wrapper').appendChild(document.createElement('br'))
+  document.querySelector('#wrapper').appendChild(minehunter)
+  document.querySelector('#wrapper').appendChild(document.createElement('br'))
+
+  moveElement(minehunter)
 })

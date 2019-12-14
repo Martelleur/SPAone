@@ -2,8 +2,15 @@ const template = document.createElement('template')
 template.innerHTML = /* html */ `
 <div id="memoryConteiner">
   <div id="memoryTools">
-    <button id="deletMemory">Delet memory</button>
-    <button id="restartMemory">Restart memory</button>
+    <button id="deletMemory">Delet</button>
+    <button id="restartMemory">Restart</button>
+    <select id="sizeMemory" name="size">
+      <option value="">Size</option>
+      <option value="4">4 tiles</option>
+      <option value="8">8 tiles</option>
+      <option value="12">12 tiles</option>
+      <option value="16">16 tiles</option>
+    </select>
     <p id="paires"></p>
   </div>
     
@@ -43,13 +50,19 @@ export class Memory extends window.HTMLElement {
   constructor (rows = 4, columns = 4) {
     super()
 
+    // Creatig shadowroot
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
-    this._memoryConteiner = this.shadowRoot.querySelector('#memoryConteiner')
-    this._memoryPictures = this.shadowRoot.querySelector('#memoryPictures')
+
+    // Tools memory
     this._memoryTools = this.shadowRoot.querySelector('#memoryTools')
     this._restartMemory = this.shadowRoot.querySelector('#restartMemory')
     this._deletMemory = this.shadowRoot.querySelector('#deletMemory')
+    this._sizeMemory = this.shadowRoot.querySelector('#sizeMemory')
+
+    // Data memory
+    this._memoryConteiner = this.shadowRoot.querySelector('#memoryConteiner')
+    this._memoryPictures = this.shadowRoot.querySelector('#memoryPictures')
     this._rows = rows
     this._columns = columns
     this._numberOfPictures = this._rows * this._columns
@@ -136,7 +149,8 @@ export class Memory extends window.HTMLElement {
         img.setAttribute('src', '../imageMemory/0.png')
         const idAttribute = `${i + 1}`
         img.setAttribute('id', idAttribute)
-        img.style.width = '25%'
+        const pictureWidthValue = `${100 / this._columns}%`
+        img.style.width = pictureWidthValue
         this._memoryPictures.appendChild(img)
       }
       // shuffle the tiles
@@ -145,6 +159,32 @@ export class Memory extends window.HTMLElement {
       // reset paires
       this._quantityOfPaires = 0
       this._paires.innerText = `Paires: ${this._quantityOfPaires}`
+    })
+
+    // eventlistner for this._sizeMemory
+    this._sizeMemory.addEventListener('change', (event) => {
+      event.preventDefault()
+      console.log('test this._sizeMemory event/JM')
+      console.log(this._sizeMemory.value)
+
+      // Reconstruct form for layout for the memory
+      this._rows = Math.floor(Math.sqrt(this._sizeMemory.value))
+      this._columns = this._sizeMemory.value / this._rows
+
+      // Building new memory
+      this._memoryPictures.innerHTML = ''
+      for (let i = 0; i < (this._rows * this._columns); i++) {
+        const img = document.createElement('img')
+        img.setAttribute('src', '../imageMemory/0.png')
+        const idAttribute = `${i + 1}`
+        img.setAttribute('id', idAttribute)
+        const pictureWidthValue = `${100 / this._columns}%`
+        img.style.width = pictureWidthValue
+        this._memoryPictures.appendChild(img)
+      }
+
+      // Shuffle the pictures
+      this._tiles = this.shuffleTiles(this._rows, this._columns)
     })
   }
 

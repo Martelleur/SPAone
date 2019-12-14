@@ -1,12 +1,13 @@
 const template = document.createElement('template')
 template.innerHTML = /* html */ `
 <div id="memoryConteiner">
-    <div id="memoryPictures">
-    </div>
-    <div id="memoryTools">
-        <button id="deletMemory">Delet memory</button>
-        <p id="paires"></p>
-    </div>
+  <div id="memoryTools">
+    <button id="deletMemory">Delet memory</button>
+    <button id="restartMemory">Restart memory</button>
+    <p id="paires"></p>
+  </div>
+    
+  <div id="memoryPictures"></div>
 </div>
 <style>
 :host {
@@ -47,6 +48,7 @@ export class Memory extends window.HTMLElement {
     this._memoryConteiner = this.shadowRoot.querySelector('#memoryConteiner')
     this._memoryPictures = this.shadowRoot.querySelector('#memoryPictures')
     this._memoryTools = this.shadowRoot.querySelector('#memoryTools')
+    this._restartMemory = this.shadowRoot.querySelector('#restartMemory')
     this._deletMemory = this.shadowRoot.querySelector('#deletMemory')
     this._rows = rows
     this._columns = columns
@@ -57,6 +59,7 @@ export class Memory extends window.HTMLElement {
     this._quantityOfPaires = 0
     this._tempArray = []
     this._paires.innerText = `Paires: ${this._quantityOfPaires}`
+
     // Displaying 16 copys off image 0.png
     for (let i = 0; i < (this._rows * this._columns); i++) {
       const img = document.createElement('img')
@@ -92,6 +95,8 @@ export class Memory extends window.HTMLElement {
       event.target.setAttribute('src', attributeSrc)
       this._tempArray.push(event.target)
       console.log(this._tempArray)
+
+      // check if picture are the same
       if (this._tempArray.length === 2) {
         if (this._tempArray[0].getAttribute('src') === this._tempArray[1].getAttribute('src')) {
           console.log('Paire!!!')
@@ -99,7 +104,7 @@ export class Memory extends window.HTMLElement {
             if (this.shadowRoot.querySelectorAll('#memoryPictures img')[i].getAttribute('src') === this._tempArray[1].getAttribute('src')) {
               console.log('hmmmmmmmmmmmm!!!')
               this._quantityOfPaires++
-              this._paires.innerText = this._quantityOfPaires / 2
+              this._paires.innerText = `Paires: ${this._quantityOfPaires / 2}`
               window.setTimeout(() => {
                 this.shadowRoot.querySelectorAll('#memoryPictures img')[i].style.visibility = 'hidden'
               }, 500)
@@ -108,15 +113,38 @@ export class Memory extends window.HTMLElement {
         }
       }
 
+      // Turn back pictures
       window.setTimeout(() => {
         this.turnbackPictures()
       }, 2000)
     })
 
-    // eventlistner for this._input
+    // eventlistner for this._deletMemory
     this._deletMemory.addEventListener('click', (event) => {
       event.preventDefault()
       event.target.parentNode.parentNode.remove()
+    })
+
+    // eventlistner for this._restartMemory
+    this._restartMemory.addEventListener('click', (event) => {
+      event.preventDefault()
+
+      // 16 new pictures
+      this._memoryPictures.innerHTML = ''
+      for (let i = 0; i < (this._rows * this._columns); i++) {
+        const img = document.createElement('img')
+        img.setAttribute('src', '../imageMemory/0.png')
+        const idAttribute = `${i + 1}`
+        img.setAttribute('id', idAttribute)
+        img.style.width = '25%'
+        this._memoryPictures.appendChild(img)
+      }
+      // shuffle the tiles
+      this._tiles = this.shuffleTiles(this._rows, this._columns)
+
+      // reset paires
+      this._quantityOfPaires = 0
+      this._paires.innerText = `Paires: ${this._quantityOfPaires}`
     })
   }
 

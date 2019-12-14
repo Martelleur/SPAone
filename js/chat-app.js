@@ -2,11 +2,11 @@ const template = document.createElement('template')
 template.innerHTML = /* html */ `
 <div id="chatConteiner">
 <form action="">
-    <fieldset id="chatTitle"></fieldset>
-    
     <fieldset id="chatTools">
         <button id="deletChat">Delet chat</button>
     </fieldset>
+
+    <fieldset id="chatTitle"></fieldset>
     
     <fieldset id="messages"></fieldset>
     

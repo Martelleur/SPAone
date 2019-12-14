@@ -22,12 +22,15 @@ template.innerHTML = /* html */ `
     width: 30%;
 }
 :host #memoryConteiner {
-    border: 2px solid black;
+    border: 5px solid black;
     background-color: black;
     color: white;
+    z-index: -1;
 }
 :host #memoryConteiner:hover {
-    cursor: move; 
+    cursor: move;
+    border: 5px solid blue;
+    z-index: 1; 
 }
 :host #memoryPictures:hover {
     cursor: pointer; 
@@ -46,7 +49,17 @@ template.innerHTML = /* html */ `
   </style>
 `
 
+/**
+ * Class for memory-app
+ * @export
+ * @class Memory
+ * @extends {window.HTMLElement}
+ */
 export class Memory extends window.HTMLElement {
+  /**
+   *Creates an instance of Memory.
+   * @memberof Memory
+   */
   constructor () {
     super()
 
@@ -83,10 +96,19 @@ export class Memory extends window.HTMLElement {
   }
   */
 
+  /**
+   * connectedCallback for memory-app
+   * @memberof Memory
+   */
   connectedCallback () {
     // eventlistner for this._input
     this._memoryPictures.addEventListener('click', (event) => {
       event.preventDefault()
+
+      // If user click on a turned tile nothing change
+      if (event.target.getAttribute('src') !== this._backOfTilesSrc) {
+        return
+      }
 
       console.log(event.target)
       console.log(event.target.id)
@@ -119,8 +141,8 @@ export class Memory extends window.HTMLElement {
           }
         }
       }
-
-      // Turn back pictures
+      // console.log('this.turnbackPictures()/JM')
+      // console.log(this.turnbackPictures())
       window.setTimeout(() => {
         this.turnbackPictures()
       }, 2000)
@@ -169,6 +191,11 @@ export class Memory extends window.HTMLElement {
     })
   }
 
+  /**
+   * Turn back pictures
+   * @returns
+   * @memberof Memory
+   */
   turnbackPictures () {
     let counter = 0
     for (let i = 0; i < this.shadowRoot.querySelectorAll('#memoryPictures img').length; i++) {
@@ -182,8 +209,13 @@ export class Memory extends window.HTMLElement {
         this._tempArray = []
       }
     }
+    return counter
   }
 
+  /**
+   * Set the tiles
+   * @memberof Memory
+   */
   setTiles () {
     // Building new memory
     this._memoryPictures.innerHTML = ''
@@ -198,6 +230,13 @@ export class Memory extends window.HTMLElement {
     }
   }
 
+  /**
+   * Shuffle the tiles
+   * @param {*} rows
+   * @param {*} columns
+   * @returns
+   * @memberof Memory
+   */
   shuffleTiles (rows, columns) {
     const array = []
 

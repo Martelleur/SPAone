@@ -21,16 +21,20 @@ template.innerHTML = /* html */ `
     position: absolute;
     width: 30%;
     color: white;
-    background-color: black; 
+    background-color: black;
 }
-
 :host #chatConteiner form {
     border: 2px solid black;
     padding: 1%;
 }
-
+:host #chatConteiner {
+  border: 5px solid black;
+    z-index: -1;
+}
 :host #chatConteiner:hover {
     cursor: move; 
+    border: 5px solid blue;
+    z-index: 1;
 }
 </style>
 `

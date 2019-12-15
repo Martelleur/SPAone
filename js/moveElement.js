@@ -10,8 +10,8 @@ function moveElement (element) {
     // get possition for mouse
     possitionX = event.clientX
     possitionY = event.clientY
-    console.log(event.clientX)
-    console.log(event.clientY)
+    // console.log(event.clientX)
+    // console.log(event.clientY)
     document.onmouseup = stopElementMove
     // call function when cursor moves
     document.onmousemove = elementMove
@@ -28,8 +28,8 @@ function moveElement (element) {
     // set elements new position
     element.style.top = (element.offsetTop - newPossitionY) + 'px'
     element.style.left = (element.offsetLeft - newPossitionX) + 'px'
-    console.log(element.offsetTop)
-    console.log(element.offsetTop)
+    // console.log(element.offsetTop)
+    // console.log(element.offsetTop)
   }
 
   function stopElementMove () {

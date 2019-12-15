@@ -4,6 +4,7 @@ template.innerHTML = /* html */ `
     <div id="memoryTools">
       <button id="deletMinehunter">Delet</button>
       <button id="restartMinehunter">Restart</button>
+      <!--
       <select id="sizeMinehunter" name="size">
         <option value="">Size</option>
         <option value="16">16 bricks</option>
@@ -11,8 +12,8 @@ template.innerHTML = /* html */ `
         <option value="64">64 bricks</option>
         <option value="100">100 bricks</option>
       </select>
+      -->
       <select id="levelMinehunter" name="size">
-        <option value="">Level</option>
         <option value="0">Easy</option>
         <option value="1">Medium</option>
         <option value="2">Hard</option>
@@ -57,7 +58,7 @@ export class Minehunter extends window.HTMLElement {
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
     this._gameField = this.shadowRoot.querySelector('#gameField')
-    this._quantityOfBricks = 16
+    this._quantityOfBricks = 100
     this._levels = [1, 2, 3]
     this._currentLevel = this._levels[0]
     this._mines = this.setMines()
@@ -163,7 +164,8 @@ export class Minehunter extends window.HTMLElement {
       this.setGamefield()
       this._mines = this.setMines()
     })
-
+    // if this tool implemented you need to change code in event for gamefield
+    /*
     // event for sizeButton
     this._sizeMinehunter.addEventListener('click', event => {
       event.preventDefault()
@@ -173,14 +175,15 @@ export class Minehunter extends window.HTMLElement {
       this.setGamefield(this._quantityOfBricks)
       this._mines = this.setMines()
     })
-
+    */
     // event for levelButton
-    this._levelMinehunter.addEventListener('click', event => {
+    this._levelMinehunter.addEventListener('change', event => {
       event.preventDefault()
       // console.log('this._levelMinehunter.value/JM')
       // console.log(this._levelMinehunter.value)
 
       // set level for game
+      this.setGamefield()
       this._currentLevel = this._levels[this._levelMinehunter.value]
       this._mines = this.setMines()
     })
@@ -188,17 +191,23 @@ export class Minehunter extends window.HTMLElement {
     // event for gamefield
     this._gameField.addEventListener('click', event => {
       event.preventDefault()
-      console.log('this._mines array/JM')
-      console.log(this._mines)
-      console.log(event.target.id)
+
+      // user can not click ona a white picture to open neighbour picture
+      if (event.target.getAttribute('src') === '../imageMinehunter/white.png') {
+        console.log('white picture')
+        return
+      }
+      // console.log('this._mines array/JM')
+      // console.log(this._mines)
+      // console.log(event.target.id)
       const srcAttribute = this._mines[event.target.id].getAttribute('src')
       event.target.setAttribute('src', srcAttribute)
       event.target.style.border = '2px solid black'
-      console.log(srcAttribute)
+      // console.log(srcAttribute)
 
       // If user click on mine user lose
       if (srcAttribute === '../imageMinehunter/mine.png') {
-        console.log('You lose')
+        // console.log('You lose')
 
         window.setTimeout(() => {
           this.setGamefield()
@@ -210,8 +219,8 @@ export class Minehunter extends window.HTMLElement {
 
       // reconstruct this._mines to an array of arrays
       const newMinesArray = this.reconstructArray(this._mines)
-      console.log('newMinesArray/JM')
-      console.log(newMinesArray)
+      // console.log('newMinesArray/JM')
+      // console.log(newMinesArray)
 
       const quantityOfBricks = this._gameField.querySelectorAll('img').length
 
@@ -222,185 +231,80 @@ export class Minehunter extends window.HTMLElement {
 
       // reconstruct imageArray to an array of arrays
       const newImageArray = this.reconstructArray(imageArr)
-      console.log('newImageArray/JM')
-      console.log(newImageArray)
+      // console.log('newImageArray/JM')
+      // console.log(newImageArray)
 
       // Only if gamefield 10 * 10
       const indexLenght = event.target.id.length
       const indexNumber = event.target.id[indexLenght - 1]
       const arrayNumber = event.target.id[indexLenght - 2] || 0
-      console.log(`indexNumber: ${indexNumber}`)
-      console.log(`arrayNumber: ${arrayNumber}`)
-      console.log(typeof indexNumber)
-      console.log(typeof indexNumber)
+      // console.log(`indexNumber: ${indexNumber}`)
+      // console.log(`arrayNumber: ${arrayNumber}`)
+      // console.log(typeof indexNumber)
+      // console.log(typeof indexNumber)
 
       // Open up neighboutbricks
-      const stopArray = [true, true, true, true, true, true, true, true, true, true, true, true]
+      const stopArray = [true, true, true, true]
       for (let i = 0; i < 9; i++) {
       // New neighbourbricks
-        const neighbourIndex1 = Number(indexNumber) + i + 1
-        const neighbourIndex2 = Number(indexNumber) - i - 1
-        const neighbourIndex3 = Number(indexNumber) + 1
-        const neighbourIndex4 = Number(indexNumber) - 1
-        const neighbourArray1 = Number(arrayNumber) + i + 1
-        const neighbourArray2 = Number(arrayNumber) - i - 1
-        const neighbourArray3 = Number(arrayNumber) + 1
-        const neighbourArray4 = Number(arrayNumber) - 1
+        const neighbourIndex1 = Number(indexNumber) + i
+        const neighbourIndex2 = Number(indexNumber) - i
 
-        if (stopArray[0]) {
-          try {
-            if (newMinesArray[Number(arrayNumber)][neighbourIndex1].getAttribute('src') === '../imageMinehunter/white.png') {
-              newImageArray[Number(arrayNumber)][neighbourIndex1].setAttribute('src', '../imageMinehunter/white.png')
-              newImageArray[Number(arrayNumber)][neighbourIndex1].style.border = '2px solid black'
-            } else {
-              stopArray[0] = false
+        for (let j = 0; j < 9; j++) {
+          // Neighbourarrays
+          const neighbourArray1 = Number(arrayNumber) + j
+          const neighbourArray2 = Number(arrayNumber) - j
+          if (stopArray[0]) {
+            try {
+              if (newMinesArray[neighbourArray1][neighbourIndex1].getAttribute('src') === '../imageMinehunter/white.png') {
+                newImageArray[neighbourArray1][neighbourIndex1].setAttribute('src', '../imageMinehunter/white.png')
+                newImageArray[neighbourArray1][neighbourIndex1].style.border = '2px solid black'
+              } else {
+                stopArray[0] = false
+              }
+            } catch (error) {
+              // console.log(error)
+              // console.log('not an index')
             }
-          } catch (error) {
-            console.log(error)
-            console.log('not an index')
           }
-        }
-        if (stopArray[1]) {
-          try {
-            if (newMinesArray[Number(arrayNumber)][neighbourIndex2].getAttribute('src') === '../imageMinehunter/white.png') {
-              newImageArray[Number(arrayNumber)][neighbourIndex2].setAttribute('src', '../imageMinehunter/white.png')
-              newImageArray[Number(arrayNumber)][neighbourIndex2].style.border = '2px solid black'
-            } else {
-              stopArray[1] = false
+          if (stopArray[1]) {
+            try {
+              if (newMinesArray[neighbourArray1][neighbourIndex2].getAttribute('src') === '../imageMinehunter/white.png') {
+                newImageArray[neighbourArray1][neighbourIndex2].setAttribute('src', '../imageMinehunter/white.png')
+                newImageArray[neighbourArray1][neighbourIndex2].style.border = '2px solid black'
+              } else {
+                stopArray[1] = false
+              }
+            } catch (error) {
+              // console.log(error)
+              // console.log('not an index')
             }
-          } catch (error) {
-            console.log(error)
-            console.log('not an index')
           }
-        }
-        if (stopArray[2]) {
-          try {
-            if (newMinesArray[neighbourArray1][Number(indexNumber)].getAttribute('src') === '../imageMinehunter/white.png') {
-              newImageArray[neighbourArray1][Number(indexNumber)].setAttribute('src', '../imageMinehunter/white.png')
-              newImageArray[neighbourArray1][Number(indexNumber)].style.border = '2px solid black'
-            } else {
-              stopArray[2] = false
+          if (stopArray[2]) {
+            try {
+              if (newMinesArray[neighbourArray2][neighbourIndex1].getAttribute('src') === '../imageMinehunter/white.png') {
+                newImageArray[neighbourArray2][neighbourIndex1].setAttribute('src', '../imageMinehunter/white.png')
+                newImageArray[neighbourArray2][neighbourIndex1].style.border = '2px solid black'
+              } else {
+                stopArray[2] = false
+              }
+            } catch (error) {
+              // console.log(error)
+              // console.log('not an index')
             }
-          } catch (error) {
-            console.log(error)
-            console.log('not an index')
           }
-        }
-        if (stopArray[3]) {
-          try {
-            if (newMinesArray[neighbourArray2][Number(indexNumber)].getAttribute('src') === '../imageMinehunter/white.png') {
-              newImageArray[neighbourArray2][Number(indexNumber)].setAttribute('src', '../imageMinehunter/white.png')
-              newImageArray[neighbourArray2][Number(indexNumber)].style.border = '2px solid black'
-            } else {
-              stopArray[3] = false
+          if (stopArray[3]) {
+            try {
+              if (newMinesArray[neighbourArray2][neighbourIndex2].getAttribute('src') === '../imageMinehunter/white.png') {
+                newImageArray[neighbourArray2][neighbourIndex2].setAttribute('src', '../imageMinehunter/white.png')
+                newImageArray[neighbourArray2][neighbourIndex2].style.border = '2px solid black'
+              } else {
+                stopArray[3] = false
+              }
+            } catch (error) {
+              // console.log(error)
+              // console.log('not an index')
             }
-          } catch (error) {
-            console.log(error)
-            console.log('not an index')
-          }
-        }
-        if (stopArray[4]) {
-          try {
-            if (newMinesArray[neighbourArray3][neighbourIndex1].getAttribute('src') === '../imageMinehunter/white.png') {
-              newImageArray[neighbourArray3][neighbourIndex1].setAttribute('src', '../imageMinehunter/white.png')
-              newImageArray[neighbourArray3][neighbourIndex1].style.border = '2px solid black'
-            } else {
-              stopArray[4] = false
-            }
-          } catch (error) {
-            console.log(error)
-            console.log('not an index')
-          }
-        }
-        if (stopArray[5]) {
-          try {
-            if (newMinesArray[neighbourArray4][neighbourIndex1].getAttribute('src') === '../imageMinehunter/white.png') {
-              newImageArray[neighbourArray4][neighbourIndex1].setAttribute('src', '../imageMinehunter/white.png')
-              newImageArray[neighbourArray4][neighbourIndex1].style.border = '2px solid black'
-            } else {
-              stopArray[5] = false
-            }
-          } catch (error) {
-            console.log(error)
-            console.log('not an index')
-          }
-        }
-        if (stopArray[6]) {
-          try {
-            if (newMinesArray[neighbourArray3][neighbourIndex2].getAttribute('src') === '../imageMinehunter/white.png') {
-              newImageArray[neighbourArray3][neighbourIndex2].setAttribute('src', '../imageMinehunter/white.png')
-              newImageArray[neighbourArray3][neighbourIndex2].style.border = '2px solid black'
-            } else {
-              stopArray[6] = false
-            }
-          } catch (error) {
-            console.log(error)
-            console.log('not an index')
-          }
-        }
-        if (stopArray[7]) {
-          try {
-            if (newMinesArray[neighbourArray4][neighbourIndex2].getAttribute('src') === '../imageMinehunter/white.png') {
-              newImageArray[neighbourArray4][neighbourIndex2].setAttribute('src', '../imageMinehunter/white.png')
-              newImageArray[neighbourArray4][neighbourIndex2].style.border = '2px solid black'
-            } else {
-              stopArray[7] = false
-            }
-          } catch (error) {
-            console.log(error)
-            console.log('not an index')
-          }
-        }
-        if (stopArray[8]) {
-          try {
-            if (newMinesArray[neighbourArray1][neighbourIndex3].getAttribute('src') === '../imageMinehunter/white.png') {
-              newImageArray[neighbourArray1][neighbourIndex3].setAttribute('src', '../imageMinehunter/white.png')
-              newImageArray[neighbourArray1][neighbourIndex3].style.border = '2px solid black'
-            } else {
-              stopArray[8] = false
-            }
-          } catch (error) {
-            console.log(error)
-            console.log('not an index')
-          }
-        }
-        if (stopArray[9]) {
-          try {
-            if (newMinesArray[neighbourArray1][neighbourIndex4].getAttribute('src') === '../imageMinehunter/white.png') {
-              newImageArray[neighbourArray1][neighbourIndex4].setAttribute('src', '../imageMinehunter/white.png')
-              newImageArray[neighbourArray1][neighbourIndex4].style.border = '2px solid black'
-            } else {
-              stopArray[9] = false
-            }
-          } catch (error) {
-            console.log(error)
-            console.log('not an index')
-          }
-        }
-        if (stopArray[10]) {
-          try {
-            if (newMinesArray[neighbourArray2][neighbourIndex3].getAttribute('src') === '../imageMinehunter/white.png') {
-              newImageArray[neighbourArray2][neighbourIndex3].setAttribute('src', '../imageMinehunter/white.png')
-              newImageArray[neighbourArray2][neighbourIndex3].style.border = '2px solid black'
-            } else {
-              stopArray[10] = false
-            }
-          } catch (error) {
-            console.log(error)
-            console.log('not an index')
-          }
-        }
-        if (stopArray[11]) {
-          try {
-            if (newMinesArray[neighbourArray2][neighbourIndex4].getAttribute('src') === '../imageMinehunter/white.png') {
-              newImageArray[neighbourArray2][neighbourIndex4].setAttribute('src', '../imageMinehunter/white.png')
-              newImageArray[neighbourArray2][neighbourIndex4].style.border = '2px solid black'
-            } else {
-              stopArray[11] = false
-            }
-          } catch (error) {
-            console.log(error)
-            console.log('not an index')
           }
         }
       }

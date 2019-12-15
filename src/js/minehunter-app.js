@@ -308,6 +308,107 @@ export class Minehunter extends window.HTMLElement {
           }
         }
       }
+
+      // Check surrounding of white picture and set new picture if mines surrounder it
+      for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
+          let counter = 0
+          // console.log(newImageArray[i][j])
+          if (newImageArray[i][j].getAttribute('src') === '../imageMinehunter/white.png') {
+            try {
+              if (newMinesArray[i][j + 1].getAttribute('src') === '../imageMinehunter/mine.png') {
+                counter++
+              }
+            } catch (error) {
+              // console.log(error)
+              // console.log('not an index')
+            }
+            try {
+              if (newMinesArray[i][j - 1].getAttribute('src') === '../imageMinehunter/mine.png') {
+                counter++
+              }
+            } catch (error) {
+              // console.log(error)
+              // console.log('not an index')
+            }
+            try {
+              if (newMinesArray[i + 1][j + 1].getAttribute('src') === '../imageMinehunter/mine.png') {
+                counter++
+              }
+            } catch (error) {
+              // console.log(error)
+              // console.log('not an index')
+            }
+            try {
+              if (newMinesArray[i + 1][j - 1].getAttribute('src') === '../imageMinehunter/mine.png') {
+                counter++
+              }
+            } catch (error) {
+              // console.log(error)
+              // console.log('not an index')
+            }
+            try {
+              if (newMinesArray[i - 1][j + 1].getAttribute('src') === '../imageMinehunter/mine.png') {
+                counter++
+              }
+            } catch (error) {
+              // console.log(error)
+              // console.log('not an index')
+            }
+            try {
+              if (newMinesArray[i - 1][j - 1].getAttribute('src') === '../imageMinehunter/mine.png') {
+                counter++
+              }
+            } catch (error) {
+              // console.log(error)
+              // console.log('not an index')
+            }
+            try {
+              if (newMinesArray[i + 1][j].getAttribute('src') === '../imageMinehunter/mine.png') {
+                counter++
+              }
+            } catch (error) {
+              // console.log(error)
+              // console.log('not an index')
+            }
+            try {
+              if (newMinesArray[i - 1][j].getAttribute('src') === '../imageMinehunter/mine.png') {
+                counter++
+              }
+            } catch (error) {
+              // console.log(error)
+              // console.log('not an index')
+            }
+            console.log(counter)
+            // set new picture if counter have changed to 1... ...8
+            if (counter === 1) {
+              console.log('joel is here')
+              newImageArray[i][j].setAttribute('src', '../imageMinehunter/one.png')
+            }
+            if (counter === 2) {
+              newImageArray[i][j].setAttribute('src', '../imageMinehunter/two.png')
+            }
+            if (counter === 3) {
+              newImageArray[i][j].setAttribute('src', '../imageMinehunter/three.png')
+            }
+            if (counter === 4) {
+              newImageArray[i][j].setAttribute('src', '../imageMinehunter/foure.png')
+            }
+            if (counter === 5) {
+              newImageArray[i][j].setAttribute('src', '../imageMinehunter/five.png')
+            }
+            if (counter === 6) {
+              newImageArray[i][j].setAttribute('src', '../imageMinehunter/six.png')
+            }
+            if (counter === 7) {
+              newImageArray[i][j].setAttribute('src', '../imageMinehunter/seven.png')
+            }
+            if (counter === 8) {
+              newImageArray[i][j].setAttribute('src', '../imageMinehunter/eight.png')
+            }
+          }
+        }
+      }
     })
   }
 }

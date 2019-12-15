@@ -188,7 +188,7 @@ export class Minehunter extends window.HTMLElement {
       this._mines = this.setMines()
     })
 
-    // event for gemfield rightclick
+    // event for gamefield rightclick
     this._gameField.addEventListener('contextmenu', event => {
       event.preventDefault()
       if (event.target.getAttribute('src') === '../imageMinehunter/black.png') {

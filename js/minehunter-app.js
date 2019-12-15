@@ -14,9 +14,9 @@ template.innerHTML = /* html */ `
       </select>
       -->
       <select id="levelMinehunter" name="size">
-        <option value="0">Easy</option>
-        <option value="1">Medium</option>
-        <option value="2">Hard</option>
+        <option value="0">Medium</option>
+        <option value="1">Hard</option>
+        <option value="2">Impossible</option>
       </select>
     </div>  
     <div id="gameField">
@@ -188,6 +188,16 @@ export class Minehunter extends window.HTMLElement {
       this._mines = this.setMines()
     })
 
+    // event for gemfield rightclick
+    this._gameField.addEventListener('contextmenu', event => {
+      event.preventDefault()
+      if (event.target.getAttribute('src') === '../imageMinehunter/black.png') {
+        event.target.setAttribute('src', '../imageMinehunter/flag.png')
+      } else if (event.target.getAttribute('src') === '../imageMinehunter/flag.png') {
+        event.target.setAttribute('src', '../imageMinehunter/black.png')
+      }
+    })
+
     // event for gamefield
     this._gameField.addEventListener('click', event => {
       event.preventDefault()
@@ -244,7 +254,7 @@ export class Minehunter extends window.HTMLElement {
       // console.log(typeof indexNumber)
 
       // Open up neighboutbricks
-      const stopArray = [true, true, true, true]
+      const executeArray = [true, true, true, true]
       for (let i = 0; i < 9; i++) {
       // New neighbourbricks
         const neighbourIndex1 = Number(indexNumber) + i
@@ -254,52 +264,52 @@ export class Minehunter extends window.HTMLElement {
           // Neighbourarrays
           const neighbourArray1 = Number(arrayNumber) + j
           const neighbourArray2 = Number(arrayNumber) - j
-          if (stopArray[0]) {
+          if (executeArray[0]) {
             try {
               if (newMinesArray[neighbourArray1][neighbourIndex1].getAttribute('src') === '../imageMinehunter/white.png') {
                 newImageArray[neighbourArray1][neighbourIndex1].setAttribute('src', '../imageMinehunter/white.png')
                 newImageArray[neighbourArray1][neighbourIndex1].style.border = '2px solid black'
               } else {
-                stopArray[0] = false
+                executeArray[0] = false
               }
             } catch (error) {
               // console.log(error)
               // console.log('not an index')
             }
           }
-          if (stopArray[1]) {
+          if (executeArray[1]) {
             try {
               if (newMinesArray[neighbourArray1][neighbourIndex2].getAttribute('src') === '../imageMinehunter/white.png') {
                 newImageArray[neighbourArray1][neighbourIndex2].setAttribute('src', '../imageMinehunter/white.png')
                 newImageArray[neighbourArray1][neighbourIndex2].style.border = '2px solid black'
               } else {
-                stopArray[1] = false
+                executeArray[1] = false
               }
             } catch (error) {
               // console.log(error)
               // console.log('not an index')
             }
           }
-          if (stopArray[2]) {
+          if (executeArray[2]) {
             try {
               if (newMinesArray[neighbourArray2][neighbourIndex1].getAttribute('src') === '../imageMinehunter/white.png') {
                 newImageArray[neighbourArray2][neighbourIndex1].setAttribute('src', '../imageMinehunter/white.png')
                 newImageArray[neighbourArray2][neighbourIndex1].style.border = '2px solid black'
               } else {
-                stopArray[2] = false
+                executeArray[2] = false
               }
             } catch (error) {
               // console.log(error)
               // console.log('not an index')
             }
           }
-          if (stopArray[3]) {
+          if (executeArray[3]) {
             try {
               if (newMinesArray[neighbourArray2][neighbourIndex2].getAttribute('src') === '../imageMinehunter/white.png') {
                 newImageArray[neighbourArray2][neighbourIndex2].setAttribute('src', '../imageMinehunter/white.png')
                 newImageArray[neighbourArray2][neighbourIndex2].style.border = '2px solid black'
               } else {
-                stopArray[3] = false
+                executeArray[3] = false
               }
             } catch (error) {
               // console.log(error)
@@ -408,6 +418,23 @@ export class Minehunter extends window.HTMLElement {
             }
           }
         }
+      }
+
+      // Count black pictures and the compare them with quatity of mines
+      let compareCounter = 0
+      for (let i = 0; i < this._quantityOfBricks; i++) {
+        if (imageArr[i].getAttribute('src') === '../imageMinehunter/black.png') {
+          compareCounter++
+        }
+      }
+      if (compareCounter === Math.sqrt(this._quantityOfBricks) * this._currentLevel) {
+        console.log('CONGRATULATION!!!')
+        this._gameField.innerHTML = ''
+        const congratulation = document.createElement('h3')
+        congratulation.innerText = 'CONGRATULATION!'
+        congratulation.style.textAlign = 'center'
+        congratulation.style.color = 'white'
+        this._gameField.appendChild(congratulation)
       }
     })
   }

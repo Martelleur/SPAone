@@ -58,7 +58,8 @@ export class Minehunter extends window.HTMLElement {
     this.shadowRoot.appendChild(template.content.cloneNode(true))
     this._gameField = this.shadowRoot.querySelector('#gameField')
     this._quantityOfBricks = 16
-    this._level = [1, 2, 3]
+    this._levels = [1, 2, 3]
+    this._currentLevel = this._levels[0]
     this._mines = this.setMines()
     this.setGamefield()
 
@@ -94,7 +95,7 @@ export class Minehunter extends window.HTMLElement {
    * @returns
    * @memberof Minehunter
    */
-  setMines (mines = Math.sqrt(this._quantityOfBricks) * this._level[0]) {
+  setMines (mines = Math.sqrt(this._quantityOfBricks) * this._currentLevel) {
     // Save mines in array with a number in [0,this._quantityOfBricks]
     const mineArr = []
     for (let i = 0; i < mines; i++) {
@@ -135,6 +136,7 @@ export class Minehunter extends window.HTMLElement {
     this._restartMinehunter.addEventListener('click', event => {
       event.preventDefault()
       this.setGamefield()
+      this._mines = this.setMines()
     })
 
     // event for sizeButton
@@ -154,7 +156,8 @@ export class Minehunter extends window.HTMLElement {
       console.log(this._levelMinehunter.value)
 
       // set level for game
-      this._mines = this.setMines(Math.sqrt(this._quantityOfBricks) * this._level[this._levelMinehunter.value])
+      this._currentLevel = this._levels[this._levelMinehunter.value]
+      this._mines = this.setMines()
     })
 
     // event for gamefield

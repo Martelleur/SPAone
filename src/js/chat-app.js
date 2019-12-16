@@ -4,6 +4,8 @@ template.innerHTML = /* html */ `
 <form action="">
     <fieldset id="chatTools">
         <button id="deletChat">Delet chat</button>
+        <button id="goLiveChat">Go online</button>
+        <button id="closeLiveChat">Go offline</button>
     </fieldset>
 
     <fieldset id="chatTitle"></fieldset>
@@ -11,7 +13,8 @@ template.innerHTML = /* html */ `
     <fieldset id="messages"></fieldset>
     
     <fieldset id="newMessage">
-        <input type="text" id="inputUser" placeholder="Write message here...">
+        <!--<input type="text" id="inputUser" placeholder="Write message here...">-->
+        <textarea id="inputUser" rows="10" cols="40" name="usrtxt" wrap="hard">Write message here...</textarea>
         <input type="submit" id="sendButton" value="Send">
     </fieldset>
 </form>
@@ -19,7 +22,7 @@ template.innerHTML = /* html */ `
 <style>
 :host {
     position: absolute;
-    width: 30%;
+    width: 50%;
     color: white;
     background-color: black;
 }
@@ -52,6 +55,10 @@ export class Chat extends window.HTMLElement {
     this._deletChat = this.shadowRoot.querySelector('#deletChat')
     this._chatTitle = this.shadowRoot.querySelector('#chatTitle')
     this._chatCounter = 0
+    this._goLiveChat = this.shadowRoot.querySelector('#goLiveChat')
+    this._closeLiveChat = this.shadowRoot.querySelector('#closeLiveChat')
+    this._socket = new window.WebSocket('ws://vhost3.lnu.se:20080/socket/', 'charcords')
+    this._data = undefined
   }
 
   static get observedAttributes () {
@@ -68,9 +75,10 @@ export class Chat extends window.HTMLElement {
       console.log(this._input.value)
     })
 
-    // eventlistner for this._input
+    // eventlistner for this._deletChat
     this._deletChat.addEventListener('click', (event) => {
       event.preventDefault()
+      this._socket.close()
       event.target.parentNode.parentNode.parentNode.remove()
     })
 
@@ -86,7 +94,43 @@ export class Chat extends window.HTMLElement {
       const p = document.createElement('p')
       p.innerText = this._message
       this._messages.appendChild(p)
-      console.log('LETS GO')
+    })
+
+    // eventlistner for this._goLiveChat (bygger på callback) (kan göras om till async awaite)
+    this._goLiveChat.addEventListener('click', (event) => {
+      event.preventDefault()
+      console.log('websocket trys to connect to server/JM')
+      this._socket = new window.WebSocket('ws://vhost3.lnu.se:20080/socket/', 'charcords')
+    })
+
+    this._socket.addEventListener('open', event => {
+      console.log('websocket in action/JM')
+
+      this._data = {
+        type: 'message',
+        data: this._message,
+        username: 'Joel Martelleur',
+        channel: 'my, not so secret, channel',
+        key: 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd'
+      }
+
+      this._socket.send(JSON.stringify(this._data))
+    })
+
+    this._socket.addEventListener('message', event => {
+      console.log('websocket message event.data:')
+      console.log(event.data)
+    })
+
+    this._socket.addEventListener('heartbeat', event => {
+      console.log('websocket heartbeat event.data:')
+      console.log(event.data)
+    })
+
+    // close WS
+    this._closeLiveChat.addEventListener('click', event => {
+      console.log('ws offline/JM')
+      this._socket.close()
     })
   }
 }

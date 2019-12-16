@@ -10,7 +10,8 @@
 </head>
 <body>
     <div id="wrapper">
-        <ul id="buttons">
+        <!--
+        <ul>
             <li><a href="#!/chat/" id="chatButton" data-chat="dataChat">
                 <button>Chat</button>
             </a></li>
@@ -20,6 +21,18 @@
             <li><a href="#!/minehunter/" id="minehunterButton" data-chat="dataMinehunter">
                 <button>Minehunter</button>
             </a></li>
+        </ul>
+        -->
+        <ul id="buttons">
+            <li>
+                <a href="#!/chat/" id="chatButton" data-chat="dataChat" data-create-element="chat-app">Chat</a>
+            </li>
+            <li>
+                <a href="#!/memory/" id="memoryButton" data-chat="dataMemory" data-create-element="memory-app">Memory</a>
+            </li>
+            <li>
+                <a href="#!/minehunter/" id="minehunterButton" data-chat="dataMinehunter" data-create-element="minehunter-app">Minehunter</a>
+            </li>
         </ul>
 
         <!--

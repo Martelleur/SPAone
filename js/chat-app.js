@@ -117,11 +117,13 @@ export class Chat extends window.HTMLElement {
       this._socket.send(JSON.stringify(this._data))
     })
 
+    // listning for message from other users
     this._socket.addEventListener('message', event => {
       console.log('websocket message event.data:')
       console.log(event.data)
     })
 
+    // listning on servers heartbeat
     this._socket.addEventListener('heartbeat', event => {
       console.log('websocket heartbeat event.data:')
       console.log(event.data)

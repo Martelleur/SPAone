@@ -63,12 +63,47 @@ export class Minehunter extends window.HTMLElement {
     this._currentLevel = this._levels[0]
     this._mines = this.setMines()
     this.setGamefield()
+    this._flagCounter = 0
+    this._blackPictureCounter = 0
 
     // Tools memory
     this._deletMinehunter = this.shadowRoot.querySelector('#deletMinehunter')
     this._restartMinehunter = this.shadowRoot.querySelector('#restartMinehunter')
     this._sizeMinehunter = this.shadowRoot.querySelector('#sizeMinehunter')
     this._levelMinehunter = this.shadowRoot.querySelector('#levelMinehunter')
+  }
+
+  /**
+   * @memberof Minehunter
+   */
+  isPlayerFinished () {
+    // reset this._flagcounter and this._blackPictureCounter
+    this._flagCounter = 0
+    this._blackPictureCounter = 0
+
+    for (let i = 0; i < this._quantityOfBricks; i++) {
+      if (this._gameField.querySelectorAll('img')[i].getAttribute('src') === '../imageMinehunter/flag.png') {
+        this._flagCounter++
+      }
+      if (this._gameField.querySelectorAll('img')[i].getAttribute('src') === '../imageMinehunter/black.png') {
+        this._blackPictureCounter++
+      }
+    }
+    console.log(`this._flagCounter: ${this._flagCounter}`)
+    console.log(`this._blacPictureCounter: ${this._blackPictureCounter}`)
+
+    // player have won
+    if (this._blackPictureCounter === 0 && this._flagCounter === Math.sqrt(this._quantityOfBricks) * this._currentLevel) {
+      console.log('CONGRATULATION!!!')
+      window.setTimeout(() => {
+        this._gameField.innerHTML = ''
+        const congratulation = document.createElement('h3')
+        congratulation.innerText = 'CONGRATULATION!'
+        congratulation.style.textAlign = 'center'
+        congratulation.style.color = 'white'
+        this._gameField.appendChild(congratulation)
+      }, 1000)
+    }
   }
 
   /**
@@ -191,11 +226,18 @@ export class Minehunter extends window.HTMLElement {
     // event for gamefield rightclick
     this._gameField.addEventListener('contextmenu', event => {
       event.preventDefault()
+
+      // reset this._flagcounter and this._blackPictureCounter
+      this._flagCounter = 0
+      this._blackPictureCounter = 0
+
       if (event.target.getAttribute('src') === '../imageMinehunter/black.png') {
         event.target.setAttribute('src', '../imageMinehunter/flag.png')
       } else if (event.target.getAttribute('src') === '../imageMinehunter/flag.png') {
         event.target.setAttribute('src', '../imageMinehunter/black.png')
       }
+
+      this.isPlayerFinished()
     })
 
     // event for gamefield
@@ -427,22 +469,7 @@ export class Minehunter extends window.HTMLElement {
         }
       }
 
-      // Count black pictures and the compare them with quatity of flags
-      let compareCounter = 0
-      for (let i = 0; i < this._quantityOfBricks; i++) {
-        if (imageArr[i].getAttribute('src') === '../imageMinehunter/black.png') {
-          compareCounter++
-        }
-      }
-      if (compareCounter === Math.sqrt(this._quantityOfBricks) * this._currentLevel) {
-        console.log('CONGRATULATION!!!')
-        this._gameField.innerHTML = ''
-        const congratulation = document.createElement('h3')
-        congratulation.innerText = 'CONGRATULATION!'
-        congratulation.style.textAlign = 'center'
-        congratulation.style.color = 'white'
-        this._gameField.appendChild(congratulation)
-      }
+      this.isPlayerFinished()
     })
   }
 }

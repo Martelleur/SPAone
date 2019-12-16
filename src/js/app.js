@@ -3,51 +3,56 @@ import './chat-app.js'
 import './minehunter-app.js'
 import { moveElement } from './moveElement.js'
 
-// Creating chat-elements
-let chatId
-let counterChats = 0
-document.querySelector('#chatButton').addEventListener('click', (event) => {
-  event.preventDefault()
-  counterChats++
-  const chat = document.createElement('chat-app')
-  chatId = `chat${counterChats}`
-  chat.setAttribute('id', chatId)
+// creating custom-elements
+let nameIdApplication
+let counterChatApplication = 0
+let counterMemoryApplication = 0
+let counterMinehunterApplication = 0
+document.querySelector('#buttons').addEventListener('click', (event) => {
+  // event.preventDefault()
+
+  // if user not click on a a-tag
+  if (event.target.tagName !== 'A') {
+    console.log('Not an image-tag')
+    return
+  }
+
+  // get type of element that will be created
+  console.log(event.target.getAttribute('data-create-element'))
+  const elementType = event.target.getAttribute('data-create-element')
+
+  // create element and ids for elements
+  const element = document.createElement(elementType)
+  if (event.target.getAttribute('data-create-element') === 'chat-app') {
+    counterChatApplication++
+    nameIdApplication = `chat${counterChatApplication}`
+  }
+  if (event.target.getAttribute('data-create-element') === 'memory-app') {
+    counterMemoryApplication++
+    nameIdApplication = `memory${counterMemoryApplication}`
+  }
+  if (event.target.getAttribute('data-create-element') === 'minehunter-app') {
+    counterMinehunterApplication++
+    nameIdApplication = `minehunter${counterMinehunterApplication}`
+  }
+  element.setAttribute('id', nameIdApplication)
+  console.log(element.getAttribute('id'))
+
+  // Adding created elements
   document.querySelector('#wrapper').appendChild(document.createElement('br'))
-  document.querySelector('#wrapper').appendChild(chat)
+  document.querySelector('#wrapper').appendChild(element)
   document.querySelector('#wrapper').appendChild(document.createElement('br'))
 
-  moveElement(chat)
-  console.log('chat.id/JM')
-  console.log(chat.id)
-})
+  moveElement(element)
 
-// Creating memory-elements
-document.querySelector('#memoryButton').addEventListener('click', (event) => {
-  event.preventDefault()
-  const memory = document.createElement('memory-app')
-  document.querySelector('#wrapper').appendChild(document.createElement('br'))
-  document.querySelector('#wrapper').appendChild(memory)
-  document.querySelector('#wrapper').appendChild(document.createElement('br'))
-
-  moveElement(memory)
-})
-
-// Creating minehunter
-document.querySelector('#minehunterButton').addEventListener('click', (event) => {
-  event.preventDefault()
-  const minehunter = document.createElement('minehunter-app')
-  document.querySelector('#wrapper').appendChild(document.createElement('br'))
-  document.querySelector('#wrapper').appendChild(minehunter)
-  document.querySelector('#wrapper').appendChild(document.createElement('br'))
-
-  moveElement(minehunter)
-
+  // windo.history and window.location
   const stateObj = {
     minehunter: event.target.getAttribute('data-minehunter')
   }
 
   window.history.pushState(stateObj, `/${stateObj.minehunter}`)
 
+  /*
   console.log(`window.location.host: ${window.location.host}`)
   console.log(`window.location.hostname: ${window.location.hostname}`)
   console.log(`window.location.port: ${window.location.port}`)
@@ -55,9 +60,8 @@ document.querySelector('#minehunterButton').addEventListener('click', (event) =>
   console.log(`window.location.search: ${window.location.search}`)
   console.log(`window.location.href: ${window.location.href}`)
   console.log(`window.location.pathname: ${window.location.pathname}`)
-
   console.log(stateObj)
-
+  */
   const currentState = window.history.state
   console.log(currentState)
 })
@@ -66,11 +70,13 @@ document.querySelector('#minehunterButton').addEventListener('click', (event) =>
 window.addEventListener('hashchange', event => {
   const hash = window.location.hash
 
-  if (hash === '/minehunter/') {
-    console.log('haschchange')
+  if (hash === '#!/minehunter/') {
+    console.log('haschchange/Joel Martelleur')
     console.log(hash)
   }
 })
+
+// window.history.back()
 
 window.addEventListener('popstate', event => {
   console.log('popstate')

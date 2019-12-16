@@ -3,6 +3,19 @@ import './chat-app.js'
 import './minehunter-app.js'
 import { moveElement } from './moveElement.js'
 
+// Check if online not always true but a good check
+// Insted we define online when client connected to server
+// Like the heartbeat in websocketconnection
+if (window.navigator.onLine) {
+  console.log('You are online!')
+}
+window.addEventListener('online', event => {
+  console.log('You are online!')
+})
+window.addEventListener('offline', event => {
+  console.log('You are offline!')
+})
+
 // creating custom-elements
 let nameIdApplication
 let counterChatApplication = 0

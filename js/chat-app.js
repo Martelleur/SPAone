@@ -7,7 +7,9 @@ template.innerHTML = /* html */ `
         <button id="goLiveChat">Go online</button>
         <button id="closeLiveChat">Go offline</button>
     </fieldset>
-
+    <fieldset id="onlineStatus">
+        <p>You are online</p>
+    </fieldset>
     <fieldset id="chatTitle"></fieldset>
     
     <fieldset id="messages"></fieldset>
@@ -57,8 +59,9 @@ export class Chat extends window.HTMLElement {
     this._chatCounter = 0
     this._goLiveChat = this.shadowRoot.querySelector('#goLiveChat')
     this._closeLiveChat = this.shadowRoot.querySelector('#closeLiveChat')
-    this._socket = new window.WebSocket('ws://vhost3.lnu.se:20080/socket/', 'charcords')
+    this._socket = new window.WebSocket('ws://vhost3.lnu.se:20080/socket/', 'charcords') // charcoard är ett egendefinierat protcol (urlen och protocol måste överenstämma)
     this._data = undefined
+    this._onlineStatus = this.shadowRoot.querySelector('#onlineStatus p')
   }
 
   static get observedAttributes () {
@@ -99,6 +102,7 @@ export class Chat extends window.HTMLElement {
     // eventlistner for this._goLiveChat (bygger på callback) (kan göras om till async awaite)
     this._goLiveChat.addEventListener('click', (event) => {
       event.preventDefault()
+      this._onlineStatus.innerText = 'Thank you! You are online'
       console.log('websocket trys to connect to server/JM')
       this._socket = new window.WebSocket('ws://vhost3.lnu.se:20080/socket/', 'charcords')
     })
@@ -133,6 +137,7 @@ export class Chat extends window.HTMLElement {
     this._closeLiveChat.addEventListener('click', event => {
       console.log('ws offline/JM')
       this._socket.close()
+      this._onlineStatus.innerText = 'You are offline'
     })
   }
 }

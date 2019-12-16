@@ -201,6 +201,13 @@ export class Minehunter extends window.HTMLElement {
     // event for gamefield
     this._gameField.addEventListener('click', event => {
       event.preventDefault()
+      // console.log(event.target.tagName)
+
+      // if user not click on a img-tag
+      if (event.target.tagName !== 'IMG') {
+        console.log('Not an image-tag')
+        return
+      }
 
       // user can not click ona a white picture to open neighbour picture
       if (event.target.getAttribute('src') === '../imageMinehunter/white.png') {
@@ -389,10 +396,10 @@ export class Minehunter extends window.HTMLElement {
               // console.log(error)
               // console.log('not an index')
             }
-            console.log(counter)
+            // console.log(counter)
             // set new picture if counter have changed to 1... ...8
             if (counter === 1) {
-              console.log('joel is here')
+              // console.log('counter === 1')
               newImageArray[i][j].setAttribute('src', '../imageMinehunter/one.png')
             }
             if (counter === 2) {
@@ -420,7 +427,7 @@ export class Minehunter extends window.HTMLElement {
         }
       }
 
-      // Count black pictures and the compare them with quatity of mines
+      // Count black pictures and the compare them with quatity of flags
       let compareCounter = 0
       for (let i = 0; i < this._quantityOfBricks; i++) {
         if (imageArr[i].getAttribute('src') === '../imageMinehunter/black.png') {

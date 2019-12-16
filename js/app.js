@@ -41,4 +41,37 @@ document.querySelector('#minehunterButton').addEventListener('click', (event) =>
   document.querySelector('#wrapper').appendChild(document.createElement('br'))
 
   moveElement(minehunter)
+
+  const stateObj = {
+    minehunter: event.target.getAttribute('data-minehunter')
+  }
+
+  window.history.pushState(stateObj, `/${stateObj.minehunter}`)
+
+  console.log(`window.location.host: ${window.location.host}`)
+  console.log(`window.location.hostname: ${window.location.hostname}`)
+  console.log(`window.location.port: ${window.location.port}`)
+  console.log(`window.location.hash: ${window.location.hash}`)
+  console.log(`window.location.search: ${window.location.search}`)
+  console.log(`window.location.href: ${window.location.href}`)
+  console.log(`window.location.pathname: ${window.location.pathname}`)
+
+  console.log(stateObj)
+
+  const currentState = window.history.state
+  console.log(currentState)
+})
+
+// Router
+window.addEventListener('hashchange', event => {
+  const hash = window.location.hash
+
+  if (hash === '/minehunter/') {
+    console.log('haschchange')
+    console.log(hash)
+  }
+})
+
+window.addEventListener('popstate', event => {
+  console.log('popstate')
 })

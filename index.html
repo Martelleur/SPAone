@@ -10,9 +10,23 @@
 </head>
 <body>
     <div id="wrapper">
-        <button id="chatButton">Chat</button>
-        <button id="memoryButton">Memory</button>
-        <button id="minehunterButton">Minehunter</button>
+        <ul id="buttons">
+            <li><a href="#!/chat/" id="chatButton" data-chat="dataChat">
+                <button>Chat</button>
+            </a></li>
+            <li><a href="#!/memory/" id="memoryButton" data-chat="dataMemory">
+                <button>Memory</button>
+            </a></li>
+            <li><a href="#!/minehunter/" id="minehunterButton" data-chat="dataMinehunter">
+                <button>Minehunter</button>
+            </a></li>
+        </ul>
+
+        <!--
+        <button id="chatButton" data-chat="dataChat">Chat</button>    
+        <button id="memoryButton" data-memory="dataMemory">Memory</button>
+        <button id="minehunterButton" data-minehunter="dataMinehunter">Minehunter</button>
+        -->
     </div>
     <script nomodule src="build.js"></script>
 </body>

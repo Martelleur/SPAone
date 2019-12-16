@@ -52,18 +52,19 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
   }
 
   window.history.pushState(stateObj, `/${stateObj.id}`, `/${stateObj.element}/${stateObj.id}`)
-  console.log(`window.location.pathname: ${window.location.pathname}`)
-  /*
-  console.log(`window.location.host: ${window.location.host}`)
-  console.log(`window.location.hostname: ${window.location.hostname}`)
-  console.log(`window.location.port: ${window.location.port}`)
-  console.log(`window.location.hash: ${window.location.hash}`)
-  console.log(`window.location.search: ${window.location.search}`)
-  console.log(`window.location.pathname: ${window.location.pathname}`)
   console.log(stateObj)
-  */
+
+  const currentState = window.history.state
+  console.log('currentState: ')
+  console.log(currentState)
 })
 
+// popstate event
+window.addEventListener('popstate', event => {
+  console.log(`id: ${event.state.id}. Element: ${event.state.element}`)
+})
+
+/*
 // Router
 window.addEventListener('hashchange', event => {
   const hash = window.location.hash
@@ -73,11 +74,16 @@ window.addEventListener('hashchange', event => {
     console.log(hash)
   }
 })
+*/
 
-const currentState = window.history.state
-console.log(`currentState: ${currentState}`)
 // window.history.back()
 
-window.addEventListener('popstate', event => {
-  console.log('popstate')
-})
+/*
+console.log(`window.location.host: ${window.location.host}`)
+console.log(`window.location.hostname: ${window.location.hostname}`)
+console.log(`window.location.port: ${window.location.port}`)
+console.log(`window.location.hash: ${window.location.hash}`)
+console.log(`window.location.search: ${window.location.search}`)
+console.log(`window.location.pathname: ${window.location.pathname}`)
+console.log(stateObj)
+*/

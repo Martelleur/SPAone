@@ -251,9 +251,9 @@ export class Minehunter extends window.HTMLElement {
         return
       }
 
-      // user can not click ona a white picture to open neighbour picture
-      if (event.target.getAttribute('src') === '../imageMinehunter/white.png') {
-        console.log('white picture')
+      // user can only click ona blackbricks not flags or white bricks
+      if (event.target.getAttribute('src') !== '../imageMinehunter/black.png') {
+        console.log('Not a black brick')
         return
       }
       // console.log('this._mines array/JM')
@@ -290,8 +290,8 @@ export class Minehunter extends window.HTMLElement {
 
       // reconstruct imageArray to an array of arrays
       const newImageArray = this.reconstructArray(imageArr)
-      // console.log('newImageArray/JM')
-      // console.log(newImageArray)
+      console.log('newImageArray/JM')
+      console.log(newImageArray)
 
       // Only if gamefield 10 * 10
       const indexLenght = event.target.id.length
@@ -315,7 +315,7 @@ export class Minehunter extends window.HTMLElement {
           const neighbourArray2 = Number(arrayNumber) - j
           if (executeArray[0]) {
             try {
-              if (newMinesArray[neighbourArray1][neighbourIndex1].getAttribute('src') === '../imageMinehunter/white.png') {
+              if (newMinesArray[neighbourArray1][neighbourIndex1].getAttribute('src') === '../imageMinehunter/white.png' && newImageArray[neighbourArray1][neighbourIndex1].getAttribute('src') !== '../imageMinehunter/flag.png') {
                 newImageArray[neighbourArray1][neighbourIndex1].setAttribute('src', '../imageMinehunter/white.png')
                 newImageArray[neighbourArray1][neighbourIndex1].style.border = '2px solid black'
               } else {
@@ -328,7 +328,7 @@ export class Minehunter extends window.HTMLElement {
           }
           if (executeArray[1]) {
             try {
-              if (newMinesArray[neighbourArray1][neighbourIndex2].getAttribute('src') === '../imageMinehunter/white.png') {
+              if (newMinesArray[neighbourArray1][neighbourIndex2].getAttribute('src') === '../imageMinehunter/white.png' && newImageArray[neighbourArray1][neighbourIndex2].getAttribute('src') !== '../imageMinehunter/flag.png') {
                 newImageArray[neighbourArray1][neighbourIndex2].setAttribute('src', '../imageMinehunter/white.png')
                 newImageArray[neighbourArray1][neighbourIndex2].style.border = '2px solid black'
               } else {
@@ -341,7 +341,7 @@ export class Minehunter extends window.HTMLElement {
           }
           if (executeArray[2]) {
             try {
-              if (newMinesArray[neighbourArray2][neighbourIndex1].getAttribute('src') === '../imageMinehunter/white.png') {
+              if (newMinesArray[neighbourArray2][neighbourIndex1].getAttribute('src') === '../imageMinehunter/white.png' && newImageArray[neighbourArray2][neighbourIndex1].getAttribute('src') !== '../imageMinehunter/flag.png') {
                 newImageArray[neighbourArray2][neighbourIndex1].setAttribute('src', '../imageMinehunter/white.png')
                 newImageArray[neighbourArray2][neighbourIndex1].style.border = '2px solid black'
               } else {
@@ -354,7 +354,7 @@ export class Minehunter extends window.HTMLElement {
           }
           if (executeArray[3]) {
             try {
-              if (newMinesArray[neighbourArray2][neighbourIndex2].getAttribute('src') === '../imageMinehunter/white.png') {
+              if (newMinesArray[neighbourArray2][neighbourIndex2].getAttribute('src') === '../imageMinehunter/white.png' && newImageArray[neighbourArray2][neighbourIndex2].getAttribute('src') !== '../imageMinehunter/flag.png') {
                 newImageArray[neighbourArray2][neighbourIndex2].setAttribute('src', '../imageMinehunter/white.png')
                 newImageArray[neighbourArray2][neighbourIndex2].style.border = '2px solid black'
               } else {

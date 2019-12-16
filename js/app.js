@@ -9,7 +9,7 @@ let counterChatApplication = 0
 let counterMemoryApplication = 0
 let counterMinehunterApplication = 0
 document.querySelector('#buttons').addEventListener('click', (event) => {
-  // event.preventDefault()
+  event.preventDefault()
 
   // if user not click on a a-tag
   if (event.target.tagName !== 'A') {
@@ -47,23 +47,21 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
 
   // windo.history and window.location
   const stateObj = {
-    minehunter: event.target.getAttribute('data-minehunter')
+    element: event.target.getAttribute('data-create-element'),
+    id: element.getAttribute('id')
   }
 
-  window.history.pushState(stateObj, `/${stateObj.minehunter}`)
-
+  window.history.pushState(stateObj, `/${stateObj.id}`, `/${stateObj.element}/${stateObj.id}`)
+  console.log(`window.location.pathname: ${window.location.pathname}`)
   /*
   console.log(`window.location.host: ${window.location.host}`)
   console.log(`window.location.hostname: ${window.location.hostname}`)
   console.log(`window.location.port: ${window.location.port}`)
   console.log(`window.location.hash: ${window.location.hash}`)
   console.log(`window.location.search: ${window.location.search}`)
-  console.log(`window.location.href: ${window.location.href}`)
   console.log(`window.location.pathname: ${window.location.pathname}`)
   console.log(stateObj)
   */
-  const currentState = window.history.state
-  console.log(currentState)
 })
 
 // Router
@@ -76,6 +74,8 @@ window.addEventListener('hashchange', event => {
   }
 })
 
+const currentState = window.history.state
+console.log(`currentState: ${currentState}`)
 // window.history.back()
 
 window.addEventListener('popstate', event => {

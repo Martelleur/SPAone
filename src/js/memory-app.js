@@ -90,12 +90,18 @@ export class Memory extends window.HTMLElement {
    * @memberof Memory
    */
   connectedCallback () {
-    // eventlistner for this._input
+    // eventlistner for this._memoryPictures
     this._memoryPictures.addEventListener('click', (event) => {
       event.preventDefault()
 
       // If user click on a turned tile nothing change
       if (event.target.getAttribute('src') !== this._backOfTilesSrc) {
+        return
+      }
+
+      // if user not click on a img-tag
+      if (event.target.tagName !== 'IMG') {
+        console.log('Not an image-tag')
         return
       }
 

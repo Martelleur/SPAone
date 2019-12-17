@@ -21,6 +21,8 @@ template.innerHTML = /* html */ `
     </div>  
     <div id="gameField">
     </div>
+    <div id="gameFooter">
+    </div>
 </div>
 <style>
 :host {
@@ -65,6 +67,7 @@ export class Minehunter extends window.HTMLElement {
     this.setGamefield()
     this._flagCounter = 0
     this._blackPictureCounter = 0
+    this._gameFooter = this.shadowRoot.querySelector('#gameFooter')
 
     // Tools memory
     this._deletMinehunter = this.shadowRoot.querySelector('#deletMinehunter')
@@ -95,14 +98,21 @@ export class Minehunter extends window.HTMLElement {
     // player have won
     if (this._blackPictureCounter === 0 && this._flagCounter === Math.sqrt(this._quantityOfBricks) * this._currentLevel) {
       console.log('CONGRATULATION!!!')
+
+      // show user the hided mines
       window.setTimeout(() => {
-        this._gameField.innerHTML = ''
+        for (let i = 0; i < this._quantityOfBricks; i++) {
+          if (this._mines[i].getAttribute('src') === '../imageMinehunter/mine.png') {
+            this._gameField.querySelectorAll('img')[i].setAttribute('src', '../imageMinehunter/mine.png')
+          }
+        }
+
         const congratulation = document.createElement('h3')
         congratulation.innerText = 'CONGRATULATION!'
         congratulation.style.textAlign = 'center'
         congratulation.style.color = 'white'
-        this._gameField.appendChild(congratulation)
-      }, 1000)
+        this._gameFooter.appendChild(congratulation)
+      }, 2000)
     }
   }
 
@@ -113,6 +123,11 @@ export class Minehunter extends window.HTMLElement {
   setGamefield (bricks = this._quantityOfBricks) {
     // Building new memory
     this._gameField.innerHTML = ''
+    try {
+      this._gameFooter.innerHTML = ''
+    } catch (error) {
+      console.log(error)
+    }
     for (let i = 0; i < bricks; i++) {
       const img = document.createElement('img')
       img.setAttribute('src', '../imageMinehunter/black.png')
@@ -266,8 +281,6 @@ export class Minehunter extends window.HTMLElement {
 
       // If user click on mine user lose
       if (srcAttribute === '../imageMinehunter/mine.png') {
-        // console.log('You lose')
-
         // show user the hided mines
         for (let i = 0; i < this._quantityOfBricks; i++) {
           if (this._mines[i].getAttribute('src') === '../imageMinehunter/mine.png') {
@@ -275,11 +288,18 @@ export class Minehunter extends window.HTMLElement {
           }
         }
 
+        const sorry = document.createElement('h3')
+        sorry.innerText = 'Sorry you loose!'
+        sorry.style.textAlign = 'center'
+        sorry.style.color = 'white'
+        this._gameFooter.appendChild(sorry)
+
+        /*
         window.setTimeout(() => {
           this.setGamefield()
           this._mines = this.setMines()
         }, 5000)
-
+        */
         return
       }
 

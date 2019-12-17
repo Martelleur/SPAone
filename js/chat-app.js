@@ -6,6 +6,8 @@ template.innerHTML = /* html */ `
         <button id="deletChat">Delet chat</button>
         <button id="goLiveChat">Go online</button>
         <button id="closeLiveChat">Go offline</button>
+        <button id="biggerWindow">+</button>
+        <button id="smallerWindow">-</button>
     </fieldset>
     <fieldset id="onlineStatus">
         <p>You are online</p>
@@ -16,7 +18,7 @@ template.innerHTML = /* html */ `
     
     <fieldset id="newMessage">
         <!--<input type="text" id="inputUser" placeholder="Write message here...">-->
-        <textarea id="inputUser" rows="10" cols="40" name="usrtxt" wrap="hard">Write message here...</textarea>
+        <textarea id="inputUser" rows="10" cols="45" name="usrtxt" wrap="hard">Write message here...</textarea>
         <input type="submit" id="sendButton" value="Send">
     </fieldset>
 </form>
@@ -25,6 +27,11 @@ template.innerHTML = /* html */ `
 :host {
     position: absolute;
     width: 50%;
+    color: white;
+    background-color: black;
+}
+:host #chatConteiner {
+    width: 100%;
     color: white;
     background-color: black;
 }
@@ -62,16 +69,34 @@ export class Chat extends window.HTMLElement {
     this._socket = new window.WebSocket('ws://vhost3.lnu.se:20080/socket/', 'charcords') // charcoard är ett egendefinierat protcol (urlen och protocol måste överenstämma)
     this._data = undefined
     this._onlineStatus = this.shadowRoot.querySelector('#onlineStatus p')
+    this._smallerWindow = this.shadowRoot.querySelector('#smallerWindow')
+    this._biggerWindow = this.shadowRoot.querySelector('#biggerWindow')
+    this._chatConteiner = this.shadowRoot.querySelector('#chatConteiner')
   }
-
+  /*
   static get observedAttributes () {
-    return ['id']
+    return ['id', 'width']
   }
 
   attributeChangedCallback (name, oldValue, newValue) {
   }
+  */
 
   connectedCallback () {
+    // eventlistner for this._biggerWindow
+    this._biggerWindow.addEventListener('click', (event) => {
+      event.preventDefault()
+      const width = this._chatConteiner.setAttribute('color', 'red')
+      console.log(width)
+    })
+
+    // eventlistner for this._smallerWindow
+    this._smallerWindow.addEventListener('click', (event) => {
+      event.preventDefault()
+      const width = this._chatConteiner.getAttribute('backgroundColor')
+      console.log(`width: ${width}`)
+    })
+
     // eventlistner for this._input
     this._input.addEventListener('input', (event) => {
       this._message = this._input.value

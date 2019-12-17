@@ -79,6 +79,7 @@ export class Memory extends window.HTMLElement {
     this._paires.innerText = `Paires: ${this._quantityOfPaires}`
     this._gameFooter = this.shadowRoot.querySelector('#gameFooter')
     this._countHiddenPictures = 0
+    this._tries = 0
 
     // Building new memory
     this.setTiles()
@@ -116,6 +117,11 @@ export class Memory extends window.HTMLElement {
           return
         }
       }
+
+      // something is wronh here
+      // print tries and paires
+      this._tries++
+      this._paires.innerText = `Paires: ${this._quantityOfPaires / 2}\nTries: ${Math.floor(this._tries / 2)}`
 
       const visiblePicture = this._tiles[event.target.getAttribute('class') - 1]
       console.log(this._tiles)
@@ -155,11 +161,11 @@ export class Memory extends window.HTMLElement {
       if (this._tempArray.length === 2) {
         if (this._tempArray[0].getAttribute('src') === this._tempArray[1].getAttribute('src')) {
           console.log('Paire!!!')
+          // count paires
           for (let i = 0; i < this.shadowRoot.querySelectorAll('#memoryPictures img').length; i++) {
             if (this.shadowRoot.querySelectorAll('#memoryPictures img')[i].getAttribute('src') === this._tempArray[1].getAttribute('src')) {
-              console.log('hmmmmmmmmmmmm!!!')
               this._quantityOfPaires++
-              this._paires.innerText = `Paires: ${this._quantityOfPaires / 2}`
+              this._paires.innerText = `Paires: ${this._quantityOfPaires / 2}\nTries: ${Math.floor(this._tries / 2)}`
               window.setTimeout(() => {
                 this.shadowRoot.querySelectorAll('#memoryPictures img')[i].style.visibility = 'hidden'
               }, 500)
@@ -213,7 +219,8 @@ export class Memory extends window.HTMLElement {
       // shuffle the tiles
       this._tiles = this.shuffleTiles(this._rows, this._columns)
 
-      // reset paires
+      // reset data
+      this._tries = 0
       this._quantityOfPaires = 0
       this._paires.innerText = `Paires: ${this._quantityOfPaires}`
     })
@@ -238,7 +245,8 @@ export class Memory extends window.HTMLElement {
       // Shuffle the pictures
       this._tiles = this.shuffleTiles(this._rows, this._columns)
 
-      // reset paires
+      // reset data
+      this._tries = 0
       this._quantityOfPaires = 0
       this._paires.innerText = `Paires: ${this._quantityOfPaires}`
     })

@@ -1,6 +1,7 @@
 const template = document.createElement('template')
 template.innerHTML = /* html */ `
 <div id="memoryConteiner">
+  
   <div id="memoryTools">
     <button id="deletMemory">Delet</button>
     <button id="restartMemory">Restart</button>
@@ -15,6 +16,8 @@ template.innerHTML = /* html */ `
   </div>
     
   <div id="memoryPictures"></div>
+  
+  <div id="gameFooter"></div>
 </div>
 <style>
 :host {
@@ -74,6 +77,8 @@ export class Memory extends window.HTMLElement {
     this._quantityOfPaires = 0
     this._tempArray = []
     this._paires.innerText = `Paires: ${this._quantityOfPaires}`
+    this._gameFooter = this.shadowRoot.querySelector('#gameFooter')
+    this._countHiddenPictures = 0
 
     // Building new memory
     this.setTiles()
@@ -141,6 +146,25 @@ export class Memory extends window.HTMLElement {
       window.setTimeout(() => {
         this.turnbackPictures()
       }, 2000)
+
+      // Congrat the user an shoulde later also show result
+      window.setTimeout(() => {
+        this._countHiddenPictures = 0
+        for (let i = 0; i < this._memoryPictures.querySelectorAll('img').length; i++) {
+          if (this._memoryPictures.querySelectorAll('img')[i].style.visibility === 'hidden') {
+            this._countHiddenPictures++
+            console.log(`countPictures: ${this._countHiddenPictures}`)
+            if (this._countHiddenPictures === this._memoryPictures.querySelectorAll('img').length) {
+              console.log('CONGRATULATION!!!')
+              const congratulation = document.createElement('h3')
+              congratulation.innerText = 'CONGRATULATION!'
+              congratulation.style.textAlign = 'center'
+              congratulation.style.color = 'white'
+              this._gameFooter.appendChild(congratulation)
+            }
+          }
+        }
+      }, 500)
     })
 
     // eventlistner for this._deletMemory
@@ -152,6 +176,10 @@ export class Memory extends window.HTMLElement {
     // eventlistner for this._restartMemory
     this._restartMemory.addEventListener('click', (event) => {
       event.preventDefault()
+
+      // reset this._countHiddenPictures and gameFooter
+      this._countHiddenPictures = 0
+      this._gameFooter.innerHTML = ''
 
       // Building new memory
       this.setTiles()
@@ -169,6 +197,10 @@ export class Memory extends window.HTMLElement {
       event.preventDefault()
       console.log('test this._sizeMemory event/JM')
       console.log(this._sizeMemory.value)
+
+      // reset this._countHiddenPictures and gameFooter
+      this._countHiddenPictures = 0
+      this._gameFooter.innerHTML = ''
 
       // Reconstruct form for layout for the memory
       this._rows = Math.floor(Math.sqrt(this._sizeMemory.value))

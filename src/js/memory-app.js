@@ -99,7 +99,7 @@ export class Memory extends window.HTMLElement {
     this._memoryPictures.addEventListener('click', (event) => {
       event.preventDefault()
 
-      // if user click on a turned picture
+      // if user click on a turned picture with the mouse
       if (event.target.tagName === 'IMG') {
         // If user click on a turned tile nothing change
         if (event.target.getAttribute('src') !== this._backOfTilesSrc) {
@@ -107,6 +107,16 @@ export class Memory extends window.HTMLElement {
           return
         }
       }
+
+      // if user click on a turned picture with the keyboard
+      if (event.target.tagName === 'A') {
+        // If user click on a turned tile nothing change
+        if (event.target.firstElementChild.getAttribute('src') !== this._backOfTilesSrc) {
+          console.log('Picture is already turned')
+          return
+        }
+      }
+
       const visiblePicture = this._tiles[event.target.getAttribute('class') - 1]
       console.log(this._tiles)
       // clonedPicture = this.shadowRoot.cloneNode

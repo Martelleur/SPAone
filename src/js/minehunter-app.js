@@ -268,10 +268,17 @@ export class Minehunter extends window.HTMLElement {
       if (srcAttribute === '../imageMinehunter/mine.png') {
         // console.log('You lose')
 
+        // show user the hided mines
+        for (let i = 0; i < this._quantityOfBricks; i++) {
+          if (this._mines[i].getAttribute('src') === '../imageMinehunter/mine.png') {
+            this._gameField.querySelectorAll('img')[i].setAttribute('src', '../imageMinehunter/mine.png')
+          }
+        }
+
         window.setTimeout(() => {
           this.setGamefield()
           this._mines = this.setMines()
-        }, 2000)
+        }, 5000)
 
         return
       }
@@ -369,8 +376,8 @@ export class Minehunter extends window.HTMLElement {
       }
 
       // Check surrounding of white picture and set new picture if mines surrounder it
-      for (let i = 0; i < 9; i++) {
-        for (let j = 0; j < 9; j++) {
+      for (let i = 0; i < 10; i++) {
+        for (let j = 0; j < 10; j++) {
           let counter = 0
           // console.log(newImageArray[i][j])
           if (newImageArray[i][j].getAttribute('src') === '../imageMinehunter/white.png') {

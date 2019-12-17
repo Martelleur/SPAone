@@ -99,30 +99,46 @@ export class Memory extends window.HTMLElement {
     this._memoryPictures.addEventListener('click', (event) => {
       event.preventDefault()
 
-      // If user click on a turned tile nothing change
-      if (event.target.getAttribute('src') !== this._backOfTilesSrc) {
-        return
+      // if user click on a turned picture
+      if (event.target.tagName === 'IMG') {
+        // If user click on a turned tile nothing change
+        if (event.target.getAttribute('src') !== this._backOfTilesSrc) {
+          console.log('Picture is already turned')
+          return
+        }
       }
-
-      // if user not click on a img-tag
-      if (event.target.tagName !== 'IMG') {
-        console.log('Not an image-tag')
-        return
-      }
-
-      console.log(event.target)
-      console.log(event.target.id)
-      console.log(this._tiles[event.target.id - 1])
+      const visiblePicture = this._tiles[event.target.getAttribute('class') - 1]
+      console.log(this._tiles)
       // clonedPicture = this.shadowRoot.cloneNode
       // event.target = this._tiles[event.target.id - 1]
-      event.target.innerHTML = this._tiles[event.target.id - 1]
 
-      const attributeSrc = this._tiles[event.target.id - 1].getAttribute('src')
+      // if target are an a or img-tagg target get
+      let target
+      if (event.target.tagName === 'IMG') {
+        console.log('You cliking on an img tag')
+        console.log(visiblePicture)
+        console.log(event.target.innerHTML)
+        target = event.target
+        target.innerHTML = visiblePicture
+        console.log(event.target.innerHTML)
+        console.log(event.target)
+      }
+      if (event.target.tagName === 'A') {
+        console.log('You cliking on an a tag')
+        console.log(visiblePicture)
+        target = event.target.firstElementChild
+        console.log(event.target.firstElementChild.innerHTML)
+        target.innerHTML = visiblePicture
+        console.log(event.target.firstElementChild.innerHTML)
+        console.log(event.target)
+      }
+
+      const attributeSrc = visiblePicture.getAttribute('src')
       console.log(attributeSrc)
 
       // storing even.target in temp array
-      event.target.setAttribute('src', attributeSrc)
-      this._tempArray.push(event.target)
+      target.setAttribute('src', attributeSrc)
+      this._tempArray.push(target)
       console.log(this._tempArray)
 
       // check if picture are the same
@@ -248,12 +264,16 @@ export class Memory extends window.HTMLElement {
     this._memoryPictures.innerHTML = ''
     for (let i = 0; i < (this._rows * this._columns); i++) {
       const img = document.createElement('img')
+      const a = document.createElement('a')
       img.setAttribute('src', '../imageMemory/0.png')
-      const idAttribute = `${i + 1}`
-      img.setAttribute('id', idAttribute)
+      a.setAttribute('href', '#')
+      const classAttribute = `${i + 1}`
+      img.setAttribute('class', classAttribute)
+      a.setAttribute('class', classAttribute)
       const pictureWidthValue = `${100 / this._columns}%`
       img.style.width = pictureWidthValue
-      this._memoryPictures.appendChild(img)
+      a.appendChild(img)
+      this._memoryPictures.appendChild(a)
     }
   }
 
@@ -282,6 +302,7 @@ export class Memory extends window.HTMLElement {
       array[i] = array[randomNumber]
       array[randomNumber] = temp
     }
+    console.log('Shuffled array:')
     console.log(array)
     return array
   }

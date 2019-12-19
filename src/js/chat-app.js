@@ -2,7 +2,7 @@ const template = document.createElement('template')
 template.innerHTML = /* html */ `
 <div id="chatConteiner">
 <form action="">
-    <fieldset id="chatTools">
+    <fieldset id="tools">
         <button id="deletChat">Delet chat</button>
         <button id="goLiveChat">Go online</button>
         <button id="closeLiveChat">Go offline</button>
@@ -43,10 +43,12 @@ template.innerHTML = /* html */ `
   border: 5px solid black;
     z-index: -1;
 }
-:host #chatConteiner:hover {
-    cursor: move; 
+:host #chatConteiner:hover { 
     border: 5px solid blue;
     z-index: 1;
+}
+:host #tools:hover {
+  cursor: move;
 }
 </style>
 `

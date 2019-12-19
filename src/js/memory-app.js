@@ -2,7 +2,7 @@ const template = document.createElement('template')
 template.innerHTML = /* html */ `
 <div id="memoryConteiner">
   
-  <div id="memoryTools">
+  <div id="tools">
     <button id="deletMemory">Delet</button>
     <button id="restartMemory">Restart</button>
     <select id="sizeMemory" name="size">
@@ -31,12 +31,14 @@ template.innerHTML = /* html */ `
     z-index: -1;
 }
 :host #memoryConteiner:hover {
-    cursor: move;
     border: 5px solid blue;
     z-index: 1; 
 }
 :host #memoryPictures:hover {
     cursor: pointer; 
+}
+:host #tools:hover {
+  cursor: move; 
 }
   </style>
 `
@@ -60,7 +62,7 @@ export class Memory extends window.HTMLElement {
     this.shadowRoot.appendChild(template.content.cloneNode(true))
 
     // Tools memory
-    this._memoryTools = this.shadowRoot.querySelector('#memoryTools')
+    this._memoryTools = this.shadowRoot.querySelector('#tools')
     this._restartMemory = this.shadowRoot.querySelector('#restartMemory')
     this._deletMemory = this.shadowRoot.querySelector('#deletMemory')
     this._sizeMemory = this.shadowRoot.querySelector('#sizeMemory')

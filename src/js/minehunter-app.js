@@ -1,7 +1,7 @@
 const template = document.createElement('template')
 template.innerHTML = /* html */ `
 <div id="minehunterConteiner">
-    <div id="memoryTools">
+    <div id="tools">
       <button id="deletMinehunter">Delet</button>
       <button id="restartMinehunter">Restart</button>
       <!--
@@ -39,6 +39,9 @@ template.innerHTML = /* html */ `
 :host #minehunterConteiner, :host #gameField {
     width: 100%;
 } 
+:host #tools:hover{
+  cursor: move;
+}
 </style>
 `
 

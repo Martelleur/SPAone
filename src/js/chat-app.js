@@ -73,14 +73,13 @@ export class Chat extends window.HTMLElement {
     this._biggerWindow = this.shadowRoot.querySelector('#biggerWindow')
     this._chatConteiner = this.shadowRoot.querySelector('#chatConteiner')
   }
-  /*
+
   static get observedAttributes () {
     return ['id', 'width']
   }
 
   attributeChangedCallback (name, oldValue, newValue) {
   }
-  */
 
   connectedCallback () {
     // eventlistner for this._biggerWindow

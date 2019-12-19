@@ -203,7 +203,11 @@ export class Chess extends window.HTMLElement {
           if (event.target.nodeName === 'IMG' && event.target.getAttribute('data-color') !== this.shadowRoot.querySelector(textArgument).getAttribute('data-color')) {
             const srcArgument = this.shadowRoot.querySelector(textArgument).getAttribute('src')
             const idArgument = this.shadowRoot.querySelector(textArgument).getAttribute('id')
+            const dataColorArgument = this.shadowRoot.querySelector(textArgument).getAttribute('data-color')
             this.shadowRoot.querySelector(textArgument).remove()
+
+            // change pieces
+            event.target.setAttribute('data-color', dataColorArgument)
             event.target.setAttribute('src', srcArgument)
             event.target.setAttribute('id', idArgument)
           } else if (event.target.nodeName === 'IMG' && event.target.getAttribute('data-color') === this.shadowRoot.querySelector(textArgument).getAttribute('data-color')) {

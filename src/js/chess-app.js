@@ -10,22 +10,22 @@ template.innerHTML = /* html */ `
     </div>
         
     <div id="chessBoard">
-        <div class="droptarget"><img src="../imageChess/tower.png" draggable="true" id="dragTarget1"></div>
-        <div class="droptarget"><img src="../imageChess/hoarse.png" draggable="true" id="dragTarget2"></div>
-        <div class="droptarget"><img src="../imageChess/runner.png" draggable="true" id="dragTarget3"></div>
-        <div class="droptarget"><img src="../imageChess/king.png" draggable="true" id="dragTarget4"></div>
-        <div class="droptarget"><img src="../imageChess/queen.png" draggable="true" id="dragTarget5"></div>
-        <div class="droptarget"><img src="../imageChess/runner.png" draggable="true" id="dragTarget6"></div>
-        <div class="droptarget"><img src="../imageChess/hoarse.png" draggable="true" id="dragTarget7"></div>
-        <div class="droptarget"><img src="../imageChess/tower.png" draggable="true" id="dragTarget8"></div>
-        <div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget9"></div>
-        <div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget10"></div>
-        <div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget11"></div>
-        <div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget12"></div>
-        <div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget13"></div>
-        <div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget14"></div>
-        <div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget15"></div>
-        <div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget16"></div>
+        <div class="droptarget"><img src="../imageChess/tower.png" draggable="true" id="dragTarget1" class="droptarget" data-color="black"></div>
+        <div class="droptarget"><img src="../imageChess/hoarse.png" draggable="true" id="dragTarget2" class="droptarget" data-color="black"></div>
+        <div class="droptarget"><img src="../imageChess/runner.png" draggable="true" id="dragTarget3" class="droptarget" data-color="black"></div>
+        <div class="droptarget"><img src="../imageChess/king.png" draggable="true" id="dragTarget4" class="droptarget" data-color="black"></div>
+        <div class="droptarget"><img src="../imageChess/queen.png" draggable="true" id="dragTarget5" class="droptarget" data-color="black"></div>
+        <div class="droptarget"><img src="../imageChess/runner.png" draggable="true" id="dragTarget6" class="droptarget" data-color="black"></div>
+        <div class="droptarget"><img src="../imageChess/hoarse.png" draggable="true" id="dragTarget7" class="droptarget" data-color="black"></div>
+        <div class="droptarget"><img src="../imageChess/tower.png" draggable="true" id="dragTarget8" class="droptarget" data-color="black"></div>
+        <div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget9" class="droptarget" data-color="black"></div>
+        <div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget10" class="droptarget" data-color="black"></div>
+        <div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget11" class="droptarget" data-color="black"></div>
+        <div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget12" class="droptarget" data-color="black"></div>
+        <div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget13" class="droptarget" data-color="black"></div>
+        <div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget14" class="droptarget" data-color="black"></div>
+        <div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget15" class="droptarget" data-color="black"></div>
+        <div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget16" class="droptarget" data-color="black"></div>
         <div class="droptarget"></div>
         <div class="droptarget"></div>
         <div class="droptarget"></div>
@@ -58,22 +58,22 @@ template.innerHTML = /* html */ `
         <div class="droptarget"></div>
         <div class="droptarget"></div>
         <div class="droptarget"></div>
-        <div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget17"></div>
-        <div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget18"></div>
-        <div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget19"></div>
-        <div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget20"></div>
-        <div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget21"></div>
-        <div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget22"></div>
-        <div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget23"></div>
-        <div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget24"></div>
-        <div class="droptarget"><img src="../imageChess/towerWhite.png" draggable="true" id="dragTarget25"></div>
-        <div class="droptarget"><img src="../imageChess/hoarseWhite.png" draggable="true" id="dragTarget26"></div>
-        <div class="droptarget"><img src="../imageChess/runnerWhite.png" draggable="true" id="dragTarget27"></div>
-        <div class="droptarget"><img src="../imageChess/kingWhite.png" draggable="true" id="dragTarget28"></div>
-        <div class="droptarget"><img src="../imageChess/queenWhite.png" draggable="true" id="dragTarget29"></div>
-        <div class="droptarget"><img src="../imageChess/runnerWhite.png" draggable="true" id="dragTarget30"></div>
-        <div class="droptarget"><img src="../imageChess/hoarseWhite.png" draggable="true" id="dragTarget31"></div>
-        <div class="droptarget"><img src="../imageChess/towerWhite.png" draggable="true" id="dragTarget32"></div>
+        <div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget17" class="droptarget" data-color="white"></div>
+        <div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget18" class="droptarget" data-color="white"></div>
+        <div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget19" class="droptarget" data-color="white"></div>
+        <div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget20" class="droptarget" data-color="white"></div>
+        <div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget21" class="droptarget" data-color="white"></div>
+        <div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget22" class="droptarget" data-color="white"></div>
+        <div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget23" class="droptarget" data-color="white"></div>
+        <div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget24" class="droptarget" data-color="white"></div>
+        <div class="droptarget"><img src="../imageChess/towerWhite.png" draggable="true" id="dragTarget25" class="droptarget" data-color="white"></div>
+        <div class="droptarget"><img src="../imageChess/hoarseWhite.png" draggable="true" id="dragTarget26" class="droptarget" data-color="white"></div>
+        <div class="droptarget"><img src="../imageChess/runnerWhite.png" draggable="true" id="dragTarget27" class="droptarget" data-color="white"></div>
+        <div class="droptarget"><img src="../imageChess/kingWhite.png" draggable="true" id="dragTarget28" class="droptarget" data-color="white"></div>
+        <div class="droptarget"><img src="../imageChess/queenWhite.png" draggable="true" id="dragTarget29" class="droptarget" data-color="white"></div>
+        <div class="droptarget"><img src="../imageChess/runnerWhite.png" draggable="true" id="dragTarget30" class="droptarget" data-color="white"></div>
+        <div class="droptarget"><img src="../imageChess/hoarseWhite.png" draggable="true" id="dragTarget31" class="droptarget" data-color="white"></div>
+        <div class="droptarget"><img src="../imageChess/towerWhite.png" draggable="true" id="dragTarget32" class="droptarget" data-color="white"></div>
 
     </div>    
 
@@ -156,7 +156,6 @@ export class Chess extends window.HTMLElement {
     this._chessBoard = this.shadowRoot.querySelector('#chessBoard')
     this._dragtarget = this.shadowRoot.querySelector('#dragtarget')
     this.createIdForSquares()
-    this.squaresContains()
   }
 
   connectedCallback () {
@@ -183,14 +182,39 @@ export class Chess extends window.HTMLElement {
       console.log(event.target)
       if (event.target.className === 'droptarget') {
         const data = event.dataTransfer.getData('chessPiece')
-        console.log(data)
+        // console.log(data)
         const textArgument = `#${data}`
-        console.log(this.shadowRoot.querySelector(textArgument))
-        event.target.appendChild(this.shadowRoot.querySelector(textArgument))
+        // console.log(this.shadowRoot.querySelector(textArgument))
+        console.log(this.shadowRoot.querySelector(textArgument).getAttribute('data-color'))
+        console.log(event.target.getAttribute('data-color'))
+        // drop over a img element
+        if (event.target.nodeName === 'IMG' && event.target.getAttribute('data-color') !== this.shadowRoot.querySelector(textArgument).getAttribute('data-color')) {
+          const srcArgument = this.shadowRoot.querySelector(textArgument).getAttribute('src')
+          const idArgument = this.shadowRoot.querySelector(textArgument).getAttribute('id')
+          this.shadowRoot.querySelector(textArgument).remove()
+          event.target.setAttribute('src', srcArgument)
+          event.target.setAttribute('id', idArgument)
+        } else {
+          console.log('You can not take pieces with same color')
+          return
+        }
+        // drop over a div element
+        if (event.target.nodeName === 'DIV') {
+          event.target.appendChild(this.shadowRoot.querySelector(textArgument))
+        }
       }
 
-      this.squaresContains()
-
+      /*
+      const squares = this.squaresData()
+      console.log('squares.arraySquares/JM')
+      console.log(squares.arraySquares)
+      console.log('squares.matrixImages/JM')
+      console.log(squares.matrixImages)
+      console.log('squares.arrayImages/JM')
+      console.log(squares.arrayImages)
+      console.log('squares.matrixSquares')
+      console.log(squares.matrixSquares)
+      */
       // https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer/setData
     })
 
@@ -209,16 +233,53 @@ export class Chess extends window.HTMLElement {
     }
   }
 
-  squaresContains () {
+  squaresData () {
+    const outerArray = []
+    const outerArrayImages = []
     for (let i = 0; i < this._chessBoard.querySelectorAll('div').length; i++) {
-      const contains = this._chessBoard.querySelectorAll('div')[i].firstElementChild
+      const innerArray = []
+      const innerArrayImages = []
+      // console.log(Math.sqrt(this._chessBoard.querySelectorAll('div').length))
+      for (let j = i; j < (i + Math.sqrt(this._chessBoard.querySelectorAll('div').length)); j++) {
+        innerArray.push(this._chessBoard.querySelectorAll('div')[j])
+        // console.log(rowArray)
+        try {
+          const image = this._chessBoard.querySelectorAll('div')[j].firstElementChild
+          innerArrayImages.push(image.getAttribute('src'))
+        } catch (error) {
+          innerArrayImages.push('No image')
+          // console.log('Contains nothing')
+          // console.log((`Square: ${square.getAttribute('id')}. Contains nothing`))
+        }
+      }
+      i = i + Math.sqrt(this._chessBoard.querySelectorAll('div').length) - 1
+      // console.log(rowArray)
+      outerArray.push(innerArray)
+      outerArrayImages.push(innerArrayImages)
+    }
+    // console.log('indexArray/JM')
+    // console.log(indexArray)
+    const images = []
+    const squares = []
+    for (let i = 0; i < this._chessBoard.querySelectorAll('div').length; i++) {
+      const image = this._chessBoard.querySelectorAll('div')[i].firstElementChild
       const square = this._chessBoard.querySelectorAll('div')[i]
       try {
-        console.log(`Square: ${square.getAttribute('id')}. Contains picture: ${contains.getAttribute('src')}`)
+        // console.log(`Square: ${square.getAttribute('id')}. Contains picture: ${image.getAttribute('src')}`)
+        images.push(image.getAttribute('src'))
       } catch (error) {
+        images.push('No image')
         // console.log('Contains nothing')
-        console.log((`Square: ${square.getAttribute('id')}. Contains nothing`))
+        // console.log((`Square: ${square.getAttribute('id')}. Contains nothing`))
       }
+      squares.push(square)
+    }
+
+    return {
+      matrixSquares: outerArray,
+      arrayImages: images,
+      matrixImages: outerArrayImages,
+      arraySquares: squares
     }
   }
 }

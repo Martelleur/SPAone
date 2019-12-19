@@ -1,6 +1,7 @@
 import './memory-app.js'
 import './chat-app.js'
 import './minehunter-app.js'
+import './chess-app.js'
 import { moveElement } from './moveElement.js'
 
 // Check if online not always true but a good check
@@ -21,6 +22,7 @@ let nameIdApplication
 let counterChatApplication = 0
 let counterMemoryApplication = 0
 let counterMinehunterApplication = 0
+let counterChessApplication = 0
 document.querySelector('#buttons').addEventListener('click', (event) => {
   event.preventDefault()
 
@@ -47,6 +49,10 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
   if (event.target.getAttribute('data-create-element') === 'minehunter-app') {
     counterMinehunterApplication++
     nameIdApplication = `minehunter${counterMinehunterApplication}`
+  }
+  if (event.target.getAttribute('data-create-element') === 'chess-app') {
+    counterChessApplication++
+    nameIdApplication = `chess${counterChessApplication}`
   }
   element.setAttribute('id', nameIdApplication)
   console.log(element.getAttribute('id'))

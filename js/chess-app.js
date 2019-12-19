@@ -86,21 +86,39 @@ template.innerHTML = /* html */ `
 :host * {
     box-sizing: border-box;
 }
-:host #chessBoard, :host #chessTools {
-    box-sizing: border-box;
-    background-color: black;
-    width: 506px;
-    height 506px;
+:host #chessConteiner {
+    width: 516px;
+    margin: 0px;
     padding: 0px;
-    margin 0px;
+    border: 5px solid black;
+}
+:host #chessConteiner:hover {
+  border: 5px solid blue;
+}
+:host #chessBoard {
+    box-sizing: border-box;
+    background-color: white;
+    width: 506px;
+    height: 506px;
+    padding: 0px;
+    margin: 0 auto;
+}
+:host #chessTools {
+  box-sizing: border-box;
+  background-color: black;
+  width: 100%;
+  padding: 0px;
+  margin 0px;
 }
 :host #chessBoard>div {
     float: left;
-    width: 62.5px;
-    height: 62.5px;
+    width: 63.25px;
+    height: 63.25px;
     paddinf: 1px;
     border: 1px solid black;
     box-sizing: border-box;
+    padding: 0px;
+    margin 0px;
 }
 :host deletChess, :host startChess {
     margin: 0px;
@@ -109,6 +127,9 @@ template.innerHTML = /* html */ `
 :host #chessBoard>div img {
   dispaly: initial;
   width: 100%;
+  box-sizing: border-box;
+  padding: 0px;
+  margin 0px;
 }
  
 </style>

@@ -168,6 +168,8 @@ export class Chess extends window.HTMLElement {
         event.target.appendChild(this.shadowRoot.querySelector(textArgument))
       }
 
+      this.squaresContains()
+
       // https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer/setData
     })
 
@@ -188,11 +190,13 @@ export class Chess extends window.HTMLElement {
 
   squaresContains () {
     for (let i = 0; i < this._chessBoard.querySelectorAll('div').length; i++) {
+      const contains = this._chessBoard.querySelectorAll('div')[i].firstElementChild
+      const square = this._chessBoard.querySelectorAll('div')[i]
       try {
-        const contains = this._chessBoard.querySelectorAll('div')[i].firstElementChild
-        console.log(contains)
+        console.log(`Square: ${square.getAttribute('id')}. Contains picture: ${contains.getAttribute('src')}`)
       } catch (error) {
-        console.log(error)
+        // console.log('Contains nothing')
+        console.log((`Square: ${square.getAttribute('id')}. Contains nothing`))
       }
     }
   }

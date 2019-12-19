@@ -127,6 +127,9 @@ template.innerHTML = /* html */ `
   width: 100%;
   padding: 1px;
 }
+:host #chessBoard>div img:hover {
+  cursor: grab;
+}
 :host #information {
   text-align: center;
   color: white;
@@ -164,7 +167,18 @@ export class Chess extends window.HTMLElement {
   connectedCallback () {
     // Events fired on the drag target
     this._chessBoard.addEventListener('dragstart', event => {
-      console.log(event.target)
+      console.log(event.target.parentNode)
+
+      const index = this.indexTarget(event.target.parentNode)
+      console.log(index)
+      console.log(index[0])
+      console.log(index[1])
+      console.log(event.target.getAttribute('src'))
+      const acceptableSquares = this.acceptableSquares(event.target.getAttribute('src'), index[0], index[1])
+      console.log(acceptableSquares)
+      acceptableSquares.setAttribute('class', 'acceptableSquare')
+
+      // white or black player
       if (event.target.getAttribute('data-color') === 'white' && this._whitePiecesTurn === true) {
         event.dataTransfer.setData('chessPiece', event.target.id)
       }
@@ -175,6 +189,9 @@ export class Chess extends window.HTMLElement {
 
     // Events fired when dragging
     this._chessBoard.addEventListener('drag', event => {
+      // event.preventDefault()
+      // console.log(event.target)
+      // event.target.style.cursor = 'grabbing'
       // console.log(event.target)
     })
 
@@ -191,7 +208,7 @@ export class Chess extends window.HTMLElement {
 
       // when chesspiece id dropped
       try {
-        if (event.target.className === 'droptarget') {
+        if (event.target.className === 'acceptableSquare') {
           const data = event.dataTransfer.getData('chessPiece')
 
           // console.log(data)
@@ -215,6 +232,8 @@ export class Chess extends window.HTMLElement {
           } else {
             event.target.appendChild(this.shadowRoot.querySelector(textArgument))
           }
+        } else {
+          return
         }
 
         // change activePlayer
@@ -227,6 +246,10 @@ export class Chess extends window.HTMLElement {
         }
       } catch (error) {
         console.log(error)
+      }
+
+      for (let i = 0; i < this._chessBoard.querySelectorAll('div').length; i++) {
+        this._chessBoard.querySelectorAll('div')[i].setAttribute('class', 'droptarget')
       }
       /*
       const squares = this.squaresData()
@@ -304,6 +327,27 @@ export class Chess extends window.HTMLElement {
       arrayImages: images,
       matrixImages: outerArrayImages,
       arraySquares: squares
+    }
+  }
+
+  indexTarget (target) {
+    const squares = this.squaresData().matrixSquares
+    console.log(squares)
+    for (let i = 0; i < 8; i++) {
+      for (let j = 0; j < 8; j++) {
+        if (squares[i][j] === target) {
+          return [i, j]
+        }
+      }
+    }
+  }
+
+  acceptableSquares (source, i, j) {
+    if (source === '../imageChess/pawnWhite.png') {
+      return this.squaresData().matrixSquares[i - 1][j]
+    }
+    if (source === '../imageChess/pawn.png') {
+      return this.squaresData().matrixSquares[i + 1][j]
     }
   }
 }

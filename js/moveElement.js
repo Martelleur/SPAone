@@ -4,7 +4,16 @@ function moveElement (element) {
   let possitionX = 0
   let possitionY = 0
 
-  element.onmousedown = moveMouseDown
+  /*
+  console.log('element/JM')
+  console.log(element)
+  console.log(element.shadowRoot.querySelector('#tools'))
+  */
+  if (element.shadowRoot.querySelector('#tools')) {
+    element.shadowRoot.querySelector('#tools').onmousedown = moveMouseDown
+  } else {
+    element.onmousedown = moveMouseDown
+  }
 
   function moveMouseDown (event) {
     // get possition for mouse

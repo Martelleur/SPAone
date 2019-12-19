@@ -134,6 +134,8 @@ export class Chess extends window.HTMLElement {
     this._deletChess = this.shadowRoot.querySelector('#deletChess')
     this._chessBoard = this.shadowRoot.querySelector('#chessBoard')
     this._dragtarget = this.shadowRoot.querySelector('#dragtarget')
+    this.createIdForSquares()
+    this.squaresContains()
   }
 
   connectedCallback () {
@@ -165,13 +167,34 @@ export class Chess extends window.HTMLElement {
         console.log(this.shadowRoot.querySelector(textArgument))
         event.target.appendChild(this.shadowRoot.querySelector(textArgument))
       }
+
+      // https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer/setData
     })
 
-    // Events fired when dropping click on this._deletChess
+    // Events fired when click on this._deletChess
     this._deletChess.addEventListener('click', event => {
       event.preventDefault()
       event.target.parentNode.parentNode.remove()
     })
+  }
+
+  createIdForSquares () {
+    for (let i = 0; i < this._chessBoard.querySelectorAll('div').length; i++) {
+      const idName = `dragtarget${i + 1}`
+      this._chessBoard.querySelectorAll('div')[i].setAttribute('id', idName)
+      console.log(this._chessBoard.querySelectorAll('div')[i])
+    }
+  }
+
+  squaresContains () {
+    for (let i = 0; i < this._chessBoard.querySelectorAll('div').length; i++) {
+      try {
+        const contains = this._chessBoard.querySelectorAll('div')[i].firstElementChild
+        console.log(contains)
+      } catch (error) {
+        console.log(error)
+      }
+    }
   }
 }
 

@@ -398,6 +398,7 @@ export class Chess extends window.HTMLElement {
         return [square[i - 1][j]]
       }
     }
+
     // black pawns
     if (source === this._blackPawnSource) {
       /*
@@ -421,6 +422,7 @@ export class Chess extends window.HTMLElement {
         return [square[i + 1][j]]
       }
     }
+
     // white and black tower
     if (source === this._whiteTowerSource || source === this._blackTowerSource) {
       const returnArray = []
@@ -469,6 +471,320 @@ export class Chess extends window.HTMLElement {
               stopArray[3] = true
             }
           }
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      console.log('returnArray/JM')
+      console.log(returnArray)
+      return returnArray
+    }
+
+    // white and black runner
+    if (source === this._whiteRunnerSource || source === this._blackRunnerSource) {
+      const returnArray = []
+      const stopArray = [false, false, false, false]
+      try {
+        for (let y = 1; y < 8; y++) {
+          for (let x = 1; x < 8; x++) {
+            if (square[i - y][j + x] !== undefined && stopArray[0] === false) {
+              returnArray.push(square[i - y][j + x])
+              if (square[i - y][j + x].childElementCount === 1) {
+                stopArray[0] = true
+              }
+            }
+            y++
+          }
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      try {
+        for (let y = 1; y < 8; y++) {
+          for (let x = 1; x < 8; x++) {
+            if (square[i - y][j - x] !== undefined && stopArray[1] === false) {
+              returnArray.push(square[i - y][j - x])
+              if (square[i - y][j - x].childElementCount === 1) {
+                stopArray[1] = true
+              }
+            }
+            y++
+          }
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      try {
+        for (let y = 1; y < 8; y++) {
+          for (let x = 1; x < 8; x++) {
+            if (square[i + y][j + x] !== undefined && stopArray[2] === false) {
+              returnArray.push(square[i + y][j + x])
+              if (square[i + y][j + x].childElementCount === 1) {
+                stopArray[2] = true
+              }
+            }
+            y++
+          }
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      try {
+        for (let y = 1; y < 8; y++) {
+          for (let x = 1; x < 8; x++) {
+            if (square[i + y][j - x] !== undefined && stopArray[3] === false) {
+              returnArray.push(square[i + y][j - x])
+              if (square[i + y][j - x].childElementCount === 1) {
+                stopArray[3] = true
+              }
+            }
+            y++
+          }
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      console.log('returnArray/JM')
+      console.log(returnArray)
+      return returnArray
+    }
+
+    // white and black queen
+    if (source === this._whiteQueenSource || source === this._blackQueenSource) {
+      const returnArray = []
+      const stopArray = [false, false, false, false, false, false, false, false]
+      try {
+        for (let y = 1; y < 8; y++) {
+          if (square[i - y][j] !== undefined && stopArray[0] === false) {
+            returnArray.push(square[i - y][j])
+            if (square[i - y][j].childElementCount === 1) {
+              stopArray[0] = true
+            }
+          }
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      try {
+        for (let y = 1; y < 8; y++) {
+          if (square[i + y][j] !== undefined && stopArray[1] === false) {
+            returnArray.push(square[i + y][j])
+            if (square[i + y][j].childElementCount === 1) {
+              stopArray[1] = true
+            }
+          }
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      try {
+        for (let x = 1; x < 8; x++) {
+          if (square[i][j + x] !== undefined && stopArray[2] === false) {
+            returnArray.push(square[i][j + x])
+            if (square[i][j + x].childElementCount === 1) {
+              stopArray[2] = true
+            }
+          }
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      try {
+        for (let x = 1; x < 8; x++) {
+          if (square[i][j - x] !== undefined && stopArray[3] === false) {
+            returnArray.push(square[i][j - x])
+            if (square[i][j - x].childElementCount === 1) {
+              stopArray[3] = true
+            }
+          }
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      try {
+        for (let y = 1; y < 8; y++) {
+          for (let x = 1; x < 8; x++) {
+            if (square[i - y][j + x] !== undefined && stopArray[4] === false) {
+              returnArray.push(square[i - y][j + x])
+              if (square[i - y][j + x].childElementCount === 1) {
+                stopArray[4] = true
+              }
+            }
+            y++
+          }
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      try {
+        for (let y = 1; y < 8; y++) {
+          for (let x = 1; x < 8; x++) {
+            if (square[i - y][j - x] !== undefined && stopArray[5] === false) {
+              returnArray.push(square[i - y][j - x])
+              if (square[i - y][j - x].childElementCount === 1) {
+                stopArray[5] = true
+              }
+            }
+            y++
+          }
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      try {
+        for (let y = 1; y < 8; y++) {
+          for (let x = 1; x < 8; x++) {
+            if (square[i + y][j + x] !== undefined && stopArray[6] === false) {
+              returnArray.push(square[i + y][j + x])
+              if (square[i + y][j + x].childElementCount === 1) {
+                stopArray[6] = true
+              }
+            }
+            y++
+          }
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      try {
+        for (let y = 1; y < 8; y++) {
+          for (let x = 1; x < 8; x++) {
+            if (square[i + y][j - x] !== undefined && stopArray[7] === false) {
+              returnArray.push(square[i + y][j - x])
+              if (square[i + y][j - x].childElementCount === 1) {
+                stopArray[7] = true
+              }
+            }
+            y++
+          }
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      console.log('returnArray/JM')
+      console.log(returnArray)
+      return returnArray
+    }
+
+    // white and black king
+    if (source === this._whiteKingSource || source === this._blackKingSource) {
+      const returnArray = []
+      try {
+        if (square[i - 1][j] !== undefined) {
+          returnArray.push(square[i - 1][j])
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      try {
+        if (square[i + 1][j] !== undefined) {
+          returnArray.push(square[i + 1][j])
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      try {
+        if (square[i][j - 1] !== undefined) {
+          returnArray.push(square[i][j - 1])
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      try {
+        if (square[i][j + 1] !== undefined) {
+          returnArray.push(square[i][j + 1])
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      try {
+        if (square[i - 1][j - 1] !== undefined) {
+          returnArray.push(square[i - 1][j - 1])
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      try {
+        if (square[i - 1][j + 1] !== undefined) {
+          returnArray.push(square[i - 1][j + 1])
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      try {
+        if (square[i + 1][j - 1] !== undefined) {
+          returnArray.push(square[i + 1][j - 1])
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      try {
+        if (square[i + 1][j + 1] !== undefined) {
+          returnArray.push(square[i + 1][j + 1])
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      console.log('returnArray/JM')
+      console.log(returnArray)
+      return returnArray
+    }
+
+    // white and black hoarse
+    if (source === this._whiteHoarseSource || source === this._blackHoarseSource) {
+      const returnArray = []
+      try {
+        if (square[i - 2][j + 1] !== undefined) {
+          returnArray.push(square[i - 2][j + 1])
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      try {
+        if (square[i - 2][j - 1] !== undefined) {
+          returnArray.push(square[i - 2][j - 1])
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      try {
+        if (square[i + 2][j - 1] !== undefined) {
+          returnArray.push(square[i + 2][j - 1])
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      try {
+        if (square[i + 2][j + 1] !== undefined) {
+          returnArray.push(square[i + 2][j + 1])
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      try {
+        if (square[i - 1][j + 2] !== undefined) {
+          returnArray.push(square[i - 1][j + 2])
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      try {
+        if (square[i + 1][j + 2] !== undefined) {
+          returnArray.push(square[i + 1][j + 2])
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      try {
+        if (square[i + 1][j - 2] !== undefined) {
+          returnArray.push(square[i + 1][j - 2])
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      try {
+        if (square[i - 1][j - 2] !== undefined) {
+          returnArray.push(square[i - 1][j - 2])
         }
       } catch (error) {
         console.log(error)

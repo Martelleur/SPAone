@@ -163,6 +163,7 @@ export class Chess extends window.HTMLElement {
     this._whitePiecesTurn = true
     this._activePlayer = this.shadowRoot.querySelector('#activePlayer')
     this._first = false
+    this.totalAcceptableSquares()
 
     // chesspieces image sources
     this._whitePawnSource = '../imageChess/pawnWhite.png'
@@ -313,6 +314,9 @@ export class Chess extends window.HTMLElement {
       for (let i = 0; i < this._chessBoard.querySelectorAll('div>img').length; i++) {
         this._chessBoard.querySelectorAll('div>img')[i].style.backgroundColor = 'white'
       }
+
+      // Change pawn to queen
+      this.pawnToQueen()
     })
 
     // Events fired when click on this._deletChess
@@ -394,7 +398,7 @@ export class Chess extends window.HTMLElement {
    */
   indexTarget (target) {
     const squares = this.squaresData().matrixSquares
-    console.log(squares)
+    // console.log(squares)
     for (let i = 0; i < 8; i++) {
       for (let j = 0; j < 8; j++) {
         if (squares[i][j] === target) {
@@ -1128,6 +1132,65 @@ export class Chess extends window.HTMLElement {
       console.log(returnArray)
       return returnArray
     }
+  }
+
+  /**
+   * @memberof Chess
+   */
+  pawnToQueen () {
+    const number1 = this._chessBoard.querySelectorAll('div').length - Math.sqrt(this._chessBoard.querySelectorAll('div').length)
+    const number2 = Math.sqrt(this._chessBoard.querySelectorAll('div').length)
+    const number3 = this._chessBoard.querySelectorAll('div').length
+
+    for (let i = 0; i < number2; i++) {
+      try {
+        if (this._chessBoard.querySelectorAll('div')[i].firstElementChild.getAttribute('src') === this._whitePawnSource) {
+          this._chessBoard.querySelectorAll('div')[i].firstElementChild.setAttribute('src', this._whiteQueenSource)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    for (let i = number1; i < number3; i++) {
+      try {
+        if (this._chessBoard.querySelectorAll('div')[i].firstElementChild.getAttribute('src') === this._blackPawnSource) {
+          this._chessBoard.querySelectorAll('div')[i].firstElementChild.setAttribute('src', this._blackQueenSource)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }
+
+  totalAcceptableSquares () {
+    const chessPieaceArray = []
+    const chessPieaceObject = {
+      roweValue: [],
+      columnValue: [],
+      imageSource: []
+    }
+    for (let i = 0; i < this._chessBoard.querySelectorAll('div').length; i++) {
+      if (this._chessBoard.querySelectorAll('div')[i].childElementCount === 1) {
+        chessPieaceArray.push(this.indexTarget(this._chessBoard.querySelectorAll('div')[i]))
+        chessPieaceObject.roweValue.push(this.indexTarget(this._chessBoard.querySelectorAll('div')[i])[0])
+        chessPieaceObject.columnValue.push(this.indexTarget(this._chessBoard.querySelectorAll('div')[i])[1])
+        chessPieaceObject.imageSource.push(this._chessBoard.querySelectorAll('div')[i].firstElementChild.getAttribute('src'))
+      }
+    }
+    // console.log(chessPieaceObject)
+    // console.log(chessPieaceObject.acceptableSquares)
+    console.log(chessPieaceObject.roweValue)
+    console.log(chessPieaceObject.columnValue)
+    console.log(chessPieaceObject.imageSource)
+    /*
+    for (let i = 0; i < chessPieaceObject.roweValue.lenght; i++) {
+      const temp = this.acceptableSquares(chessPieaceObject.imageSource[i], chessPieaceObject.roweValue[i], chessPieaceObject.columnValue[i], false)
+      console.log(temp)
+      acceptableSquaresArray.push(temp)
+    }
+    */
+    return chessPieaceObject
   }
 }
 

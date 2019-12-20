@@ -1,3 +1,4 @@
+// https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer/setData
 // https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_ondrag_addeventlistener
 
 const template = document.createElement('template')
@@ -140,11 +141,10 @@ template.innerHTML = /* html */ `
 `
 
 /**
-* Class for memory-app
-* @export
-* @class Memory
-* @extends {window.HTMLElement}
-*/
+ * @export
+ * @class Chess
+ * @extends {window.HTMLElement}
+ */
 export class Chess extends window.HTMLElement {
   /**
   *Creates an instance of Minehunter.
@@ -162,26 +162,43 @@ export class Chess extends window.HTMLElement {
     this.createIdForSquares()
     this._whitePiecesTurn = true
     this._activePlayer = this.shadowRoot.querySelector('#activePlayer')
+
+    // chesspieces image sources
+    this._whitePawnSource = '../imageChess/pawnWhite.png'
+    this._whiteHoarseSource = '../imageChess/hoarseWhite.png'
+    this._whiteTowerSource = '../imageChess/towerWhite.png'
+    this._whiteRunnerSource = '../imageChess/runnerWhite.png'
+    this._whiteKingSource = '../imageChess/kingWhite.png'
+    this._whiteQueenSource = '../imageChess/queenWhite.png'
+    this._blackPawnSource = '../imageChess/pawn.png'
+    this._blackHoarseSource = '../imageChess/hoarse.png'
+    this._blackTowerSource = '../imageChess/tower.png'
+    this._blackRunnerSource = '../imageChess/runner.png'
+    this._blackKingSource = '../imageChess/king.png'
+    this._blackQueenSource = '../imageChess/queen.png'
   }
 
+  /**
+   * @memberof Chess
+   */
   connectedCallback () {
     // Events fired on the drag target
     this._chessBoard.addEventListener('dragstart', event => {
       console.log(event.target.parentNode)
 
-      const index = this.indexTarget(event.target.parentNode)
-      console.log(index)
-      console.log(index[0])
-      console.log(index[1])
-      console.log(event.target.getAttribute('src'))
       // if player move pawn for the first time
       let first = false
-
       if (event.target.getAttribute('data-first') === 'true') {
         event.target.setAttribute('data-first', 'false')
         first = true
       }
 
+      // Finding acceptable squares for event.target
+      const index = this.indexTarget(event.target.parentNode)
+      console.log(index)
+      console.log(index[0])
+      console.log(index[1])
+      console.log(event.target.getAttribute('src'))
       const acceptableSquares = this.acceptableSquares(event.target.getAttribute('src'), index[0], index[1], first)
       console.log(acceptableSquares)
       for (let i = 0; i < acceptableSquares.length; i++) {
@@ -270,18 +287,6 @@ export class Chess extends window.HTMLElement {
         this._chessBoard.querySelectorAll('div')[i].setAttribute('class', 'droptarget')
         this._chessBoard.querySelectorAll('div')[i].style.backgroundColor = 'white'
       }
-      /*
-      const squares = this.squaresData()
-      console.log('squares.arraySquares/JM')
-      console.log(squares.arraySquares)
-      console.log('squares.matrixImages/JM')
-      console.log(squares.matrixImages)
-      console.log('squares.arrayImages/JM')
-      console.log(squares.arrayImages)
-      console.log('squares.matrixSquares')
-      console.log(squares.matrixSquares)
-      */
-      // https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer/setData
     })
 
     // Events fired when click on this._deletChess
@@ -291,6 +296,9 @@ export class Chess extends window.HTMLElement {
     })
   }
 
+  /**
+   * @memberof Chess
+   */
   createIdForSquares () {
     for (let i = 0; i < this._chessBoard.querySelectorAll('div').length; i++) {
       const idName = `dragtarget${i + 1}`
@@ -299,6 +307,10 @@ export class Chess extends window.HTMLElement {
     }
   }
 
+  /**
+   * @returns
+   * @memberof Chess
+   */
   squaresData () {
     const outerArray = []
     const outerArrayImages = []
@@ -349,6 +361,11 @@ export class Chess extends window.HTMLElement {
     }
   }
 
+  /**
+   * @param {*} target
+   * @returns
+   * @memberof Chess
+   */
   indexTarget (target) {
     const squares = this.squaresData().matrixSquares
     console.log(squares)
@@ -361,11 +378,19 @@ export class Chess extends window.HTMLElement {
     }
   }
 
+  /**
+   * @param {*} source
+   * @param {*} i
+   * @param {*} j
+   * @param {*} first
+   * @returns
+   * @memberof Chess
+   */
   acceptableSquares (source, i, j, first) {
     const square = this.squaresData().matrixSquares
 
     // white pawns
-    if (source === '../imageChess/pawnWhite.png') {
+    if (source === this._whitePawnSource) {
       if (first) {
         return [square[i - 1][j], square[i - 2][j]]
       } else {
@@ -373,7 +398,7 @@ export class Chess extends window.HTMLElement {
       }
     }
     // black pawns
-    if (source === '../imageChess/pawn.png') {
+    if (source === this._blackPawnSource) {
       /*
       try {
         if (square[i + 1][j].firstElementChild.nodeName === 'IMG' && square[i + 1][j + 1].firstElementChild.nodeName === 'IMG' && square[i + 1][j - 1].firstElementChild.nodeName === 'IMG') {
@@ -396,10 +421,10 @@ export class Chess extends window.HTMLElement {
       }
     }
     // white tower
-    if (source === '../imageChess/towerWhite.png') {
+    if (source === this._whiteTowerSource) {
     }
     // black tower
-    if (source === '../imageChess/.png') {
+    if (source === this._blackTowerSource) {
     }
   }
 }

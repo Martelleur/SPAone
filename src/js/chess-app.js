@@ -387,7 +387,8 @@ export class Chess extends window.HTMLElement {
    * @memberof Chess
    */
   acceptableSquares (source, i, j, first) {
-    const square = this.squaresData().matrixSquares
+    // i stands for the row of the starting point and j stand for the column of the starting point
+    const square = this.squaresData().matrixSquares // starting point
 
     // white pawns
     if (source === this._whitePawnSource) {
@@ -420,11 +421,61 @@ export class Chess extends window.HTMLElement {
         return [square[i + 1][j]]
       }
     }
-    // white tower
-    if (source === this._whiteTowerSource) {
-    }
-    // black tower
-    if (source === this._blackTowerSource) {
+    // white and black tower
+    if (source === this._whiteTowerSource || source === this._blackTowerSource) {
+      const returnArray = []
+      const stopArray = [false, false, false, false]
+      try {
+        for (let y = 1; y < 8; y++) {
+          if (square[i - y][j] !== undefined && stopArray[0] === false) {
+            returnArray.push(square[i - y][j])
+            if (square[i - y][j].childElementCount === 1) {
+              stopArray[0] = true
+            }
+          }
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      try {
+        for (let y = 1; y < 8; y++) {
+          if (square[i + y][j] !== undefined && stopArray[1] === false) {
+            returnArray.push(square[i + y][j])
+            if (square[i + y][j].childElementCount === 1) {
+              stopArray[1] = true
+            }
+          }
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      try {
+        for (let x = 1; x < 8; x++) {
+          if (square[i][j + x] !== undefined && stopArray[2] === false) {
+            returnArray.push(square[i][j + x])
+            if (square[i][j + x].childElementCount === 1) {
+              stopArray[2] = true
+            }
+          }
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      try {
+        for (let x = 1; x < 8; x++) {
+          if (square[i][j - x] !== undefined && stopArray[3] === false) {
+            returnArray.push(square[i][j - x])
+            if (square[i][j - x].childElementCount === 1) {
+              stopArray[3] = true
+            }
+          }
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      console.log('returnArray/JM')
+      console.log(returnArray)
+      return returnArray
     }
   }
 }

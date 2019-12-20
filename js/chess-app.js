@@ -578,7 +578,7 @@ export class Chess extends window.HTMLElement {
           console.log(error)
         }
         try {
-          if (square[i - 1][j].childElementCount === 0 && square[i - 1][j + 1].childElementCount === 0 && square[i - 1][j - 1].childElementCount === 0) {
+          if (square[i - 1][j].childElementCount === 0) {
             return [square[i - 1][j]]
           }
         } catch (error) {
@@ -589,58 +589,171 @@ export class Chess extends window.HTMLElement {
 
     // black pawns
     if (source === this._blackPawnSource) {
-      // try with HTML DOM childElementCount Property
       if (first) {
-        if (square[i + 1][j].childElementCount === 1 && square[i + 1][j + 1].childElementCount === 0 && square[i + 1][j - 1].childElementCount === 0) {
-          return []
-        } else if (square[i + 1][j].childElementCount === 1 && square[i + 1][j + 1].childElementCount === 1 && square[i + 1][j - 1].childElementCount === 1) {
-          return [square[i + 1][j + 1], square[i + 1][j - 1]]
-        } else if (square[i + 1][j].childElementCount === 1 && square[i + 1][j + 1].childElementCount === 1 && square[i + 1][j - 1].childElementCount === 0) {
-          return [square[i + 1][j + 1]]
-        } else if (square[i + 1][j].childElementCount === 1 && square[i + 1][j + 1].childElementCount === 0 && square[i + 1][j - 1].childElementCount === 1) {
-          return [square[i + 1][j - 1]]
-        } else if (square[i + 1][j].childElementCount === 0 && square[i + 1][j + 1].childElementCount === 1 && square[i + 1][j - 1].childElementCount === 1) {
-          if (square[i + 2][j].childElementCount === 1) {
-            return [square[i + 1][j + 1], square[i + 1][j - 1], square[i + 1][j]]
-          } else {
-            return [square[i + 1][j + 1], square[i + 1][j - 1], square[i + 1][j], square[i + 2][j]]
+        try {
+          if (square[i + 1][j].childElementCount === 1 && square[i + 1][j + 1].childElementCount === 0 && square[i + 1][j - 1].childElementCount === 0) {
+            return []
           }
-        } else if (square[i + 1][j].childElementCount === 0 && square[i + 1][j + 1].childElementCount === 1 && square[i + 1][j - 1].childElementCount === 0) {
-          if (square[i + 2][j].childElementCount === 1) {
-            return [square[i + 1][j + 1], square[i + 1][j]]
-          } else {
-            return [square[i + 1][j + 1], square[i + 1][j], square[i + 2][j]]
+        } catch (error) {
+          console.log(error)
+        }
+        try {
+          if (square[i + 1][j].childElementCount === 1 && square[i + 1][j + 1].childElementCount === 1 && square[i + 1][j - 1].childElementCount === 1) {
+            return [square[i + 1][j + 1], square[i + 1][j - 1]]
           }
-        } else if (square[i + 1][j].childElementCount === 0 && square[i + 1][j + 1].childElementCount === 0 && square[i + 1][j - 1].childElementCount === 1) {
-          if (square[i + 2][j].childElementCount === 1) {
-            return [square[i + 1][j - 1], square[i + 1][j]]
-          } else {
-            return [square[i + 1][j - 1], square[i + 1][j], square[i + 2][j]]
+        } catch (error) {
+          console.log(error)
+        }
+        try {
+          if (square[i + 1][j].childElementCount === 1 && square[i + 1][j + 1].childElementCount === 1) {
+            return [square[i + 1][j + 1]]
           }
-        } else {
-          if (square[i + 2][j].childElementCount === 1) {
-            return [square[i + 1][j]]
-          } else {
-            return [square[i + 1][j], square[i + 2][j]]
+        } catch (error) {
+          console.log(error)
+        }
+        try {
+          if (square[i + 1][j].childElementCount === 1 && square[i + 1][j - 1].childElementCount === 1) {
+            return [square[i + 1][j - 1]]
           }
+        } catch (error) {
+          console.log(error)
+        }
+        try {
+          if (square[i + 1][j].childElementCount === 0 && square[i + 1][j + 1].childElementCount === 1 && square[i + 1][j - 1].childElementCount === 1) {
+            try {
+              if (square[i + 2][j].childElementCount === 1) {
+                return [square[i + 1][j + 1], square[i + 1][j - 1], square[i + 1][j]]
+              }
+            } catch (error) {
+              console.log(error)
+            }
+            try {
+              if (square[i + 2][j].childElementCount === 0) {
+                return [square[i + 1][j + 1], square[i + 1][j - 1], square[i + 1][j], square[i + 2][j]]
+              }
+            } catch (error) {
+              console.log(error)
+            }
+          }
+        } catch (error) {
+          console.log(error)
+        }
+        try {
+          if (square[i + 1][j].childElementCount === 0 && square[i + 1][j + 1].childElementCount === 1) {
+            try {
+              if (square[i + 2][j].childElementCount === 1) {
+                return [square[i + 1][j + 1], square[i + 1][j]]
+              }
+            } catch (error) {
+              console.log(error)
+            }
+            try {
+              if (square[i + 2][j].childElementCount === 0) {
+                return [square[i + 1][j + 1], square[i + 1][j], square[i + 2][j]]
+              }
+            } catch (error) {
+              console.log(error)
+            }
+          }
+        } catch (error) {
+          console.log(error)
+        }
+        try {
+          if (square[i + 1][j].childElementCount === 0 && square[i + 1][j - 1].childElementCount === 1) {
+            try {
+              if (square[i + 2][j].childElementCount === 1) {
+                return [square[i + 1][j - 1], square[i + 1][j]]
+              }
+            } catch (error) {
+              console.log(error)
+            }
+            try {
+              if (square[i + 2][j].childElementCount === 0) {
+                return [square[i + 1][j - 1], square[i + 1][j], square[i + 2][j]]
+              }
+            } catch (error) {
+              console.log(error)
+            }
+          }
+        } catch (error) {
+          console.log(error)
+        }
+        try {
+          if (square[i + 1][j].childElementCount === 0) {
+            try {
+              if (square[i + 2][j].childElementCount === 1) {
+                return [square[i + 1][j]]
+              }
+            } catch (error) {
+              console.log(error)
+            }
+            try {
+              if (square[i + 2][j].childElementCount === 0) {
+                return [square[i + 1][j], square[i + 2][j]]
+              }
+            } catch (error) {
+              console.log(error)
+            }
+          }
+        } catch (error) {
+          console.log(error)
         }
       } else {
-        if (square[i + 1][j].childElementCount === 1 && square[i + 1][j + 1].childElementCount === 0 && square[i + 1][j - 1].childElementCount === 0) {
-          return []
-        } else if (square[i + 1][j].childElementCount === 1 && square[i + 1][j + 1].childElementCount === 1 && square[i + 1][j - 1].childElementCount === 1) {
-          return [square[i + 1][j + 1], square[i + 1][j - 1]]
-        } else if (square[i + 1][j].childElementCount === 1 && square[i + 1][j + 1].childElementCount === 1 && square[i + 1][j - 1].childElementCount === 0) {
-          return [square[i + 1][j + 1]]
-        } else if (square[i + 1][j].childElementCount === 1 && square[i + 1][j + 1].childElementCount === 0 && square[i + 1][j - 1].childElementCount === 1) {
-          return [square[i + 1][j - 1]]
-        } else if (square[i + 1][j].childElementCount === 0 && square[i + 1][j + 1].childElementCount === 1 && square[i + 1][j - 1].childElementCount === 1) {
-          return [square[i + 1][j + 1], square[i + 1][j - 1], square[i + 1][j]]
-        } else if (square[i + 1][j].childElementCount === 0 && square[i + 1][j + 1].childElementCount === 1 && square[i + 1][j - 1].childElementCount === 0) {
-          return [square[i + 1][j + 1], square[i + 1][j]]
-        } else if (square[i + 1][j].childElementCount === 0 && square[i + 1][j + 1].childElementCount === 0 && square[i + 1][j - 1].childElementCount === 1) {
-          return [square[i + 1][j - 1], square[i + 1][j]]
-        } else {
-          return [square[i + 1][j]]
+        try {
+          if (square[i + 1][j].childElementCount === 1 && square[i + 1][j + 1].childElementCount === 0 && square[i + 1][j - 1].childElementCount === 0) {
+            return []
+          }
+        } catch (error) {
+          console.log(error)
+        }
+        try {
+          if (square[i + 1][j].childElementCount === 1 && square[i + 1][j + 1].childElementCount === 1 && square[i + 1][j - 1].childElementCount === 1) {
+            return [square[i + 1][j + 1], square[i + 1][j - 1]]
+          }
+        } catch (error) {
+          console.log(error)
+        }
+        try {
+          if (square[i + 1][j].childElementCount === 1 && square[i + 1][j + 1].childElementCount === 1) {
+            return [square[i + 1][j + 1]]
+          }
+        } catch (error) {
+          console.log(error)
+        }
+        try {
+          if (square[i + 1][j].childElementCount === 1 && square[i + 1][j - 1].childElementCount === 1) {
+            return [square[i + 1][j - 1]]
+          }
+        } catch (error) {
+          console.log(error)
+        }
+        try {
+          if (square[i + 1][j].childElementCount === 0 && square[i + 1][j + 1].childElementCount === 1 && square[i - 1][j - 1].childElementCount === 1) {
+            return [square[i + 1][j + 1], square[i + 1][j - 1], square[i + 1][j]]
+          }
+        } catch (error) {
+          console.log(error)
+        }
+        try {
+          if (square[i + 1][j].childElementCount === 0 && square[i + 1][j + 1].childElementCount === 1) {
+            return [square[i + 1][j + 1], square[i + 1][j]]
+          }
+        } catch (error) {
+          console.log(error)
+        }
+        try {
+          if (square[i + 1][j].childElementCount === 0 && square[i + 1][j - 1].childElementCount === 1) {
+            return [square[i + 1][j - 1], square[i + 1][j]]
+          }
+        } catch (error) {
+          console.log(error)
+        }
+        try {
+          if (square[i + 1][j].childElementCount === 0) {
+            return [square[i + 1][j]]
+          }
+        } catch (error) {
+          console.log(error)
         }
       }
     }

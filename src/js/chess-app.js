@@ -162,6 +162,7 @@ export class Chess extends window.HTMLElement {
     this.createIdForSquares()
     this._whitePiecesTurn = true
     this._activePlayer = this.shadowRoot.querySelector('#activePlayer')
+    this._first = false
 
     // chesspieces image sources
     this._whitePawnSource = '../imageChess/pawnWhite.png'
@@ -187,10 +188,9 @@ export class Chess extends window.HTMLElement {
       console.log(event.target.parentNode)
 
       // if player move pawn for the first time
-      let first = false
+      this._first = false
       if (event.target.getAttribute('data-first') === 'true') {
-        event.target.setAttribute('data-first', 'false')
-        first = true
+        this._first = true
       }
 
       // Finding acceptable squares for event.target
@@ -199,7 +199,7 @@ export class Chess extends window.HTMLElement {
       console.log(index[0])
       console.log(index[1])
       console.log(event.target.getAttribute('src'))
-      const acceptableSquares = this.acceptableSquares(event.target.getAttribute('src'), index[0], index[1], first)
+      const acceptableSquares = this.acceptableSquares(event.target.getAttribute('src'), index[0], index[1], this._first)
       console.log(acceptableSquares)
       for (let i = 0; i < acceptableSquares.length; i++) {
         acceptableSquares[i].setAttribute('class', 'acceptableSquare')
@@ -265,6 +265,11 @@ export class Chess extends window.HTMLElement {
             console.log('You can not take pieces with same color')
             return
           } else {
+            // if player drop pawn for the first time
+            if (this.shadowRoot.querySelector(textArgument).getAttribute('data-first') === 'true') {
+              this.shadowRoot.querySelector(textArgument).setAttribute('data-first', 'false')
+            }
+
             event.target.appendChild(this.shadowRoot.querySelector(textArgument))
           }
         } else {

@@ -81,8 +81,9 @@ template.innerHTML = /* html */ `
 </div> 
 
 <div id="information">
-<p id="activePlayer">Whithe players turn!</p>
-<p id="checkStatus">No player is check</p>
+    <p id="activePlayer">White players turn!</p>
+    <p id="checkStatusWhite">White player is NOT check!</p>
+    <p id="checkStatusBlack">Black player is NOT check!</p>
 <div>
 
 </div>
@@ -138,7 +139,7 @@ template.innerHTML = /* html */ `
   text-align: center;
   color: white;
   background-color: black;
-  font-size: 3em;
+  font-size: 1.5em;
 }
 :host #deletChess {
   background-color: red;
@@ -178,17 +179,20 @@ export class Chess extends window.HTMLElement {
     // Creating shadowroot
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
+    this._chessConteiner = this.shadowRoot.querySelector('#chessConteiner')
     this._deletChess = this.shadowRoot.querySelector('#deletChess')
     this._chessBoard = this.shadowRoot.querySelector('#chessBoard')
-    console.log(this._chessBoard.querySelectorAll('div').length)
     this._dragtarget = this.shadowRoot.querySelector('#dragtarget')
     this.createIdForSquares()
     this._whitePiecesTurn = true
     this._activePlayer = this.shadowRoot.querySelector('#activePlayer')
-    this._checkStatus = this.shadowRoot.querySelector('#checkStatus')
+    this._checkStatusWhite = this.shadowRoot.querySelector('#checkStatusWhite')
+    this._checkStatusBlack = this.shadowRoot.querySelector('#checkStatusBlack')
     this._first = false
     this._showWhiteOptions = this.shadowRoot.querySelector('#options1')
     this._showBlackOptions = this.shadowRoot.querySelector('#options2')
+    this._round = 0
+    this._information = this.shadowRoot.querySelector('#information')
 
     // chesspieces image sources
     this._whitePawnSource = '../imageChess/pawnWhite.png'
@@ -227,13 +231,15 @@ export class Chess extends window.HTMLElement {
 
       // Finding acceptable squares for event.target
       const index = this.indexTarget(event.target.parentNode)
+      /*
       console.log('index/JM')
       console.log(index)
       console.log(index[0])
       console.log(index[1])
       console.log(event.target.getAttribute('src'))
+      */
       const acceptableSquares = this.acceptableSquares(event.target.getAttribute('src'), index[0], index[1], this._first) || []
-      console.log(acceptableSquares)
+      // console.log(acceptableSquares)
       for (let i = 0; i < acceptableSquares.length; i++) {
         if (acceptableSquares[i].childElementCount === 1) {
           if (event.target.getAttribute('data-color') !== acceptableSquares[i].firstElementChild.getAttribute('data-color')) {
@@ -252,19 +258,6 @@ export class Chess extends window.HTMLElement {
       }
       if (event.target.getAttribute('data-color') === 'black' && this._whitePiecesTurn === false) {
         event.dataTransfer.setData('chessPiece', event.target.id)
-        /*
-        // put in chacktest here
-        if (this.evryAcceptableSquare('isBlackSheck') === true) {
-          if (event.target.getAttribute('src') === this._blackKingSource) {
-            event.dataTransfer.setData('chessPiece', event.target.id)
-          }
-          if (event.target.getAttribute('src') !== this._blackKingSource) {
-            return
-          }
-        } else {
-          event.dataTransfer.setData('chessPiece', event.target.id)
-        }
-        */
       }
     })
 
@@ -295,7 +288,7 @@ export class Chess extends window.HTMLElement {
     // Events fired when dropping over this._chessBoard
     this._chessBoard.addEventListener('drop', event => {
       event.preventDefault()
-      console.log(event.target)
+      // console.log(event.target)
 
       // when chesspiece id dropped
       try {
@@ -305,8 +298,10 @@ export class Chess extends window.HTMLElement {
           // console.log(data)
           const textArgument = `#${data}`
           // console.log(this.shadowRoot.querySelector(textArgument))
+          /*
           console.log(this.shadowRoot.querySelector(textArgument).getAttribute('data-color'))
           console.log(event.target.getAttribute('data-color'))
+          */
           // drop over a img element
           if (event.target.nodeName === 'IMG' && event.target.getAttribute('data-color') !== this.shadowRoot.querySelector(textArgument).getAttribute('data-color')) {
             if (event.target.parentNode.style.border === '3px solid blue') {
@@ -338,19 +333,24 @@ export class Chess extends window.HTMLElement {
         } else {
           return
         }
-
-        // change activePlayer and test if player is schac
-        if (this._whitePiecesTurn) {
-          this._whitePiecesTurn = false
-          this._activePlayer.innerHTML = 'Black players turn!'
-          this.evryAcceptableSquare('isBlackSheck')
-        } else {
-          this._whitePiecesTurn = true
-          this._activePlayer.innerHTML = 'White players turn!'
-          this.evryAcceptableSquare('isWhiteSheck')
-        }
       } catch (error) {
         console.log(error)
+      }
+
+      // change activePlayer and test if player is scheck
+      if (this._whitePiecesTurn) {
+        this._whitePiecesTurn = false
+        this.evryAcceptableSquare('isBlackSheck')
+        /*
+        if (this._checkStatus.innerText === 'White is scheck!') {
+          return
+        }
+        */
+        this._activePlayer.innerHTML = 'Black players turn!'
+      } else {
+        this._whitePiecesTurn = true
+        this._activePlayer.innerHTML = 'White players turn!'
+        this.evryAcceptableSquare('isWhiteSheck')
       }
 
       // Reset border color, class name and background color
@@ -365,6 +365,13 @@ export class Chess extends window.HTMLElement {
 
       // Change pawn to queen
       this.pawnToQueen()
+
+      // saving in sessionstorage
+      this._round++
+      const argument = `round${this._round}`
+      window.sessionStorage.setItem(argument, JSON.stringify(this.indexAllSquares()))
+      console.log(JSON.parse(window.sessionStorage.getItem(argument)))
+      // this._information.appendChild(window.sessionStorage.getItem(argument))
     })
 
     // Events fired when click on this._deletChess
@@ -400,6 +407,11 @@ export class Chess extends window.HTMLElement {
       }
       this.evryAcceptableSquare('black')
     })
+
+    window.addEventListener('load', event => {
+      this._chessBoard.style.cursor = 'wait'
+      console.log('test')
+    })
   }
 
   /**
@@ -409,7 +421,6 @@ export class Chess extends window.HTMLElement {
     for (let i = 0; i < this._chessBoard.querySelectorAll('div').length; i++) {
       const idName = `dragtarget${i + 1}`
       this._chessBoard.querySelectorAll('div')[i].setAttribute('id', idName)
-      console.log(this._chessBoard.querySelectorAll('div')[i])
     }
   }
 
@@ -1224,7 +1235,7 @@ export class Chess extends window.HTMLElement {
           this._chessBoard.querySelectorAll('div')[i].firstElementChild.setAttribute('src', this._whiteQueenSource)
         }
       } catch (error) {
-        console.log(error)
+        // console.log(error)
       }
     }
 
@@ -1234,7 +1245,7 @@ export class Chess extends window.HTMLElement {
           this._chessBoard.querySelectorAll('div')[i].firstElementChild.setAttribute('src', this._blackQueenSource)
         }
       } catch (error) {
-        console.log(error)
+        // console.log(error)
       }
     }
   }
@@ -1260,12 +1271,14 @@ export class Chess extends window.HTMLElement {
     }
     // console.log(chessPieaceObject)
     // console.log(chessPieaceObject.acceptableSquares)
+    /*
     console.log(typeof chessPieaceObject.roweValue)
     console.log(typeof chessPieaceObject.columnValue)
     console.log(typeof chessPieaceObject.imageSource)
     console.log(chessPieaceObject.roweValue)
     console.log(chessPieaceObject.columnValue)
     console.log(chessPieaceObject.imageSource)
+    */
     /*
     for (let i = 0; i < chessPieaceObject.roweValue.lenght; i++) {
       const temp = this.acceptableSquares(chessPieaceObject.imageSource[i], chessPieaceObject.roweValue[i], chessPieaceObject.columnValue[i], false)
@@ -1304,13 +1317,14 @@ export class Chess extends window.HTMLElement {
         whitePiecesOptions.push(tempValue)
       }
     }
+    /*
     console.log('tempObject/JM')
     console.log(tempObject)
     console.log('blackPiecesOptions.flat/JM')
     console.log(blackPiecesOptions.flat())
     console.log('whitePiecesOptions.flat/JM')
     console.log(whitePiecesOptions.flat())
-
+    */
     // Black players otions
     if (color === 'black') {
       for (let i = 0; i < blackPiecesOptions.flat().length; i++) {
@@ -1341,30 +1355,29 @@ export class Chess extends window.HTMLElement {
       for (let i = 0; i < blackPiecesOptions.flat().length; i++) {
         if (blackPiecesOptions.flat()[i].childElementCount === 1) {
           if (blackPiecesOptions.flat()[i].firstElementChild.getAttribute('src') === this._whiteKingSource) {
-            console.log('white is shack')
-            this._checkStatus.innerText = 'White is scheck!'
+            console.log('white is sheck')
+            this._checkStatusWhite.innerText = 'White is scheck!'
             break
           } else {
-            console.log('white is NOT shack')
-            this._checkStatus.innerText = 'No player scheck!'
+            console.log('white is NOT sheck')
+            this._checkStatusWhite.innerText = 'White player is NOT scheck!'
             // return false
           }
         }
       }
     }
-
     // test if black is shack
     if (color === 'isBlackSheck') {
       for (let i = 0; i < whitePiecesOptions.flat().length; i++) {
         if (whitePiecesOptions.flat()[i].childElementCount === 1) {
           if (whitePiecesOptions.flat()[i].firstElementChild.getAttribute('src') === this._blackKingSource) {
-            console.log('black is shack')
-            this._checkStatus.innerText = 'Black is scheck!'
+            console.log('black is sheck')
+            this._checkStatusBlack.innerText = 'Black is scheck!'
             break
             // return true
           } else {
-            console.log('black is NOT shack')
-            this._checkStatus.innerText = 'No player scheck!'
+            console.log('black is NOT sheck')
+            this._checkStatusBlack.innerText = 'Black player is NOT scheck!'
             // return false
           }
         }

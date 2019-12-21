@@ -10,6 +10,9 @@ template.innerHTML = /* html */ `
 <button id="deletChess">Delet</button>
 <button id="options1">Show white players options</button>
 <button id="options2">Show black players options</button>
+<select id="history">
+    <option>Start</option>
+</select>
 </div>
 
 <div id="chessBoard">
@@ -192,6 +195,7 @@ export class Chess extends window.HTMLElement {
     this._showBlackOptions = this.shadowRoot.querySelector('#options2')
     this._round = 0
     this._information = this.shadowRoot.querySelector('#information')
+    this._history = this.shadowRoot.querySelector('#history')
 
     // chesspieces image sources
     this._whitePawnSource = '../imageChess/pawnWhite.png'
@@ -367,39 +371,15 @@ export class Chess extends window.HTMLElement {
 
       // saving in sessionstorage
       this._round++
-      const argument = `round${this._round}`
+      const argument = `Round${this._round}`
       window.sessionStorage.setItem(argument, JSON.stringify(this.indexAllSquares()))
-      console.log(JSON.parse(window.sessionStorage.getItem(argument)))
-      const data = JSON.parse(window.sessionStorage.getItem(argument))
-      const fragment = document.createDocumentFragment()
-      let counter = 0
-      for (let i = 0; i < 8; i++) {
-        for (let j = 0; j < 8; j++) {
-          counter++
-          const idName = `${argument}Dragtarget${counter}`
-          const div = document.createElement('div')
-          div.setAttribute('id', idName)
-          div.setAttribute('class', 'droptarget')
-          div.style.width = '63.25px'
-          div.style.height = '63.25px'
-          div.style.float = 'left'
-          div.style.border = '1px solid black'
-          for (let k = 0; k < data.roweValue.length; k++) {
-            if(i === data.roweValue[k] && j === data.columnValue[k]) {
-              const img = document.createElement('img')
-              img.setAttribute('src', data.imageSource[k])
-              img.setAttribute('class', 'acceptableSquare')
-              img.setAttribute('data-color', 'undefined')
-              img.setAttribute('data-first', 'false')
-              img.style.width = '100%'
-              img.style.padding = '1px'
-              div.appendChild(img) 
-            }
-          }
-          fragment.appendChild(div)
-        }
-      }
-      this._information.appendChild(fragment)
+
+      // adding option to this._history
+      const option = document.createElement('option')
+      const argumentValueOption = `Round${this._round}`
+      option.setAttribute('value', argumentValueOption)
+      option.innerText = argumentValueOption
+      this._history.appendChild(option)
     })
 
     // Events fired when click on this._deletChess
@@ -436,9 +416,11 @@ export class Chess extends window.HTMLElement {
       this.evryAcceptableSquare('black')
     })
 
-    window.addEventListener('load', event => {
-      this._chessBoard.style.cursor = 'wait'
-      console.log('test')
+    // Events fired when click on this._history
+    this._history.addEventListener('change', event => {
+      event.preventDefault()
+      const round = event.target.value
+      this.showHistory(round)
     })
   }
 
@@ -1381,36 +1363,78 @@ export class Chess extends window.HTMLElement {
     // test if white is shack
     if (color === 'isWhiteSheck') {
       for (let i = 0; i < blackPiecesOptions.flat().length; i++) {
-        if (blackPiecesOptions.flat()[i].childElementCount === 1) {
-          if (blackPiecesOptions.flat()[i].firstElementChild.getAttribute('src') === this._whiteKingSource) {
-            console.log('white is sheck')
-            this._checkStatusWhite.innerText = 'White is scheck!'
-            break
-          } else {
-            console.log('white is NOT sheck')
-            this._checkStatusWhite.innerText = 'White player is NOT scheck!'
-            // return false
+        try {
+          if (blackPiecesOptions.flat()[i].childElementCount === 1) {
+            if (blackPiecesOptions.flat()[i].firstElementChild.getAttribute('src') === this._whiteKingSource) {
+              console.log('white is sheck')
+              this._checkStatusWhite.innerText = 'White is scheck!'
+              break
+            } else {
+              console.log('white is NOT sheck')
+              this._checkStatusWhite.innerText = 'White player is NOT scheck!'
+              // return false
+            }
           }
+        } catch (error) {
+          console.log(error)
         }
       }
     }
     // test if black is shack
     if (color === 'isBlackSheck') {
       for (let i = 0; i < whitePiecesOptions.flat().length; i++) {
-        if (whitePiecesOptions.flat()[i].childElementCount === 1) {
-          if (whitePiecesOptions.flat()[i].firstElementChild.getAttribute('src') === this._blackKingSource) {
-            console.log('black is sheck')
-            this._checkStatusBlack.innerText = 'Black is scheck!'
-            break
-            // return true
-          } else {
-            console.log('black is NOT sheck')
-            this._checkStatusBlack.innerText = 'Black player is NOT scheck!'
-            // return false
+        try {
+          if (whitePiecesOptions.flat()[i].childElementCount === 1) {
+            if (whitePiecesOptions.flat()[i].firstElementChild.getAttribute('src') === this._blackKingSource) {
+              console.log('black is sheck')
+              this._checkStatusBlack.innerText = 'Black is scheck!'
+              break
+              // return true
+            } else {
+              console.log('black is NOT sheck')
+              this._checkStatusBlack.innerText = 'Black player is NOT scheck!'
+              // return false
+            }
           }
+        } catch (error) {
+          console.log(error)
         }
       }
     }
+  }
+
+  showHistory (argument) {
+    // this._information.innerHTML = ''
+    const data = JSON.parse(window.sessionStorage.getItem(argument))
+    const fragment = document.createDocumentFragment()
+    let counter = 0
+    for (let i = 0; i < 8; i++) {
+      for (let j = 0; j < 8; j++) {
+        counter++
+        const idName = `${argument}Dragtarget${counter}`
+        const div = document.createElement('div')
+        div.setAttribute('id', idName)
+        div.setAttribute('class', 'droptarget')
+        div.style.width = '63.25px'
+        div.style.height = '63.25px'
+        div.style.float = 'left'
+        div.style.border = '1px solid black'
+        for (let k = 0; k < data.roweValue.length; k++) {
+          if (i === data.roweValue[k] && j === data.columnValue[k]) {
+            const img = document.createElement('img')
+            img.setAttribute('src', data.imageSource[k])
+            img.setAttribute('class', 'acceptableSquare')
+            img.setAttribute('data-color', 'undefined')
+            img.setAttribute('data-first', 'false')
+            img.style.width = '100%'
+            img.style.padding = '1px'
+            div.appendChild(img)
+          }
+        }
+        fragment.appendChild(div)
+      }
+    }
+    this._information.appendChild(fragment)
   }
 }
 

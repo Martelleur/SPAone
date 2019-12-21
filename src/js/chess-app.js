@@ -350,53 +350,58 @@ export class Chess extends window.HTMLElement {
 
             event.target.appendChild(this.shadowRoot.querySelector(textArgument))
           }
+          // change activePlayer and test if player is scheck
+          if (this._whitePiecesTurn) {
+            this._whitePiecesTurn = false
+            this.evryAcceptableSquare('isBlackSheck')
+            /*
+            if (this._checkStatus.innerText === 'White is scheck!') {
+              return
+            }
+            */
+            this._activePlayer.innerHTML = 'Black players turn!'
+          } else {
+            this._whitePiecesTurn = true
+            this._activePlayer.innerHTML = 'White players turn!'
+            this.evryAcceptableSquare('isWhiteSheck')
+          }
+
+          // Reset border color, class name and background color
+          for (let i = 0; i < this._chessBoard.querySelectorAll('div').length; i++) {
+            this._chessBoard.querySelectorAll('div')[i].setAttribute('class', 'droptarget')
+            this._chessBoard.querySelectorAll('div')[i].style.border = '1px solid black'
+            this._chessBoard.querySelectorAll('div')[i].style.backgroundColor = 'white'
+          }
+          for (let i = 0; i < this._chessBoard.querySelectorAll('div>img').length; i++) {
+            this._chessBoard.querySelectorAll('div>img')[i].style.backgroundColor = 'white'
+          }
+
+          // Change pawn to queen
+          this.pawnToQueen()
+
+          // saving in sessionstorage
+          this._round++
+          const argument = `Round${this._round}`
+          window.sessionStorage.setItem(argument, JSON.stringify(this.indexAllSquares()))
+
+          // adding option to this._history
+          const option = document.createElement('option')
+          const argumentValueOption = `Round${this._round}`
+          option.setAttribute('value', argumentValueOption)
+          option.innerText = argumentValueOption
+          this._history.appendChild(option)
         } else {
           return
         }
       } catch (error) {
         console.log(error)
       }
-
-      // change activePlayer and test if player is scheck
-      if (this._whitePiecesTurn) {
-        this._whitePiecesTurn = false
-        this.evryAcceptableSquare('isBlackSheck')
-        /*
-        if (this._checkStatus.innerText === 'White is scheck!') {
-          return
-        }
-        */
-        this._activePlayer.innerHTML = 'Black players turn!'
-      } else {
-        this._whitePiecesTurn = true
-        this._activePlayer.innerHTML = 'White players turn!'
-        this.evryAcceptableSquare('isWhiteSheck')
-      }
-
       // Reset border color, class name and background color
       for (let i = 0; i < this._chessBoard.querySelectorAll('div').length; i++) {
         this._chessBoard.querySelectorAll('div')[i].setAttribute('class', 'droptarget')
         this._chessBoard.querySelectorAll('div')[i].style.border = '1px solid black'
         this._chessBoard.querySelectorAll('div')[i].style.backgroundColor = 'white'
       }
-      for (let i = 0; i < this._chessBoard.querySelectorAll('div>img').length; i++) {
-        this._chessBoard.querySelectorAll('div>img')[i].style.backgroundColor = 'white'
-      }
-
-      // Change pawn to queen
-      this.pawnToQueen()
-
-      // saving in sessionstorage
-      this._round++
-      const argument = `Round${this._round}`
-      window.sessionStorage.setItem(argument, JSON.stringify(this.indexAllSquares()))
-
-      // adding option to this._history
-      const option = document.createElement('option')
-      const argumentValueOption = `Round${this._round}`
-      option.setAttribute('value', argumentValueOption)
-      option.innerText = argumentValueOption
-      this._history.appendChild(option)
     })
 
     // Events fired when click on this._deletChess
@@ -1438,6 +1443,7 @@ export class Chess extends window.HTMLElement {
     const header = document.createElement('h1')
     const header2 = document.createElement('h1')
     header.innerText = `History ${argument}`
+    header.style.borderTop = '3px solid black'
     fragment.appendChild(header)
     header2.innerText = `History ${argument}`
     header.style.color = 'black'

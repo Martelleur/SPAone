@@ -8,8 +8,8 @@ template.innerHTML = /* html */ `
 
 <div id="tools">
 <button id="deletChess">Delet</button>
-<button id="options1">Show white players options</button>
-<button id="options2">Show black players options</button>
+<button id="options1">White players options</button>
+<button id="options2">Black players options</button>
 <select id="history">
     <option value="history">History</option>
     <option value="clear">Hide history!</option>
@@ -89,6 +89,7 @@ template.innerHTML = /* html */ `
     <p id="activePlayer">White players turn!</p>
     <p id="checkStatusWhite">White player is NOT check!</p>
     <p id="checkStatusBlack">Black player is NOT check!</p>
+    <p id="winner"></p>
     <div id="historyConteiner"></div>
 <div>
 
@@ -214,6 +215,7 @@ export class Chess extends window.HTMLElement {
     this._information = this.shadowRoot.querySelector('#information')
     this._history = this.shadowRoot.querySelector('#history')
     this._historyConteiner = this.shadowRoot.querySelector('#historyConteiner')
+    this._winner = this.shadowRoot.querySelector('#winner')
 
     // chesspieces image sources
     this._whitePawnSource = '../imageChess/pawnWhite.png'
@@ -380,6 +382,7 @@ export class Chess extends window.HTMLElement {
           // Change pawn to queen
           this.pawnToQueen()
 
+          // try to fix problem how to save when multipale tables is in action
           // saving in sessionstorage
           this._round++
           const argument = `Round${this._round}`
@@ -402,6 +405,26 @@ export class Chess extends window.HTMLElement {
         this._chessBoard.querySelectorAll('div')[i].setAttribute('class', 'droptarget')
         this._chessBoard.querySelectorAll('div')[i].style.border = '1px solid black'
         this._chessBoard.querySelectorAll('div')[i].style.backgroundColor = 'white'
+      }
+
+      // decide winner
+      if (this._activePlayer.innerText === 'White players turn!' && this._checkStatusBlack.innerText === 'Black player is scheck!') {
+        this._checkStatusBlack.innerText = ''
+        this._checkStatusWhite.innerText = ''
+        this._activePlayer.innerText = ''
+        this._winner.innerText = 'White player win!'
+        for (let i = 0; i < this._chessBoard.querySelectorAll('div>img').length; i++) {
+          this._chessBoard.querySelectorAll('div>img')[i].setAttribute('data-color', 'undefined')
+        }
+      }
+      if (this._activePlayer.innerText === 'Black players turn!' && this._checkStatusWhite.innerText === 'White player is scheck!') {
+        this._checkStatusBlack.innerText = ''
+        this._checkStatusWhite.innerText = ''
+        this._activePlayer.innerText = ''
+        this._winner.innerText = 'Black player win!'
+        for (let i = 0; i < this._chessBoard.querySelectorAll('div>img').length; i++) {
+          this._chessBoard.querySelectorAll('div>img')[i].setAttribute('data-color', 'undefined')
+        }
       }
     })
 
@@ -1409,7 +1432,8 @@ export class Chess extends window.HTMLElement {
           if (blackPiecesOptions.flat()[i].childElementCount === 1) {
             if (blackPiecesOptions.flat()[i].firstElementChild.getAttribute('src') === this._whiteKingSource) {
               console.log('white is sheck')
-              this._checkStatusWhite.innerText = 'White is scheck!'
+              this._checkStatusWhite.innerText = 'White player is scheck!'
+              window.alert('OBS! White player is check, if still check after this round white player loose!')
               break
             } else {
               console.log('white is NOT sheck')
@@ -1429,7 +1453,8 @@ export class Chess extends window.HTMLElement {
           if (whitePiecesOptions.flat()[i].childElementCount === 1) {
             if (whitePiecesOptions.flat()[i].firstElementChild.getAttribute('src') === this._blackKingSource) {
               console.log('black is sheck')
-              this._checkStatusBlack.innerText = 'Black is scheck!'
+              this._checkStatusBlack.innerText = 'Black player is scheck!'
+              window.alert('OBS! Black player is check, if still check after this round black player loose!')
               break
               // return true
             } else {

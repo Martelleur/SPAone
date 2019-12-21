@@ -82,6 +82,7 @@ template.innerHTML = /* html */ `
 
 <div id="information">
 <p id="activePlayer">Whithe players turn!</p>
+<p id="checkStatus">No player is check</p>
 <div>
 
 </div>
@@ -139,6 +140,24 @@ template.innerHTML = /* html */ `
   background-color: black;
   font-size: 3em;
 }
+:host #deletChess {
+  background-color: red;
+  color: white;
+  border: 3px solid red;
+  cursor: pointer;
+}
+:host #options1 {
+  background-color: green;
+  color: white;
+  border: 3px solid green;
+  cursor: pointer;
+}
+:host #options2 {
+  background-color: purple;
+  color: white;
+  border: 3px solid purple;
+  cursor: pointer;
+}
 
 </style>
 `
@@ -166,6 +185,7 @@ export class Chess extends window.HTMLElement {
     this.createIdForSquares()
     this._whitePiecesTurn = true
     this._activePlayer = this.shadowRoot.querySelector('#activePlayer')
+    this._checkStatus = this.shadowRoot.querySelector('#checkStatus')
     this._first = false
     this._showWhiteOptions = this.shadowRoot.querySelector('#options1')
     this._showBlackOptions = this.shadowRoot.querySelector('#options2')
@@ -232,6 +252,19 @@ export class Chess extends window.HTMLElement {
       }
       if (event.target.getAttribute('data-color') === 'black' && this._whitePiecesTurn === false) {
         event.dataTransfer.setData('chessPiece', event.target.id)
+        /*
+        // put in chacktest here
+        if (this.evryAcceptableSquare('isBlackSheck') === true) {
+          if (event.target.getAttribute('src') === this._blackKingSource) {
+            event.dataTransfer.setData('chessPiece', event.target.id)
+          }
+          if (event.target.getAttribute('src') !== this._blackKingSource) {
+            return
+          }
+        } else {
+          event.dataTransfer.setData('chessPiece', event.target.id)
+        }
+        */
       }
     })
 
@@ -306,13 +339,15 @@ export class Chess extends window.HTMLElement {
           return
         }
 
-        // change activePlayer
+        // change activePlayer and test if player is schac
         if (this._whitePiecesTurn) {
           this._whitePiecesTurn = false
           this._activePlayer.innerHTML = 'Black players turn!'
+          this.evryAcceptableSquare('isBlackSheck')
         } else {
           this._whitePiecesTurn = true
           this._activePlayer.innerHTML = 'White players turn!'
+          this.evryAcceptableSquare('isWhiteSheck')
         }
       } catch (error) {
         console.log(error)
@@ -1281,10 +1316,10 @@ export class Chess extends window.HTMLElement {
       for (let i = 0; i < blackPiecesOptions.flat().length; i++) {
         if (blackPiecesOptions.flat()[i].childElementCount === 1) {
           if (blackPiecesOptions.flat()[i].firstElementChild.getAttribute('data-color') !== 'black') {
-            blackPiecesOptions.flat()[i].style.border = '3px solid red'
+            blackPiecesOptions.flat()[i].style.border = '3px solid purple'
           }
         } else {
-          blackPiecesOptions.flat()[i].style.backgroundColor = 'red'
+          blackPiecesOptions.flat()[i].style.backgroundColor = 'purple'
         }
       }
     }
@@ -1297,6 +1332,41 @@ export class Chess extends window.HTMLElement {
           }
         } else {
           whitePiecesOptions.flat()[i].style.backgroundColor = 'green'
+        }
+      }
+    }
+
+    // test if white is shack
+    if (color === 'isWhiteSheck') {
+      for (let i = 0; i < blackPiecesOptions.flat().length; i++) {
+        if (blackPiecesOptions.flat()[i].childElementCount === 1) {
+          if (blackPiecesOptions.flat()[i].firstElementChild.getAttribute('src') === this._whiteKingSource) {
+            console.log('white is shack')
+            this._checkStatus.innerText = 'White is scheck!'
+            break
+          } else {
+            console.log('white is NOT shack')
+            this._checkStatus.innerText = 'No player scheck!'
+            // return false
+          }
+        }
+      }
+    }
+
+    // test if black is shack
+    if (color === 'isBlackSheck') {
+      for (let i = 0; i < whitePiecesOptions.flat().length; i++) {
+        if (whitePiecesOptions.flat()[i].childElementCount === 1) {
+          if (whitePiecesOptions.flat()[i].firstElementChild.getAttribute('src') === this._blackKingSource) {
+            console.log('black is shack')
+            this._checkStatus.innerText = 'Black is scheck!'
+            break
+            // return true
+          } else {
+            console.log('black is NOT shack')
+            this._checkStatus.innerText = 'No player scheck!'
+            // return false
+          }
         }
       }
     }

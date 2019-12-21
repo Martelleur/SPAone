@@ -8,6 +8,8 @@ template.innerHTML = /* html */ `
 
 <div id="tools">
 <button id="deletChess">Delet</button>
+<button id="options1">Show white players options</button>
+<button id="options2">Show black players options</button>
 </div>
 
 <div id="chessBoard">
@@ -159,11 +161,14 @@ export class Chess extends window.HTMLElement {
     this.shadowRoot.appendChild(template.content.cloneNode(true))
     this._deletChess = this.shadowRoot.querySelector('#deletChess')
     this._chessBoard = this.shadowRoot.querySelector('#chessBoard')
+    console.log(this._chessBoard.querySelectorAll('div').length)
     this._dragtarget = this.shadowRoot.querySelector('#dragtarget')
     this.createIdForSquares()
     this._whitePiecesTurn = true
     this._activePlayer = this.shadowRoot.querySelector('#activePlayer')
     this._first = false
+    this._showWhiteOptions = this.shadowRoot.querySelector('#options1')
+    this._showBlackOptions = this.shadowRoot.querySelector('#options2')
 
     // chesspieces image sources
     this._whitePawnSource = '../imageChess/pawnWhite.png'
@@ -325,14 +330,40 @@ export class Chess extends window.HTMLElement {
 
       // Change pawn to queen
       this.pawnToQueen()
-
-      this.evryAcceptableSquare()
     })
 
     // Events fired when click on this._deletChess
     this._deletChess.addEventListener('click', event => {
       event.preventDefault()
       event.target.parentNode.parentNode.remove()
+    })
+
+    // Events fired when click on this._showWhiteOptions
+    this._showWhiteOptions.addEventListener('click', event => {
+      event.preventDefault()
+      // Reset border color and background color
+      for (let i = 0; i < this._chessBoard.querySelectorAll('div').length; i++) {
+        this._chessBoard.querySelectorAll('div')[i].style.border = '1px solid black'
+        this._chessBoard.querySelectorAll('div')[i].style.backgroundColor = 'white'
+      }
+      for (let i = 0; i < this._chessBoard.querySelectorAll('div>img').length; i++) {
+        this._chessBoard.querySelectorAll('div>img')[i].style.backgroundColor = 'white'
+      }
+      this.evryAcceptableSquare('white')
+    })
+
+    // Events fired when click on this._showBlackOptions
+    this._showBlackOptions.addEventListener('click', event => {
+      event.preventDefault()
+      // Reset border color and background color
+      for (let i = 0; i < this._chessBoard.querySelectorAll('div').length; i++) {
+        this._chessBoard.querySelectorAll('div')[i].style.border = '1px solid black'
+        this._chessBoard.querySelectorAll('div')[i].style.backgroundColor = 'white'
+      }
+      for (let i = 0; i < this._chessBoard.querySelectorAll('div>img').length; i++) {
+        this._chessBoard.querySelectorAll('div>img')[i].style.backgroundColor = 'white'
+      }
+      this.evryAcceptableSquare('black')
     })
   }
 
@@ -1210,7 +1241,11 @@ export class Chess extends window.HTMLElement {
     return chessPieaceObject
   }
 
-  evryAcceptableSquare () {
+  /**
+   * @param {*} color
+   * @memberof Chess
+   */
+  evryAcceptableSquare (color) {
     const tempObject = this.indexAllSquares()
     const blackPiecesOptions = []
     const whitePiecesOptions = []
@@ -1242,7 +1277,7 @@ export class Chess extends window.HTMLElement {
     console.log(whitePiecesOptions.flat())
 
     // Black players otions
-    if (this._activePlayer.innerText === 'White players turn!') {
+    if (color === 'black') {
       for (let i = 0; i < blackPiecesOptions.flat().length; i++) {
         if (blackPiecesOptions.flat()[i].childElementCount === 1) {
           if (blackPiecesOptions.flat()[i].firstElementChild.getAttribute('data-color') !== 'black') {
@@ -1254,14 +1289,14 @@ export class Chess extends window.HTMLElement {
       }
     }
     // White players otions
-    if (this._activePlayer.innerText === 'Black players turn!') {
+    if (color === 'white') {
       for (let i = 0; i < whitePiecesOptions.flat().length; i++) {
         if (whitePiecesOptions.flat()[i].childElementCount === 1) {
           if (whitePiecesOptions.flat()[i].firstElementChild.getAttribute('data-color') !== 'white') {
-            whitePiecesOptions.flat()[i].style.border = '3px solid red'
+            whitePiecesOptions.flat()[i].style.border = '3px solid green'
           }
         } else {
-          whitePiecesOptions.flat()[i].style.backgroundColor = 'red'
+          whitePiecesOptions.flat()[i].style.backgroundColor = 'green'
         }
       }
     }

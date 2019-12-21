@@ -462,7 +462,7 @@ export class Chess extends window.HTMLElement {
       }
       this.evryAcceptableSquare('black')
     })
-
+    // try to create functionality so taht user can start over from a point in history
     // try to create functionality so the user can se all history at once "show all roundes"
     // Events fired when click on this._history
     this._history.addEventListener('change', event => {

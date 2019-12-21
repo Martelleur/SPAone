@@ -135,6 +135,7 @@ template.innerHTML = /* html */ `
   text-align: center;
   color: white;
   background-color: black;
+  font-size: 3em;
 }
 
 </style>
@@ -163,7 +164,6 @@ export class Chess extends window.HTMLElement {
     this._whitePiecesTurn = true
     this._activePlayer = this.shadowRoot.querySelector('#activePlayer')
     this._first = false
-    this.totalAcceptableSquares()
 
     // chesspieces image sources
     this._whitePawnSource = '../imageChess/pawnWhite.png'
@@ -202,15 +202,23 @@ export class Chess extends window.HTMLElement {
 
       // Finding acceptable squares for event.target
       const index = this.indexTarget(event.target.parentNode)
+      console.log('index/JM')
       console.log(index)
       console.log(index[0])
       console.log(index[1])
       console.log(event.target.getAttribute('src'))
-      const acceptableSquares = this.acceptableSquares(event.target.getAttribute('src'), index[0], index[1], this._first)
+      const acceptableSquares = this.acceptableSquares(event.target.getAttribute('src'), index[0], index[1], this._first) || []
       console.log(acceptableSquares)
       for (let i = 0; i < acceptableSquares.length; i++) {
-        acceptableSquares[i].setAttribute('class', 'acceptableSquare')
-        acceptableSquares[i].style.border = '3px solid blue'
+        if (acceptableSquares[i].childElementCount === 1) {
+          if (event.target.getAttribute('data-color') !== acceptableSquares[i].firstElementChild.getAttribute('data-color')) {
+            acceptableSquares[i].setAttribute('class', 'acceptableSquare')
+            acceptableSquares[i].style.border = '3px solid blue'
+          }
+        } else {
+          acceptableSquares[i].setAttribute('class', 'acceptableSquare')
+          acceptableSquares[i].style.border = '3px solid blue'
+        }
       }
 
       // white or black player
@@ -241,7 +249,7 @@ export class Chess extends window.HTMLElement {
       }
 
       // Set backgroundecolor to blue over the event.target
-      if (event.target.getAttribute('class') === 'acceptableSquare') {
+      if (event.target.getAttribute('class') === 'acceptableSquare' && event.target.nodeName === 'DIV') {
         event.target.style.backgroundColor = 'blue'
       }
     })
@@ -317,6 +325,8 @@ export class Chess extends window.HTMLElement {
 
       // Change pawn to queen
       this.pawnToQueen()
+
+      this.evryAcceptableSquare()
     })
 
     // Events fired when click on this._deletChess
@@ -1163,7 +1173,11 @@ export class Chess extends window.HTMLElement {
     }
   }
 
-  totalAcceptableSquares () {
+  /**
+   * @returns
+   * @memberof Chess
+   */
+  indexAllSquares () {
     const chessPieaceArray = []
     const chessPieaceObject = {
       roweValue: [],
@@ -1180,6 +1194,9 @@ export class Chess extends window.HTMLElement {
     }
     // console.log(chessPieaceObject)
     // console.log(chessPieaceObject.acceptableSquares)
+    console.log(typeof chessPieaceObject.roweValue)
+    console.log(typeof chessPieaceObject.columnValue)
+    console.log(typeof chessPieaceObject.imageSource)
     console.log(chessPieaceObject.roweValue)
     console.log(chessPieaceObject.columnValue)
     console.log(chessPieaceObject.imageSource)
@@ -1191,6 +1208,63 @@ export class Chess extends window.HTMLElement {
     }
     */
     return chessPieaceObject
+  }
+
+  evryAcceptableSquare () {
+    const tempObject = this.indexAllSquares()
+    const blackPiecesOptions = []
+    const whitePiecesOptions = []
+    for (let i = 0; i < tempObject.roweValue.length; i++) {
+      if (tempObject.imageSource[i] === this._blackTowerSource || tempObject.imageSource[i] === this._blackHoarseSource || tempObject.imageSource[i] === this._blackRunnerSource || tempObject.imageSource[i] === this._blackKingSource || tempObject.imageSource[i] === this._blackQueenSource || tempObject.imageSource[i] === this._blackPawnSource) {
+        let tempValue = 0
+        if (tempObject.imageSource[i] === this._blackPawnSource && tempObject.roweValue[i] === 1) {
+          tempValue = this.acceptableSquares(tempObject.imageSource[i], tempObject.roweValue[i], tempObject.columnValue[i], true)
+        } else {
+          tempValue = this.acceptableSquares(tempObject.imageSource[i], tempObject.roweValue[i], tempObject.columnValue[i], false)
+        }
+        blackPiecesOptions.push(tempValue)
+      }
+      if (tempObject.imageSource[i] === this._whiteTowerSource || tempObject.imageSource[i] === this._whitekHoarseSource || tempObject.imageSource[i] === this._whiteRunnerSource || tempObject.imageSource[i] === this._whiteKingSource || tempObject.imageSource[i] === this._whiteQueenSource || tempObject.imageSource[i] === this._whitePawnSource) {
+        let tempValue
+        if (tempObject.imageSource[i] === this._whitePawnSource && tempObject.roweValue[i] === 6) {
+          tempValue = this.acceptableSquares(tempObject.imageSource[i], tempObject.roweValue[i], tempObject.columnValue[i], true)
+        } else {
+          tempValue = this.acceptableSquares(tempObject.imageSource[i], tempObject.roweValue[i], tempObject.columnValue[i], false)
+        }
+        whitePiecesOptions.push(tempValue)
+      }
+    }
+    console.log('tempObject/JM')
+    console.log(tempObject)
+    console.log('blackPiecesOptions.flat/JM')
+    console.log(blackPiecesOptions.flat())
+    console.log('whitePiecesOptions.flat/JM')
+    console.log(whitePiecesOptions.flat())
+
+    // Black players otions
+    if (this._activePlayer.innerText === 'White players turn!') {
+      for (let i = 0; i < blackPiecesOptions.flat().length; i++) {
+        if (blackPiecesOptions.flat()[i].childElementCount === 1) {
+          if (blackPiecesOptions.flat()[i].firstElementChild.getAttribute('data-color') !== 'black') {
+            blackPiecesOptions.flat()[i].style.border = '3px solid red'
+          }
+        } else {
+          blackPiecesOptions.flat()[i].style.backgroundColor = 'red'
+        }
+      }
+    }
+    // White players otions
+    if (this._activePlayer.innerText === 'Black players turn!') {
+      for (let i = 0; i < whitePiecesOptions.flat().length; i++) {
+        if (whitePiecesOptions.flat()[i].childElementCount === 1) {
+          if (whitePiecesOptions.flat()[i].firstElementChild.getAttribute('data-color') !== 'white') {
+            whitePiecesOptions.flat()[i].style.border = '3px solid red'
+          }
+        } else {
+          whitePiecesOptions.flat()[i].style.backgroundColor = 'red'
+        }
+      }
+    }
   }
 }
 

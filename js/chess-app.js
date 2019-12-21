@@ -13,6 +13,7 @@ template.innerHTML = /* html */ `
 <select id="history">
     <option value="history">History</option>
     <option value="clear">Hide history!</option>
+    <option value="allRounds">All rounds!</option>
 </select>
 </div>
 
@@ -439,14 +440,26 @@ export class Chess extends window.HTMLElement {
       this.evryAcceptableSquare('black')
     })
 
+    // try to create functionality so the user can se all history at once "show all roundes"
     // Events fired when click on this._history
     this._history.addEventListener('change', event => {
       event.preventDefault()
-      const round = event.target.value
+      let round = event.target.value
       if (round === 'clear') {
         this._historyConteiner.innerHTML = ''
       } else if (round === 'history') {
         console.log('start')
+      } else if (round === 'allRounds') {
+        try {
+          for (let i = 3; i < event.target.parentElement.querySelectorAll('option').length; i++) {
+            round = event.target.parentElement.querySelectorAll('option')[i].value
+            this.showHistory(round)
+          }
+        } catch (error) {
+          console.log(error)
+        }
+        console.log(event.target.parentElement.querySelectorAll('option').length)
+        console.log(event.target.parentElement.querySelectorAll('option')[3].value)
       } else {
         this.showHistory(round)
       }

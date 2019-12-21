@@ -11,7 +11,8 @@ template.innerHTML = /* html */ `
 <button id="options1">Show white players options</button>
 <button id="options2">Show black players options</button>
 <select id="history">
-    <option>Start</option>
+    <option value="history">History</option>
+    <option value="clear">Hide history!</option>
 </select>
 </div>
 
@@ -87,6 +88,7 @@ template.innerHTML = /* html */ `
     <p id="activePlayer">White players turn!</p>
     <p id="checkStatusWhite">White player is NOT check!</p>
     <p id="checkStatusBlack">Black player is NOT check!</p>
+    <div id="historyConteiner"></div>
 <div>
 
 </div>
@@ -99,6 +101,8 @@ template.innerHTML = /* html */ `
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+  text-aligne: center;
+  color: white;
 }
 :host #chessConteiner {
   width: 516px;
@@ -161,6 +165,18 @@ template.innerHTML = /* html */ `
   border: 3px solid purple;
   cursor: pointer;
 }
+:host #history {
+  background-color: blue;
+  color: white;
+  border: 3px solid blue;
+  cursor: pointer;
+}
+:host #historyConteiner {
+  border-top: 3px solid black;
+  clear: both;
+  color: black;
+  background-color: white;
+} 
 
 </style>
 `
@@ -196,6 +212,7 @@ export class Chess extends window.HTMLElement {
     this._round = 0
     this._information = this.shadowRoot.querySelector('#information')
     this._history = this.shadowRoot.querySelector('#history')
+    this._historyConteiner = this.shadowRoot.querySelector('#historyConteiner')
 
     // chesspieces image sources
     this._whitePawnSource = '../imageChess/pawnWhite.png'
@@ -385,6 +402,7 @@ export class Chess extends window.HTMLElement {
     // Events fired when click on this._deletChess
     this._deletChess.addEventListener('click', event => {
       event.preventDefault()
+      window.sessionStorage.clear()
       event.target.parentNode.parentNode.remove()
     })
 
@@ -420,7 +438,13 @@ export class Chess extends window.HTMLElement {
     this._history.addEventListener('change', event => {
       event.preventDefault()
       const round = event.target.value
-      this.showHistory(round)
+      if (round === 'clear') {
+        this._historyConteiner.innerHTML = ''
+      } else if (round === 'history') {
+        console.log('start')
+      } else {
+        this.showHistory(round)
+      }
     })
   }
 
@@ -1403,10 +1427,22 @@ export class Chess extends window.HTMLElement {
     }
   }
 
+  /**
+   * @param {*} argument
+   * @memberof Chess
+   */
   showHistory (argument) {
     // this._information.innerHTML = ''
     const data = JSON.parse(window.sessionStorage.getItem(argument))
     const fragment = document.createDocumentFragment()
+    const header = document.createElement('h1')
+    const header2 = document.createElement('h1')
+    header.innerText = `History ${argument}`
+    fragment.appendChild(header)
+    header2.innerText = `History ${argument}`
+    header.style.color = 'black'
+    header2.style.color = 'black'
+
     let counter = 0
     for (let i = 0; i < 8; i++) {
       for (let j = 0; j < 8; j++) {
@@ -1434,7 +1470,8 @@ export class Chess extends window.HTMLElement {
         fragment.appendChild(div)
       }
     }
-    this._information.appendChild(fragment)
+    fragment.appendChild(header2)
+    this._historyConteiner.appendChild(fragment)
   }
 }
 

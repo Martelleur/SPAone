@@ -128,7 +128,6 @@ template.innerHTML = /* html */ `
   padding: 0px;
 }
 :host #chessBoard>div img {
-  dispaly: initial;
   width: 100%;
   padding: 1px;
 }
@@ -371,7 +370,36 @@ export class Chess extends window.HTMLElement {
       const argument = `round${this._round}`
       window.sessionStorage.setItem(argument, JSON.stringify(this.indexAllSquares()))
       console.log(JSON.parse(window.sessionStorage.getItem(argument)))
-      // this._information.appendChild(window.sessionStorage.getItem(argument))
+      const data = JSON.parse(window.sessionStorage.getItem(argument))
+      const fragment = document.createDocumentFragment()
+      let counter = 0
+      for (let i = 0; i < 8; i++) {
+        for (let j = 0; j < 8; j++) {
+          counter++
+          const idName = `${argument}Dragtarget${counter}`
+          const div = document.createElement('div')
+          div.setAttribute('id', idName)
+          div.setAttribute('class', 'droptarget')
+          div.style.width = '63.25px'
+          div.style.height = '63.25px'
+          div.style.float = 'left'
+          div.style.border = '1px solid black'
+          for (let k = 0; k < data.roweValue.length; k++) {
+            if(i === data.roweValue[k] && j === data.columnValue[k]) {
+              const img = document.createElement('img')
+              img.setAttribute('src', data.imageSource[k])
+              img.setAttribute('class', 'acceptableSquare')
+              img.setAttribute('data-color', 'undefined')
+              img.setAttribute('data-first', 'false')
+              img.style.width = '100%'
+              img.style.padding = '1px'
+              div.appendChild(img) 
+            }
+          }
+          fragment.appendChild(div)
+        }
+      }
+      this._information.appendChild(fragment)
     })
 
     // Events fired when click on this._deletChess

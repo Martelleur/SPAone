@@ -311,7 +311,22 @@ export class Chess extends window.HTMLElement {
     // Events fired when dropping over this._chessBoard
     this._chessBoard.addEventListener('drop', event => {
       event.preventDefault()
-      // console.log(event.target)
+      // Dont work but try think this overar and yoy may find a solution
+      /*
+      // test if move of checkpiaece not make player scheck
+      if (this._whitePiecesTurn) {
+        this.evryAcceptableSquare('isWhiteSheck')
+        if (this._checkStatusWhite.innerText === 'White player is check!') {
+          return
+        }
+      }
+      if (!this._whitePiecesTurn) {
+        this.evryAcceptableSquare('isBlackSheck')
+        if (this._checkStatusBlack.innerText === 'Black player is check!') {
+          return
+        }
+      }
+      */
 
       // when chesspiece id dropped
       try {
@@ -356,6 +371,7 @@ export class Chess extends window.HTMLElement {
           // change activePlayer and test if player is scheck
           if (this._whitePiecesTurn) {
             this._whitePiecesTurn = false
+            this.evryAcceptableSquare('isWhiteSheck')
             this.evryAcceptableSquare('isBlackSheck')
             /*
             if (this._checkStatus.innerText === 'White is scheck!') {
@@ -367,6 +383,7 @@ export class Chess extends window.HTMLElement {
             this._whitePiecesTurn = true
             this._activePlayer.innerHTML = 'White players turn!'
             this.evryAcceptableSquare('isWhiteSheck')
+            this.evryAcceptableSquare('isBlackSheck')
           }
 
           // Reset border color, class name and background color

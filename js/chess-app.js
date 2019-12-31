@@ -196,12 +196,16 @@ export class Chess extends window.HTMLElement {
   constructor () {
     super()
 
-    // Creating shadowroot
+    // Creating shadowroot and data
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
     this._chessConteiner = this.shadowRoot.querySelector('#chessConteiner')
     this._deletChess = this.shadowRoot.querySelector('#deletChess')
     this._chessBoard = this.shadowRoot.querySelector('#chessBoard')
+    this._chessBoardDivLength = this._chessBoard.querySelectorAll('div').length
+    this._chessBoardImgLength = this._chessBoard.querySelectorAll('div>img').length
+    this._chessBoardDiv = this._chessBoard.querySelectorAll('div')
+    this._chessBoardImg = this._chessBoard.querySelectorAll('div>img')
     this._dragtarget = this.shadowRoot.querySelector('#dragtarget')
     this.createIdForSquares()
     this._whitePiecesTurn = true
@@ -241,9 +245,9 @@ export class Chess extends window.HTMLElement {
       console.log(event.target.parentNode)
 
       // Reset border color
-      for (let i = 0; i < this._chessBoard.querySelectorAll('div').length; i++) {
-        this._chessBoard.querySelectorAll('div')[i].setAttribute('class', 'droptarget')
-        this._chessBoard.querySelectorAll('div')[i].style.border = '1px solid black'
+      for (let i = 0; i < this._chessBoardDivLength; i++) {
+        this._chessBoardDiv[i].setAttribute('class', 'droptarget')
+        this._chessBoardDiv[i].style.border = '1px solid black'
       }
 
       // if player move pawn for the first time
@@ -287,24 +291,35 @@ export class Chess extends window.HTMLElement {
     // Events fired when dragging
     this._chessBoard.addEventListener('drag', event => {
       // event.preventDefault()
-      // console.log(event.target)
-      // event.target.style.cursor = 'grabbing'
-      // console.log(event.target)
     })
 
     // Events fired on the drop target
     this._chessBoard.addEventListener('dragover', event => {
       event.preventDefault()
       // console.log(event.target)
-
       // Reset backgroundecolor color
-      for (let i = 0; i < this._chessBoard.querySelectorAll('div').length; i++) {
-        this._chessBoard.querySelectorAll('div')[i].style.backgroundColor = 'white'
+      for (let i = 0; i < this._chessBoardDivLength; i++) {
+        if (this._chessBoardDiv[i].style.backgroundColor === 'blue') {
+          this._chessBoardDiv[i].style.backgroundColor = 'white'
+        }
       }
 
       // Set backgroundecolor to blue over the event.target
       if (event.target.getAttribute('class') === 'acceptableSquare' && event.target.nodeName === 'DIV') {
         event.target.style.backgroundColor = 'blue'
+      }
+    })
+
+    // The dragend event is fired when a drag operation is being ended (by releasing a mouse button or hitting the escape key).
+    window.addEventListener('dragend', event => {
+      console.log('joel')
+      for (let i = 0; i < this._chessBoardDivLength; i++) {
+        if (this._chessBoardDiv[i].style.backgroundColor !== 'white') {
+          this._chessBoardDiv[i].style.backgroundColor = 'white'
+        }
+        if (this._chessBoardDiv[i].style.borderColor !== 'black') {
+          this._chessBoardDiv[i].style.border = '1px solid black'
+        }
       }
     })
 
@@ -332,6 +347,7 @@ export class Chess extends window.HTMLElement {
       try {
         if (event.target.className === 'acceptableSquare') {
           const data = event.dataTransfer.getData('chessPiece')
+          event.target.removeAttribute('data-temp')
 
           // console.log(data)
           const textArgument = `#${data}`
@@ -371,33 +387,25 @@ export class Chess extends window.HTMLElement {
           // change activePlayer and test if player is scheck
           if (this._whitePiecesTurn) {
             this._whitePiecesTurn = false
-            this.evryAcceptableSquare('isWhiteSheck')
             this.evryAcceptableSquare('isBlackSheck')
-            /*
-            if (this._checkStatus.innerText === 'White is scheck!') {
-              return
-            }
-            */
+            this.evryAcceptableSquare('isWhiteSheck')
             this._activePlayer.innerHTML = 'Black players turn!'
           } else {
             this._whitePiecesTurn = true
-            this._activePlayer.innerHTML = 'White players turn!'
             this.evryAcceptableSquare('isWhiteSheck')
             this.evryAcceptableSquare('isBlackSheck')
+            this._activePlayer.innerHTML = 'White players turn!'
           }
 
           // Reset border color, class name and background color
-          for (let i = 0; i < this._chessBoard.querySelectorAll('div').length; i++) {
-            this._chessBoard.querySelectorAll('div')[i].setAttribute('class', 'droptarget')
-            this._chessBoard.querySelectorAll('div')[i].style.border = '1px solid black'
-            this._chessBoard.querySelectorAll('div')[i].style.backgroundColor = 'white'
+          for (let i = 0; i < this._chessBoardDivLength; i++) {
+            this._chessBoardDiv[i].setAttribute('class', 'droptarget')
+            this._chessBoardDiv[i].style.border = '1px solid black'
+            this._chessBoardDiv[i].style.backgroundColor = 'white'
           }
-          for (let i = 0; i < this._chessBoard.querySelectorAll('div>img').length; i++) {
-            this._chessBoard.querySelectorAll('div>img')[i].style.backgroundColor = 'white'
+          for (let i = 0; i < this._chessBoardImgLength; i++) {
+            this._chessBoardImg[i].style.backgroundColor = 'white'
           }
-
-          // Change pawn to queen
-          this.pawnToQueen()
 
           // try to fix problem how to save when multipale tables is in action
           // saving in sessionstorage
@@ -417,11 +425,15 @@ export class Chess extends window.HTMLElement {
       } catch (error) {
         console.log(error)
       }
+
+      // Change pawn to queen
+      this.pawnToQueen()
+
       // Reset border color, class name and background color
-      for (let i = 0; i < this._chessBoard.querySelectorAll('div').length; i++) {
-        this._chessBoard.querySelectorAll('div')[i].setAttribute('class', 'droptarget')
-        this._chessBoard.querySelectorAll('div')[i].style.border = '1px solid black'
-        this._chessBoard.querySelectorAll('div')[i].style.backgroundColor = 'white'
+      for (let i = 0; i < this._chessBoardDivLength; i++) {
+        this._chessBoardDiv[i].setAttribute('class', 'droptarget')
+        this._chessBoardDiv[i].style.border = '1px solid black'
+        this._chessBoardDiv[i].style.backgroundColor = 'white'
       }
 
       // decide winner
@@ -430,8 +442,8 @@ export class Chess extends window.HTMLElement {
         this._checkStatusWhite.innerText = ''
         this._activePlayer.innerText = ''
         this._winner.innerText = 'White player win!'
-        for (let i = 0; i < this._chessBoard.querySelectorAll('div>img').length; i++) {
-          this._chessBoard.querySelectorAll('div>img')[i].setAttribute('data-color', 'undefined')
+        for (let i = 0; i < this._chessBoardImgLength; i++) {
+          this._chessBoardImg[i].setAttribute('data-color', 'undefined')
         }
       }
       if (this._activePlayer.innerText === 'Black players turn!' && this._checkStatusWhite.innerText === 'White player is scheck!') {
@@ -439,8 +451,8 @@ export class Chess extends window.HTMLElement {
         this._checkStatusWhite.innerText = ''
         this._activePlayer.innerText = ''
         this._winner.innerText = 'Black player win!'
-        for (let i = 0; i < this._chessBoard.querySelectorAll('div>img').length; i++) {
-          this._chessBoard.querySelectorAll('div>img')[i].setAttribute('data-color', 'undefined')
+        for (let i = 0; i < this._chessBoardImgLength; i++) {
+          this._chessBoardImg[i].setAttribute('data-color', 'undefined')
         }
       }
     })
@@ -456,12 +468,12 @@ export class Chess extends window.HTMLElement {
     this._showWhiteOptions.addEventListener('click', event => {
       event.preventDefault()
       // Reset border color and background color
-      for (let i = 0; i < this._chessBoard.querySelectorAll('div').length; i++) {
-        this._chessBoard.querySelectorAll('div')[i].style.border = '1px solid black'
-        this._chessBoard.querySelectorAll('div')[i].style.backgroundColor = 'white'
+      for (let i = 0; i < this._chessBoardDivLength; i++) {
+        this._chessBoardDiv[i].style.border = '1px solid black'
+        this._chessBoardDiv[i].style.backgroundColor = 'white'
       }
-      for (let i = 0; i < this._chessBoard.querySelectorAll('div>img').length; i++) {
-        this._chessBoard.querySelectorAll('div>img')[i].style.backgroundColor = 'white'
+      for (let i = 0; i < this._chessBoardImgLength; i++) {
+        this._chessBoardImg[i].style.backgroundColor = 'white'
       }
       this.evryAcceptableSquare('white')
     })
@@ -470,17 +482,16 @@ export class Chess extends window.HTMLElement {
     this._showBlackOptions.addEventListener('click', event => {
       event.preventDefault()
       // Reset border color and background color
-      for (let i = 0; i < this._chessBoard.querySelectorAll('div').length; i++) {
-        this._chessBoard.querySelectorAll('div')[i].style.border = '1px solid black'
-        this._chessBoard.querySelectorAll('div')[i].style.backgroundColor = 'white'
+      for (let i = 0; i < this._chessBoardDivLength; i++) {
+        this._chessBoardDiv[i].style.border = '1px solid black'
+        this._chessBoardDiv[i].style.backgroundColor = 'white'
       }
-      for (let i = 0; i < this._chessBoard.querySelectorAll('div>img').length; i++) {
-        this._chessBoard.querySelectorAll('div>img')[i].style.backgroundColor = 'white'
+      for (let i = 0; i < this._chessBoardImgLength; i++) {
+        this._chessBoardImg[i].style.backgroundColor = 'white'
       }
       this.evryAcceptableSquare('black')
     })
-    // try to create functionality so taht user can start over from a point in history
-    // try to create functionality so the user can se all history at once "show all roundes"
+    // try to create functionality so that user can start over from a point in history
     // Events fired when click on this._history
     this._history.addEventListener('change', event => {
       event.preventDefault()
@@ -488,7 +499,7 @@ export class Chess extends window.HTMLElement {
       if (round === 'clear') {
         this._historyConteiner.innerHTML = ''
       } else if (round === 'history') {
-        console.log('start')
+        // console.log('start')
       } else if (round === 'allRounds') {
         try {
           for (let i = 3; i < event.target.parentElement.querySelectorAll('option').length; i++) {
@@ -498,9 +509,10 @@ export class Chess extends window.HTMLElement {
         } catch (error) {
           console.log(error)
         }
-        console.log(event.target.parentElement.querySelectorAll('option').length)
-        console.log(event.target.parentElement.querySelectorAll('option')[3].value)
+        // console.log(event.target.parentElement.querySelectorAll('option').length)
+        // console.log(event.target.parentElement.querySelectorAll('option')[3].value)
       } else {
+        this._historyConteiner.innerHTML = ''
         this.showHistory(round)
       }
     })
@@ -510,9 +522,9 @@ export class Chess extends window.HTMLElement {
    * @memberof Chess
    */
   createIdForSquares () {
-    for (let i = 0; i < this._chessBoard.querySelectorAll('div').length; i++) {
+    for (let i = 0; i < this._chessBoardDivLength; i++) {
       const idName = `dragtarget${i + 1}`
-      this._chessBoard.querySelectorAll('div')[i].setAttribute('id', idName)
+      this._chessBoardDiv[i].setAttribute('id', idName)
     }
   }
 
@@ -523,15 +535,15 @@ export class Chess extends window.HTMLElement {
   squaresData () {
     const outerArray = []
     const outerArrayImages = []
-    for (let i = 0; i < this._chessBoard.querySelectorAll('div').length; i++) {
+    for (let i = 0; i < this._chessBoardDivLength; i++) {
       const innerArray = []
       const innerArrayImages = []
       // console.log(Math.sqrt(this._chessBoard.querySelectorAll('div').length))
-      for (let j = i; j < (i + Math.sqrt(this._chessBoard.querySelectorAll('div').length)); j++) {
-        innerArray.push(this._chessBoard.querySelectorAll('div')[j])
+      for (let j = i; j < (i + Math.sqrt(this._chessBoardDivLength)); j++) {
+        innerArray.push(this._chessBoardDiv[j])
         // console.log(rowArray)
         try {
-          const image = this._chessBoard.querySelectorAll('div')[j].firstElementChild
+          const image = this._chessBoardDiv[j].firstElementChild
           innerArrayImages.push(image.getAttribute('src'))
         } catch (error) {
           innerArrayImages.push('No image')
@@ -539,7 +551,7 @@ export class Chess extends window.HTMLElement {
           // console.log((`Square: ${square.getAttribute('id')}. Contains nothing`))
         }
       }
-      i = i + Math.sqrt(this._chessBoard.querySelectorAll('div').length) - 1
+      i = i + Math.sqrt(this._chessBoardDivLength) - 1
       // console.log(rowArray)
       outerArray.push(innerArray)
       outerArrayImages.push(innerArrayImages)
@@ -548,9 +560,9 @@ export class Chess extends window.HTMLElement {
     // console.log(indexArray)
     const images = []
     const squares = []
-    for (let i = 0; i < this._chessBoard.querySelectorAll('div').length; i++) {
-      const image = this._chessBoard.querySelectorAll('div')[i].firstElementChild
-      const square = this._chessBoard.querySelectorAll('div')[i]
+    for (let i = 0; i < this._chessBoardDivLength; i++) {
+      const image = this._chessBoardDiv[i].firstElementChild
+      const square = this._chessBoardDiv[i]
       try {
         // console.log(`Square: ${square.getAttribute('id')}. Contains picture: ${image.getAttribute('src')}`)
         images.push(image.getAttribute('src'))
@@ -1317,24 +1329,24 @@ export class Chess extends window.HTMLElement {
    * @memberof Chess
    */
   pawnToQueen () {
-    const number1 = this._chessBoard.querySelectorAll('div').length - Math.sqrt(this._chessBoard.querySelectorAll('div').length)
-    const number2 = Math.sqrt(this._chessBoard.querySelectorAll('div').length)
-    const number3 = this._chessBoard.querySelectorAll('div').length
+    const number1 = this._chessBoardDivLength - Math.sqrt(this._chessBoardDivLength)
+    const number2 = Math.sqrt(this._chessBoardDivLength)
+    // const number3 = this._chessBoard.querySelectorAll('div').length
 
     for (let i = 0; i < number2; i++) {
       try {
-        if (this._chessBoard.querySelectorAll('div')[i].firstElementChild.getAttribute('src') === this._whitePawnSource) {
-          this._chessBoard.querySelectorAll('div')[i].firstElementChild.setAttribute('src', this._whiteQueenSource)
+        if (this._chessBoardDiv[i].firstElementChild.getAttribute('src') === this._whitePawnSource) {
+          this._chessBoardDiv[i].firstElementChild.setAttribute('src', this._whiteQueenSource)
         }
       } catch (error) {
         // console.log(error)
       }
     }
 
-    for (let i = number1; i < number3; i++) {
+    for (let i = number1; i < this._chessBoardDivLength; i++) {
       try {
-        if (this._chessBoard.querySelectorAll('div')[i].firstElementChild.getAttribute('src') === this._blackPawnSource) {
-          this._chessBoard.querySelectorAll('div')[i].firstElementChild.setAttribute('src', this._blackQueenSource)
+        if (this._chessBoardDiv[i].firstElementChild.getAttribute('src') === this._blackPawnSource) {
+          this._chessBoardDiv[i].firstElementChild.setAttribute('src', this._blackQueenSource)
         }
       } catch (error) {
         // console.log(error)
@@ -1409,6 +1421,9 @@ export class Chess extends window.HTMLElement {
         whitePiecesOptions.push(tempValue)
       }
     }
+
+    const blackPiecesOptionsFlat = blackPiecesOptions.flat()
+    const whitePiecesOptionsFlat = whitePiecesOptions.flat()
     /*
     console.log('tempObject/JM')
     console.log(tempObject)
@@ -1419,69 +1434,69 @@ export class Chess extends window.HTMLElement {
     */
     // Black players otions
     if (color === 'black') {
-      for (let i = 0; i < blackPiecesOptions.flat().length; i++) {
-        if (blackPiecesOptions.flat()[i].childElementCount === 1) {
-          if (blackPiecesOptions.flat()[i].firstElementChild.getAttribute('data-color') !== 'black') {
-            blackPiecesOptions.flat()[i].style.border = '3px solid purple'
+      for (let i = 0; i < blackPiecesOptionsFlat.length; i++) {
+        if (blackPiecesOptionsFlat[i].childElementCount === 1) {
+          if (blackPiecesOptionsFlat[i].firstElementChild.getAttribute('data-color') !== 'black') {
+            blackPiecesOptionsFlat[i].style.border = '3px solid purple'
           }
         } else {
-          blackPiecesOptions.flat()[i].style.backgroundColor = 'purple'
+          blackPiecesOptionsFlat[i].style.backgroundColor = 'purple'
         }
       }
     }
     // White players otions
     if (color === 'white') {
-      for (let i = 0; i < whitePiecesOptions.flat().length; i++) {
-        if (whitePiecesOptions.flat()[i].childElementCount === 1) {
-          if (whitePiecesOptions.flat()[i].firstElementChild.getAttribute('data-color') !== 'white') {
-            whitePiecesOptions.flat()[i].style.border = '3px solid green'
+      for (let i = 0; i < whitePiecesOptionsFlat.length; i++) {
+        if (whitePiecesOptionsFlat[i].childElementCount === 1) {
+          if (whitePiecesOptionsFlat[i].firstElementChild.getAttribute('data-color') !== 'white') {
+            whitePiecesOptionsFlat[i].style.border = '3px solid green'
           }
         } else {
-          whitePiecesOptions.flat()[i].style.backgroundColor = 'green'
+          whitePiecesOptionsFlat[i].style.backgroundColor = 'green'
         }
       }
     }
 
     // test if white is shack
     if (color === 'isWhiteSheck') {
-      for (let i = 0; i < blackPiecesOptions.flat().length; i++) {
+      for (let i = 0; i < blackPiecesOptionsFlat.length; i++) {
         try {
-          if (blackPiecesOptions.flat()[i].childElementCount === 1) {
-            if (blackPiecesOptions.flat()[i].firstElementChild.getAttribute('src') === this._whiteKingSource) {
-              console.log('white is sheck')
+          if (blackPiecesOptionsFlat[i].childElementCount === 1) {
+            if (blackPiecesOptionsFlat[i].firstElementChild.getAttribute('src') === this._whiteKingSource) {
+              // console.log('white is sheck')
               this._checkStatusWhite.innerText = 'White player is scheck!'
               window.alert('OBS! White player is check, if still check after this round white player loose!')
               break
             } else {
-              console.log('white is NOT sheck')
+              // console.log('white is NOT sheck')
               this._checkStatusWhite.innerText = 'White player is NOT scheck!'
               // return false
             }
           }
         } catch (error) {
-          console.log(error)
+          // console.log(error)
         }
       }
     }
     // test if black is shack
     if (color === 'isBlackSheck') {
-      for (let i = 0; i < whitePiecesOptions.flat().length; i++) {
+      for (let i = 0; i < whitePiecesOptionsFlat.length; i++) {
         try {
-          if (whitePiecesOptions.flat()[i].childElementCount === 1) {
-            if (whitePiecesOptions.flat()[i].firstElementChild.getAttribute('src') === this._blackKingSource) {
-              console.log('black is sheck')
+          if (whitePiecesOptionsFlat[i].childElementCount === 1) {
+            if (whitePiecesOptionsFlat[i].firstElementChild.getAttribute('src') === this._blackKingSource) {
+              // console.log('black is sheck')
               this._checkStatusBlack.innerText = 'Black player is scheck!'
               window.alert('OBS! Black player is check, if still check after this round black player loose!')
               break
               // return true
             } else {
-              console.log('black is NOT sheck')
+              // console.log('black is NOT sheck')
               this._checkStatusBlack.innerText = 'Black player is NOT scheck!'
               // return false
             }
           }
         } catch (error) {
-          console.log(error)
+          // console.log(error)
         }
       }
     }

@@ -78,6 +78,7 @@ export class Chat extends window.HTMLElement {
     this._hideWindow = this.shadowRoot.querySelector('#hideWindow')
     this._bigWindow = this.shadowRoot.querySelector('#bigWindow')
     this._chatConteiner = this.shadowRoot.querySelector('#chatConteiner')
+    this._tools = this.shadowRoot.querySelector('#tools')
     this._width = 500
     // console.log('test')
     // console.log(this)
@@ -94,7 +95,6 @@ export class Chat extends window.HTMLElement {
       this._width = newValue
     }
     if (name === 'data-hide') {
-      console.log('test attributeChangedCallback/JM')
       console.log(newValue)
       console.log(oldValue)
       if (newValue === 'true') {
@@ -104,22 +104,19 @@ export class Chat extends window.HTMLElement {
         this.style.display = 'initial'
       }
     }
+    if (name === 'id') {
+      console.log('test attributeChangedCallback/JM')
+      const p = document.createElement('p')
+      p.innerText = this.getAttribute('id')
+      this._tools.appendChild(p)
+      console.log(this.getAttribute('id'))
+    }
   }
 
   connectedCallback () {
     // eventlistner for this._bigWindow
     this._bigWindow.addEventListener('click', (event) => {
       event.preventDefault()
-      this._width = this._width + 20
-      this._height = this._height + 20
-      const argumentWidth = `${this._width}px`
-      this.style.width = argumentWidth
-      const argumentHeight = `${this._height}px`
-      this.style.height = argumentHeight
-      // console.log(this.style.width.slice(0, 3))
-      // console.log(typeof Number(this.style.width.slice(0, 3)))
-      // console.log(typeof this.style.width)
-      // console.log(typeof this.style.height)
     })
 
     // eventlistner for this._hideWindow
@@ -138,7 +135,6 @@ export class Chat extends window.HTMLElement {
     this._deletChat.addEventListener('click', (event) => {
       event.preventDefault()
       this._socket.close()
-      // event.target.parentNode.parentNode.parentNode.remove()
       this.remove()
     })
 

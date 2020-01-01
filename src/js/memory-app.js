@@ -22,7 +22,7 @@ template.innerHTML = /* html */ `
 <style>
 :host {
     position: absolute;
-    width: 30%;
+    width: 50%;
     display: block;
     resize: both;
     overflow: scroll;

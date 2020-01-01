@@ -33,10 +33,7 @@ template.innerHTML = /* html */ `
     box-sizing: border-box;
     border: 5px solid blue;
     resize: both;
-    overflow: hidden;
-}
-:host:hover {
-  border: 5px solid green;
+    overflow: scroll;
 }
 :host #chatConteiner {
     width: 100%;
@@ -184,12 +181,27 @@ export class Chat extends window.HTMLElement {
     this._socket.addEventListener('message', event => {
       console.log('websocket message event.data:')
       console.log(event.data)
+      const dataParse = JSON.parse(event.data)
+      console.log(dataParse)
+      console.log(dataParse.username)
+      console.log(dataParse.channel)
+      console.log(dataParse.data)
+      console.log(dataParse.type)
+      const p = document.createElement('p')
+      p.textContent = event.data
+      p.innerHTML = `Username: ${dataParse.username}.<br>Channel: ${dataParse.channel}.<br>Data: ${dataParse.data}.<br>Type: ${dataParse.type}`
+      this._messages.appendChild(p)
     })
 
     // listning on servers heartbeat
     this._socket.addEventListener('heartbeat', event => {
       console.log('websocket heartbeat event.data:')
       console.log(event.data)
+      /*
+      const p = document.createElement('p')
+      p.textContent = event.data
+      this._messages.appendChild(p)
+      */
     })
 
     // close WS

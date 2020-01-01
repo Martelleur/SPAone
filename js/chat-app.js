@@ -71,16 +71,15 @@ export class Chat extends window.HTMLElement {
     this._closeLiveChat = this.shadowRoot.querySelector('#closeLiveChat')
     this._socket = new window.WebSocket('ws://vhost3.lnu.se:20080/socket/', 'charcords') // charcoard är ett egendefinierat protcol (urlen och protocol måste överenstämma)
     this._data = undefined
+    this._username = 'Joel Martelleur'
+    this._type = 'message'
+    this._channel = 'my, not so secret, channel'
+    this._key = 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd'
     this._onlineStatus = this.shadowRoot.querySelector('#onlineStatus p')
     this._hideWindow = this.shadowRoot.querySelector('#hideWindow')
     this._bigWindow = this.shadowRoot.querySelector('#bigWindow')
     this._chatConteiner = this.shadowRoot.querySelector('#chatConteiner')
     this._tools = this.shadowRoot.querySelector('#tools')
-    this._width = 500
-    // console.log('test')
-    // console.log(this)
-    // console.log(Number(this.style.width.slice(0, 3)))
-    this._height = 500
   }
 
   static get observedAttributes () {
@@ -123,15 +122,15 @@ export class Chat extends window.HTMLElement {
       if (this.getAttribute('data-hide') === 'true') {
         const event = new window.CustomEvent('hiddenElement')
         this.dispatchEvent(event)
-        console.log('My custom event is dispatched')
-        console.log(event)
+        // console.log('My custom event is dispatched')
+        // console.log(event)
       }
     })
 
     // eventlistner for this._input
     this._input.addEventListener('input', (event) => {
       this._message = this._input.value
-      console.log(this._input.value)
+      // console.log(this._input.value)
     })
 
     // eventlistner for this._deletChat
@@ -152,6 +151,7 @@ export class Chat extends window.HTMLElement {
 
       const p = document.createElement('p')
       p.innerText = this._message
+      p.innerHTML = `Username: ${this._username}.<br>Channel: ${this._channel}.<br>Data: ${this._message}.<br>Type: ${this._type}`
       this._messages.appendChild(p)
     })
 
@@ -159,7 +159,7 @@ export class Chat extends window.HTMLElement {
     this._goLiveChat.addEventListener('click', (event) => {
       event.preventDefault()
       this._onlineStatus.innerText = 'Thank you! You are online'
-      console.log('websocket trys to connect to server/JM')
+      // console.log('websocket trys to connect to server/JM')
       this._socket = new window.WebSocket('ws://vhost3.lnu.se:20080/socket/', 'charcords')
     })
 
@@ -167,11 +167,11 @@ export class Chat extends window.HTMLElement {
       console.log('websocket in action/JM')
 
       this._data = {
-        type: 'message',
+        type: this._type,
         data: this._message,
-        username: 'Joel Martelleur',
-        channel: 'my, not so secret, channel',
-        key: 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd'
+        username: this._username,
+        channel: this._channel,
+        key: this._key
       }
 
       this._socket.send(JSON.stringify(this._data))
@@ -179,16 +179,18 @@ export class Chat extends window.HTMLElement {
 
     // listning for message from other users
     this._socket.addEventListener('message', event => {
-      console.log('websocket message event.data:')
-      console.log(event.data)
+      // console.log('websocket message event.data:')
+      // console.log(event.data)
       const dataParse = JSON.parse(event.data)
+      /*
       console.log(dataParse)
       console.log(dataParse.username)
       console.log(dataParse.channel)
       console.log(dataParse.data)
       console.log(dataParse.type)
+      */
       const p = document.createElement('p')
-      p.textContent = event.data
+      // p.textContent = event.data
       p.innerHTML = `Username: ${dataParse.username}.<br>Channel: ${dataParse.channel}.<br>Data: ${dataParse.data}.<br>Type: ${dataParse.type}`
       this._messages.appendChild(p)
     })

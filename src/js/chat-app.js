@@ -95,8 +95,8 @@ export class Chat extends window.HTMLElement {
       this._width = newValue
     }
     if (name === 'data-hide') {
-      console.log(newValue)
-      console.log(oldValue)
+      // console.log(newValue)
+      // console.log(oldValue)
       if (newValue === 'true') {
         this.style.display = 'none'
       }
@@ -105,11 +105,11 @@ export class Chat extends window.HTMLElement {
       }
     }
     if (name === 'id') {
-      console.log('test attributeChangedCallback/JM')
+      // console.log('test attributeChangedCallback/JM')
       const p = document.createElement('p')
       p.innerText = this.getAttribute('id')
       this._tools.appendChild(p)
-      console.log(this.getAttribute('id'))
+      // console.log(this.getAttribute('id'))
     }
   }
 
@@ -123,6 +123,12 @@ export class Chat extends window.HTMLElement {
     this._hideWindow.addEventListener('click', (event) => {
       event.preventDefault()
       this.setAttribute('data-hide', 'true')
+      if (this.getAttribute('data-hide') === 'true') {
+        const event = new window.CustomEvent('hiddenElement')
+        this.dispatchEvent(event)
+        console.log('My custom event is dispatched')
+        console.log(event)
+      }
     })
 
     // eventlistner for this._input

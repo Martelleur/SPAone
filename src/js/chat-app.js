@@ -6,8 +6,8 @@ template.innerHTML = /* html */ `
         <button id="deletChat">Delet chat</button>
         <button id="goLiveChat">Go online</button>
         <button id="closeLiveChat">Go offline</button>
-        <button id="biggerWindow">+</button>
-        <button id="smallerWindow">-</button>
+        <button id="bigWindow">+</button>
+        <button id="hideWindow">-</button>
     </fieldset>
     <fieldset id="onlineStatus">
         <p>You are online</p>
@@ -32,7 +32,6 @@ template.innerHTML = /* html */ `
     background-color: black;
     box-sizing: border-box;
     border: 5px solid blue;
-    display: block;
     resize: both;
     overflow: hidden;
 }
@@ -76,8 +75,8 @@ export class Chat extends window.HTMLElement {
     this._socket = new window.WebSocket('ws://vhost3.lnu.se:20080/socket/', 'charcords') // charcoard är ett egendefinierat protcol (urlen och protocol måste överenstämma)
     this._data = undefined
     this._onlineStatus = this.shadowRoot.querySelector('#onlineStatus p')
-    this._smallerWindow = this.shadowRoot.querySelector('#smallerWindow')
-    this._biggerWindow = this.shadowRoot.querySelector('#biggerWindow')
+    this._hideWindow = this.shadowRoot.querySelector('#hideWindow')
+    this._bigWindow = this.shadowRoot.querySelector('#bigWindow')
     this._chatConteiner = this.shadowRoot.querySelector('#chatConteiner')
     this._width = 500
     // console.log('test')
@@ -87,18 +86,29 @@ export class Chat extends window.HTMLElement {
   }
 
   static get observedAttributes () {
-    return ['id', 'width']
+    return ['id', 'width', 'data-hide']
   }
 
   attributeChangedCallback (name, oldValue, newValue) {
     if (name === 'width') {
       this._width = newValue
     }
+    if (name === 'data-hide') {
+      console.log('test attributeChangedCallback/JM')
+      console.log(newValue)
+      console.log(oldValue)
+      if (newValue === 'true') {
+        this.style.display = 'none'
+      }
+      if (newValue === 'false') {
+        this.style.display = 'initial'
+      }
+    }
   }
 
   connectedCallback () {
-    // eventlistner for this._biggerWindow
-    this._biggerWindow.addEventListener('click', (event) => {
+    // eventlistner for this._bigWindow
+    this._bigWindow.addEventListener('click', (event) => {
       event.preventDefault()
       this._width = this._width + 20
       this._height = this._height + 20
@@ -112,15 +122,10 @@ export class Chat extends window.HTMLElement {
       // console.log(typeof this.style.height)
     })
 
-    // eventlistner for this._smallerWindow
-    this._smallerWindow.addEventListener('click', (event) => {
+    // eventlistner for this._hideWindow
+    this._hideWindow.addEventListener('click', (event) => {
       event.preventDefault()
-      this._width = this._width - 20
-      this._height = this._height - 20
-      const argumentWidth = `${this._width}px`
-      this.style.width = argumentWidth
-      const argumentHeight = `${this._height}px`
-      this.style.height = argumentHeight
+      this.setAttribute('data-hide', 'true')
     })
 
     // eventlistner for this._input
@@ -192,31 +197,6 @@ export class Chat extends window.HTMLElement {
       this._onlineStatus.innerText = 'You are offline'
     })
   }
-  /*
-  disconnectedCallback () {
-
-  }
-
-  increaseSize (event) {
-    event.preventDefault()
-    this._width++
-    this._height++
-    const argumentWidth = `${this._width}px`
-    this.style.width = argumentWidth
-    const argumentHeight = `${this._height}px`
-    this.style.height = argumentHeight
-  }
-
-  decreaseSize (event) {
-    event.preventDefault()
-    this._width--
-    this._height--
-    const argumentWidth = `${this._width}px`
-    this.style.width = argumentWidth
-    const argumentHeight = `${this._height}px`
-    this.style.height = argumentHeight
-  }
-  */
 }
 
 // Registers the custom event

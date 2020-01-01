@@ -56,6 +56,29 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
   }
   element.setAttribute('id', nameIdApplication)
   console.log(element.getAttribute('id'))
+  element.setAttribute('data-hide', 'false')
+  // console.log(element.hasAttribute('data-hide'))
+
+  // hidde element
+  /*
+  if (element.hasAttribute('data-hide')) {
+    const fragment = document.createElement('fragment')
+    const select = document.createElement('select')
+    const option = document.createElement('option')
+    // option.innerHTML = element.getAttribute('id')
+    option.textContent = 'test'
+    option.setAttribute('value', 'test')
+    select.appendChild(option)
+    fragment.appendChild(select)
+    document.querySelector('#wrapper').appendChild(fragment)
+
+    // eventListner
+    select.addEventListener('click', event => {
+      event.preventDefault()
+      element.style.display = 'initial'
+    })
+  }
+  */
 
   // Adding created elements
   document.querySelector('#wrapper').appendChild(document.createElement('br'))
@@ -64,7 +87,7 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
 
   moveElement(element)
 
-  // windo.history and window.location
+  // window.history and window.location
   const stateObj = {
     element: event.target.getAttribute('data-create-element'),
     id: element.getAttribute('id')
@@ -76,6 +99,57 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
   const currentState = window.history.state
   console.log('currentState: ')
   console.log(currentState)
+})
+
+// Cache hidden elements
+window.addEventListener('dblclick', event => {
+  event.preventDefault()
+
+  console.log(document.querySelectorAll('chat-app').length)
+  const select = document.createElement('select')
+  const option = document.createElement('option')
+  option.textContent = 'Hidden elements'
+  select.appendChild(option)
+
+  for (let i = 0; i < document.querySelectorAll('chat-app').length; i++) {
+    const temp = `#chat${i + 1}`
+    if (document.querySelector(temp).getAttribute('data-hide') === 'true') {
+      const option = document.createElement('option')
+      option.setAttribute('value', temp)
+      option.textContent = temp
+      select.appendChild(option)
+    }
+  }
+  if (document.querySelector('#hiddenElements').innerHTML !== null) {
+    document.querySelector('#hiddenElements').innerHTML = ''
+  }
+  document.querySelector('#hiddenElements').appendChild(select)
+
+  // Display hidden elements
+  console.log(select.length)
+  select.addEventListener('change', event => {
+    event.preventDefault()
+    const value = event.target.value.slice(1)
+    console.log('test/JM')
+    console.log(value)
+    for (let i = 0; i < document.querySelectorAll('chat-app').length; i++) {
+      const temp = `#chat${i + 1}`
+      console.log(document.querySelector(temp).getAttribute('id'))
+      console.log(event.target)
+      if (document.querySelector(temp).getAttribute('data-hide') === 'true' && document.querySelector(temp).getAttribute('id') === value) {
+        document.querySelector(temp).setAttribute('data-hide', 'false')
+        // event.target.children[i + 1].remove()
+        for (let j = 0; j < event.target.children.length; j++) {
+          if (event.target.children[j].value === temp) {
+            event.target.children[j].remove()
+            if (event.target.children.length === 1) {
+              event.target.remove()
+            }
+          }
+        }
+      }
+    }
+  })
 })
 
 // popstate event

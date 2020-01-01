@@ -102,8 +102,14 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
 })
 
 // Cache hidden elements
-window.addEventListener('dblclick', event => {
+window.addEventListener('click', event => {
   event.preventDefault()
+  console.log('event.target.tagName')
+  console.log(event.target.tagName)
+
+  if (event.target.tagName !== 'CHAT-APP') {
+    return
+  }
 
   console.log(document.querySelectorAll('chat-app').length)
   const select = document.createElement('select')
@@ -123,7 +129,21 @@ window.addEventListener('dblclick', event => {
   if (document.querySelector('#hiddenElements').innerHTML !== null) {
     document.querySelector('#hiddenElements').innerHTML = ''
   }
-  document.querySelector('#hiddenElements').appendChild(select)
+  if (select.length >= 2) {
+    document.querySelector('#hiddenElements').appendChild(select)
+  }
+  /*
+  // My event
+  for (let i = 0; i < document.querySelectorAll('chat-app').length; i++) {
+    document.querySelectorAll('chat-app')[i].addEventListener('hiddenElement', event => {
+      // event.preventDefault()
+      console.log('My custom event is working')
+      const p = document.createElement('p')
+      p.textContent = 'hello'
+      document.querySelector('#wrapper').appendChild(p)
+    })
+  }
+  */
 
   // Display hidden elements
   console.log(select.length)

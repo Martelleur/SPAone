@@ -18,7 +18,7 @@ template.innerHTML = /* html */ `
     
     <fieldset id="newMessage">
         <!--<input type="text" id="inputUser" placeholder="Write message here...">-->
-        <textarea id="inputUser" rows="10" cols="45" name="usrtxt" wrap="hard">Write message here...</textarea>
+        <textarea id="inputUser"  rows="10" name="usrtxt" wrap="hard">Write message here...</textarea>
         <input type="submit" id="sendButton" value="Send">
     </fieldset>
 </form>
@@ -26,9 +26,18 @@ template.innerHTML = /* html */ `
 <style>
 :host {
     position: absolute;
-    width: 50%;
+    width: 500px;
+    height: 500px;
     color: white;
     background-color: black;
+    box-sizing: border-box;
+    border: 5px solid blue;
+    display: block;
+    resize: both;
+    overflow: hidden;
+}
+:host:hover {
+  border: 5px solid green;
 }
 :host #chatConteiner {
     width: 100%;
@@ -39,16 +48,12 @@ template.innerHTML = /* html */ `
     border: 2px solid black;
     padding: 1%;
 }
-:host #chatConteiner {
-  border: 5px solid black;
-    z-index: -1;
-}
-:host #chatConteiner:hover { 
-    border: 5px solid blue;
-    z-index: 1;
-}
 :host #tools:hover {
   cursor: move;
+}
+:host textarea {
+  width: 100%;
+  resize: none;
 }
 </style>
 `
@@ -74,6 +79,11 @@ export class Chat extends window.HTMLElement {
     this._smallerWindow = this.shadowRoot.querySelector('#smallerWindow')
     this._biggerWindow = this.shadowRoot.querySelector('#biggerWindow')
     this._chatConteiner = this.shadowRoot.querySelector('#chatConteiner')
+    this._width = 500
+    // console.log('test')
+    // console.log(this)
+    // console.log(Number(this.style.width.slice(0, 3)))
+    this._height = 500
   }
 
   static get observedAttributes () {
@@ -81,21 +91,36 @@ export class Chat extends window.HTMLElement {
   }
 
   attributeChangedCallback (name, oldValue, newValue) {
+    if (name === 'width') {
+      this._width = newValue
+    }
   }
 
   connectedCallback () {
     // eventlistner for this._biggerWindow
     this._biggerWindow.addEventListener('click', (event) => {
       event.preventDefault()
-      const width = this._chatConteiner.setAttribute('color', 'red')
-      console.log(width)
+      this._width = this._width + 20
+      this._height = this._height + 20
+      const argumentWidth = `${this._width}px`
+      this.style.width = argumentWidth
+      const argumentHeight = `${this._height}px`
+      this.style.height = argumentHeight
+      // console.log(this.style.width.slice(0, 3))
+      // console.log(typeof Number(this.style.width.slice(0, 3)))
+      // console.log(typeof this.style.width)
+      // console.log(typeof this.style.height)
     })
 
     // eventlistner for this._smallerWindow
     this._smallerWindow.addEventListener('click', (event) => {
       event.preventDefault()
-      const width = this._chatConteiner.getAttribute('backgroundColor')
-      console.log(`width: ${width}`)
+      this._width = this._width - 20
+      this._height = this._height - 20
+      const argumentWidth = `${this._width}px`
+      this.style.width = argumentWidth
+      const argumentHeight = `${this._height}px`
+      this.style.height = argumentHeight
     })
 
     // eventlistner for this._input
@@ -108,7 +133,8 @@ export class Chat extends window.HTMLElement {
     this._deletChat.addEventListener('click', (event) => {
       event.preventDefault()
       this._socket.close()
-      event.target.parentNode.parentNode.parentNode.remove()
+      // event.target.parentNode.parentNode.parentNode.remove()
+      this.remove()
     })
 
     // eventlistner for this._send
@@ -166,6 +192,31 @@ export class Chat extends window.HTMLElement {
       this._onlineStatus.innerText = 'You are offline'
     })
   }
+  /*
+  disconnectedCallback () {
+
+  }
+
+  increaseSize (event) {
+    event.preventDefault()
+    this._width++
+    this._height++
+    const argumentWidth = `${this._width}px`
+    this.style.width = argumentWidth
+    const argumentHeight = `${this._height}px`
+    this.style.height = argumentHeight
+  }
+
+  decreaseSize (event) {
+    event.preventDefault()
+    this._width--
+    this._height--
+    const argumentWidth = `${this._width}px`
+    this.style.width = argumentWidth
+    const argumentHeight = `${this._height}px`
+    this.style.height = argumentHeight
+  }
+  */
 }
 
 // Registers the custom event

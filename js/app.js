@@ -104,10 +104,10 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
 // Cache hidden elements
 window.addEventListener('click', event => {
   event.preventDefault()
-  console.log('event.target.tagName')
-  console.log(event.target.tagName)
+  console.log('event.target.tagName.slice(-4)')
+  console.log(event.target.tagName.slice(-4))
 
-  if (event.target.tagName !== 'CHAT-APP') {
+  if (event.target.tagName.slice(-4) !== '-APP') {
     return
   }
 

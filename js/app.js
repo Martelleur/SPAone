@@ -119,11 +119,15 @@ window.addEventListener('click', event => {
 
   for (let i = 0; i < document.querySelectorAll('chat-app').length; i++) {
     const temp = `#chat${i + 1}`
-    if (document.querySelector(temp).getAttribute('data-hide') === 'true') {
-      const option = document.createElement('option')
-      option.setAttribute('value', temp)
-      option.textContent = temp
-      select.appendChild(option)
+    try {
+      if (document.querySelector(temp).getAttribute('data-hide') === 'true') {
+        const option = document.createElement('option')
+        option.setAttribute('value', temp)
+        option.textContent = temp
+        select.appendChild(option)
+      }
+    } catch (error) {
+      console.log(error)
     }
   }
   if (document.querySelector('#hiddenElements').innerHTML !== null) {
@@ -132,18 +136,6 @@ window.addEventListener('click', event => {
   if (select.length >= 2) {
     document.querySelector('#hiddenElements').appendChild(select)
   }
-  /*
-  // My event
-  for (let i = 0; i < document.querySelectorAll('chat-app').length; i++) {
-    document.querySelectorAll('chat-app')[i].addEventListener('hiddenElement', event => {
-      // event.preventDefault()
-      console.log('My custom event is working')
-      const p = document.createElement('p')
-      p.textContent = 'hello'
-      document.querySelector('#wrapper').appendChild(p)
-    })
-  }
-  */
 
   // Display hidden elements
   console.log(select.length)
@@ -154,19 +146,23 @@ window.addEventListener('click', event => {
     console.log(value)
     for (let i = 0; i < document.querySelectorAll('chat-app').length; i++) {
       const temp = `#chat${i + 1}`
-      console.log(document.querySelector(temp).getAttribute('id'))
+      // console.log(document.querySelector(temp).getAttribute('id'))
       console.log(event.target)
-      if (document.querySelector(temp).getAttribute('data-hide') === 'true' && document.querySelector(temp).getAttribute('id') === value) {
-        document.querySelector(temp).setAttribute('data-hide', 'false')
-        // event.target.children[i + 1].remove()
-        for (let j = 0; j < event.target.children.length; j++) {
-          if (event.target.children[j].value === temp) {
-            event.target.children[j].remove()
-            if (event.target.children.length === 1) {
-              event.target.remove()
+      try {
+        if (document.querySelector(temp).getAttribute('data-hide') === 'true' && document.querySelector(temp).getAttribute('id') === value) {
+          document.querySelector(temp).setAttribute('data-hide', 'false')
+          // event.target.children[i + 1].remove()
+          for (let j = 0; j < event.target.children.length; j++) {
+            if (event.target.children[j].value === temp) {
+              event.target.children[j].remove()
+              if (event.target.children.length === 1) {
+                event.target.remove()
+              }
             }
           }
         }
+      } catch (error) {
+        console.log(error)
       }
     }
   })

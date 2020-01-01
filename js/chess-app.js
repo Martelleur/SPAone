@@ -461,7 +461,7 @@ export class Chess extends window.HTMLElement {
     this._deletChess.addEventListener('click', event => {
       event.preventDefault()
       window.sessionStorage.clear()
-      event.target.parentNode.parentNode.remove()
+      this.remove()
     })
 
     // Events fired when click on this._showWhiteOptions
@@ -1365,12 +1365,12 @@ export class Chess extends window.HTMLElement {
       columnValue: [],
       imageSource: []
     }
-    for (let i = 0; i < this._chessBoard.querySelectorAll('div').length; i++) {
-      if (this._chessBoard.querySelectorAll('div')[i].childElementCount === 1) {
-        chessPieaceArray.push(this.indexTarget(this._chessBoard.querySelectorAll('div')[i]))
-        chessPieaceObject.roweValue.push(this.indexTarget(this._chessBoard.querySelectorAll('div')[i])[0])
-        chessPieaceObject.columnValue.push(this.indexTarget(this._chessBoard.querySelectorAll('div')[i])[1])
-        chessPieaceObject.imageSource.push(this._chessBoard.querySelectorAll('div')[i].firstElementChild.getAttribute('src'))
+    for (let i = 0; i < this._chessBoardDivLength; i++) {
+      if (this._chessBoardDiv[i].childElementCount === 1) {
+        chessPieaceArray.push(this.indexTarget(this._chessBoardDiv[i]))
+        chessPieaceObject.roweValue.push(this.indexTarget(this._chessBoardDiv[i])[0])
+        chessPieaceObject.columnValue.push(this.indexTarget(this._chessBoardDiv[i])[1])
+        chessPieaceObject.imageSource.push(this._chessBoardDiv[i].firstElementChild.getAttribute('src'))
       }
     }
     // console.log(chessPieaceObject)
@@ -1411,7 +1411,7 @@ export class Chess extends window.HTMLElement {
         }
         blackPiecesOptions.push(tempValue)
       }
-      if (tempObject.imageSource[i] === this._whiteTowerSource || tempObject.imageSource[i] === this._whitekHoarseSource || tempObject.imageSource[i] === this._whiteRunnerSource || tempObject.imageSource[i] === this._whiteKingSource || tempObject.imageSource[i] === this._whiteQueenSource || tempObject.imageSource[i] === this._whitePawnSource) {
+      if (tempObject.imageSource[i] === this._whiteTowerSource || tempObject.imageSource[i] === this._whiteHoarseSource || tempObject.imageSource[i] === this._whiteRunnerSource || tempObject.imageSource[i] === this._whiteKingSource || tempObject.imageSource[i] === this._whiteQueenSource || tempObject.imageSource[i] === this._whitePawnSource) {
         let tempValue
         if (tempObject.imageSource[i] === this._whitePawnSource && tempObject.roweValue[i] === 6) {
           tempValue = this.acceptableSquares(tempObject.imageSource[i], tempObject.roweValue[i], tempObject.columnValue[i], true)

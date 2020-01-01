@@ -28,13 +28,15 @@ template.innerHTML = /* html */ `
 :host {
     position: absolute;
     width: 30%;
+    display: block;
+    resize: both;
+    overflow: scroll;
+    box-sizing: border-box;
+    border: 5px solid black;
 }
 :host #minehunterConteiner {
     background-color: black;
     border: 5px solid black;
-}
-:host #minehunterConteiner:hover {
-    border: 5px solid blue;
 }
 :host #minehunterConteiner, :host #gameField {
     width: 100%;
@@ -208,7 +210,7 @@ export class Minehunter extends window.HTMLElement {
     // event for deletbutton
     this._deletMinehunter.addEventListener('click', event => {
       event.preventDefault()
-      event.target.parentNode.parentNode.remove()
+      this.remove()
     })
 
     // event for restartButton

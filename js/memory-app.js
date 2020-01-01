@@ -23,17 +23,17 @@ template.innerHTML = /* html */ `
 :host {
     position: absolute;
     width: 30%;
+    display: block;
+    resize: both;
+    overflow: scroll;
+    border: 5px solid black;
 }
 :host #memoryConteiner {
     border: 5px solid black;
     background-color: black;
     color: white;
     z-index: -1;
-}
-:host #memoryConteiner:hover {
-    border: 5px solid blue;
-    z-index: 1; 
-}
+} 
 :host #memoryPictures:hover {
     cursor: pointer; 
 }
@@ -204,7 +204,7 @@ export class Memory extends window.HTMLElement {
     // eventlistner for this._deletMemory
     this._deletMemory.addEventListener('click', (event) => {
       event.preventDefault()
-      event.target.parentNode.parentNode.remove()
+      this.remove()
     })
 
     // eventlistner for this._restartMemory

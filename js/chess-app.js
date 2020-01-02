@@ -184,6 +184,7 @@ template.innerHTML = /* html */ `
 :host #bigWindow, :host #hideWindow {
   color: black;
   width: 20px;
+  cursor: pointer;
 } 
 
 </style>

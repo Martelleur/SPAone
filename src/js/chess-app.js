@@ -7,14 +7,16 @@ template.innerHTML = /* html */ `
 <div id="chessConteiner">
 
 <div id="tools">
-<button id="deletChess">Delet</button>
-<button id="options1">White players options</button>
-<button id="options2">Black players options</button>
-<select id="history">
-    <option value="history">History</option>
-    <option value="clear">Hide history!</option>
-    <option value="allRounds">All rounds!</option>
-</select>
+    <button id="deletChess">Delet</button>
+    <button id="options1">White players options</button>
+    <button id="options2">Black players options</button>
+    <select id="history">
+      <option value="history">History</option>
+      <option value="clear">Hide history!</option>
+      <option value="allRounds">All rounds!</option>
+    </select>
+    <button id="bigWindow">+</button>
+    <button id="hideWindow">-</button>
 </div>
 
 <div id="chessBoard">
@@ -178,6 +180,10 @@ template.innerHTML = /* html */ `
   clear: both;
   color: black;
   background-color: white;
+}
+:host #bigWindow, :host #hideWindow {
+  color: black;
+  width: 20px;
 } 
 
 </style>
@@ -200,7 +206,6 @@ export class Chess extends window.HTMLElement {
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
     this._chessConteiner = this.shadowRoot.querySelector('#chessConteiner')
-    this._deletChess = this.shadowRoot.querySelector('#deletChess')
     this._chessBoard = this.shadowRoot.querySelector('#chessBoard')
     this._chessBoardDivLength = this._chessBoard.querySelectorAll('div').length
     this._chessBoardImgLength = this._chessBoard.querySelectorAll('div>img').length
@@ -213,14 +218,19 @@ export class Chess extends window.HTMLElement {
     this._checkStatusWhite = this.shadowRoot.querySelector('#checkStatusWhite')
     this._checkStatusBlack = this.shadowRoot.querySelector('#checkStatusBlack')
     this._first = false
-    this._showWhiteOptions = this.shadowRoot.querySelector('#options1')
-    this._showBlackOptions = this.shadowRoot.querySelector('#options2')
     this._round = 0
     this._information = this.shadowRoot.querySelector('#information')
-    this._history = this.shadowRoot.querySelector('#history')
     this._historyConteiner = this.shadowRoot.querySelector('#historyConteiner')
     this._winner = this.shadowRoot.querySelector('#winner')
+
+    // tools chess
     this._tools = this.shadowRoot.querySelector('#tools')
+    this._showWhiteOptions = this.shadowRoot.querySelector('#options1')
+    this._showBlackOptions = this.shadowRoot.querySelector('#options2')
+    this._history = this.shadowRoot.querySelector('#history')
+    this._hideWindow = this.shadowRoot.querySelector('#hideWindow')
+    this._bigWindow = this.shadowRoot.querySelector('#bigWindow')
+    this._deletChess = this.shadowRoot.querySelector('#deletChess')
 
     // chesspieces image sources
     this._whitePawnSource = '../imageChess/pawnWhite.png'
@@ -243,7 +253,7 @@ export class Chess extends window.HTMLElement {
    * @memberof Chess
    */
   static get observedAttributes () {
-    return ['id']
+    return ['id', 'data-hide']
   }
 
   /**
@@ -259,6 +269,16 @@ export class Chess extends window.HTMLElement {
       p.innerText = this.getAttribute('id')
       this._tools.appendChild(p)
       // console.log(this.getAttribute('id'))
+    }
+    if (name === 'data-hide') {
+      // console.log(newValue)
+      // console.log(oldValue)
+      if (newValue === 'true') {
+        this.style.display = 'none'
+      }
+      if (newValue === 'false') {
+        this.style.display = 'initial'
+      }
     }
   }
 
@@ -541,6 +561,17 @@ export class Chess extends window.HTMLElement {
         this._historyConteiner.innerHTML = ''
         this.showHistory(round)
       }
+    })
+
+    // eventlistner for this._bigWindow
+    this._bigWindow.addEventListener('click', (event) => {
+      event.preventDefault()
+    })
+
+    // eventlistner for this._hideWindow
+    this._hideWindow.addEventListener('click', (event) => {
+      event.preventDefault()
+      this.setAttribute('data-hide', 'true')
     })
   }
 

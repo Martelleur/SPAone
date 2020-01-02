@@ -128,17 +128,27 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
 window.addEventListener('click', event => {
   event.preventDefault()
 
-  // Only custumelements else return
+  // Only custumelements else return with ending -app
   if (event.target.tagName.slice(-4) !== '-APP') {
     return
   }
 
+  // Creating selects for caching in
   console.log(document.querySelectorAll('chat-app').length)
-  const select = document.createElement('select')
+  const selectChat = document.createElement('select')
   const option = document.createElement('option')
-  option.textContent = 'Hidden elements'
-  select.appendChild(option)
+  option.textContent = 'Hidden chat-apps'
+  selectChat.appendChild(option)
+  const selectMemory = document.createElement('select')
+  const option2 = document.createElement('option')
+  option2.textContent = 'Hidden memory-apps'
+  selectMemory.appendChild(option2)
+  const selectMinehunter = document.createElement('select')
+  const option3 = document.createElement('option')
+  option3.textContent = 'Hidden minehunter-apps'
+  selectMinehunter.appendChild(option3)
 
+  // appending options to the select-elements
   for (let i = 0; i < counterChatApplication; i++) {
     const temp = `#chat${i + 1}`
     try {
@@ -146,17 +156,51 @@ window.addEventListener('click', event => {
         const option = document.createElement('option')
         option.setAttribute('value', temp)
         option.textContent = temp
-        select.appendChild(option)
+        selectChat.appendChild(option)
       }
     } catch (error) {
       console.log(error)
     }
   }
+  for (let i = 0; i < counterMemoryApplication; i++) {
+    const temp = `#memory${i + 1}`
+    try {
+      if (document.querySelector(temp).getAttribute('data-hide') === 'true') {
+        const option = document.createElement('option')
+        option.setAttribute('value', temp)
+        option.textContent = temp
+        selectMemory.appendChild(option)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  for (let i = 0; i < counterMinehunterApplication; i++) {
+    const temp = `#minehunter${i + 1}`
+    try {
+      if (document.querySelector(temp).getAttribute('data-hide') === 'true') {
+        const option = document.createElement('option')
+        option.setAttribute('value', temp)
+        option.textContent = temp
+        selectMinehunter.appendChild(option)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  // appending select-elements to document.querySelector('#hiddenElements')
   if (document.querySelector('#hiddenElements').innerHTML !== null) {
     document.querySelector('#hiddenElements').innerHTML = ''
   }
-  if (select.length >= 2) {
-    document.querySelector('#hiddenElements').appendChild(select)
+  if (selectChat.length >= 2) {
+    document.querySelector('#hiddenElements').appendChild(selectChat)
+  }
+  if (selectMemory.length >= 2) {
+    document.querySelector('#hiddenElements').appendChild(selectMemory)
+  }
+  if (selectMinehunter.length >= 2) {
+    document.querySelector('#hiddenElements').appendChild(selectMinehunter)
   }
 
   /*
@@ -173,8 +217,8 @@ window.addEventListener('click', event => {
   */
 
   // Display hidden elements
-  console.log(select.length)
-  select.addEventListener('change', event => {
+  console.log(selectChat.length)
+  selectChat.addEventListener('change', event => {
     event.preventDefault()
     const value = event.target.value.slice(1)
     console.log('document.querySelectorAll(chatApp).length')
@@ -189,6 +233,51 @@ window.addEventListener('click', event => {
         if (document.querySelector(temp).getAttribute('data-hide') === 'true' && document.querySelector(temp).getAttribute('id') === value) {
           document.querySelector(temp).setAttribute('data-hide', 'false')
           // event.target.children[i + 1].remove()
+          for (let j = 0; j < event.target.children.length; j++) {
+            if (event.target.children[j].value === temp) {
+              event.target.children[j].remove()
+              if (event.target.children.length === 1) {
+                event.target.remove()
+              }
+            }
+          }
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  })
+  selectMemory.addEventListener('change', event => {
+    event.preventDefault()
+    const value = event.target.value.slice(1)
+    for (let i = 0; i < counterMemoryApplication; i++) {
+      const temp = `#memory${i + 1}`
+      try {
+        if (document.querySelector(temp).getAttribute('data-hide') === 'true' && document.querySelector(temp).getAttribute('id') === value) {
+          document.querySelector(temp).setAttribute('data-hide', 'false')
+          // event.target.children[i + 1].remove()
+          for (let j = 0; j < event.target.children.length; j++) {
+            if (event.target.children[j].value === temp) {
+              event.target.children[j].remove()
+              if (event.target.children.length === 1) {
+                event.target.remove()
+              }
+            }
+          }
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  })
+  selectMinehunter.addEventListener('change', event => {
+    event.preventDefault()
+    const value = event.target.value.slice(1)
+    for (let i = 0; i < counterMinehunterApplication; i++) {
+      const temp = `#minehunter${i + 1}`
+      try {
+        if (document.querySelector(temp).getAttribute('data-hide') === 'true' && document.querySelector(temp).getAttribute('id') === value) {
+          document.querySelector(temp).setAttribute('data-hide', 'false')
           for (let j = 0; j < event.target.children.length; j++) {
             if (event.target.children[j].value === temp) {
               event.target.children[j].remove()

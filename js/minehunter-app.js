@@ -18,6 +18,8 @@ template.innerHTML = /* html */ `
         <option value="1">Hard</option>
         <option value="2">Impossible</option>
       </select>
+      <button id="bigWindow">+</button>
+      <button id="hideWindow">-</button>
     </div>  
     <div id="gameField">
     </div>
@@ -74,6 +76,8 @@ export class Minehunter extends window.HTMLElement {
 
     // Tools memory
     this._tools = this.shadowRoot.querySelector('#tools')
+    this._hideWindow = this.shadowRoot.querySelector('#hideWindow')
+    this._bigWindow = this.shadowRoot.querySelector('#bigWindow')
     this._deletMinehunter = this.shadowRoot.querySelector('#deletMinehunter')
     this._restartMinehunter = this.shadowRoot.querySelector('#restartMinehunter')
     this._sizeMinehunter = this.shadowRoot.querySelector('#sizeMinehunter')
@@ -208,7 +212,7 @@ export class Minehunter extends window.HTMLElement {
    * @memberof Minehunter
    */
   static get observedAttributes () {
-    return ['id']
+    return ['id', 'data-hide']
   }
 
   /**
@@ -225,12 +229,33 @@ export class Minehunter extends window.HTMLElement {
       this._tools.appendChild(p)
       // console.log(this.getAttribute('id'))
     }
+    if (name === 'data-hide') {
+      // console.log(newValue)
+      // console.log(oldValue)
+      if (newValue === 'true') {
+        this.style.display = 'none'
+      }
+      if (newValue === 'false') {
+        this.style.display = 'initial'
+      }
+    }
   }
 
   /**
    * @memberof Minehunter
    */
   connectedCallback () {
+    // eventlistner for this._bigWindow
+    this._bigWindow.addEventListener('click', (event) => {
+      event.preventDefault()
+    })
+
+    // eventlistner for this._hideWindow
+    this._hideWindow.addEventListener('click', (event) => {
+      event.preventDefault()
+      this.setAttribute('data-hide', 'true')
+    })
+
     // event for deletbutton
     this._deletMinehunter.addEventListener('click', event => {
       event.preventDefault()

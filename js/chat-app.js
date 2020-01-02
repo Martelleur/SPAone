@@ -53,6 +53,22 @@ template.innerHTML = /* html */ `
   width: 100%;
   resize: none;
 }
+:host #tools {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  background-color: black;
+}
+:host #newMessage {
+  position: -webkit-sticky;
+  position: sticky;
+  bottom: 0;
+  background-color: black;
+}
+:host #messages, :host #onlineStatus, :host #chatTitle {
+  background-color: white;
+  color: black;
+}
 </style>
 `
 

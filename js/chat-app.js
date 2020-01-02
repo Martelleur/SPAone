@@ -8,6 +8,7 @@ template.innerHTML = /* html */ `
         <button id="closeLiveChat">Go offline</button>
         <button id="bigWindow">+</button>
         <button id="hideWindow">-</button>
+        <button id="emoji">Emoji</button>
     </fieldset>
     <fieldset id="onlineStatus">
         <p>You are online</p>
@@ -18,7 +19,7 @@ template.innerHTML = /* html */ `
     
     <fieldset id="newMessage">
         <!--<input type="text" id="inputUser" placeholder="Write message here...">-->
-        <textarea id="inputUser"  rows="10" name="usrtxt" wrap="hard">Write message here...</textarea>
+        <textarea id="inputUser" rows="10" name="usrtxt" wrap="hard">Write message here...</textarea>
         <input type="submit" id="sendButton" value="Send">
         <button id="changeUsername">Change username</button>
         <button id="changeChannel">Change channel</button>
@@ -241,7 +242,7 @@ export class Chat extends window.HTMLElement {
     // eventlistner for this._send
     this._send.addEventListener('click', (event) => {
       event.preventDefault()
-
+      this._input.innerHTML = ''
       this._chatCounter = Math.floor(Math.random() * 10000000)
       const title = document.createElement('p')
       title.innerText = `Code for message: ${this._chatCounter}`

@@ -12,6 +12,8 @@ template.innerHTML = /* html */ `
       <option value="12">12 tiles</option>
       <option value="16">16 tiles</option>
     </select>
+    <button id="bigWindow">+</button>
+    <button id="hideWindow">-</button>
     <p id="paires"></p>
   </div>
     
@@ -66,6 +68,8 @@ export class Memory extends window.HTMLElement {
     this._restartMemory = this.shadowRoot.querySelector('#restartMemory')
     this._deletMemory = this.shadowRoot.querySelector('#deletMemory')
     this._sizeMemory = this.shadowRoot.querySelector('#sizeMemory')
+    this._hideWindow = this.shadowRoot.querySelector('#hideWindow')
+    this._bigWindow = this.shadowRoot.querySelector('#bigWindow')
 
     // Data memory
     this._memoryConteiner = this.shadowRoot.querySelector('#memoryConteiner')
@@ -94,7 +98,7 @@ export class Memory extends window.HTMLElement {
    * @memberof Memory
    */
   static get observedAttributes () {
-    return ['id']
+    return ['id', 'data-hide']
   }
 
   /**
@@ -111,6 +115,16 @@ export class Memory extends window.HTMLElement {
       this._tools.appendChild(p)
       // console.log(this.getAttribute('id'))
     }
+    if (name === 'data-hide') {
+      // console.log(newValue)
+      // console.log(oldValue)
+      if (newValue === 'true') {
+        this.style.display = 'none'
+      }
+      if (newValue === 'false') {
+        this.style.display = 'initial'
+      }
+    }
   }
 
   /**
@@ -118,6 +132,12 @@ export class Memory extends window.HTMLElement {
    * @memberof Memory
    */
   connectedCallback () {
+    // eventlistner for this._hideWindow
+    this._hideWindow.addEventListener('click', (event) => {
+      event.preventDefault()
+      this.setAttribute('data-hide', 'true')
+    })
+
     // eventlistner for this._memoryPictures
     this._memoryPictures.addEventListener('click', (event) => {
       event.preventDefault()

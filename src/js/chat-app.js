@@ -64,7 +64,6 @@ export class Chat extends window.HTMLElement {
     this._input = this.shadowRoot.querySelector('#inputUser')
     this._messages = this.shadowRoot.querySelector('#messages')
     this._message = undefined
-    this._deletChat = this.shadowRoot.querySelector('#deletChat')
     this._chatTitle = this.shadowRoot.querySelector('#chatTitle')
     this._chatCounter = 0
     this._goLiveChat = this.shadowRoot.querySelector('#goLiveChat')
@@ -76,10 +75,13 @@ export class Chat extends window.HTMLElement {
     this._channel = 'my, not so secret, channel'
     this._key = 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd'
     this._onlineStatus = this.shadowRoot.querySelector('#onlineStatus p')
+    this._chatConteiner = this.shadowRoot.querySelector('#chatConteiner')
+
+    // Tools chat
+    this._tools = this.shadowRoot.querySelector('#tools')
     this._hideWindow = this.shadowRoot.querySelector('#hideWindow')
     this._bigWindow = this.shadowRoot.querySelector('#bigWindow')
-    this._chatConteiner = this.shadowRoot.querySelector('#chatConteiner')
-    this._tools = this.shadowRoot.querySelector('#tools')
+    this._deletChat = this.shadowRoot.querySelector('#deletChat')
   }
 
   static get observedAttributes () {

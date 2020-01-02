@@ -23,10 +23,23 @@ let counterChatApplication = 0
 let counterMemoryApplication = 0
 let counterMinehunterApplication = 0
 let counterChessApplication = 0
+let y = 100
+let x = 0
 
 // creating custom-elements
 document.querySelector('#buttons').addEventListener('click', (event) => {
   event.preventDefault()
+
+  if (y < (window.innerHeight - 600)) {
+    y = y + 10
+  } else {
+    y = 110
+  }
+  if (x < (window.innerWidth - 600)) {
+    x = x + 10
+  } else {
+    x = 10
+  }
 
   // data
   const chatApp = document.querySelectorAll('chat-app')
@@ -104,11 +117,22 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
   // console.log(element.hasAttribute('data-hide'))
 
   // Adding created elements
-  document.querySelector('#wrapper').appendChild(document.createElement('br'))
+  // document.querySelector('#wrapper').appendChild(document.createElement('br'))
   document.querySelector('#wrapper').appendChild(element)
-  document.querySelector('#wrapper').appendChild(document.createElement('br'))
+  // document.querySelector('#wrapper').appendChild(document.createElement('br'))
 
+  console.log(y + 'px')
+  element.style.top = y + 'px'
+  element.style.left = x + 'px'
   moveElement(element)
+
+  try {
+    document.querySelector('chat-app').addEventListener('username', event => {
+      console.log('test my custom event')
+    })
+  } catch (error) {
+    console.log(error)
+  }
 
   // window.history and window.location
   const stateObj = {

@@ -20,6 +20,7 @@ template.innerHTML = /* html */ `
         <!--<input type="text" id="inputUser" placeholder="Write message here...">-->
         <textarea id="inputUser"  rows="10" name="usrtxt" wrap="hard">Write message here...</textarea>
         <input type="submit" id="sendButton" value="Send">
+        <button id="changeUsername">Change username</button>
     </fieldset>
 </form>
 </div>
@@ -60,7 +61,6 @@ export class Chat extends window.HTMLElement {
 
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
-    this._send = this.shadowRoot.querySelector('#sendButton')
     this._input = this.shadowRoot.querySelector('#inputUser')
     this._messages = this.shadowRoot.querySelector('#messages')
     this._message = undefined
@@ -82,16 +82,16 @@ export class Chat extends window.HTMLElement {
     this._hideWindow = this.shadowRoot.querySelector('#hideWindow')
     this._bigWindow = this.shadowRoot.querySelector('#bigWindow')
     this._deletChat = this.shadowRoot.querySelector('#deletChat')
+    this._send = this.shadowRoot.querySelector('#sendButton')
+    this._changeUsername = this.shadowRoot.querySelector('#changeUsername')
   }
 
   static get observedAttributes () {
-    return ['id', 'width', 'data-hide']
+    return ['id', 'data-hide']
   }
 
   attributeChangedCallback (name, oldValue, newValue) {
-    if (name === 'width') {
-      this._width = newValue
-    }
+    // Changing of attribute data-hide
     if (name === 'data-hide') {
       // console.log(newValue)
       // console.log(oldValue)
@@ -102,6 +102,7 @@ export class Chat extends window.HTMLElement {
         this.style.display = 'initial'
       }
     }
+    // Changing of attribute id
     if (name === 'id') {
       // console.log('test attributeChangedCallback/JM')
       const p = document.createElement('p')
@@ -109,9 +110,52 @@ export class Chat extends window.HTMLElement {
       this._tools.appendChild(p)
       // console.log(this.getAttribute('id'))
     }
+    // Changing of attribute id
+    if (name === 'id') {
+      let username
+      // saving username in localstorage
+      if (window.localStorage.getItem('username') === null) {
+        username = window.prompt('Please enter your username', 'user1')
+        window.localStorage.setItem('username', username)
+      } else {
+        username = window.localStorage.getItem('username')
+      }
+
+      // test if username is null or not
+      if (username != null) {
+        this._username = username
+      } else {
+        this._username = 'user1'
+      }
+
+      // adding usernamename to chat-app
+      const p = document.createElement('p')
+      p.textContent = `Username: ${this._username}`
+      this._tools.appendChild(p)
+    }
   }
 
   connectedCallback () {
+    // eventlistner for this._changeUsername
+    this._changeUsername.addEventListener('click', (event) => {
+      event.preventDefault()
+      const username = window.prompt('Please enter your username', 'user1')
+      if (username != null) {
+        this._username = username
+      } else {
+        this._username = 'user1'
+      }
+
+      // adding usernamename to localstorage
+      window.localStorage.setItem('username', username)
+
+      // adding usernamename to chat-app
+      this._tools.lastChild.remove()
+      const p = document.createElement('p')
+      p.textContent = `Username: ${this._username}`
+      this._tools.appendChild(p)
+    })
+
     // eventlistner for this._bigWindow
     this._bigWindow.addEventListener('click', (event) => {
       event.preventDefault()

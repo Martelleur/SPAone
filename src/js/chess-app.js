@@ -220,6 +220,7 @@ export class Chess extends window.HTMLElement {
     this._history = this.shadowRoot.querySelector('#history')
     this._historyConteiner = this.shadowRoot.querySelector('#historyConteiner')
     this._winner = this.shadowRoot.querySelector('#winner')
+    this._tools = this.shadowRoot.querySelector('#tools')
 
     // chesspieces image sources
     this._whitePawnSource = '../imageChess/pawnWhite.png'
@@ -234,6 +235,31 @@ export class Chess extends window.HTMLElement {
     this._blackRunnerSource = '../imageChess/runner.png'
     this._blackKingSource = '../imageChess/king.png'
     this._blackQueenSource = '../imageChess/queen.png'
+  }
+
+  /**
+   * @readonly
+   * @static
+   * @memberof Chess
+   */
+  static get observedAttributes () {
+    return ['id']
+  }
+
+  /**
+   * @param {*} name
+   * @param {*} oldValue
+   * @param {*} newValue
+   * @memberof Chess
+   */
+  attributeChangedCallback (name, oldValue, newValue) {
+    if (name === 'id') {
+      // console.log('test attributeChangedCallback/JM')
+      const p = document.createElement('p')
+      p.innerText = this.getAttribute('id')
+      this._tools.appendChild(p)
+      // console.log(this.getAttribute('id'))
+    }
   }
 
   /**

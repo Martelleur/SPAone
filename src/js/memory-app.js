@@ -26,7 +26,7 @@ template.innerHTML = /* html */ `
     display: block;
     resize: both;
     overflow: scroll;
-    border: 5px solid black;
+    border: 5px solid blue;
 }
 :host #memoryConteiner {
     border: 5px solid black;
@@ -82,16 +82,36 @@ export class Memory extends window.HTMLElement {
     this._gameFooter = this.shadowRoot.querySelector('#gameFooter')
     this._countHiddenPictures = 0
     this._tries = 0
+    this._tools = this.shadowRoot.querySelector('#tools')
 
     // Building new memory
     this.setTiles()
   }
 
-  /*
+  /**
+   * @readonly
+   * @static
+   * @memberof Memory
+   */
   static get observedAttributes () {
-    return ['src']
+    return ['id']
   }
-  */
+
+  /**
+   * @param {*} name
+   * @param {*} oldValue
+   * @param {*} newValue
+   * @memberof Memory
+   */
+  attributeChangedCallback (name, oldValue, newValue) {
+    if (name === 'id') {
+      // console.log('test attributeChangedCallback/JM')
+      const p = document.createElement('p')
+      p.innerText = this.getAttribute('id')
+      this._tools.appendChild(p)
+      // console.log(this.getAttribute('id'))
+    }
+  }
 
   /**
    * connectedCallback for memory-app

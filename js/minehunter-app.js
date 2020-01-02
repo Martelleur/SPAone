@@ -27,16 +27,14 @@ template.innerHTML = /* html */ `
 <style>
 :host {
     position: absolute;
-    width: 30%;
+    width: 50%;
     display: block;
     resize: both;
     overflow: scroll;
     box-sizing: border-box;
-    border: 5px solid black;
-}
-:host #minehunterConteiner {
+    border: 5px solid blue;
     background-color: black;
-    border: 5px solid black;
+    color: white;
 }
 :host #minehunterConteiner, :host #gameField {
     width: 100%;
@@ -75,6 +73,7 @@ export class Minehunter extends window.HTMLElement {
     this._gameFooter = this.shadowRoot.querySelector('#gameFooter')
 
     // Tools memory
+    this._tools = this.shadowRoot.querySelector('#tools')
     this._deletMinehunter = this.shadowRoot.querySelector('#deletMinehunter')
     this._restartMinehunter = this.shadowRoot.querySelector('#restartMinehunter')
     this._sizeMinehunter = this.shadowRoot.querySelector('#sizeMinehunter')
@@ -201,6 +200,31 @@ export class Minehunter extends window.HTMLElement {
     }
 
     return newArray
+  }
+
+  /**
+   * @readonly
+   * @static
+   * @memberof Minehunter
+   */
+  static get observedAttributes () {
+    return ['id']
+  }
+
+  /**
+   * @param {*} name
+   * @param {*} oldValue
+   * @param {*} newValue
+   * @memberof Minehunter
+   */
+  attributeChangedCallback (name, oldValue, newValue) {
+    if (name === 'id') {
+      // console.log('test attributeChangedCallback/JM')
+      const p = document.createElement('p')
+      p.innerText = this.getAttribute('id')
+      this._tools.appendChild(p)
+      // console.log(this.getAttribute('id'))
+    }
   }
 
   /**

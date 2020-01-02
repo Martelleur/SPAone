@@ -120,8 +120,7 @@ export class Chat extends window.HTMLElement {
       event.preventDefault()
       this.setAttribute('data-hide', 'true')
       if (this.getAttribute('data-hide') === 'true') {
-        const event = new window.CustomEvent('hiddenElement')
-        this.dispatchEvent(event)
+        this.dispatchEvent(new window.CustomEvent('hiddenElement'))
         // console.log('My custom event is dispatched')
         // console.log(event)
       }
@@ -136,6 +135,8 @@ export class Chat extends window.HTMLElement {
     // eventlistner for this._deletChat
     this._deletChat.addEventListener('click', (event) => {
       event.preventDefault()
+
+      // Close websocket
       this._socket.close()
       this.remove()
     })

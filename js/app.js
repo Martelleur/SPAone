@@ -17,19 +17,63 @@ window.addEventListener('offline', event => {
   console.log('You are offline!')
 })
 
-// creating custom-elements
+// data
 let nameIdApplication
 let counterChatApplication = 0
 let counterMemoryApplication = 0
 let counterMinehunterApplication = 0
 let counterChessApplication = 0
+
+// creating custom-elements
 document.querySelector('#buttons').addEventListener('click', (event) => {
   event.preventDefault()
+
+  // data
+  const chatApp = document.querySelectorAll('chat-app')
+  const memoryApp = document.querySelectorAll('memory-app')
+  const minehunterApp = document.querySelectorAll('minehunter-app')
+  const chessApp = document.querySelectorAll('chess-app')
 
   // if user not click on a a-tag
   if (event.target.tagName !== 'A') {
     console.log('Not an image-tag')
     return
+  }
+
+  // reset counters to 0 if elements not exist
+  if (chatApp.length === 0) {
+    counterChatApplication = 0
+  }
+  if (memoryApp.length === 0) {
+    counterMemoryApplication = 0
+  }
+  if (minehunterApp.length === 0) {
+    counterMinehunterApplication = 0
+  }
+  if (chessApp.length === 0) {
+    counterChessApplication = 0
+  }
+
+  // Resets counters to the highest id
+  try {
+    counterChatApplication = Number(chatApp[chatApp.length - 1].getAttribute('id').slice(4))
+  } catch (error) {
+    console.log(error)
+  }
+  try {
+    counterMemoryApplication = Number(memoryApp[memoryApp.length - 1].getAttribute('id').slice(6))
+  } catch (error) {
+    console.log(error)
+  }
+  try {
+    counterMinehunterApplication = Number(minehunterApp[minehunterApp.length - 1].getAttribute('id').slice(10))
+  } catch (error) {
+    console.log(error)
+  }
+  try {
+    counterChessApplication = Number(chessApp[chessApp.length - 1].getAttribute('id').slice(5))
+  } catch (error) {
+    console.log(error)
   }
 
   // get type of element that will be created
@@ -59,27 +103,6 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
   element.setAttribute('data-hide', 'false')
   // console.log(element.hasAttribute('data-hide'))
 
-  // hidde element
-  /*
-  if (element.hasAttribute('data-hide')) {
-    const fragment = document.createElement('fragment')
-    const select = document.createElement('select')
-    const option = document.createElement('option')
-    // option.innerHTML = element.getAttribute('id')
-    option.textContent = 'test'
-    option.setAttribute('value', 'test')
-    select.appendChild(option)
-    fragment.appendChild(select)
-    document.querySelector('#wrapper').appendChild(fragment)
-
-    // eventListner
-    select.addEventListener('click', event => {
-      event.preventDefault()
-      element.style.display = 'initial'
-    })
-  }
-  */
-
   // Adding created elements
   document.querySelector('#wrapper').appendChild(document.createElement('br'))
   document.querySelector('#wrapper').appendChild(element)
@@ -101,12 +124,11 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
   console.log(currentState)
 })
 
-// Cache hidden elements
+// Cache hidden elements in select-element
 window.addEventListener('click', event => {
   event.preventDefault()
-  console.log('event.target.tagName.slice(-4)')
-  console.log(event.target.tagName.slice(-4))
 
+  // Only custumelements else return
   if (event.target.tagName.slice(-4) !== '-APP') {
     return
   }
@@ -117,7 +139,7 @@ window.addEventListener('click', event => {
   option.textContent = 'Hidden elements'
   select.appendChild(option)
 
-  for (let i = 0; i < document.querySelectorAll('chat-app').length; i++) {
+  for (let i = 0; i < counterChatApplication; i++) {
     const temp = `#chat${i + 1}`
     try {
       if (document.querySelector(temp).getAttribute('data-hide') === 'true') {
@@ -137,14 +159,29 @@ window.addEventListener('click', event => {
     document.querySelector('#hiddenElements').appendChild(select)
   }
 
+  /*
+  // My event
+  for (let i = 0; i < document.querySelectorAll('chat-app').length; i++) {
+    document.querySelectorAll('chat-app')[i].addEventListener('hiddenElement', event => {
+      // event.preventDefault()
+      console.log('My custom event is working')
+      const p = document.createElement('p')
+      p.textContent = 'hello'
+      document.querySelector('#wrapper').appendChild(p)
+    })
+  }
+  */
+
   // Display hidden elements
   console.log(select.length)
   select.addEventListener('change', event => {
     event.preventDefault()
     const value = event.target.value.slice(1)
-    console.log('test/JM')
-    console.log(value)
-    for (let i = 0; i < document.querySelectorAll('chat-app').length; i++) {
+    console.log('document.querySelectorAll(chatApp).length')
+    console.log(document.querySelectorAll('chat-app').length)
+    console.log('counterChatApplication')
+    console.log(counterChatApplication)
+    for (let i = 0; i < counterChatApplication; i++) {
       const temp = `#chat${i + 1}`
       // console.log(document.querySelector(temp).getAttribute('id'))
       console.log(event.target)

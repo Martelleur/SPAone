@@ -29,8 +29,8 @@ template.innerHTML = /* html */ `
 <style>
 :host {
     position: absolute;
-    width: 500px;
-    height: 500px;
+    width: 50%;
+    height: 600px;
     color: white;
     background-color: black;
     box-sizing: border-box;
@@ -79,6 +79,7 @@ export class Chat extends window.HTMLElement {
 
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
+    // this.shadowRoot.height = `${window.innerHeight * 0.4}px`
     this._input = this.shadowRoot.querySelector('#inputUser')
     this._messages = this.shadowRoot.querySelector('#messages')
     this._message = undefined

@@ -21,6 +21,7 @@ template.innerHTML = /* html */ `
         <textarea id="inputUser"  rows="10" name="usrtxt" wrap="hard">Write message here...</textarea>
         <input type="submit" id="sendButton" value="Send">
         <button id="changeUsername">Change username</button>
+        <button id="changeChannel">Change channel</button>
     </fieldset>
 </form>
 </div>
@@ -76,6 +77,7 @@ export class Chat extends window.HTMLElement {
     this._key = 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd'
     this._onlineStatus = this.shadowRoot.querySelector('#onlineStatus p')
     this._chatConteiner = this.shadowRoot.querySelector('#chatConteiner')
+    this._newMessage = this.shadowRoot.querySelector('#newMessage')
 
     // Tools chat
     this._tools = this.shadowRoot.querySelector('#tools')
@@ -84,6 +86,7 @@ export class Chat extends window.HTMLElement {
     this._deletChat = this.shadowRoot.querySelector('#deletChat')
     this._send = this.shadowRoot.querySelector('#sendButton')
     this._changeUsername = this.shadowRoot.querySelector('#changeUsername')
+    this._changeChannel = this.shadowRoot.querySelector('#changeChannel')
   }
 
   static get observedAttributes () {
@@ -113,12 +116,19 @@ export class Chat extends window.HTMLElement {
     // Changing of attribute id
     if (name === 'id') {
       let username
-      // saving username in localstorage
+      let channel
+      // saving username and channel in localstorage
       if (window.localStorage.getItem('username') === null) {
         username = window.prompt('Please enter your username', 'user1')
         window.localStorage.setItem('username', username)
       } else {
         username = window.localStorage.getItem('username')
+      }
+      if (window.localStorage.getItem('channel') === null) {
+        channel = window.prompt('Please enter channel', this._channel)
+        window.localStorage.setItem('channel', channel)
+      } else {
+        channel = window.localStorage.getItem('channel')
       }
 
       // test if username is null or not
@@ -132,10 +142,35 @@ export class Chat extends window.HTMLElement {
       const p = document.createElement('p')
       p.textContent = `Username: ${this._username}`
       this._tools.appendChild(p)
+
+      // adding channel to chat-app
+      const p2 = document.createElement('p')
+      p2.textContent = `Channel: ${this._channel}`
+      this._newMessage.appendChild(p2)
     }
   }
 
   connectedCallback () {
+    // eventlistner for this._changeUsername
+    this._changeChannel.addEventListener('click', (event) => {
+      event.preventDefault()
+      const channel = window.prompt('Please enter channel', this._channel)
+      if (channel != null) {
+        this._channel = channel
+      } else {
+        this._channel = this._channel
+      }
+
+      // adding channel to localstorage
+      window.localStorage.setItem('channel', this._channel)
+
+      // adding channel to chat-app
+      this._newMessage.lastChild.remove()
+      const p = document.createElement('p')
+      p.textContent = `Channel: ${this._channel}`
+      this._newMessage.appendChild(p)
+    })
+
     // eventlistner for this._changeUsername
     this._changeUsername.addEventListener('click', (event) => {
       event.preventDefault()
@@ -195,10 +230,8 @@ export class Chat extends window.HTMLElement {
       const title = document.createElement('p')
       title.innerText = `Code for message: ${this._chatCounter}`
       this._chatTitle.appendChild(title)
-
       const p = document.createElement('p')
-      p.innerText = this._message
-      p.innerHTML = `Username: ${this._username}.<br>Channel: ${this._channel}.<br>Data: ${this._message}.<br>Type: ${this._type}`
+      p.innerHTML = `Date: ${new Date()}.<br>Username: ${this._username}.<br>Channel: ${this._channel}.<br>Data: ${this._message}<br>Type: ${this._type}<hr>`
       this._messages.appendChild(p)
     })
 
@@ -214,6 +247,7 @@ export class Chat extends window.HTMLElement {
       console.log('websocket in action/JM')
 
       this._data = {
+        date: new Date(),
         type: this._type,
         data: this._message,
         username: this._username,
@@ -229,16 +263,9 @@ export class Chat extends window.HTMLElement {
       // console.log('websocket message event.data:')
       // console.log(event.data)
       const dataParse = JSON.parse(event.data)
-      /*
-      console.log(dataParse)
-      console.log(dataParse.username)
-      console.log(dataParse.channel)
-      console.log(dataParse.data)
-      console.log(dataParse.type)
-      */
       const p = document.createElement('p')
       // p.textContent = event.data
-      p.innerHTML = `Username: ${dataParse.username}.<br>Channel: ${dataParse.channel}.<br>Data: ${dataParse.data}.<br>Type: ${dataParse.type}`
+      p.innerHTML = `Date: ${new Date()}.<br>Username: ${dataParse.username}.<br>Channel: ${dataParse.channel}.<br>Data: ${dataParse.data}<br>Type: ${dataParse.type}<hr>`
       this._messages.appendChild(p)
     })
 

@@ -7,6 +7,7 @@ template.innerHTML = /* html */ `
         <button id="goLiveChat">Go online</button>
         <button id="closeLiveChat">Go offline</button>
         <button id="bigWindow">+</button>
+        <button id="adjustableWindow">%</button>
         <button id="hideWindow">-</button>
         <button id="emoji">Emoji</button>
     </fieldset>
@@ -27,14 +28,18 @@ template.innerHTML = /* html */ `
 </form>
 </div>
 <style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
 :host {
     position: absolute;
     width: 50%;
-    height: 600px;
+    height: 70%;
     color: white;
     background-color: black;
     box-sizing: border-box;
-    border: 5px solid blue;
+    border: 5px solid #0c5cc4;
     resize: both;
     overflow: scroll;
 }
@@ -42,10 +47,6 @@ template.innerHTML = /* html */ `
     width: 100%;
     color: white;
     background-color: black;
-}
-:host #chatConteiner form {
-    border: 2px solid black;
-    padding: 1%;
 }
 :host #tools:hover {
   cursor: move;
@@ -59,12 +60,14 @@ template.innerHTML = /* html */ `
   position: sticky;
   top: 0;
   background-color: black;
+  margin: 0;
 }
 :host #newMessage {
   position: -webkit-sticky;
   position: sticky;
   bottom: 0;
   background-color: black;
+  margin: 0;
 }
 :host #messages, :host #onlineStatus, :host #chatTitle {
   background-color: white;
@@ -99,6 +102,7 @@ export class Chat extends window.HTMLElement {
 
     // Tools chat
     this._tools = this.shadowRoot.querySelector('#tools')
+    this._adjustableWindow = this.shadowRoot.querySelector('#adjustableWindow')
     this._hideWindow = this.shadowRoot.querySelector('#hideWindow')
     this._bigWindow = this.shadowRoot.querySelector('#bigWindow')
     this._deletChat = this.shadowRoot.querySelector('#deletChat')
@@ -209,9 +213,28 @@ export class Chat extends window.HTMLElement {
       this._tools.appendChild(p)
     })
 
+    // eventlistner for this._adjustableWindow
+    this._adjustableWindow.addEventListener('click', (event) => {
+      event.preventDefault()
+      this.style.position = 'absolute'
+      this.style.resize = 'both'
+      this.style.border = '5px solid #0c5cc4'
+      this._tools.style.border = 'none'
+      this._newMessage.style.border = 'none'
+      this._tools.style.cursor = 'move'
+    })
+
     // eventlistner for this._bigWindow
     this._bigWindow.addEventListener('click', (event) => {
       event.preventDefault()
+      this.style.position = 'static'
+      this.style.resize = 'none'
+      this.style.border = 'none'
+      this._tools.style.border = '5px solid #0c5cc4'
+      this._newMessage.style.border = '5px solid #0c5cc4'
+      this.style.height = '100%'
+      this._chatConteiner.style.height = '100%'
+      this._tools.style.cursor = 'default'
     })
 
     // eventlistner for this._hideWindow

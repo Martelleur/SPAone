@@ -16,6 +16,7 @@ template.innerHTML = /* html */ `
       <option value="allRounds">All rounds!</option>
     </select>
     <button id="bigWindow">+</button>
+    <button id="adjustableWindow">%</button>
     <button id="hideWindow">-</button>
 </div>
 
@@ -101,7 +102,7 @@ template.innerHTML = /* html */ `
 :host {
   position: absolute;
 }
-:host * {
+:host, * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
@@ -110,10 +111,8 @@ template.innerHTML = /* html */ `
 }
 :host #chessConteiner {
   width: 516px;
-  border: 5px solid black;
-}
-:host #chessConteiner:hover {
-  border: 5px solid blue;
+  border: 5px solid #0c5cc4;
+  margin: 0 auto;
 }
 :host #chessBoard {
   box-sizing: border-box;
@@ -181,7 +180,7 @@ template.innerHTML = /* html */ `
   color: black;
   background-color: white;
 }
-:host #bigWindow, :host #hideWindow {
+:host #bigWindow, :host #hideWindow, :host #adjustableWindow {
   color: black;
   width: 20px;
   cursor: pointer;
@@ -232,6 +231,7 @@ export class Chess extends window.HTMLElement {
     this._hideWindow = this.shadowRoot.querySelector('#hideWindow')
     this._bigWindow = this.shadowRoot.querySelector('#bigWindow')
     this._deletChess = this.shadowRoot.querySelector('#deletChess')
+    this._adjustableWindow = this.shadowRoot.querySelector('#adjustableWindow')
 
     // chesspieces image sources
     this._whitePawnSource = '../imageChess/pawnWhite.png'
@@ -564,9 +564,24 @@ export class Chess extends window.HTMLElement {
       }
     })
 
+    // eventlistner for this._adjustableWindow
+    this._adjustableWindow.addEventListener('click', (event) => {
+      event.preventDefault()
+      this.style.position = 'absolute'
+      this.style.width = 'initial'
+      this.style.height = 'initial'
+      this.style.backgroundColor = 'initial'
+      this._tools.style.cursor = 'move'
+    })
+
     // eventlistner for this._bigWindow
     this._bigWindow.addEventListener('click', (event) => {
       event.preventDefault()
+      this.style.position = 'static'
+      this.style.width = '100%'
+      this.style.height = '100%'
+      this.style.backgroundColor = 'black'
+      this._tools.style.cursor = 'default'
     })
 
     // eventlistner for this._hideWindow

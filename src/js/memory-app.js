@@ -13,6 +13,7 @@ template.innerHTML = /* html */ `
       <option value="16">16 tiles</option>
     </select>
     <button id="bigWindow">+</button>
+    <button id="adjustableWindow">%</button>
     <button id="hideWindow">-</button>
     <p id="paires"></p>
   </div>
@@ -22,19 +23,22 @@ template.innerHTML = /* html */ `
   <div id="gameFooter"></div>
 </div>
 <style>
+* {
+    box-sizing: border-box;
+}
 :host {
     position: absolute;
-    width: 50%;
+    width: 30%;
     display: block;
     resize: both;
     overflow: scroll;
-    border: 5px solid blue;
+    border: 5px solid #0c5cc4;
 }
 :host #memoryConteiner {
     border: 5px solid black;
     background-color: black;
     color: white;
-    z-index: -1;
+    padding: 5%;
 } 
 :host #memoryPictures:hover {
     cursor: pointer; 
@@ -70,6 +74,7 @@ export class Memory extends window.HTMLElement {
     this._sizeMemory = this.shadowRoot.querySelector('#sizeMemory')
     this._hideWindow = this.shadowRoot.querySelector('#hideWindow')
     this._bigWindow = this.shadowRoot.querySelector('#bigWindow')
+    this._adjustableWindow = this.shadowRoot.querySelector('#adjustableWindow')
 
     // Data memory
     this._memoryConteiner = this.shadowRoot.querySelector('#memoryConteiner')
@@ -132,6 +137,26 @@ export class Memory extends window.HTMLElement {
    * @memberof Memory
    */
   connectedCallback () {
+    // eventlistner for this._adjustableWindow
+    this._adjustableWindow.addEventListener('click', (event) => {
+      event.preventDefault()
+      this.style.position = 'absolute'
+      this.style.resize = 'both'
+      this.style.border = '5px solid #0c5cc4'
+      this._memoryConteiner.style.border = '5px solid black'
+      this._tools.style.cursor = 'move'
+    })
+
+    // eventlistner for this._bigWindow
+    this._bigWindow.addEventListener('click', (event) => {
+      event.preventDefault()
+      this.style.position = 'static'
+      this.style.resize = 'none'
+      this.style.border = 'none'
+      this._memoryConteiner.style.border = '5px solid #0c5cc4'
+      this._tools.style.cursor = 'default'
+    })
+
     // eventlistner for this._hideWindow
     this._hideWindow.addEventListener('click', (event) => {
       event.preventDefault()

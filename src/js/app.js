@@ -118,7 +118,7 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
 
   // Adding created elements
   // document.querySelector('#wrapper').appendChild(document.createElement('br'))
-  document.querySelector('#wrapper').appendChild(element)
+  document.querySelector('main').appendChild(element)
   // document.querySelector('#wrapper').appendChild(document.createElement('br'))
 
   console.log(y + 'px')

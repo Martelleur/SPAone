@@ -43,7 +43,7 @@ main {
     width: 100%;
     height: 90%;
     top: 5%;
-    overflow: hidden;
+    overflow: scroll;
 }
 footer {
     position: absolute;

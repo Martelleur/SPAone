@@ -10,6 +10,7 @@
 </head>
 <body>
     <div id="wrapper">
+        <!--
         <div class="container">
             <textarea class="text"></textarea>
             <button id="emoji">Emoji</button>
@@ -28,36 +29,28 @@
                 picker.pickerVisible ? picker.hidePicker() : picker.showPicker(input) 
             })
         </script>
-        
-        <!--
-        <ul>
-            <li><a href="#!/chat/" id="chatButton" data-chat="dataChat">
-                <button>Chat</button>
-            </a></li>
-            <li><a href="#!/memory/" id="memoryButton" data-chat="dataMemory">
-                <button>Memory</button>
-            </a></li>
-            <li><a href="#!/minehunter/" id="minehunterButton" data-chat="dataMinehunter">
-                <button>Minehunter</button>
-            </a></li>
-        </ul>
         -->
-        <ul id="buttons">
-            <li>
-                <a href="#!/chat/" id="chatButton" data-chat="dataChat" data-create-element="chat-app">Chat</a>
-            </li>
-            <li>
-                <a href="#!/memory/" id="memoryButton" data-chat="dataMemory" data-create-element="memory-app">Memory</a>
-            </li>
-            <li>
-                <a href="#!/minehunter/" id="minehunterButton" data-chat="dataMinehunter" data-create-element="minehunter-app">Minehunter</a>
-            </li>
-            <li>
-                <a href="#!/chess/" id="chessButton" data-chat="dataChess" data-create-element="chess-app">Chess</a>
-            </li>
-        </ul>
-
-        <div id="hiddenElements"></div>
+        <Header>
+            <ul id="buttons">
+                <li>
+                    <a href="#!/chat/" id="chatButton" data-chat="dataChat" data-create-element="chat-app">Chat</a>
+                </li>
+                <li>
+                    <a href="#!/memory/" id="memoryButton" data-chat="dataMemory" data-create-element="memory-app">Memory</a>
+                </li>
+                <li>
+                    <a href="#!/minehunter/" id="minehunterButton" data-chat="dataMinehunter" data-create-element="minehunter-app">Minehunter</a>
+                </li>
+                <li>
+                    <a href="#!/chess/" id="chessButton" data-chat="dataChess" data-create-element="chess-app">Chess</a>
+                </li>
+            </ul>
+        </Header>
+        
+        <footer>
+            <div id="hiddenElements"></div>
+        </footer>
+        
        
         <!--
         <button id="chatButton" data-chat="dataChat">Chat</button>    

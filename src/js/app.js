@@ -4,6 +4,8 @@ import './minehunter-app.js'
 import './chess-app.js'
 import { moveElement } from './moveElement.js'
 
+// console.log(moment().format())
+
 // Check if online not always true but a good check
 // Insted we define online when client connected to server
 // Like the heartbeat in websocketconnection

@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <script type = "text/JavaScript" src ="https://MomentJS.com/downloads/moment-with-locales.js"></script>
     <script type="module" src="js/app.js"></script>
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -49,21 +48,40 @@
                     <a href="#!/fullScreen/" id="fullScreen" >Full screen</a>
                 </li>
             </ul>
+
         </header>
         
         <main>
-            <script type = "text/JavaScript">
-                // var a = moment.locale('fr')
+            <div class="emojiContainer">
+                <textarea class="text"></textarea>
+                <button id="emoji">Emoji</button>
+            </div>
+            <script src="lib/emoji/index.min.js"></script>
+            <script>
+                let input = document.querySelector('.text')
+                let picker = new EmojiButton({
+                    position: 'right-start'
+                })
+                picker.on('emoji', function(emoji) {
+                    input.value += emoji
+                })
+                document.querySelector('#emoji').addEventListener('click', function() {
+                    picker.pickerVisible ? picker.hidePicker() : picker.showPicker(input) 
+                })
+            </script>
+            <script src="lib/moment/moment.min.js"></script>
+            <script>
+                
                 setInterval(() => {
-                    var c = moment().format('LLLL')
-                    var d = moment().format('MMMM Do YYYY, h:mm:ss a')
+                    let c = moment().format('LLLL')
+                    let d = moment().format('MMMM Do YYYY, h:mm:ss a')
                     document.querySelector('#time').innerHTML = d
                     document.querySelector('#time').style.float = 'right'
                 }, 1000)
             </script>
             
         </main>
-        
+
         <footer>
             <div id="time"></div>
             <div id="hiddenElements"></div>

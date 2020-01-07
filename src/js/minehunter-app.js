@@ -1,4 +1,5 @@
 import './chat-app.js'
+import './timecounter-app.js'
 
 const template = document.createElement('template')
 template.innerHTML = /* html */ `
@@ -30,6 +31,7 @@ template.innerHTML = /* html */ `
     <div id="gameFooter">
     </div>
 </div>
+<div id=timeConteiner></div>
 <div id="chatConteiner"></div>
 <style>
 * {
@@ -87,6 +89,9 @@ export class Minehunter extends window.HTMLElement {
     this._blackPictureCounter = 0
     this._gameFooter = this.shadowRoot.querySelector('#gameFooter')
     this._chatConteiner = this.shadowRoot.querySelector('#chatConteiner')
+    this._timeConteiner = this.shadowRoot.querySelector('#timeConteiner')
+    this._counter = document.createElement('timecounter-app')
+    this._timeConteiner.appendChild(this._counter)
 
     // Tools memory
     this._tools = this.shadowRoot.querySelector('#tools')
@@ -98,128 +103,6 @@ export class Minehunter extends window.HTMLElement {
     this._restartMinehunter = this.shadowRoot.querySelector('#restartMinehunter')
     this._sizeMinehunter = this.shadowRoot.querySelector('#sizeMinehunter')
     this._levelMinehunter = this.shadowRoot.querySelector('#levelMinehunter')
-  }
-
-  /**
-   * @memberof Minehunter
-   */
-  isPlayerFinished () {
-    // reset this._flagcounter and this._blackPictureCounter
-    this._flagCounter = 0
-    this._blackPictureCounter = 0
-
-    for (let i = 0; i < this._quantityOfBricks; i++) {
-      if (this._gameField.querySelectorAll('img')[i].getAttribute('src') === '../imageMinehunter/flag.png') {
-        this._flagCounter++
-      }
-      if (this._gameField.querySelectorAll('img')[i].getAttribute('src') === '../imageMinehunter/black.png') {
-        this._blackPictureCounter++
-      }
-    }
-    console.log(`this._flagCounter: ${this._flagCounter}`)
-    console.log(`this._blacPictureCounter: ${this._blackPictureCounter}`)
-
-    // player have won
-    if (this._blackPictureCounter === 0 && this._flagCounter === Math.sqrt(this._quantityOfBricks) * this._currentLevel) {
-      console.log('CONGRATULATION!!!')
-
-      // show user the hided mines
-      window.setTimeout(() => {
-        for (let i = 0; i < this._quantityOfBricks; i++) {
-          if (this._mines[i].getAttribute('src') === '../imageMinehunter/mine.png') {
-            this._gameField.querySelectorAll('img')[i].setAttribute('src', '../imageMinehunter/mine.png')
-          }
-        }
-
-        const congratulation = document.createElement('h3')
-        congratulation.innerText = 'CONGRATULATION!'
-        congratulation.style.textAlign = 'center'
-        congratulation.style.color = 'white'
-        this._gameFooter.appendChild(congratulation)
-      }, 2000)
-    }
-  }
-
-  /**
-   *
-   * @memberof Minehunter
-   */
-  setGamefield (bricks = this._quantityOfBricks) {
-    // Building new memory
-    this._gameField.innerHTML = ''
-    try {
-      this._gameFooter.innerHTML = ''
-    } catch (error) {
-      console.log(error)
-    }
-    for (let i = 0; i < bricks; i++) {
-      const img = document.createElement('img')
-      img.setAttribute('src', '../imageMinehunter/black.png')
-      const idAttribute = `${i}`
-      img.setAttribute('id', idAttribute)
-      const widthProperty = `${100 / Math.sqrt(bricks)}%`
-      img.style.width = widthProperty
-      img.style.border = '2px solid white'
-      img.style.boxSizing = 'border-box'
-      this._gameField.appendChild(img)
-    }
-  }
-
-  /**
-   * @param {*} mines
-   * @returns
-   * @memberof Minehunter
-   */
-  setMines (mines = Math.sqrt(this._quantityOfBricks) * this._currentLevel) {
-    // Save mines in array with a number in [0,this._quantityOfBricks]
-    const mineArr = []
-    for (let i = 0; i < mines; i++) {
-      let number = Math.floor(Math.random() * this._quantityOfBricks)
-      while (mineArr.includes(number)) {
-        number = Math.floor(Math.random() * this._quantityOfBricks)
-      }
-      mineArr.push(number)
-    }
-    console.log('mineArr/JM')
-    console.log(mineArr)
-
-    const arr = []
-    for (let i = 0; i < this._quantityOfBricks; i++) {
-      const img = document.createElement('img')
-      if (mineArr.includes(i)) {
-        img.setAttribute('src', '../imageMinehunter/mine.png')
-      } else {
-        img.setAttribute('src', '../imageMinehunter/white.png')
-      }
-      arr.push(img)
-    }
-
-    return arr
-  }
-
-  /**
-   * Math.sqrt(array.length)) need to be even
-   * @param {*} array
-   * @returns
-   * @memberof Minehunter
-   */
-  reconstructArray (array) {
-    const newArray = []
-    let innerArray = []
-    for (let i = 0; i < array.length; i++) {
-      if (innerArray.length === Math.sqrt(array.length)) {
-        newArray.push(innerArray)
-        innerArray = []
-        innerArray.push(array[i])
-      } else if (i === (array.length - 1)) {
-        innerArray.push(array[i])
-        newArray.push(innerArray)
-      } else {
-        innerArray.push(array[i])
-      }
-    }
-
-    return newArray
   }
 
   /**
@@ -597,6 +480,131 @@ export class Minehunter extends window.HTMLElement {
 
       this.isPlayerFinished()
     })
+  }
+
+  /**
+   * @memberof Minehunter
+   */
+  isPlayerFinished () {
+    // reset this._flagcounter and this._blackPictureCounter
+    this._flagCounter = 0
+    this._blackPictureCounter = 0
+
+    for (let i = 0; i < this._quantityOfBricks; i++) {
+      if (this._gameField.querySelectorAll('img')[i].getAttribute('src') === '../imageMinehunter/flag.png') {
+        this._flagCounter++
+      }
+      if (this._gameField.querySelectorAll('img')[i].getAttribute('src') === '../imageMinehunter/black.png') {
+        this._blackPictureCounter++
+      }
+    }
+    console.log(`this._flagCounter: ${this._flagCounter}`)
+    console.log(`this._blacPictureCounter: ${this._blackPictureCounter}`)
+
+    // player have won
+    if (this._blackPictureCounter === 0 && this._flagCounter === Math.sqrt(this._quantityOfBricks) * this._currentLevel) {
+      console.log('CONGRATULATION!!!')
+
+      // timeCounter stop
+      this._counter.setAttribute('state', 'freeze')
+
+      // show user the hided mines
+      window.setTimeout(() => {
+        for (let i = 0; i < this._quantityOfBricks; i++) {
+          if (this._mines[i].getAttribute('src') === '../imageMinehunter/mine.png') {
+            this._gameField.querySelectorAll('img')[i].setAttribute('src', '../imageMinehunter/mine.png')
+          }
+        }
+
+        const congratulation = document.createElement('h3')
+        congratulation.innerText = 'CONGRATULATION!'
+        congratulation.style.textAlign = 'center'
+        congratulation.style.color = 'white'
+        this._gameFooter.appendChild(congratulation)
+      }, 2000)
+    }
+  }
+
+  /**
+   *
+   * @memberof Minehunter
+   */
+  setGamefield (bricks = this._quantityOfBricks) {
+    // Building new memory
+    this._gameField.innerHTML = ''
+    try {
+      this._gameFooter.innerHTML = ''
+    } catch (error) {
+      console.log(error)
+    }
+    for (let i = 0; i < bricks; i++) {
+      const img = document.createElement('img')
+      img.setAttribute('src', '../imageMinehunter/black.png')
+      const idAttribute = `${i}`
+      img.setAttribute('id', idAttribute)
+      const widthProperty = `${100 / Math.sqrt(bricks)}%`
+      img.style.width = widthProperty
+      img.style.border = '2px solid white'
+      img.style.boxSizing = 'border-box'
+      this._gameField.appendChild(img)
+    }
+  }
+
+  /**
+   * @param {*} mines
+   * @returns
+   * @memberof Minehunter
+   */
+  setMines (mines = Math.sqrt(this._quantityOfBricks) * this._currentLevel) {
+    // Save mines in array with a number in [0,this._quantityOfBricks]
+    const mineArr = []
+    for (let i = 0; i < mines; i++) {
+      let number = Math.floor(Math.random() * this._quantityOfBricks)
+      while (mineArr.includes(number)) {
+        number = Math.floor(Math.random() * this._quantityOfBricks)
+      }
+      mineArr.push(number)
+    }
+    console.log('mineArr/JM')
+    console.log(mineArr)
+
+    const arr = []
+    for (let i = 0; i < this._quantityOfBricks; i++) {
+      const img = document.createElement('img')
+      if (mineArr.includes(i)) {
+        img.setAttribute('src', '../imageMinehunter/mine.png')
+      } else {
+        img.setAttribute('src', '../imageMinehunter/white.png')
+      }
+      arr.push(img)
+    }
+
+    return arr
+  }
+
+  /**
+   * Math.sqrt(array.length)) need to be even
+   * @param {*} array
+   * @returns
+   * @memberof Minehunter
+   */
+  reconstructArray (array) {
+    const newArray = []
+    let innerArray = []
+    for (let i = 0; i < array.length; i++) {
+      if (innerArray.length === Math.sqrt(array.length)) {
+        newArray.push(innerArray)
+        innerArray = []
+        innerArray.push(array[i])
+      } else if (i === (array.length - 1)) {
+        innerArray.push(array[i])
+        newArray.push(innerArray)
+      } else {
+        innerArray.push(array[i])
+      }
+    }
+
+    return newArray
   }
 }
 

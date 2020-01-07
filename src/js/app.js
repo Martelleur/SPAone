@@ -2,6 +2,7 @@ import './memory-app.js'
 import './chat-app.js'
 import './minehunter-app.js'
 import './chess-app.js'
+import './timecounter-app.js'
 import { moveElement } from './moveElement.js'
 
 // Check if online not always true but a good check

@@ -3,6 +3,12 @@ template.innerHTML = /* html */ `
 <div id="timeContainer">
   <input type="text" id="counter">
 </div>
+<style>
+  :host #timeContainer, :host #counter{
+      width: 100%;
+      text-align: center;
+  }
+</style>
 `
 
 /**
@@ -29,11 +35,15 @@ export class TimeCounter extends window.HTMLElement {
 
   attributeChangedCallback (name, oldValue, newValue) {
     if (name === 'state') {
-      if (newValue === 'false') {
+      if (newValue === 'remove') {
+        clearInterval(this._temp)
         this.remove()
       }
       if (newValue === 'freeze') {
-        this.remove()
+        clearInterval(this._temp)
+        console.log('this._counter.value')
+        console.log(this._counter.value)
+        window.sessionStorage.setItem('timecountervalue', this._counter.value)
       }
     }
   }
@@ -44,12 +54,10 @@ export class TimeCounter extends window.HTMLElement {
 
   disconnectedCallback () {
     console.log('Element removed from dom')
-    clearInterval(this._temp)
   }
 
   timeCounterMethod () {
     this._temp = setInterval(() => {
-      console.log(this._counterTotal)
       this._counter.value = this._counterTotal
       this._counterTotal = this._counterTotal + 1
     }, 1000)

@@ -3,20 +3,12 @@ import './timecounter-app.js'
 
 const template = document.createElement('template')
 template.innerHTML = /* html */ `
+<div class=timeConteiner></div>
 <div id="minehunterConteiner">
     <div id="tools">
       <button id="deletMinehunter">Delet</button>
       <button id="restartMinehunter">Restart</button>
       <button id="chat">Chat</button>
-      <!--
-      <select id="sizeMinehunter" name="size">
-        <option value="">Size</option>
-        <option value="16">16 bricks</option>
-        <option value="36">36 bricks</option>
-        <option value="64">64 bricks</option>
-        <option value="100">100 bricks</option>
-      </select>
-      -->
       <select id="levelMinehunter" name="size">
         <option value="0">Medium</option>
         <option value="1">Hard</option>
@@ -27,11 +19,13 @@ template.innerHTML = /* html */ `
       <button id="hideWindow">-</button>
     </div>  
     <div id="gameField">
+    <button id="start">Click me to start the game</button>
+    <p>Rules: Clicks on a square with the left mouse button. The click reveals a number, each number tells you how many mines touch the square. You can mark a mine by putting a flag on it with the right mouse button.
+    You win by clearing all the safe squares and lose if you click on a mine. A time counter keeps track of your score. There are three levels of difficulty: medium has 10 mines, hard has 20 mines, and impossible has 30 mines.</p> 
     </div>
     <div id="gameFooter">
     </div>
 </div>
-<div id=timeConteiner></div>
 <div id="chatConteiner"></div>
 <style>
 * {
@@ -58,6 +52,10 @@ template.innerHTML = /* html */ `
 :host #tools:hover{
   cursor: move;
 }
+:host #start {
+  display: block;
+  margin: 0 auto;
+}
 </style>
 `
 
@@ -83,15 +81,13 @@ export class Minehunter extends window.HTMLElement {
     this._quantityOfBricks = 100
     this._levels = [1, 2, 3]
     this._currentLevel = this._levels[0]
-    this._mines = this.setMines()
-    this.setGamefield()
     this._flagCounter = 0
     this._blackPictureCounter = 0
     this._gameFooter = this.shadowRoot.querySelector('#gameFooter')
     this._chatConteiner = this.shadowRoot.querySelector('#chatConteiner')
-    this._timeConteiner = this.shadowRoot.querySelector('#timeConteiner')
+    this._timeConteiner = this.shadowRoot.querySelector('.timeConteiner')
     this._counter = document.createElement('timecounter-app')
-    this._timeConteiner.appendChild(this._counter)
+    this._start = this.shadowRoot.querySelector('#start')
 
     // Tools memory
     this._tools = this.shadowRoot.querySelector('#tools')
@@ -144,6 +140,15 @@ export class Minehunter extends window.HTMLElement {
    * @memberof Minehunter
    */
   connectedCallback () {
+    // eventlistner for this._start
+    this._start.addEventListener('click', event => {
+      event.preventDefault()
+      this._gameField.innerHTML = ''
+      this._mines = this.setMines()
+      this.setGamefield()
+      this._timeConteiner.appendChild(this._counter)
+    })
+
     // eventlistner for this._chat
     this._chat.addEventListener('click', (event) => {
       event.preventDefault()
@@ -188,6 +193,7 @@ export class Minehunter extends window.HTMLElement {
     this._deletMinehunter.addEventListener('click', event => {
       event.preventDefault()
       this.remove()
+      this._counter.setAttribute('state', 'remove')
     })
 
     // event for restartButton
@@ -195,19 +201,11 @@ export class Minehunter extends window.HTMLElement {
       event.preventDefault()
       this.setGamefield()
       this._mines = this.setMines()
+      this._counter.setAttribute('state', 'remove')
+      this._counter = document.createElement('timecounter-app')
+      this._timeConteiner.appendChild(this._counter)
     })
-    // if this tool implemented you need to change code in event for gamefield
-    /*
-    // event for sizeButton
-    this._sizeMinehunter.addEventListener('click', event => {
-      event.preventDefault()
-      // console.log('test this._sizeMemory event/JM')
-      // console.log(this._sizeMinehunter.value)
-      this._quantityOfBricks = this._sizeMinehunter.value
-      this.setGamefield(this._quantityOfBricks)
-      this._mines = this.setMines()
-    })
-    */
+
     // event for levelButton
     this._levelMinehunter.addEventListener('change', event => {
       event.preventDefault()
@@ -269,6 +267,8 @@ export class Minehunter extends window.HTMLElement {
             this._gameField.querySelectorAll('img')[i].setAttribute('src', '../imageMinehunter/mine.png')
           }
         }
+
+        this._counter.setAttribute('state', 'freeze') // stop counter
 
         const sorry = document.createElement('h3')
         sorry.innerText = 'Sorry you loose!'
@@ -503,10 +503,7 @@ export class Minehunter extends window.HTMLElement {
 
     // player have won
     if (this._blackPictureCounter === 0 && this._flagCounter === Math.sqrt(this._quantityOfBricks) * this._currentLevel) {
-      console.log('CONGRATULATION!!!')
-
-      // timeCounter stop
-      this._counter.setAttribute('state', 'freeze')
+      console.log('CONGRATULATION!')
 
       // show user the hided mines
       window.setTimeout(() => {
@@ -516,8 +513,15 @@ export class Minehunter extends window.HTMLElement {
           }
         }
 
+        // timeCounter stop
+        this._counter.setAttribute('state', 'freeze')
+        const result = window.sessionStorage.getItem('timecountervalue')
+        window.sessionStorage.removeItem('timecountervalue')
+        const argument = `highScoreMinehunter${this._currentLevel}`
+        window.localStorage.setItem(argument, result)
+
         const congratulation = document.createElement('h3')
-        congratulation.innerText = 'CONGRATULATION!'
+        congratulation.innerText = `CONGRATULATION! Your time is: ${result}`
         congratulation.style.textAlign = 'center'
         congratulation.style.color = 'white'
         this._gameFooter.appendChild(congratulation)

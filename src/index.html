@@ -52,20 +52,20 @@
         </header>
         
         <main>
-            <h1>Moment Locale</h1>
-            <div id = "datedisplay" style = "font-size:30px;"></div>
             <script type = "text/JavaScript">
                 // var a = moment.locale('fr')
                 setInterval(() => {
                     var c = moment().format('LLLL')
-                    var d = moment().format('MMMM Do YYYY, h:mm:ss a')
-                    document.getElementById('datedisplay').innerHTML = d
+                    var d = moment().format('MMMM Do YYYY, h:mm:ss ')
+                    document.querySelector('#time').innerHTML = d
+                    document.querySelector('#time').style.float = 'right'
                 }, 1000)
             </script>
             
         </main>
         
         <footer>
+            <div id="time"></div>
             <div id="hiddenElements"></div>
         </footer>
         

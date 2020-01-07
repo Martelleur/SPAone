@@ -597,6 +597,7 @@ export class Chess extends window.HTMLElement {
 
     // eventlistner for this._chat
     this._chat.addEventListener('click', (event) => {
+      // Only one chat can be created
       if (this._chatConteiner.childElementCount === 1) {
         return
       }

@@ -56,7 +56,7 @@
                 // var a = moment.locale('fr')
                 setInterval(() => {
                     var c = moment().format('LLLL')
-                    var d = moment().format('MMMM Do YYYY, h:mm:ss ')
+                    var d = moment().format('MMMM Do YYYY, h:mm:ss a')
                     document.querySelector('#time').innerHTML = d
                     document.querySelector('#time').style.float = 'right'
                 }, 1000)

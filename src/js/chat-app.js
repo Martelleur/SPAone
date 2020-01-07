@@ -116,19 +116,19 @@ export class Chat extends window.HTMLElement {
   }
 
   attributeChangedCallback (name, oldValue, newValue) {
-    console.log('TEST')
     // Changing of attribute data-freezeWindow
     if (name === 'data-freezewindow') {
-      console.log('TEST')
       if (newValue === 'true') {
-        console.log('TEST')
         this._bigWindow.style.display = 'none'
         this._hideWindow.style.display = 'none'
         this._adjustableWindow.style.display = 'none'
         this.style.width = '100%'
       }
       if (newValue === 'false') {
-        console.log('TEST')
+        this._bigWindow.style.display = 'initial'
+        this._hideWindow.style.display = 'initial'
+        this._adjustableWindow.style.display = 'initial'
+        this.style.width = '50%'
       }
     }
 

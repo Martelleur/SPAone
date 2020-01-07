@@ -1,5 +1,8 @@
+import './timecounter-app.js'
+
 const template = document.createElement('template')
 template.innerHTML = /* html */ `
+<div class=timeConteiner></div>
 <div id="memoryConteiner">
   
   <div id="tools">
@@ -77,6 +80,9 @@ export class Memory extends window.HTMLElement {
     this._adjustableWindow = this.shadowRoot.querySelector('#adjustableWindow')
 
     // Data memory
+    this._timeConteiner = this.shadowRoot.querySelector('.timeConteiner')
+    this._counter = document.createElement('timecounter-app')
+    this._timeConteiner.appendChild(this._counter)
     this._memoryConteiner = this.shadowRoot.querySelector('#memoryConteiner')
     this._memoryPictures = this.shadowRoot.querySelector('#memoryPictures')
     this._rows = 4
@@ -167,6 +173,11 @@ export class Memory extends window.HTMLElement {
     this._memoryPictures.addEventListener('click', (event) => {
       event.preventDefault()
 
+      // player can not open more then two tiles
+      if (this.countOpenTiles() > 1) {
+        return
+      }
+
       // if user click on a turned picture with the mouse
       if (event.target.tagName === 'IMG') {
         // If user click on a turned tile nothing change
@@ -185,49 +196,33 @@ export class Memory extends window.HTMLElement {
         }
       }
 
-      // something is wronh here
+      // something is wrong here
       // print tries and paires
       this._tries++
       this._paires.innerText = `Paires: ${this._quantityOfPaires / 2}\nTries: ${Math.floor(this._tries / 2)}`
 
       const visiblePicture = this._tiles[event.target.getAttribute('class') - 1]
-      console.log(this._tiles)
-      // clonedPicture = this.shadowRoot.cloneNode
-      // event.target = this._tiles[event.target.id - 1]
 
       // if target are an a or img-tagg target get
       let target
       if (event.target.tagName === 'IMG') {
-        console.log('You cliking on an img tag')
-        console.log(visiblePicture)
-        console.log(event.target.innerHTML)
         target = event.target
         target.innerHTML = visiblePicture
-        console.log(event.target.innerHTML)
-        console.log(event.target)
       }
       if (event.target.tagName === 'A') {
-        console.log('You cliking on an a tag')
-        console.log(visiblePicture)
         target = event.target.firstElementChild
-        console.log(event.target.firstElementChild.innerHTML)
         target.innerHTML = visiblePicture
-        console.log(event.target.firstElementChild.innerHTML)
-        console.log(event.target)
       }
 
       const attributeSrc = visiblePicture.getAttribute('src')
-      console.log(attributeSrc)
 
       // storing even.target in temp array
       target.setAttribute('src', attributeSrc)
       this._tempArray.push(target)
-      console.log(this._tempArray)
 
       // check if picture are the same
       if (this._tempArray.length === 2) {
         if (this._tempArray[0].getAttribute('src') === this._tempArray[1].getAttribute('src')) {
-          console.log('Paire!!!')
           // count paires
           for (let i = 0; i < this.shadowRoot.querySelectorAll('#memoryPictures img').length; i++) {
             if (this.shadowRoot.querySelectorAll('#memoryPictures img')[i].getAttribute('src') === this._tempArray[1].getAttribute('src')) {
@@ -252,11 +247,18 @@ export class Memory extends window.HTMLElement {
         for (let i = 0; i < this._memoryPictures.querySelectorAll('img').length; i++) {
           if (this._memoryPictures.querySelectorAll('img')[i].style.visibility === 'hidden') {
             this._countHiddenPictures++
-            console.log(`countPictures: ${this._countHiddenPictures}`)
             if (this._countHiddenPictures === this._memoryPictures.querySelectorAll('img').length) {
-              console.log('CONGRATULATION!!!')
+              // timeCounter stop
+              this._counter.setAttribute('state', 'freeze')
+              const resultTime = window.sessionStorage.getItem('timecountervalue')
+              const result = String(Number(resultTime) - this._tries)
+              window.sessionStorage.removeItem('timecountervalue')
+              const argument = `highScoreMemory${this._numberOfPictures}`
+              window.localStorage.setItem(argument, result)
+
+              // Displaying result
               const congratulation = document.createElement('h3')
-              congratulation.innerText = 'CONGRATULATION!'
+              congratulation.innerText = `CONGRATULATION! Your result is: ${result}`
               congratulation.style.textAlign = 'center'
               congratulation.style.color = 'white'
               this._gameFooter.appendChild(congratulation)
@@ -269,12 +271,20 @@ export class Memory extends window.HTMLElement {
     // eventlistner for this._deletMemory
     this._deletMemory.addEventListener('click', (event) => {
       event.preventDefault()
+      // remove this._counter
+      this._counter.setAttribute('state', 'remove')
+
       this.remove()
     })
 
     // eventlistner for this._restartMemory
     this._restartMemory.addEventListener('click', (event) => {
       event.preventDefault()
+
+      // reset this._counter
+      this._counter.setAttribute('state', 'remove')
+      this._counter = document.createElement('timecounter-app')
+      this._timeConteiner.appendChild(this._counter)
 
       // reset this._countHiddenPictures and gameFooter
       this._countHiddenPictures = 0
@@ -295,8 +305,10 @@ export class Memory extends window.HTMLElement {
     // eventlistner for this._sizeMemory
     this._sizeMemory.addEventListener('change', (event) => {
       event.preventDefault()
-      console.log('test this._sizeMemory event/JM')
-      console.log(this._sizeMemory.value)
+      // reset this._counter
+      this._counter.setAttribute('state', 'remove')
+      this._counter = document.createElement('timecounter-app')
+      this._timeConteiner.appendChild(this._counter)
 
       // reset this._countHiddenPictures and gameFooter
       this._countHiddenPictures = 0
@@ -305,6 +317,7 @@ export class Memory extends window.HTMLElement {
       // Reconstruct form for layout for the memory
       this._rows = Math.floor(Math.sqrt(this._sizeMemory.value))
       this._columns = this._sizeMemory.value / this._rows
+      this._numberOfPictures = this._rows * this._columns
 
       // Building new memory
       this.setTiles()
@@ -390,6 +403,21 @@ export class Memory extends window.HTMLElement {
     console.log('Shuffled array:')
     console.log(array)
     return array
+  }
+
+  /**
+   * @returns
+   * @memberof Memory
+   */
+  countOpenTiles () {
+    let counter = 0
+    const tiles = this._memoryPictures.querySelectorAll('img')
+    for (let i = 0; i < tiles.length; i++) {
+      if (tiles[i].getAttribute('src') !== this._backOfTilesSrc && tiles[i].style.visibility !== 'hidden') {
+        counter++
+      }
+    }
+    return counter
   }
 }
 

@@ -1,9 +1,12 @@
+import './chat-app.js'
+
 const template = document.createElement('template')
 template.innerHTML = /* html */ `
 <div id="minehunterConteiner">
     <div id="tools">
       <button id="deletMinehunter">Delet</button>
       <button id="restartMinehunter">Restart</button>
+      <button id="chat">Chat</button>
       <!--
       <select id="sizeMinehunter" name="size">
         <option value="">Size</option>
@@ -27,6 +30,7 @@ template.innerHTML = /* html */ `
     <div id="gameFooter">
     </div>
 </div>
+<div id="chatConteiner"></div>
 <style>
 * {
     box-sizing: border-box;
@@ -82,9 +86,11 @@ export class Minehunter extends window.HTMLElement {
     this._flagCounter = 0
     this._blackPictureCounter = 0
     this._gameFooter = this.shadowRoot.querySelector('#gameFooter')
+    this._chatConteiner = this.shadowRoot.querySelector('#chatConteiner')
 
     // Tools memory
     this._tools = this.shadowRoot.querySelector('#tools')
+    this._chat = this.shadowRoot.querySelector('#chat')
     this._hideWindow = this.shadowRoot.querySelector('#hideWindow')
     this._adjustableWindow = this.shadowRoot.querySelector('#adjustableWindow')
     this._bigWindow = this.shadowRoot.querySelector('#bigWindow')
@@ -255,6 +261,20 @@ export class Minehunter extends window.HTMLElement {
    * @memberof Minehunter
    */
   connectedCallback () {
+    // eventlistner for this._chat
+    this._chat.addEventListener('click', (event) => {
+      event.preventDefault()
+      // Only one chat can be created
+      if (this._chatConteiner.childElementCount === 1) {
+        return
+      }
+      const chat = document.createElement('chat-app')
+      chat.setAttribute('data-freezewindow', 'true')
+      console.log(chat.getAttribute('data-freezewindow'))
+      this._chatConteiner.appendChild(chat)
+      this._chatConteiner.appendChild(chat)
+    })
+
     // eventlistner for this._adjustableWindow
     this._adjustableWindow.addEventListener('click', (event) => {
       event.preventDefault()

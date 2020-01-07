@@ -30,6 +30,10 @@ let x = 0
 document.querySelector('#buttons').addEventListener('click', (event) => {
   event.preventDefault()
 
+  if (event.target.getAttribute('id') === 'fullScreen') {
+    return
+  }
+
   if (y < (window.innerHeight - 600)) {
     y = y + 10
   } else {
@@ -363,6 +367,31 @@ window.addEventListener('click', event => {
 // popstate event
 window.addEventListener('popstate', event => {
   console.log(`id: ${event.state.id}. Element: ${event.state.element}`)
+})
+
+// Full screen mode
+document.querySelector('#fullScreen').addEventListener('click', event => {
+  event.preventDefault()
+
+  console.log(event.target)
+  if (event.target.textContent === 'Full screen') {
+    event.target.textContent = 'Exit full screen'
+  } else {
+    event.target.textContent = 'Full screen'
+    document.exitFullscreen()
+    return
+  }
+
+  const html = document.querySelector('html')
+  if (event.target.requestFullscreen) {
+    html.requestFullscreen()
+  } else if (event.target.mozRequestFullScreen) { /* Firefox */
+    html.mozRequestFullScreen()
+  } else if (event.target.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+    html.webkitRequestFullscreen()
+  } else if (event.target.msRequestFullscreen) { /* IE/Edge */
+    html.msRequestFullscreen()
+  }
 })
 
 /*

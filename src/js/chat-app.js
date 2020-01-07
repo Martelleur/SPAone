@@ -69,7 +69,7 @@ template.innerHTML = /* html */ `
   background-color: black;
   margin: 0;
 }
-:host #messages, :host #onlineStatus, :host #chatTitle {
+:host #messages, :host #onlineStatus, :host #chatTitle, {
   background-color: white;
   color: black;
 }
@@ -112,10 +112,26 @@ export class Chat extends window.HTMLElement {
   }
 
   static get observedAttributes () {
-    return ['id', 'data-hide']
+    return ['id', 'data-hide', 'data-freezewindow']
   }
 
   attributeChangedCallback (name, oldValue, newValue) {
+    console.log('TEST')
+    // Changing of attribute data-freezeWindow
+    if (name === 'data-freezewindow') {
+      console.log('TEST')
+      if (newValue === 'true') {
+        console.log('TEST')
+        this._bigWindow.style.display = 'none'
+        this._hideWindow.style.display = 'none'
+        this._adjustableWindow.style.display = 'none'
+        this.style.width = '100%'
+      }
+      if (newValue === 'false') {
+        console.log('TEST')
+      }
+    }
+
     // Changing of attribute data-hide
     if (name === 'data-hide') {
       // console.log(newValue)
@@ -127,6 +143,7 @@ export class Chat extends window.HTMLElement {
         this.style.display = 'initial'
       }
     }
+
     // Changing of attribute id
     if (name === 'id') {
       // console.log('test attributeChangedCallback/JM')
@@ -135,6 +152,7 @@ export class Chat extends window.HTMLElement {
       this._tools.appendChild(p)
       // console.log(this.getAttribute('id'))
     }
+
     // Changing of attribute id
     if (name === 'id') {
       let username

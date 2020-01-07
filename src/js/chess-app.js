@@ -1,5 +1,6 @@
 // https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer/setData
 // https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_ondrag_addeventlistener
+import './chat-app.js'
 
 const template = document.createElement('template')
 template.innerHTML = /* html */ `
@@ -8,8 +9,9 @@ template.innerHTML = /* html */ `
 
 <div id="tools">
     <button id="deletChess">Delet</button>
-    <button id="options1">White players options</button>
-    <button id="options2">Black players options</button>
+    <button id="options1">White options</button>
+    <button id="options2">Black options</button>
+    <button id="chat">Chat</button>
     <select id="history">
       <option value="history">History</option>
       <option value="clear">Hide history!</option>
@@ -94,9 +96,10 @@ template.innerHTML = /* html */ `
     <p id="checkStatusBlack">Black player is NOT check!</p>
     <p id="winner"></p>
     <div id="historyConteiner"></div>
-<div>
+</div>
 
 </div>
+<div id="chatConteiner"></div>
 
 <style>
 :host {
@@ -150,7 +153,7 @@ template.innerHTML = /* html */ `
   background-color: black;
   font-size: 1.5em;
 }
-:host #deletChess {
+:host #deletChess, :host #chat {
   background-color: red;
   color: white;
   border: 3px solid red;
@@ -222,9 +225,11 @@ export class Chess extends window.HTMLElement {
     this._information = this.shadowRoot.querySelector('#information')
     this._historyConteiner = this.shadowRoot.querySelector('#historyConteiner')
     this._winner = this.shadowRoot.querySelector('#winner')
+    this._chatConteiner = this.shadowRoot.querySelector('#chatConteiner')
 
     // tools chess
     this._tools = this.shadowRoot.querySelector('#tools')
+    this._chat = this.shadowRoot.querySelector('#chat')
     this._showWhiteOptions = this.shadowRoot.querySelector('#options1')
     this._showBlackOptions = this.shadowRoot.querySelector('#options2')
     this._history = this.shadowRoot.querySelector('#history')
@@ -588,6 +593,20 @@ export class Chess extends window.HTMLElement {
     this._hideWindow.addEventListener('click', (event) => {
       event.preventDefault()
       this.setAttribute('data-hide', 'true')
+    })
+
+    // eventlistner for this._chat
+    this._chat.addEventListener('click', (event) => {
+      if (this._chatConteiner.childElementCount === 1) {
+        return
+      }
+
+      event.preventDefault()
+      const chat = document.createElement('chat-app')
+      chat.setAttribute('data-freezewindow', 'true')
+      console.log(chat.getAttribute('data-freezewindow'))
+      this._chatConteiner.appendChild(chat)
+      // this._chatConteiner.style.float = 'left'
     })
   }
 

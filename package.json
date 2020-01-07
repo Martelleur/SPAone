@@ -28,7 +28,9 @@
   "engines": {
     "node": ">=7.0.0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "moment": "^2.24.0"
+  },
   "devDependencies": {
     "css-loader": "*",
     "file-loader": "*",

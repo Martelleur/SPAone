@@ -5,30 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <script type = "text/JavaScript" src ="https://MomentJS.com/downloads/moment-with-locales.js"></script>
     <script type="module" src="js/app.js"></script>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div id="wrapper">
         <!--
-        <div class="container">
-            <textarea class="text"></textarea>
-            <button id="emoji">Emoji</button>
-        </div>
-        
-        <script src="https://cdn.jsdelivr.net/npm/emoji-button@latest/dist/index.min.js"></script>
-        <script>
-            var input = document.querySelector('.text')
-            var picker = new EmojiButton({
-                position: 'right-start'
-            })
-            picker.on('emoji', function(emoji) {
-                input.value += emoji
-            })
-            document.querySelector('#emoji').addEventListener('click', function() {
-                picker.pickerVisible ? picker.hidePicker() : picker.showPicker(input) 
-            })
-        </script>
+            <div class="container">
+                <textarea class="text"></textarea>
+                <button id="emoji">Emoji</button>
+            </div>
+            
+            <script src="https://cdn.jsdelivr.net/npm/emoji-button@latest/dist/index.min.js"></script>
+            <script>
+                var input = document.querySelector('.text')
+                var picker = new EmojiButton({
+                    position: 'right-start'
+                })
+                picker.on('emoji', function(emoji) {
+                    input.value += emoji
+                })
+                document.querySelector('#emoji').addEventListener('click', function() {
+                    picker.pickerVisible ? picker.hidePicker() : picker.showPicker(input) 
+                })
+            </script>
         -->
         <header>
             <ul id="buttons">
@@ -49,8 +50,18 @@
                 </li>
             </ul>
         </header>
-
+        
         <main>
+            <h1>Moment Locale</h1>
+            <div id = "datedisplay" style = "font-size:30px;"></div>
+            <script type = "text/JavaScript">
+                // var a = moment.locale('fr')
+                setInterval(() => {
+                    var c = moment().format('LLLL')
+                    var d = moment().format('MMMM Do YYYY, h:mm:ss a')
+                    document.getElementById('datedisplay').innerHTML = d
+                }, 1000)
+            </script>
             
         </main>
         
@@ -58,14 +69,14 @@
             <div id="hiddenElements"></div>
         </footer>
         
-       
+        
         <!--
-        <button id="chatButton" data-chat="dataChat">Chat</button>    
-        <button id="memoryButton" data-memory="dataMemory">Memory</button>
-        <button id="minehunterButton" data-minehunter="dataMinehunter">Minehunter</button>
+            <button id="chatButton" data-chat="dataChat">Chat</button>    
+            <button id="memoryButton" data-memory="dataMemory">Memory</button>
+            <button id="minehunterButton" data-minehunter="dataMinehunter">Minehunter</button>
         -->
     </div>
-
+    
     <script nomodule src="build.js"></script>
 </body>
 </html>

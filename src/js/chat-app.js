@@ -285,13 +285,18 @@ export class Chat extends window.HTMLElement {
     this._send.addEventListener('click', (event) => {
       event.preventDefault()
       this._input.innerHTML = ''
-      this._chatCounter = Math.floor(Math.random() * 10000000)
-      const title = document.createElement('p')
-      title.innerText = `Code for message: ${this._chatCounter}`
-      this._chatTitle.appendChild(title)
-      const p = document.createElement('p')
-      p.innerHTML = `Date: ${new Date()}.<br>Username: ${this._username}.<br>Channel: ${this._channel}.<br>Data: ${this._message}<br>Type: ${this._type}<hr>`
-      this._messages.appendChild(p)
+
+      const post = {
+        type: 'message',
+        data: this._message,
+        username: this._username,
+        channel: this._channel,
+        key: this._key
+      }
+
+      this._socket.send(JSON.stringify(post))
+
+      // this._messages.appendChild(p)
     })
 
     // eventlistner for this._goLiveChat (bygger på callback) (kan göras om till async awaite)
@@ -304,16 +309,6 @@ export class Chat extends window.HTMLElement {
 
     this._socket.addEventListener('open', event => {
       console.log('websocket in action/JM')
-
-      this._data = {
-        date: new Date(),
-        type: this._type,
-        data: this._message,
-        username: this._username,
-        channel: this._channel,
-        key: this._key
-      }
-
       this._socket.send(JSON.stringify(this._data))
     })
 
@@ -324,19 +319,12 @@ export class Chat extends window.HTMLElement {
       const dataParse = JSON.parse(event.data)
       const p = document.createElement('p')
       // p.textContent = event.data
-      p.innerHTML = `Date: ${new Date()}.<br>Username: ${dataParse.username}.<br>Channel: ${dataParse.channel}.<br>Data: ${dataParse.data}<br>Type: ${dataParse.type}<hr>`
-      this._messages.appendChild(p)
-    })
-
-    // listning on servers heartbeat
-    this._socket.addEventListener('heartbeat', event => {
-      console.log('websocket heartbeat event.data:')
+      if (dataParse.username !== 'The Server') {
+        p.innerHTML = `Date: ${new Date()}.<br>Username: ${dataParse.username}.<br>Channel: ${dataParse.channel}.<br>Data: ${dataParse.data}<br>Type: ${dataParse.type}<hr>`
+        this._messages.appendChild(p)
+      }
+      console.log('event.data:')
       console.log(event.data)
-      /*
-      const p = document.createElement('p')
-      p.textContent = event.data
-      this._messages.appendChild(p)
-      */
     })
 
     // close WS

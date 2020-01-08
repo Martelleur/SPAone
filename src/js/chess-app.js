@@ -316,22 +316,19 @@ export class Chess extends window.HTMLElement {
       console.log('index')
       console.log(index)
 
-      /*
-      console.log('index/JM')
-      console.log(index)
-      console.log(index[0])
-      console.log(index[1])
-      console.log(event.target.getAttribute('src'))
-      */
       const acceptableSquares = this.acceptableSquares(event.target.getAttribute('src'), index[0], index[1], this._first) || []
-      // console.log(acceptableSquares)
+      console.log(acceptableSquares)
+      console.log(event.target.getAttribute('data-color'))
       for (let i = 0; i < acceptableSquares.length; i++) {
+        // console.log(acceptableSquares[i].firstElementChild.getAttribute('data-color'))
         if (acceptableSquares[i].childElementCount === 1) {
           if (event.target.getAttribute('data-color') !== acceptableSquares[i].firstElementChild.getAttribute('data-color')) {
             acceptableSquares[i].setAttribute('class', 'acceptableSquare')
             acceptableSquares[i].style.border = '3px solid blue'
           }
         } else {
+          console.log('test')
+
           acceptableSquares[i].setAttribute('class', 'acceptableSquare')
           acceptableSquares[i].style.border = '3px solid blue'
         }
@@ -675,14 +672,6 @@ export class Chess extends window.HTMLElement {
       }
       squares.push(square)
     }
-
-    console.log({
-      matrixSquares: outerArray,
-      arrayImages: images,
-      matrixImages: outerArrayImages,
-      arraySquares: squares
-    })
-
     return {
       matrixSquares: outerArray,
       arrayImages: images,
@@ -701,7 +690,7 @@ export class Chess extends window.HTMLElement {
     // console.log(squares)
     for (let i = 0; i < 8; i++) {
       for (let j = 0; j < 8; j++) {
-        if (squares[i][j] === target) {
+        if (squares[i][j].getAttribute('id') === target.getAttribute('id')) {
           return [i, j]
         }
       }

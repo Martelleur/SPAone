@@ -320,15 +320,14 @@ export class Chess extends window.HTMLElement {
       console.log(acceptableSquares)
       console.log(event.target.getAttribute('data-color'))
       for (let i = 0; i < acceptableSquares.length; i++) {
-        // console.log(acceptableSquares[i].firstElementChild.getAttribute('data-color'))
         if (acceptableSquares[i].childElementCount === 1) {
           if (event.target.getAttribute('data-color') !== acceptableSquares[i].firstElementChild.getAttribute('data-color')) {
             acceptableSquares[i].setAttribute('class', 'acceptableSquare')
             acceptableSquares[i].style.border = '3px solid blue'
           }
         } else {
-          console.log('test')
-
+          acceptableSquares[i].setAttribute('class', 'acceptableSquare')
+          acceptableSquares[i].style.border = '3px solid blue'
           acceptableSquares[i].setAttribute('class', 'acceptableSquare')
           acceptableSquares[i].style.border = '3px solid blue'
         }
@@ -337,9 +336,11 @@ export class Chess extends window.HTMLElement {
       // white or black player
       if (event.target.getAttribute('data-color') === 'white' && this._whitePiecesTurn === true) {
         event.dataTransfer.setData('chessPiece', event.target.id)
+        console.log('test event.dataTransfer.setData white')
       }
       if (event.target.getAttribute('data-color') === 'black' && this._whitePiecesTurn === false) {
         event.dataTransfer.setData('chessPiece', event.target.id)
+        console.log('test event.dataTransfer.setData black')
       }
     })
 
@@ -1678,8 +1679,10 @@ export class Chess extends window.HTMLElement {
     bigDiv.addEventListener('dblclick', event => {
       console.log(argument)
       if (Number(argument.slice(-1)) % 2 === 0) {
+        this._whitePiecesTurn = true
         this._activePlayer.innerHTML = 'White players turn!'
       } else {
+        this._whitePiecesTurn = false
         this._activePlayer.innerHTML = 'Black players turn!'
       }
       bigDiv.style.width = '400px'
@@ -1693,6 +1696,8 @@ export class Chess extends window.HTMLElement {
       this._chessBoard.innerHTML = ''
       this._historyConteiner.style.paddingTop = '0'
       this._chessBoard.appendChild(clonedChessboard)
+      this._chessBoardDiv = this._chessBoard.querySelectorAll('div')
+      this._chessBoardImg = this._chessBoard.querySelectorAll('div>img')
     })
   }
 }

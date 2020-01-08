@@ -52,10 +52,13 @@
         </header>
         
         <main>
-            <div class="emojiContainer">
-                <textarea class="text"></textarea>
-                <button id="emoji">Emoji</button>
-            </div>
+            <template id="emojiTemplate">
+                <div class="emojiContainer">
+                    <button id="emoji">Emoji</button>
+                    <textarea class="text"></textarea>
+                </div>
+            </template>
+            <!--
             <script src="lib/emoji/index.min.js"></script>
             <script>
                 let input = document.querySelector('.text')
@@ -69,6 +72,7 @@
                     picker.pickerVisible ? picker.hidePicker() : picker.showPicker(input) 
                 })
             </script>
+            -->
             <script src="lib/moment/moment.min.js"></script>
             <script>
                 

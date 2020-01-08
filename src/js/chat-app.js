@@ -10,12 +10,9 @@ template.innerHTML = /* html */ `
         <button id="adjustableWindow">%</button>
         <button id="hideWindow">-</button>
         <button id="emoji">Emoji</button>
+        <p id="onlineStatus">You are online</p>
     </fieldset>
-    <fieldset id="onlineStatus">
-        <p>You are online</p>
-    </fieldset>
-    <fieldset id="chatTitle"></fieldset>
-    
+
     <fieldset id="messages"></fieldset>
     
     <fieldset id="newMessage">
@@ -35,13 +32,12 @@ template.innerHTML = /* html */ `
 :host {
     position: absolute;
     width: 50%;
-    height: 70%;
     color: white;
     background-color: black;
     box-sizing: border-box;
     border: 5px solid #0c5cc4;
     resize: both;
-    overflow: scroll;
+    overflow: auto;
 }
 :host #chatConteiner {
     width: 100%;
@@ -96,7 +92,7 @@ export class Chat extends window.HTMLElement {
     this._type = 'message'
     this._channel = 'my, not so secret, channel'
     this._key = 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd'
-    this._onlineStatus = this.shadowRoot.querySelector('#onlineStatus p')
+    this._onlineStatus = this.shadowRoot.querySelector('#onlineStatus')
     this._chatConteiner = this.shadowRoot.querySelector('#chatConteiner')
     this._newMessage = this.shadowRoot.querySelector('#newMessage')
 
@@ -123,6 +119,7 @@ export class Chat extends window.HTMLElement {
         this._hideWindow.style.display = 'none'
         this._adjustableWindow.style.display = 'none'
         this.style.width = '100%'
+        this._tools.style.cursor = 'default'
       }
       if (newValue === 'false') {
         this._bigWindow.style.display = 'initial'
@@ -240,6 +237,7 @@ export class Chat extends window.HTMLElement {
       this._tools.style.border = 'none'
       this._newMessage.style.border = 'none'
       this._tools.style.cursor = 'move'
+      this._messages.style.height = '50%'
     })
 
     // eventlistner for this._bigWindow
@@ -250,8 +248,8 @@ export class Chat extends window.HTMLElement {
       this.style.border = 'none'
       this._tools.style.border = '5px solid #0c5cc4'
       this._newMessage.style.border = '5px solid #0c5cc4'
-      this.style.height = '100%'
-      this._chatConteiner.style.height = '100%'
+      const temp = window.innerWidth
+      this._messages.style.height = `${temp}px`
       this._tools.style.cursor = 'default'
     })
 
@@ -295,14 +293,12 @@ export class Chat extends window.HTMLElement {
       }
 
       this._socket.send(JSON.stringify(post))
-
-      // this._messages.appendChild(p)
     })
 
     // eventlistner for this._goLiveChat (bygger på callback) (kan göras om till async awaite)
     this._goLiveChat.addEventListener('click', (event) => {
       event.preventDefault()
-      this._onlineStatus.innerText = 'Thank you! You are online'
+      this._onlineStatus.innerText = 'You are online'
       // console.log('websocket trys to connect to server/JM')
       this._socket = new window.WebSocket('ws://vhost3.lnu.se:20080/socket/', 'charcords')
     })

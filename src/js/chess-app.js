@@ -7,88 +7,88 @@ template.innerHTML = /* html */ `
 
 <div id="chessConteiner">
 
-<div id="tools">
-    <button id="deletChess">Delet</button>
-    <button id="options1">White options</button>
-    <button id="options2">Black options</button>
-    <button id="chat">Chat</button>
-    <select id="history">
-      <option value="history">History</option>
-      <option value="clear">Hide history!</option>
-      <option value="allRounds">All rounds!</option>
-    </select>
-    <button id="bigWindow">+</button>
-    <button id="adjustableWindow">%</button>
-    <button id="hideWindow">-</button>
+    <div id="tools">
+        <button id="deletChess">Delet</button>
+        <button id="options1">White options</button>
+        <button id="options2">Black options</button>
+        <button id="chat">Chat</button>
+        <select id="history">
+          <option value="history">History</option>
+          <option value="clear">Hide history!</option>
+          <option value="allRounds">All rounds!</option>
+        </select>
+        <button id="bigWindow">+</button>
+        <button id="adjustableWindow">%</button>
+        <button id="hideWindow">-</button>
+    </div>
+
+    <div id="chessBoard">
+    <div class="droptarget"><img src="../imageChess/tower.png" draggable="true" id="dragTarget1" class="acceptableSquare" data-color="black"></div>
+    <div class="droptarget"><img src="../imageChess/hoarse.png" draggable="true" id="dragTarget2" class="acceptableSquare" data-color="black"></div>
+    <div class="droptarget"><img src="../imageChess/runner.png" draggable="true" id="dragTarget3" class="acceptableSquare" data-color="black"></div>
+    <div class="droptarget"><img src="../imageChess/king.png" draggable="true" id="dragTarget4" class="acceptableSquare" data-color="black"></div>
+    <div class="droptarget"><img src="../imageChess/queen.png" draggable="true" id="dragTarget5" class="acceptableSquare" data-color="black"></div>
+    <div class="droptarget"><img src="../imageChess/runner.png" draggable="true" id="dragTarget6" class="acceptableSquare" data-color="black"></div>
+    <div class="droptarget"><img src="../imageChess/hoarse.png" draggable="true" id="dragTarget7" class="acceptableSquare" data-color="black"></div>
+    <div class="droptarget"><img src="../imageChess/tower.png" draggable="true" id="dragTarget8" class="acceptableSquare" data-color="black"></div>
+    <div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget9" class="acceptableSquare" data-color="black" data-first="true"></div>
+    <div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget10" class="acceptableSquare" data-color="black" data-first="true"></div>
+    <div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget11" class="acceptableSquare" data-color="black" data-first="true"></div>
+    <div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget12" class="acceptableSquare" data-color="black" data-first="true"></div>
+    <div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget13" class="acceptableSquare" data-color="black" data-first="true"></div>
+    <div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget14" class="acceptableSquare" data-color="black" data-first="true"></div>
+    <div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget15" class="acceptableSquare" data-color="black" data-first="true"></div>
+    <div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget16" class="acceptableSquare" data-color="black" data-first="true"></div>
+    <div class="droptarget"></div>
+    <div class="droptarget"></div>
+    <div class="droptarget"></div>
+    <div class="droptarget"></div>
+    <div class="droptarget"></div>
+    <div class="droptarget"></div>
+    <div class="droptarget"></div>
+    <div class="droptarget"></div>
+    <div class="droptarget"></div>
+    <div class="droptarget"></div>
+    <div class="droptarget"></div>
+    <div class="droptarget"></div>
+    <div class="droptarget"></div>
+    <div class="droptarget"></div>
+    <div class="droptarget"></div>
+    <div class="droptarget"></div>
+    <div class="droptarget"></div>
+    <div class="droptarget"></div>
+    <div class="droptarget"></div>
+    <div class="droptarget"></div>
+    <div class="droptarget"></div>
+    <div class="droptarget"></div>
+    <div class="droptarget"></div>
+    <div class="droptarget"></div>
+    <div class="droptarget"></div>
+    <div class="droptarget"></div>
+    <div class="droptarget"></div>
+    <div class="droptarget"></div>
+    <div class="droptarget"></div>
+    <div class="droptarget"></div>
+    <div class="droptarget"></div>
+    <div class="droptarget"></div>
+    <div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget17" class="acceptableSquare" data-color="white" data-first="true"></div>
+    <div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget18" class="acceptableSquare" data-color="white" data-first="true"></div>
+    <div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget19" class="acceptableSquare" data-color="white" data-first="true"></div>
+    <div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget20" class="acceptableSquare" data-color="white" data-first="true"></div>
+    <div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget21" class="acceptableSquare" data-color="white" data-first="true"></div>
+    <div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget22" class="acceptableSquare" data-color="white" data-first="true"></div>
+    <div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget23" class="acceptableSquare" data-color="white" data-first="true"></div>
+    <div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget24" class="acceptableSquare" data-color="white" data-first="true"></div>
+    <div class="droptarget"><img src="../imageChess/towerWhite.png" draggable="true" id="dragTarget25" class="acceptableSquare" data-color="white"></div>
+    <div class="droptarget"><img src="../imageChess/hoarseWhite.png" draggable="true" id="dragTarget26" class="acceptableSquare" data-color="white"></div>
+    <div class="droptarget"><img src="../imageChess/runnerWhite.png" draggable="true" id="dragTarget27" class="acceptableSquare" data-color="white"></div>
+    <div class="droptarget"><img src="../imageChess/kingWhite.png" draggable="true" id="dragTarget28" class="acceptableSquare" data-color="white"></div>
+    <div class="droptarget"><img src="../imageChess/queenWhite.png" draggable="true" id="dragTarget29" class="acceptableSquare" data-color="white"></div>
+    <div class="droptarget"><img src="../imageChess/runnerWhite.png" draggable="true" id="dragTarget30" class="acceptableSquare" data-color="white"></div>
+    <div class="droptarget"><img src="../imageChess/hoarseWhite.png" draggable="true" id="dragTarget31" class="acceptableSquare" data-color="white"></div>
+    <div class="droptarget"><img src="../imageChess/towerWhite.png" draggable="true" id="dragTarget32" class="acceptableSquare" data-color="white"></div>
+
 </div>
-
-<div id="chessBoard">
-<div class="droptarget"><img src="../imageChess/tower.png" draggable="true" id="dragTarget1" class="acceptableSquare" data-color="black"></div>
-<div class="droptarget"><img src="../imageChess/hoarse.png" draggable="true" id="dragTarget2" class="acceptableSquare" data-color="black"></div>
-<div class="droptarget"><img src="../imageChess/runner.png" draggable="true" id="dragTarget3" class="acceptableSquare" data-color="black"></div>
-<div class="droptarget"><img src="../imageChess/king.png" draggable="true" id="dragTarget4" class="acceptableSquare" data-color="black"></div>
-<div class="droptarget"><img src="../imageChess/queen.png" draggable="true" id="dragTarget5" class="acceptableSquare" data-color="black"></div>
-<div class="droptarget"><img src="../imageChess/runner.png" draggable="true" id="dragTarget6" class="acceptableSquare" data-color="black"></div>
-<div class="droptarget"><img src="../imageChess/hoarse.png" draggable="true" id="dragTarget7" class="acceptableSquare" data-color="black"></div>
-<div class="droptarget"><img src="../imageChess/tower.png" draggable="true" id="dragTarget8" class="acceptableSquare" data-color="black"></div>
-<div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget9" class="acceptableSquare" data-color="black" data-first="true"></div>
-<div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget10" class="acceptableSquare" data-color="black" data-first="true"></div>
-<div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget11" class="acceptableSquare" data-color="black" data-first="true"></div>
-<div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget12" class="acceptableSquare" data-color="black" data-first="true"></div>
-<div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget13" class="acceptableSquare" data-color="black" data-first="true"></div>
-<div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget14" class="acceptableSquare" data-color="black" data-first="true"></div>
-<div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget15" class="acceptableSquare" data-color="black" data-first="true"></div>
-<div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget16" class="acceptableSquare" data-color="black" data-first="true"></div>
-<div class="droptarget"></div>
-<div class="droptarget"></div>
-<div class="droptarget"></div>
-<div class="droptarget"></div>
-<div class="droptarget"></div>
-<div class="droptarget"></div>
-<div class="droptarget"></div>
-<div class="droptarget"></div>
-<div class="droptarget"></div>
-<div class="droptarget"></div>
-<div class="droptarget"></div>
-<div class="droptarget"></div>
-<div class="droptarget"></div>
-<div class="droptarget"></div>
-<div class="droptarget"></div>
-<div class="droptarget"></div>
-<div class="droptarget"></div>
-<div class="droptarget"></div>
-<div class="droptarget"></div>
-<div class="droptarget"></div>
-<div class="droptarget"></div>
-<div class="droptarget"></div>
-<div class="droptarget"></div>
-<div class="droptarget"></div>
-<div class="droptarget"></div>
-<div class="droptarget"></div>
-<div class="droptarget"></div>
-<div class="droptarget"></div>
-<div class="droptarget"></div>
-<div class="droptarget"></div>
-<div class="droptarget"></div>
-<div class="droptarget"></div>
-<div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget17" class="acceptableSquare" data-color="white" data-first="true"></div>
-<div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget18" class="acceptableSquare" data-color="white" data-first="true"></div>
-<div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget19" class="acceptableSquare" data-color="white" data-first="true"></div>
-<div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget20" class="acceptableSquare" data-color="white" data-first="true"></div>
-<div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget21" class="acceptableSquare" data-color="white" data-first="true"></div>
-<div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget22" class="acceptableSquare" data-color="white" data-first="true"></div>
-<div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget23" class="acceptableSquare" data-color="white" data-first="true"></div>
-<div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget24" class="acceptableSquare" data-color="white" data-first="true"></div>
-<div class="droptarget"><img src="../imageChess/towerWhite.png" draggable="true" id="dragTarget25" class="acceptableSquare" data-color="white"></div>
-<div class="droptarget"><img src="../imageChess/hoarseWhite.png" draggable="true" id="dragTarget26" class="acceptableSquare" data-color="white"></div>
-<div class="droptarget"><img src="../imageChess/runnerWhite.png" draggable="true" id="dragTarget27" class="acceptableSquare" data-color="white"></div>
-<div class="droptarget"><img src="../imageChess/kingWhite.png" draggable="true" id="dragTarget28" class="acceptableSquare" data-color="white"></div>
-<div class="droptarget"><img src="../imageChess/queenWhite.png" draggable="true" id="dragTarget29" class="acceptableSquare" data-color="white"></div>
-<div class="droptarget"><img src="../imageChess/runnerWhite.png" draggable="true" id="dragTarget30" class="acceptableSquare" data-color="white"></div>
-<div class="droptarget"><img src="../imageChess/hoarseWhite.png" draggable="true" id="dragTarget31" class="acceptableSquare" data-color="white"></div>
-<div class="droptarget"><img src="../imageChess/towerWhite.png" draggable="true" id="dragTarget32" class="acceptableSquare" data-color="white"></div>
-
-</div> 
 
 <div id="information">
     <p id="activePlayer">White players turn!</p>
@@ -104,36 +104,38 @@ template.innerHTML = /* html */ `
 <style>
 :host {
   position: absolute;
+  border: 5px solid #0c5cc4;
+  background-color: black;
+  resize: both;
+  overflow: auto;
 }
-:host, * {
+* {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
   text-aligne: center;
   color: white;
-}
-:host #chessConteiner {
-  width: 516px;
-  border: 5px solid #0c5cc4;
-  margin: 0 auto;
+  border-collapse: collapse;
 }
 :host #chessBoard {
   box-sizing: border-box;
   background-color: white;
-  width: 506px;
-  height: 506px;
+  width: 400px;
+  height: 400px;
+  margin: 0 auto;
 }
 :host #tools {
   box-sizing: border-box;
   background-color: black;
   width: 100%;
   cursor: move;
+  margin: 0 auto;
 }
 
 :host #chessBoard>div {
   float: left;
-  width: 63.25px;
-  height: 63.25px;
+  width: 12.5%;
+  height: 12.5%;
   border: 1px solid black;
 }
 :host deletChess, :host startChess {
@@ -143,6 +145,7 @@ template.innerHTML = /* html */ `
 :host #chessBoard>div img {
   width: 100%;
   padding: 1px;
+  background-color: white;
 }
 :host #chessBoard>div img:hover {
   cursor: grab;
@@ -310,6 +313,9 @@ export class Chess extends window.HTMLElement {
 
       // Finding acceptable squares for event.target
       const index = this.indexTarget(event.target.parentNode)
+      console.log('index')
+      console.log(index)
+
       /*
       console.log('index/JM')
       console.log(index)
@@ -545,14 +551,16 @@ export class Chess extends window.HTMLElement {
     })
     // try to create functionality so that user can start over from a point in history
     // Events fired when click on this._history
-    this._history.addEventListener('change', event => {
+    this._history.addEventListener('click', event => {
       event.preventDefault()
       let round = event.target.value
       if (round === 'clear') {
         this._historyConteiner.innerHTML = ''
+        this._historyConteiner.style.border = 'none'
       } else if (round === 'history') {
         // console.log('start')
       } else if (round === 'allRounds') {
+        this._historyConteiner.innerHTML = ''
         try {
           for (let i = 3; i < event.target.parentElement.querySelectorAll('option').length; i++) {
             round = event.target.parentElement.querySelectorAll('option')[i].value
@@ -573,20 +581,21 @@ export class Chess extends window.HTMLElement {
     this._adjustableWindow.addEventListener('click', (event) => {
       event.preventDefault()
       this.style.position = 'absolute'
-      this.style.width = 'initial'
-      this.style.height = 'initial'
-      this.style.backgroundColor = 'initial'
       this._tools.style.cursor = 'move'
+      this._chessConteiner.style.border = 'none'
+      this.style.border = '5px solid #0c5cc4'
+      this._chessConteiner.style.height = 'initial'
     })
 
     // eventlistner for this._bigWindow
     this._bigWindow.addEventListener('click', (event) => {
       event.preventDefault()
       this.style.position = 'static'
-      this.style.width = '100%'
-      this.style.height = '100%'
-      this.style.backgroundColor = 'black'
       this._tools.style.cursor = 'default'
+      this._chessConteiner.style.border = '5px solid #0c5cc4'
+      this.style.border = 'none'
+      this._chessConteiner.style.height = '100%'
+      this._chessConteiner.style.backgroundColor = 'black'
     })
 
     // eventlistner for this._hideWindow
@@ -666,6 +675,13 @@ export class Chess extends window.HTMLElement {
       }
       squares.push(square)
     }
+
+    console.log({
+      matrixSquares: outerArray,
+      arrayImages: images,
+      matrixImages: outerArrayImages,
+      arraySquares: squares
+    })
 
     return {
       matrixSquares: outerArray,
@@ -1603,34 +1619,40 @@ export class Chess extends window.HTMLElement {
     // this._information.innerHTML = ''
     const data = JSON.parse(window.sessionStorage.getItem(argument))
     const fragment = document.createDocumentFragment()
-    const header = document.createElement('h1')
-    const header2 = document.createElement('h1')
-    header.innerText = `History ${argument}`
-    header.style.borderTop = '3px solid black'
-    fragment.appendChild(header)
-    header2.innerText = `History ${argument}`
-    header.style.color = 'black'
-    header2.style.color = 'black'
+    // const header = document.createElement('h1')
+    // const header2 = document.createElement('h1')
+    // header.innerText = `History ${argument}`
+    // header.style.borderTop = '3px solid black'
+    // fragment.appendChild(header)
+    // header2.innerText = `History ${argument}`
+    // header.style.color = 'black'
+    // header2.style.color = 'black'
 
     let counter = 0
     for (let i = 0; i < 8; i++) {
       for (let j = 0; j < 8; j++) {
         counter++
-        const idName = `${argument}Dragtarget${counter}`
+        const idName = `dragtarget${counter}`
         const div = document.createElement('div')
         div.setAttribute('id', idName)
         div.setAttribute('class', 'droptarget')
-        div.style.width = '63.25px'
-        div.style.height = '63.25px'
+        div.style.width = '12.5%'
+        div.style.height = '12.5%'
         div.style.float = 'left'
         div.style.border = '1px solid black'
+        div.style.backgroundColor = 'white'
         for (let k = 0; k < data.roweValue.length; k++) {
           if (i === data.roweValue[k] && j === data.columnValue[k]) {
             const img = document.createElement('img')
             img.setAttribute('src', data.imageSource[k])
             img.setAttribute('class', 'acceptableSquare')
-            img.setAttribute('data-color', 'undefined')
+            if (img.getAttribute('src').slice(-9) === 'White.png') {
+              img.setAttribute('data-color', 'white')
+            } else {
+              img.setAttribute('data-color', 'black')
+            }
             img.setAttribute('data-first', 'false')
+            img.setAttribute('draggable', 'true')
             img.style.width = '100%'
             img.style.padding = '1px'
             div.appendChild(img)
@@ -1639,8 +1661,50 @@ export class Chess extends window.HTMLElement {
         fragment.appendChild(div)
       }
     }
-    fragment.appendChild(header2)
-    this._historyConteiner.appendChild(fragment)
+
+    // create a div container bigDiv and indexnumber index
+    const index = document.createElement('span')
+    const bigDiv = document.createElement('div')
+    index.textContent = argument.slice(-1)
+    index.style.color = 'black'
+    bigDiv.style.width = '200px'
+    bigDiv.style.height = '200px'
+    bigDiv.style.display = 'inline-block'
+    bigDiv.style.border = '3px solid black'
+    bigDiv.appendChild(fragment)
+    bigDiv.addEventListener('mouseover', event => {
+      console.log(argument)
+      bigDiv.style.border = '3px solid #0c5cc4'
+    })
+    bigDiv.addEventListener('mouseout', event => {
+      console.log(argument)
+      bigDiv.style.border = '3px solid black'
+    })
+
+    this._historyConteiner.appendChild(index)
+    this._historyConteiner.appendChild(bigDiv)
+    this._historyConteiner.style.paddingTop = '2px'
+    this.border = '5px solid #0c5cc4'
+
+    bigDiv.addEventListener('dblclick', event => {
+      console.log(argument)
+      if (Number(argument.slice(-1)) % 2 === 0) {
+        this._activePlayer.innerHTML = 'White players turn!'
+      } else {
+        this._activePlayer.innerHTML = 'Black players turn!'
+      }
+      bigDiv.style.width = '400px'
+      bigDiv.style.height = '400px'
+      bigDiv.style.display = 'block'
+      bigDiv.style.border = 'none'
+
+      const clonedChessboard = bigDiv.cloneNode(true)
+      window.sessionStorage.clear()
+      this._historyConteiner.innerHTML = ''
+      this._chessBoard.innerHTML = ''
+      this._historyConteiner.style.paddingTop = '0'
+      this._chessBoard.appendChild(clonedChessboard)
+    })
   }
 }
 

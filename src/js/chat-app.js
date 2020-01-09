@@ -9,7 +9,6 @@ template.innerHTML = /* html */ `
         <button id="bigWindow">+</button>
         <button id="adjustableWindow">%</button>
         <button id="hideWindow">-</button>
-        <button id="emoji">Emoji</button>
         <p id="onlineStatus">You are online</p>
     </fieldset>
 
@@ -17,6 +16,7 @@ template.innerHTML = /* html */ `
     
     <fieldset id="newMessage">
         <textarea id="inputUser" rows="10" name="usrtxt" wrap="hard" placeholder="Write message here..."></textarea>
+        <button id="emoji">Emoji</button>
         <input type="submit" id="sendButton" value="Send">
         <button id="changeUsername">Change username</button>
         <button id="changeChannel">Change channel</button>
@@ -112,7 +112,7 @@ export class Chat extends window.HTMLElement {
     })
     console.log(this._picker)
     this._picker.on('emoji', (emoji) => {
-      this._message.value += emoji
+      this._input.value += emoji
     })
     console.log()
   }
@@ -199,7 +199,7 @@ export class Chat extends window.HTMLElement {
 
   connectedCallback () {
     this._emoji.addEventListener('click', event => {
-      this._picker.pickerVisible ? this._picker.hidePicker() : this._picker.showPicker(this._message)
+      this._picker.pickerVisible ? this._picker.hidePicker() : this._picker.showPicker(this._input)
     })
 
     // eventlistner for this._changeUsername

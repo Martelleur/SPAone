@@ -31,7 +31,8 @@
   "dependencies": {
     "@types/cryptr": "^4.0.0",
     "cryptr": "^6.0.1",
-    "moment": "^2.24.0"
+    "moment": "^2.24.0",
+    "simple-crypto-js": "^2.2.0"
   },
   "devDependencies": {
     "css-loader": "*",

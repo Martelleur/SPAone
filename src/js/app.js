@@ -4,6 +4,7 @@ import './minehunter-app.js'
 import './chess-app.js'
 import './timecounter-app.js'
 import { moveElement } from './moveElement.js'
+// import SimpleCrypto from 'simple-crypto-js'
 
 // Check if online not always true but a good check
 // Insted we define online when client connected to server

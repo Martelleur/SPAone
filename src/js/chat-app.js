@@ -16,8 +16,8 @@ template.innerHTML = /* html */ `
     
     <fieldset id="newMessage">
         <textarea id="inputUser" rows="10" name="usrtxt" wrap="hard" placeholder="Write message here..."></textarea>
-        <button id="emoji">Emoji</button>
         <input type="submit" id="sendButton" value="Send">
+        <button id="emoji">Emoji</button>
         <button id="changeUsername">Change username</button>
         <button id="changeChannel">Change channel</button>
     </fieldset>
@@ -108,7 +108,7 @@ export class Chat extends window.HTMLElement {
     console.log(window.moment())
     console.log(window.moment().format('MMMM Do YYYY, h:mm:ss a'))
     this._picker = new window.EmojiButton({
-      position: 'right-start'
+      position: 'auto'
     })
     console.log(this._picker)
     this._picker.on('emoji', (emoji) => {
@@ -198,6 +198,7 @@ export class Chat extends window.HTMLElement {
   }
 
   connectedCallback () {
+    // eventlistner for this._emoji
     this._emoji.addEventListener('click', event => {
       this._picker.pickerVisible ? this._picker.hidePicker() : this._picker.showPicker(this._input)
     })
@@ -296,10 +297,9 @@ export class Chat extends window.HTMLElement {
     // eventlistner for this._send
     this._send.addEventListener('click', (event) => {
       event.preventDefault()
-      this._input.innerHTML = ''
-
+      console.log(this._input)
       const post = {
-        type: 'message',
+        type: this._type,
         data: this._message,
         username: this._username,
         channel: this._channel,
@@ -317,6 +317,7 @@ export class Chat extends window.HTMLElement {
       this._socket = new window.WebSocket('ws://vhost3.lnu.se:20080/socket/', 'charcords')
     })
 
+    // eventlistner for this._socket
     this._socket.addEventListener('open', event => {
       console.log('websocket in action/JM')
       this._socket.send(JSON.stringify(this._data))

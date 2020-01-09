@@ -297,10 +297,13 @@ export class Chess extends window.HTMLElement {
    * @memberof Chess
    */
   connectedCallback () {
+    // what target shoulde i put my evenlistener on, this._chessConteiner or this._chessBoard?
+    // look on the method this.showHistory() and the statement this._chessBoard.remove()
+    // Not neccasary to implement
     // Events fired on the drag target
-    this._chessBoard.addEventListener('dragstart', event => {
+    this._chessConteiner.addEventListener('dragstart', event => {
       console.log(event.target.parentNode)
-      event.target.style.opacity = 0
+      // event.target.style.opacity = 0
 
       // Reset border color
       for (let i = 0; i < this._chessBoardDivLength; i++) {
@@ -320,8 +323,6 @@ export class Chess extends window.HTMLElement {
       console.log(index)
 
       const acceptableSquares = this.acceptableSquares(event.target.getAttribute('src'), index[0], index[1], this._first) || []
-      console.log(acceptableSquares)
-      console.log(event.target.getAttribute('data-color'))
       for (let i = 0; i < acceptableSquares.length; i++) {
         if (acceptableSquares[i].childElementCount === 1) {
           if (event.target.getAttribute('data-color') !== acceptableSquares[i].firstElementChild.getAttribute('data-color')) {
@@ -329,6 +330,9 @@ export class Chess extends window.HTMLElement {
             acceptableSquares[i].style.border = '3px solid blue'
           }
         } else {
+          console.log('acceptableSquares')
+          console.log(acceptableSquares)
+          console.log(event.target.getAttribute('data-color'))
           acceptableSquares[i].setAttribute('class', 'acceptableSquare')
           acceptableSquares[i].style.border = '3px solid blue'
           acceptableSquares[i].setAttribute('class', 'acceptableSquare')
@@ -348,12 +352,12 @@ export class Chess extends window.HTMLElement {
     })
 
     // Events fired when dragging
-    this._chessBoard.addEventListener('drag', event => {
+    this._chessConteiner.addEventListener('drag', event => {
       // event.preventDefault()
     })
 
     // Events fired on the drop target
-    this._chessBoard.addEventListener('dragover', event => {
+    this._chessConteiner.addEventListener('dragover', event => {
       event.preventDefault()
       // console.log(event.target)
       // Reset backgroundecolor color
@@ -387,7 +391,7 @@ export class Chess extends window.HTMLElement {
     })
 
     // Events fired when dropping over this._chessBoard
-    this._chessBoard.addEventListener('drop', event => {
+    this._chessConteiner.addEventListener('drop', event => {
       event.preventDefault()
       // Dont work but try think this overar and yoy may find a solution
       /*
@@ -1676,8 +1680,8 @@ export class Chess extends window.HTMLElement {
     const bigDiv = document.createElement('div')
     index.textContent = argument.slice(-1)
     index.style.color = 'black'
-    bigDiv.style.width = '200px'
-    bigDiv.style.height = '200px'
+    bigDiv.style.width = '140px'
+    bigDiv.style.height = '140px'
     bigDiv.style.display = 'inline-block'
     bigDiv.style.border = '3px solid black'
     bigDiv.appendChild(fragment)
@@ -1689,10 +1693,10 @@ export class Chess extends window.HTMLElement {
       bigDiv.style.border = '3px solid black'
     })
 
-    this._historyConteiner.appendChild(index)
     this._historyConteiner.appendChild(bigDiv)
+    this._historyConteiner.appendChild(index)
     this._historyConteiner.style.paddingTop = '2px'
-    this.style.border = '5px solid #0c5cc4'
+    this._historyConteiner.style.border = '5px solid #0c5cc4'
     bigDiv.addEventListener('dblclick', event => {
       const newChessBoard = this._clonedChessBoards[argument.slice(-1) - 1]
       const newInformation = this._clonedInformations[argument.slice(-1) - 1]
@@ -1706,7 +1710,7 @@ export class Chess extends window.HTMLElement {
       this._tools.insertAdjacentElement('afterend', this._chessBoard)
       this._chessBoard.insertAdjacentElement('afterend', this._information)
       console.log(this._chessBoard)
-      this._history.style.border = '5px solid #0c5cc4'
+      this._historyConteiner.style.border = '5px solid #0c5cc4'
     })
   }
 }

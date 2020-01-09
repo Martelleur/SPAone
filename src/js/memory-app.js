@@ -175,7 +175,7 @@ export class Memory extends window.HTMLElement {
       if (tempArray.length !== 0) {
         for (let i = 0; i < tempArray.length; i++) {
           const p = document.createElement('p')
-          p.textContent = `\tNumber${i + 1}, result: ${tempArray[i]}`
+          p.textContent = `Number${i + 1}, result: ${tempArray[i]}`
           this._gameFooter.appendChild(p)
           if (i === 4) {
             break

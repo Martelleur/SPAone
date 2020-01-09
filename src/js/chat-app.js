@@ -16,8 +16,7 @@ template.innerHTML = /* html */ `
     <fieldset id="messages"></fieldset>
     
     <fieldset id="newMessage">
-        <!--<input type="text" id="inputUser" placeholder="Write message here...">-->
-        <textarea id="inputUser" rows="10" name="usrtxt" wrap="hard">Write message here...</textarea>
+        <textarea id="inputUser" rows="10" name="usrtxt" wrap="hard" placeholder="Write message here..."></textarea>
         <input type="submit" id="sendButton" value="Send">
         <button id="changeUsername">Change username</button>
         <button id="changeChannel">Change channel</button>
@@ -97,6 +96,7 @@ export class Chat extends window.HTMLElement {
     this._newMessage = this.shadowRoot.querySelector('#newMessage')
 
     // Tools chat
+    this._emoji = this.shadowRoot.querySelector('#emoji')
     this._tools = this.shadowRoot.querySelector('#tools')
     this._adjustableWindow = this.shadowRoot.querySelector('#adjustableWindow')
     this._hideWindow = this.shadowRoot.querySelector('#hideWindow')
@@ -105,6 +105,16 @@ export class Chat extends window.HTMLElement {
     this._send = this.shadowRoot.querySelector('#sendButton')
     this._changeUsername = this.shadowRoot.querySelector('#changeUsername')
     this._changeChannel = this.shadowRoot.querySelector('#changeChannel')
+    console.log(window.moment())
+    console.log(window.moment().format('MMMM Do YYYY, h:mm:ss a'))
+    this._picker = new window.EmojiButton({
+      position: 'right-start'
+    })
+    console.log(this._picker)
+    this._picker.on('emoji', (emoji) => {
+      this._message.value += emoji
+    })
+    console.log()
   }
 
   static get observedAttributes () {
@@ -188,6 +198,10 @@ export class Chat extends window.HTMLElement {
   }
 
   connectedCallback () {
+    this._emoji.addEventListener('click', event => {
+      this._picker.pickerVisible ? this._picker.hidePicker() : this._picker.showPicker(this._message)
+    })
+
     // eventlistner for this._changeUsername
     this._changeChannel.addEventListener('click', (event) => {
       event.preventDefault()

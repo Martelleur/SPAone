@@ -15,6 +15,7 @@ template.innerHTML = /* html */ `
       <option value="12">12 tiles</option>
       <option value="16">16 tiles</option>
     </select>
+    <button id="highscore">Highscore</button>
     <button id="bigWindow">+</button>
     <button id="adjustableWindow">%</button>
     <button id="hideWindow">-</button>
@@ -23,9 +24,11 @@ template.innerHTML = /* html */ `
     
   <div id="memoryPictures">
     <button id="start">Click me to start the game</button>
+    <p>Rules: Finish the meory as fast as you can. Result = time + tries. You can choice between 4 diffrent of sizes: 4 tiles, 8 tiles, 12 tiles and 16 tiles. Good luck!</p> 
   </div>
   
-  <div id="gameFooter"></div>
+  <div id="gameFooter">
+  </div>
 </div>
 <style>
 * {
@@ -36,14 +39,15 @@ template.innerHTML = /* html */ `
     width: 40%;
     display: block;
     resize: both;
-    overflow: scroll;
+    overflow: auto;
     border: 5px solid #0c5cc4;
+    background-color: black;
 }
 :host #memoryConteiner {
     border: 5px solid black;
-    background-color: black;
     color: white;
     padding: 5%;
+    background-color: black;
 } 
 :host #memoryPictures:hover {
     cursor: pointer; 
@@ -51,6 +55,13 @@ template.innerHTML = /* html */ `
 :host #tools:hover {
   cursor: move; 
 }
+:host #sizeMemory, :host #restartMemory {
+  display: none;
+}
+:host #start {
+  display: block;
+  margin: 0 auto;
+} 
   </style>
 `
 
@@ -81,6 +92,7 @@ export class Memory extends window.HTMLElement {
     this._hideWindow = this.shadowRoot.querySelector('#hideWindow')
     this._bigWindow = this.shadowRoot.querySelector('#bigWindow')
     this._adjustableWindow = this.shadowRoot.querySelector('#adjustableWindow')
+    this._highscore = this.shadowRoot.querySelector('#highscore')
 
     // Data memory
     this._timeConteiner = this.shadowRoot.querySelector('.timeConteiner')
@@ -145,12 +157,46 @@ export class Memory extends window.HTMLElement {
    * @memberof Memory
    */
   connectedCallback () {
+    // eventlistner for this._highscore
+    this._highscore.addEventListener('click', event => {
+      event.preventDefault()
+      this._gameFooter.innerHTML = ''
+      this._paires.innerHTML = ''
+      const p = document.createElement('p')
+      const argument = `highScoreMemory${this._numberOfPictures}`
+      p.textContent = `Top 5 result ${this._numberOfPictures} tiles memory:`
+      this._gameFooter.appendChild(p)
+      const highscore = JSON.parse(window.localStorage.getItem(argument)) || []
+      const tempArray = []
+      for (let i = 0; i < highscore.length; i++) {
+        tempArray.push(highscore[i].result)
+      }
+      console.log(tempArray.sort((a, b) => a - b))
+      if (tempArray.length !== 0) {
+        for (let i = 0; i < tempArray.length; i++) {
+          const p = document.createElement('p')
+          p.textContent = `\tNumber${i + 1}, result: ${tempArray[i]}`
+          this._gameFooter.appendChild(p)
+          if (i === 4) {
+            break
+          }
+        }
+      } else {
+        const p = document.createElement('p')
+        p.textContent = 'No result'
+        this._gameFooter.appendChild(p)
+      }
+    })
+
     // eventlistner for this._start
     this._start.addEventListener('click', event => {
       event.preventDefault()
+      this._gameFooter.innerHTML = ''
       this._memoryPictures.innerHTML = ''
       this._counter = document.createElement('timecounter-app')
       this._timeConteiner.appendChild(this._counter)
+      this._restartMemory.style.display = 'initial'
+      this._sizeMemory.style.display = 'initial'
       this._tiles = this.shuffleTiles(this._rows, this._columns)
       this.setTiles()
     })
@@ -268,13 +314,12 @@ export class Memory extends window.HTMLElement {
               const highscore = JSON.parse(window.localStorage.getItem(argument)) || []
               this._counter.setAttribute('state', 'freeze')
               const resultTime = window.sessionStorage.getItem('timecountervalue')
-              const result = String(Number(resultTime) + this._tries)
+              const result = String(Number(resultTime) + Math.floor(this._tries / 2))
               window.sessionStorage.removeItem('timecountervalue')
               const score = {
                 result: result
               }
               highscore.push(score)
-              console.log(highscore)
               window.localStorage.setItem(argument, JSON.stringify(highscore))
 
               // Displaying result
@@ -283,6 +328,7 @@ export class Memory extends window.HTMLElement {
               congratulation.style.textAlign = 'center'
               congratulation.style.color = 'white'
               this._gameFooter.appendChild(congratulation)
+              this._memoryPictures.innerHTML = ''
             }
           }
         }
@@ -380,6 +426,7 @@ export class Memory extends window.HTMLElement {
    */
   setTiles () {
     // Building new memory
+    this._gameFooter.innerHTML = ''
     this._memoryPictures.innerHTML = ''
     for (let i = 0; i < (this._rows * this._columns); i++) {
       const img = document.createElement('img')

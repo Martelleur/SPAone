@@ -95,8 +95,8 @@ template.innerHTML = /* html */ `
     <p id="checkStatusWhite">White player is NOT check!</p>
     <p id="checkStatusBlack">Black player is NOT check!</p>
     <p id="winner"></p>
-    <div id="historyConteiner"></div>
 </div>
+<div id="historyConteiner"></div>
 
 </div>
 <div id="chatConteiner"></div>
@@ -213,6 +213,8 @@ export class Chess extends window.HTMLElement {
     this.shadowRoot.appendChild(template.content.cloneNode(true))
     this._chessConteiner = this.shadowRoot.querySelector('#chessConteiner')
     this._chessBoard = this.shadowRoot.querySelector('#chessBoard')
+    this._clonedChessBoards = []
+    this._clonedInformations = []
     this._chessBoardDivLength = this._chessBoard.querySelectorAll('div').length
     this._chessBoardImgLength = this._chessBoard.querySelectorAll('div>img').length
     this._chessBoardDiv = this._chessBoard.querySelectorAll('div')
@@ -298,6 +300,7 @@ export class Chess extends window.HTMLElement {
     // Events fired on the drag target
     this._chessBoard.addEventListener('dragstart', event => {
       console.log(event.target.parentNode)
+      event.target.style.opacity = 0
 
       // Reset border color
       for (let i = 0; i < this._chessBoardDivLength; i++) {
@@ -369,6 +372,7 @@ export class Chess extends window.HTMLElement {
     // The dragend event is fired when a drag operation is being ended (by releasing a mouse button or hitting the escape key).
     window.addEventListener('dragend', event => {
       console.log('joel')
+      event.target.style.opacity = 1
       for (let i = 0; i < this._chessBoardDivLength; i++) {
         if (this._chessBoardDiv[i].style.backgroundColor !== 'white') {
           this._chessBoardDiv[i].style.backgroundColor = 'white'
@@ -376,6 +380,9 @@ export class Chess extends window.HTMLElement {
         if (this._chessBoardDiv[i].style.borderColor !== 'black') {
           this._chessBoardDiv[i].style.border = '1px solid black'
         }
+      }
+      for (let i = 0; i < this._chessBoardImgLength; i++) {
+        this._chessBoardImg[i].style.opacity = 1
       }
     })
 
@@ -492,6 +499,11 @@ export class Chess extends window.HTMLElement {
         this._chessBoardDiv[i].style.backgroundColor = 'white'
       }
 
+      // recount img
+      this._chessBoardImgLength = this._chessBoard.querySelectorAll('div>img').length
+      this._chessBoardImg = this._chessBoard.querySelectorAll('div>img')
+      console.log(this._chessBoardImgLength)
+
       // decide winner
       if (this._activePlayer.innerText === 'White players turn!' && this._checkStatusBlack.innerText === 'Black player is scheck!') {
         this._checkStatusBlack.innerText = ''
@@ -511,6 +523,13 @@ export class Chess extends window.HTMLElement {
           this._chessBoardImg[i].setAttribute('data-color', 'undefined')
         }
       }
+
+      // cloning
+      this._clonedInformations.push(this._information.cloneNode(true))
+      this._clonedChessBoards.push(this._chessBoard.cloneNode(true))
+      console.log('cloned nodes')
+      console.log(this._clonedChessBoards)
+      console.log(this._clonedInformations)
     })
 
     // Events fired when click on this._deletChess
@@ -1663,18 +1682,32 @@ export class Chess extends window.HTMLElement {
     bigDiv.style.border = '3px solid black'
     bigDiv.appendChild(fragment)
     bigDiv.addEventListener('mouseover', event => {
-      console.log(argument)
+      // console.log(argument)
       bigDiv.style.border = '3px solid #0c5cc4'
     })
     bigDiv.addEventListener('mouseout', event => {
-      console.log(argument)
       bigDiv.style.border = '3px solid black'
     })
 
     this._historyConteiner.appendChild(index)
     this._historyConteiner.appendChild(bigDiv)
     this._historyConteiner.style.paddingTop = '2px'
-    this.border = '5px solid #0c5cc4'
+    this.style.border = '5px solid #0c5cc4'
+    bigDiv.addEventListener('dblclick', event => {
+      const newChessBoard = this._clonedChessBoards[argument.slice(-1) - 1]
+      const newInformation = this._clonedInformations[argument.slice(-1) - 1]
+      console.log(newChessBoard)
+      console.log(newChessBoard.isEqualNode(this._chessBoard))
+      console.log(newInformation.isEqualNode(this._information))
+      this._chessBoard.remove()
+      this._information.remove()
+      this._chessBoard = newChessBoard
+      this._information = newInformation
+      this._tools.insertAdjacentElement('afterend', this._chessBoard)
+      this._chessBoard.insertAdjacentElement('afterend', this._information)
+      console.log(this._chessBoard)
+      this._history.style.border = '5px solid #0c5cc4'
+    })
   }
 }
 

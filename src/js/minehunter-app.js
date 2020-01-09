@@ -87,9 +87,9 @@ export class Minehunter extends window.HTMLElement {
     this._chatConteiner = this.shadowRoot.querySelector('#chatConteiner')
     this._timeConteiner = this.shadowRoot.querySelector('.timeConteiner')
     this._counter = document.createElement('timecounter-app')
-    this._start = this.shadowRoot.querySelector('#start')
 
     // Tools memory
+    this._start = this.shadowRoot.querySelector('#start')
     this._tools = this.shadowRoot.querySelector('#tools')
     this._chat = this.shadowRoot.querySelector('#chat')
     this._hideWindow = this.shadowRoot.querySelector('#hideWindow')

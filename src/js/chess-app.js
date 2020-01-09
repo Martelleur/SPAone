@@ -1675,30 +1675,6 @@ export class Chess extends window.HTMLElement {
     this._historyConteiner.appendChild(bigDiv)
     this._historyConteiner.style.paddingTop = '2px'
     this.border = '5px solid #0c5cc4'
-
-    bigDiv.addEventListener('dblclick', event => {
-      console.log(argument)
-      if (Number(argument.slice(-1)) % 2 === 0) {
-        this._whitePiecesTurn = true
-        this._activePlayer.innerHTML = 'White players turn!'
-      } else {
-        this._whitePiecesTurn = false
-        this._activePlayer.innerHTML = 'Black players turn!'
-      }
-      bigDiv.style.width = '400px'
-      bigDiv.style.height = '400px'
-      bigDiv.style.display = 'block'
-      bigDiv.style.border = 'none'
-
-      const clonedChessboard = bigDiv.cloneNode(true)
-      window.sessionStorage.clear()
-      this._historyConteiner.innerHTML = ''
-      this._chessBoard.innerHTML = ''
-      this._historyConteiner.style.paddingTop = '0'
-      this._chessBoard.appendChild(clonedChessboard)
-      this._chessBoardDiv = this._chessBoard.querySelectorAll('div')
-      this._chessBoardImg = this._chessBoard.querySelectorAll('div>img')
-    })
   }
 }
 

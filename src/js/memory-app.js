@@ -21,7 +21,9 @@ template.innerHTML = /* html */ `
     <p id="paires"></p>
   </div>
     
-  <div id="memoryPictures"></div>
+  <div id="memoryPictures">
+    <button id="start">Click me to start the game</button>
+  </div>
   
   <div id="gameFooter"></div>
 </div>
@@ -31,7 +33,7 @@ template.innerHTML = /* html */ `
 }
 :host {
     position: absolute;
-    width: 30%;
+    width: 40%;
     display: block;
     resize: both;
     overflow: scroll;
@@ -71,6 +73,7 @@ export class Memory extends window.HTMLElement {
     this.shadowRoot.appendChild(template.content.cloneNode(true))
 
     // Tools memory
+    this._start = this.shadowRoot.querySelector('#start')
     this._memoryTools = this.shadowRoot.querySelector('#tools')
     this._restartMemory = this.shadowRoot.querySelector('#restartMemory')
     this._deletMemory = this.shadowRoot.querySelector('#deletMemory')
@@ -81,15 +84,14 @@ export class Memory extends window.HTMLElement {
 
     // Data memory
     this._timeConteiner = this.shadowRoot.querySelector('.timeConteiner')
-    this._counter = document.createElement('timecounter-app')
-    this._timeConteiner.appendChild(this._counter)
+    this._counter = undefined
     this._memoryConteiner = this.shadowRoot.querySelector('#memoryConteiner')
     this._memoryPictures = this.shadowRoot.querySelector('#memoryPictures')
     this._rows = 4
     this._columns = 4
     this._numberOfPictures = this._rows * this._columns
     this._backOfTilesSrc = '../imageMemory/0.png'
-    this._tiles = this.shuffleTiles(this._rows, this._columns)
+    // this._tiles = this.shuffleTiles(this._rows, this._columns)
     this._paires = this.shadowRoot.querySelector('#paires')
     this._quantityOfPaires = 0
     this._tempArray = []
@@ -100,7 +102,7 @@ export class Memory extends window.HTMLElement {
     this._tools = this.shadowRoot.querySelector('#tools')
 
     // Building new memory
-    this.setTiles()
+    // this.setTiles()
   }
 
   /**
@@ -143,6 +145,16 @@ export class Memory extends window.HTMLElement {
    * @memberof Memory
    */
   connectedCallback () {
+    // eventlistner for this._start
+    this._start.addEventListener('click', event => {
+      event.preventDefault()
+      this._memoryPictures.innerHTML = ''
+      this._counter = document.createElement('timecounter-app')
+      this._timeConteiner.appendChild(this._counter)
+      this._tiles = this.shuffleTiles(this._rows, this._columns)
+      this.setTiles()
+    })
+
     // eventlistner for this._adjustableWindow
     this._adjustableWindow.addEventListener('click', (event) => {
       event.preventDefault()
@@ -172,6 +184,9 @@ export class Memory extends window.HTMLElement {
     // eventlistner for this._memoryPictures
     this._memoryPictures.addEventListener('click', (event) => {
       event.preventDefault()
+      if (event.target === this._start) {
+        return
+      }
 
       // player can not open more then two tiles
       if (this.countOpenTiles() > 1) {
@@ -249,12 +264,18 @@ export class Memory extends window.HTMLElement {
             this._countHiddenPictures++
             if (this._countHiddenPictures === this._memoryPictures.querySelectorAll('img').length) {
               // timeCounter stop
+              const argument = `highScoreMemory${this._numberOfPictures}`
+              const highscore = JSON.parse(window.localStorage.getItem(argument)) || []
               this._counter.setAttribute('state', 'freeze')
               const resultTime = window.sessionStorage.getItem('timecountervalue')
-              const result = String(Number(resultTime) - this._tries)
+              const result = String(Number(resultTime) + this._tries)
               window.sessionStorage.removeItem('timecountervalue')
-              const argument = `highScoreMemory${this._numberOfPictures}`
-              window.localStorage.setItem(argument, result)
+              const score = {
+                result: result
+              }
+              highscore.push(score)
+              console.log(highscore)
+              window.localStorage.setItem(argument, JSON.stringify(highscore))
 
               // Displaying result
               const congratulation = document.createElement('h3')

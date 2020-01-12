@@ -621,6 +621,7 @@ export class Chess extends window.HTMLElement {
       this._title.style.cursor = 'move'
       this._chessConteiner.style.border = 'none'
       this.style.border = '5px solid #0c5cc4'
+      this.style.outline = '1px solid black'
       this._chessConteiner.style.height = 'initial'
       const myEvent = new window.CustomEvent('notBigWindow')
       this.dispatchEvent(myEvent)
@@ -633,6 +634,7 @@ export class Chess extends window.HTMLElement {
       this._title.style.cursor = 'default'
       this._chessConteiner.style.border = '5px solid #0c5cc4'
       this.style.border = 'none'
+      this.style.outline = 'none'
       this._chessConteiner.style.height = '100%'
       this._chessConteiner.style.backgroundColor = 'black'
       const myEvent = new window.CustomEvent('bigWindow')

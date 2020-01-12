@@ -225,6 +225,7 @@ export class Memory extends window.HTMLElement {
       this.style.position = 'absolute'
       this.style.resize = 'both'
       this.style.border = '5px solid #0c5cc4'
+      this.style.outline = '1px solid black'
       this.style.height = 'initial'
       this._memoryConteiner.style.height = 'initial'
       this.style.outline = '1px solid black'
@@ -240,6 +241,7 @@ export class Memory extends window.HTMLElement {
       this.style.position = 'static'
       this.style.resize = 'none'
       this.style.border = 'none'
+      this.style.outline = 'none'
       if (!this._isStarting) {
         this.style.height = '100%'
         this._memoryConteiner.style.height = '100%'

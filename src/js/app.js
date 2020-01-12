@@ -25,7 +25,7 @@ let counterChatApplication = 0
 let counterMemoryApplication = 0
 let counterMinehunterApplication = 0
 let counterChessApplication = 0
-let y = 100
+let y = 50
 let x = 0
 
 // creating custom-elements
@@ -39,7 +39,7 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
   if (y < (window.innerHeight - 600)) {
     y = y + 20
   } else {
-    y = 120
+    y = 70
   }
   if (x < (window.innerWidth - 600)) {
     x = x + 20
@@ -118,7 +118,7 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
   }
   element.setAttribute('id', nameIdApplication)
   element.setAttribute('data-hide', 'false')
-  element.setAttribute('data-zedindex', 'low')
+  element.setAttribute('data-zedindex', 'high')
   console.log(element.getAttribute('data-zedindex'))
   console.log(element.style.zIndex)
 
@@ -146,6 +146,7 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
     }
   })
 
+  // Listning on custom event bigWindow
   element.addEventListener('bigWindow', event => {
     console.log('test')
     for (let i = 0; i < document.querySelector('main').children.length; i++) {
@@ -155,6 +156,7 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
     }
   })
 
+  // Listning on custom event notBigWindow
   element.addEventListener('notBigWindow', event => {
     console.log('test')
     for (let i = 0; i < document.querySelector('main').children.length; i++) {

@@ -128,14 +128,6 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
   element.style.left = x + 'px'
   moveElement(element)
 
-  try {
-    document.querySelector('chat-app').addEventListener('username', event => {
-      console.log('test my custom event')
-    })
-  } catch (error) {
-    console.log(error)
-  }
-
   // window.history and window.location
   const stateObj = {
     element: event.target.getAttribute('data-create-element'),
@@ -144,6 +136,7 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
   window.history.pushState(stateObj, `/${stateObj.id}`, `/${stateObj.element}/${stateObj.id}`)
 
   element.addEventListener('click', event => {
+    console.log('test')
     window.history.pushState(stateObj, `/${stateObj.id}`, `/${stateObj.element}/${stateObj.id}`)
     element.setAttribute('data-zedindex', 'high')
     for (let i = 0; i < document.querySelector('main').children.length; i++) {
@@ -162,7 +155,7 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
     }
   })
 
-  element.addEventListener('adjustableWindow', event => {
+  element.addEventListener('notBigWindow', event => {
     console.log('test')
     for (let i = 0; i < document.querySelector('main').children.length; i++) {
       document.querySelector('main').children[i].style.visibility = 'visible'
@@ -274,19 +267,6 @@ window.addEventListener('click', event => {
     document.querySelector('#hiddenElements').appendChild(selectChess)
   }
 
-  /*
-  // My event
-  for (let i = 0; i < document.querySelectorAll('chat-app').length; i++) {
-    document.querySelectorAll('chat-app')[i].addEventListener('hiddenElement', event => {
-      // event.preventDefault()
-      console.log('My custom event is working')
-      const p = document.createElement('p')
-      p.textContent = 'hello'
-      document.querySelector('#wrapper').appendChild(p)
-    })
-  }
-  */
-
   // Display hidden elements
   console.log(selectChat.length)
   selectChat.addEventListener('change', event => {
@@ -303,6 +283,7 @@ window.addEventListener('click', event => {
       try {
         if (document.querySelector(temp).getAttribute('data-hide') === 'true' && document.querySelector(temp).getAttribute('id') === value) {
           document.querySelector(temp).setAttribute('data-hide', 'false')
+          document.querySelector(temp).style.visibility = 'visible'
           // event.target.children[i + 1].remove()
           for (let j = 0; j < event.target.children.length; j++) {
             if (event.target.children[j].value === temp) {
@@ -326,6 +307,7 @@ window.addEventListener('click', event => {
       try {
         if (document.querySelector(temp).getAttribute('data-hide') === 'true' && document.querySelector(temp).getAttribute('id') === value) {
           document.querySelector(temp).setAttribute('data-hide', 'false')
+          document.querySelector(temp).style.visibility = 'visible'
           // event.target.children[i + 1].remove()
           for (let j = 0; j < event.target.children.length; j++) {
             if (event.target.children[j].value === temp) {
@@ -349,6 +331,7 @@ window.addEventListener('click', event => {
       try {
         if (document.querySelector(temp).getAttribute('data-hide') === 'true' && document.querySelector(temp).getAttribute('id') === value) {
           document.querySelector(temp).setAttribute('data-hide', 'false')
+          document.querySelector(temp).style.visibility = 'visible'
           for (let j = 0; j < event.target.children.length; j++) {
             if (event.target.children[j].value === temp) {
               event.target.children[j].remove()
@@ -371,6 +354,7 @@ window.addEventListener('click', event => {
       try {
         if (document.querySelector(temp).getAttribute('data-hide') === 'true' && document.querySelector(temp).getAttribute('id') === value) {
           document.querySelector(temp).setAttribute('data-hide', 'false')
+          document.querySelector(temp).style.visibility = 'visible'
           for (let j = 0; j < event.target.children.length; j++) {
             if (event.target.children[j].value === temp) {
               event.target.children[j].remove()

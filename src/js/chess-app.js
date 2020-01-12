@@ -109,6 +109,8 @@ template.innerHTML = /* html */ `
   background-color: black;
   resize: both;
   overflow: auto;
+  outline: 1px solid black;
+  z-index: 0;
 }
 * {
   box-sizing: border-box;
@@ -270,7 +272,7 @@ export class Chess extends window.HTMLElement {
    * @memberof Chess
    */
   static get observedAttributes () {
-    return ['id', 'data-hide']
+    return ['id', 'data-hide', 'data-zedindex']
   }
 
   /**
@@ -280,6 +282,15 @@ export class Chess extends window.HTMLElement {
    * @memberof Chess
    */
   attributeChangedCallback (name, oldValue, newValue) {
+    if (name === 'data-zedindex') {
+      if (newValue === 'high') {
+        this.style.zIndex = '1'
+        console.log('zIndex: 1')
+      } else {
+        this.style.zIndex = '0'
+        console.log('zIndex: 0')
+      }
+    }
     // Changing of attribute id
     if (name === 'id') {
       this._title.innerText = `${this.getAttribute('id')}-chess-app`
@@ -542,6 +553,8 @@ export class Chess extends window.HTMLElement {
     // Events fired when click on this._deletChess
     this._deletChess.addEventListener('click', event => {
       event.preventDefault()
+      const myEvent = new window.CustomEvent('notBigWindow')
+      this.dispatchEvent(myEvent)
       window.sessionStorage.clear()
       this.remove()
     })
@@ -609,6 +622,8 @@ export class Chess extends window.HTMLElement {
       this._chessConteiner.style.border = 'none'
       this.style.border = '5px solid #0c5cc4'
       this._chessConteiner.style.height = 'initial'
+      const myEvent = new window.CustomEvent('notBigWindow')
+      this.dispatchEvent(myEvent)
     })
 
     // eventlistner for this._bigWindow
@@ -620,12 +635,16 @@ export class Chess extends window.HTMLElement {
       this.style.border = 'none'
       this._chessConteiner.style.height = '100%'
       this._chessConteiner.style.backgroundColor = 'black'
+      const myEvent = new window.CustomEvent('bigWindow')
+      this.dispatchEvent(myEvent)
     })
 
     // eventlistner for this._hideWindow
     this._hideWindow.addEventListener('click', (event) => {
       event.preventDefault()
       this.setAttribute('data-hide', 'true')
+      const myEvent = new window.CustomEvent('notBigWindow')
+      this.dispatchEvent(myEvent)
     })
 
     // eventlistner for this._chat

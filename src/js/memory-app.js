@@ -46,6 +46,8 @@ template.innerHTML = /* html */ `
     overflow: auto;
     border: 5px solid #0c5cc4;
     background-color: black;
+    z-index: 0;
+    outline: 1px solid black;
 }
 :host #memoryConteiner {
     color: white;
@@ -147,7 +149,7 @@ export class Memory extends window.HTMLElement {
    * @memberof Memory
    */
   static get observedAttributes () {
-    return ['id', 'data-hide']
+    return ['id', 'data-hide', 'data-zedindex']
   }
 
   /**
@@ -157,6 +159,15 @@ export class Memory extends window.HTMLElement {
    * @memberof Memory
    */
   attributeChangedCallback (name, oldValue, newValue) {
+    if (name === 'data-zedindex') {
+      if (newValue === 'high') {
+        this.style.zIndex = '1'
+        console.log('zIndex: 1')
+      } else {
+        this.style.zIndex = '0'
+        console.log('zIndex: 0')
+      }
+    }
     if (name === 'id') {
       this._title.innerText = `${this.getAttribute('id')}-memory-app`
     }
@@ -214,8 +225,13 @@ export class Memory extends window.HTMLElement {
       this.style.position = 'absolute'
       this.style.resize = 'both'
       this.style.border = '5px solid #0c5cc4'
+      this.style.height = 'initial'
+      this._memoryConteiner.style.height = 'initial'
+      this.style.outline = '1px solid black'
       this._memoryConteiner.style.border = 'none'
       this._title.style.cursor = 'move'
+      const myEvent = new window.CustomEvent('notBigWindow')
+      this.dispatchEvent(myEvent)
     })
 
     // eventlistner for this._bigWindow
@@ -224,14 +240,22 @@ export class Memory extends window.HTMLElement {
       this.style.position = 'static'
       this.style.resize = 'none'
       this.style.border = 'none'
+      if (!this._isStarting) {
+        this.style.height = '100%'
+        this._memoryConteiner.style.height = '100%'
+      }
       this._memoryConteiner.style.border = '5px solid #0c5cc4'
       this._title.style.cursor = 'default'
+      const myEvent = new window.CustomEvent('bigWindow')
+      this.dispatchEvent(myEvent)
     })
 
     // eventlistner for this._hideWindow
     this._hideWindow.addEventListener('click', (event) => {
       event.preventDefault()
       this.setAttribute('data-hide', 'true')
+      const myEvent = new window.CustomEvent('notBigWindow')
+      this.dispatchEvent(myEvent)
     })
 
     // something is wrong here
@@ -354,6 +378,8 @@ export class Memory extends window.HTMLElement {
       event.preventDefault()
       this._gameFooter.innerHTML = ''
       this._memoryPictures.innerHTML = ''
+      this.style.height = 'initial'
+      this._memoryConteiner.style.height = 'initial'
       this._paires.innerText = this._paires.innerText = `Paires: ${this._quantityOfPaires / 2}\nTries: ${Math.floor(this._tries / 2)}`
       this._counter = document.createElement('timecounter-app')
       this._timeConteiner.appendChild(this._counter)
@@ -373,6 +399,8 @@ export class Memory extends window.HTMLElement {
       } catch (error) {
         console.log(error)
       }
+      const myEvent = new window.CustomEvent('notBigWindow')
+      this.dispatchEvent(myEvent)
 
       this.remove()
     })

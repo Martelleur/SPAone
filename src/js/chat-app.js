@@ -174,8 +174,6 @@ export class Chat extends window.HTMLElement {
 
     // Changing of attribute data-hide
     if (name === 'data-hide') {
-      // console.log(newValue)
-      // console.log(oldValue)
       if (newValue === 'true') {
         this.style.display = 'none'
       }
@@ -283,7 +281,7 @@ export class Chat extends window.HTMLElement {
       this._newMessage.style.border = 'none'
       this._title.style.cursor = 'move'
       this._messages.style.height = '50%'
-      const myEvent = new window.CustomEvent('adjustableWindow')
+      const myEvent = new window.CustomEvent('notBigWindow')
       this.dispatchEvent(myEvent)
     })
 
@@ -307,11 +305,8 @@ export class Chat extends window.HTMLElement {
     this._hideWindow.addEventListener('click', (event) => {
       event.preventDefault()
       this.setAttribute('data-hide', 'true')
-      if (this.getAttribute('data-hide') === 'true') {
-        this.dispatchEvent(new window.CustomEvent('hiddenElement'))
-        // console.log('My custom event is dispatched')
-        // console.log(event)
-      }
+      const myEvent = new window.CustomEvent('notBigWindow')
+      this.dispatchEvent(myEvent)
     })
 
     // eventlistner for this._input
@@ -323,7 +318,8 @@ export class Chat extends window.HTMLElement {
     // eventlistner for this._deletChat
     this._deletChat.addEventListener('click', (event) => {
       event.preventDefault()
-
+      const myEvent = new window.CustomEvent('notBigWindow')
+      this.dispatchEvent(myEvent)
       // Close websocket
       this._socket.close()
       this.remove()

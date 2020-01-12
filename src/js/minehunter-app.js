@@ -38,6 +38,7 @@ template.innerHTML = /* html */ `
 :host {
     position: absolute;
     width: 50%;
+    hight: 50%;
     display: block;
     resize: both;
     overflow: auto;
@@ -45,6 +46,8 @@ template.innerHTML = /* html */ `
     border: 5px solid #0c5cc4;
     background-color: black;
     color: white;
+    outline: 1px solid black;
+    z-index: 0;
 }
 :host #restartMinehunter{
   display: none;
@@ -118,6 +121,7 @@ export class Minehunter extends window.HTMLElement {
     this._timeConteiner = this.shadowRoot.querySelector('.timeConteiner')
     this._counter = document.createElement('timecounter-app')
     this._title = this.shadowRoot.querySelector('#title')
+    this._isStarting = false
 
     // Tools memory
     this._start = this.shadowRoot.querySelector('#start')
@@ -138,7 +142,7 @@ export class Minehunter extends window.HTMLElement {
    * @memberof Minehunter
    */
   static get observedAttributes () {
-    return ['id', 'data-hide']
+    return ['id', 'data-hide', 'data-zedindex']
   }
 
   /**
@@ -148,6 +152,15 @@ export class Minehunter extends window.HTMLElement {
    * @memberof Minehunter
    */
   attributeChangedCallback (name, oldValue, newValue) {
+    if (name === 'data-zedindex') {
+      if (newValue === 'high') {
+        this.style.zIndex = '1'
+        console.log('zIndex: 1')
+      } else {
+        this.style.zIndex = '0'
+        console.log('zIndex: 0')
+      }
+    }
     if (name === 'id') {
       this._title.innerText = `${this.getAttribute('id')}-minehunter-app`
     }
@@ -168,7 +181,10 @@ export class Minehunter extends window.HTMLElement {
     // eventlistner for this._start
     this._start.addEventListener('click', event => {
       event.preventDefault()
+      this._isStarting = true
       this._gameField.innerHTML = ''
+      this.style.height = 'initial'
+      this._minehunterConteiner.style.height = 'initial'
       this._restartMinehunter.style.display = 'initial'
       this._mines = this.setMines()
       this.setGamefield()
@@ -195,29 +211,45 @@ export class Minehunter extends window.HTMLElement {
       this.style.position = 'absolute'
       this.style.resize = 'both'
       this.style.border = '5px solid #0c5cc4'
+      this.style.outline = '1px solid black'
+      this.style.height = 'initial'
+      this._minehunterConteiner.style.height = 'initial'
       this._minehunterConteiner.style.border = 'none'
       this._title.style.cursor = 'move'
+      const myEvent = new window.CustomEvent('notBigWindow')
+      this.dispatchEvent(myEvent)
     })
 
     // eventlistner for this._bigWindow
     this._bigWindow.addEventListener('click', (event) => {
       event.preventDefault()
       this.style.position = 'static'
+      if (!this._isStarting) {
+        this.style.height = '100%'
+        this._minehunterConteiner.style.height = '100%'
+      }
       this.style.resize = 'none'
       this.style.border = 'none'
+      this.style.outline = 'none'
       this._minehunterConteiner.style.border = '5px solid #0c5cc4'
       this._title.style.cursor = 'default'
+      const myEvent = new window.CustomEvent('bigWindow')
+      this.dispatchEvent(myEvent)
     })
 
     // eventlistner for this._hideWindow
     this._hideWindow.addEventListener('click', (event) => {
       event.preventDefault()
       this.setAttribute('data-hide', 'true')
+      const myEvent = new window.CustomEvent('notBigWindow')
+      this.dispatchEvent(myEvent)
     })
 
     // event for deletbutton
     this._deletMinehunter.addEventListener('click', event => {
       event.preventDefault()
+      const myEvent = new window.CustomEvent('notBigWindow')
+      this.dispatchEvent(myEvent)
       this.remove()
       this._counter.setAttribute('state', 'remove')
     })

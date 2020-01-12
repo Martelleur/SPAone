@@ -2,11 +2,11 @@ import './timecounter-app.js'
 
 const template = document.createElement('template')
 template.innerHTML = /* html */ `
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <div class=timeConteiner></div>
 <div id="memoryConteiner">
   
   <div id="tools">
-    <button id="deletMemory">Delet</button>
     <button id="restartMemory">Restart</button>
     <select id="sizeMemory" name="size">
       <option value="">Size</option>
@@ -16,9 +16,10 @@ template.innerHTML = /* html */ `
       <option value="16">16 tiles</option>
     </select>
     <button id="highscore">Highscore</button>
-    <button id="bigWindow">+</button>
-    <button id="adjustableWindow">%</button>
-    <button id="hideWindow">-</button>
+    <i id="deletMemory" class="material-icons">close</i>
+    <i id="bigWindow" class="material-icons">add_box</i>
+    <i id="adjustableWindow" class="material-icons">exposure</i>
+    <i id="hideWindow" class="material-icons">indeterminate_check_box</i>
     <p id="paires"></p>
   </div>
     
@@ -44,16 +45,16 @@ template.innerHTML = /* html */ `
     background-color: black;
 }
 :host #memoryConteiner {
-    border: 5px solid black;
     color: white;
-    padding: 5%;
     background-color: black;
 } 
 :host #memoryPictures:hover {
     cursor: pointer; 
 }
 :host #tools:hover {
-  cursor: move; 
+  cursor: move;
+  padding: 0;
+  margin: 0; 
 }
 :host #sizeMemory, :host #restartMemory {
   display: none;
@@ -61,7 +62,13 @@ template.innerHTML = /* html */ `
 :host #start {
   display: block;
   margin: 0 auto;
-} 
+}
+:host .material-icons {
+  float: right;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+}
   </style>
 `
 
@@ -95,6 +102,8 @@ export class Memory extends window.HTMLElement {
     this._highscore = this.shadowRoot.querySelector('#highscore')
 
     // Data memory
+    this._isStarting = false
+    this._isFirstClick = false
     this._timeConteiner = this.shadowRoot.querySelector('.timeConteiner')
     this._counter = undefined
     this._memoryConteiner = this.shadowRoot.querySelector('#memoryConteiner')
@@ -188,26 +197,13 @@ export class Memory extends window.HTMLElement {
       }
     })
 
-    // eventlistner for this._start
-    this._start.addEventListener('click', event => {
-      event.preventDefault()
-      this._gameFooter.innerHTML = ''
-      this._memoryPictures.innerHTML = ''
-      this._counter = document.createElement('timecounter-app')
-      this._timeConteiner.appendChild(this._counter)
-      this._restartMemory.style.display = 'initial'
-      this._sizeMemory.style.display = 'initial'
-      this._tiles = this.shuffleTiles(this._rows, this._columns)
-      this.setTiles()
-    })
-
     // eventlistner for this._adjustableWindow
     this._adjustableWindow.addEventListener('click', (event) => {
       event.preventDefault()
       this.style.position = 'absolute'
       this.style.resize = 'both'
       this.style.border = '5px solid #0c5cc4'
-      this._memoryConteiner.style.border = '5px solid black'
+      this._memoryConteiner.style.border = 'none'
       this._tools.style.cursor = 'move'
     })
 
@@ -227,10 +223,17 @@ export class Memory extends window.HTMLElement {
       this.setAttribute('data-hide', 'true')
     })
 
+    // something is wrong here
     // eventlistner for this._memoryPictures
     this._memoryPictures.addEventListener('click', (event) => {
       event.preventDefault()
-      if (event.target === this._start) {
+      // event.stopPropagation()
+
+      if (!this._isStarting) {
+        return
+      }
+      if (!this._isFirstClick) {
+        this._isFirstClick = true
         return
       }
 
@@ -335,11 +338,30 @@ export class Memory extends window.HTMLElement {
       }, 500)
     })
 
+    // eventlistner for this._start
+    this._start.addEventListener('click', event => {
+      event.preventDefault()
+      this._gameFooter.innerHTML = ''
+      this._memoryPictures.innerHTML = ''
+      this._paires.innerText = this._paires.innerText = `Paires: ${this._quantityOfPaires / 2}\nTries: ${Math.floor(this._tries / 2)}`
+      this._counter = document.createElement('timecounter-app')
+      this._timeConteiner.appendChild(this._counter)
+      this._restartMemory.style.display = 'initial'
+      this._sizeMemory.style.display = 'initial'
+      this._tiles = this.shuffleTiles(this._rows, this._columns)
+      this.setTiles()
+      this._isStarting = true
+    }, { once: true })
+
     // eventlistner for this._deletMemory
     this._deletMemory.addEventListener('click', (event) => {
       event.preventDefault()
       // remove this._counter
-      this._counter.setAttribute('state', 'remove')
+      try {
+        this._counter.setAttribute('state', 'remove')
+      } catch (error) {
+        console.log(error)
+      }
 
       this.remove()
     })
@@ -366,7 +388,7 @@ export class Memory extends window.HTMLElement {
       // reset data
       this._tries = 0
       this._quantityOfPaires = 0
-      this._paires.innerText = `Paires: ${this._quantityOfPaires}`
+      this._paires.innerText = this._paires.innerText = `Paires: ${this._quantityOfPaires / 2}\nTries: ${Math.floor(this._tries / 2)}`
     })
 
     // eventlistner for this._sizeMemory
@@ -395,13 +417,12 @@ export class Memory extends window.HTMLElement {
       // reset data
       this._tries = 0
       this._quantityOfPaires = 0
-      this._paires.innerText = `Paires: ${this._quantityOfPaires}`
+      this._paires.innerText = `Paires: ${this._quantityOfPaires / 2}\nTries: ${Math.floor(this._tries / 2)}`
     })
   }
 
   /**
    * Turn back pictures
-   * @returns
    * @memberof Memory
    */
   turnbackPictures () {
@@ -417,7 +438,6 @@ export class Memory extends window.HTMLElement {
         this._tempArray = []
       }
     }
-    return counter
   }
 
   /**
@@ -461,14 +481,13 @@ export class Memory extends window.HTMLElement {
       array.push(img)
       array.push(img)
     }
-    console.log(array)
+
     for (let i = array.length - 1; i > 0; i--) {
       const randomNumber = Math.floor(Math.random() * (i + 1))
       const temp = array[i]
       array[i] = array[randomNumber]
       array[randomNumber] = temp
     }
-    console.log('Shuffled array:')
     console.log(array)
     return array
   }

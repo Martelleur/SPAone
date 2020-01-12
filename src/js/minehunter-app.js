@@ -3,10 +3,10 @@ import './timecounter-app.js'
 
 const template = document.createElement('template')
 template.innerHTML = /* html */ `
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <div class=timeConteiner></div>
 <div id="minehunterConteiner">
     <div id="tools">
-      <button id="deletMinehunter">Delet</button>
       <button id="restartMinehunter">Restart</button>
       <button id="chat">Chat</button>
       <select id="levelMinehunter" name="size">
@@ -14,9 +14,10 @@ template.innerHTML = /* html */ `
         <option value="1">Hard</option>
         <option value="2">Impossible</option>
       </select>
-      <button id="bigWindow">+</button>
-      <button id="adjustableWindow">%</button>
-      <button id="hideWindow">-</button>
+      <i id="deletMinehunter" class="material-icons">close</i>
+      <i id="bigWindow" class="material-icons">add_box</i>
+      <i id="adjustableWindow" class="material-icons">exposure</i>
+      <i id="hideWindow" class="material-icons">indeterminate_check_box</i>
     </div>  
     <div id="gameField">
     <button id="start">Click me to start the game</button>
@@ -36,18 +37,23 @@ template.innerHTML = /* html */ `
     width: 50%;
     display: block;
     resize: both;
-    overflow: scroll;
+    overflow: auto;
     box-sizing: border-box;
     border: 5px solid #0c5cc4;
     background-color: black;
     color: white;
 }
+:host #restartMinehunter{
+  display: none;
+}
 :host #minehunterConteiner, :host #gameField {
     width: 100%;
-    padding: 5%;
 } 
 :host #minehunterConteiner {
   background-color: black;
+}
+:host #gameField {
+  padding: 5%;
 }
 :host #tools:hover{
   cursor: move;
@@ -55,6 +61,12 @@ template.innerHTML = /* html */ `
 :host #start {
   display: block;
   margin: 0 auto;
+}
+:host .material-icons {
+  float: right;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
 }
 </style>
 `
@@ -144,10 +156,11 @@ export class Minehunter extends window.HTMLElement {
     this._start.addEventListener('click', event => {
       event.preventDefault()
       this._gameField.innerHTML = ''
+      this._restartMinehunter.style.display = 'initial'
       this._mines = this.setMines()
       this.setGamefield()
       this._timeConteiner.appendChild(this._counter)
-    })
+    }, { once: true })
 
     // eventlistner for this._chat
     this._chat.addEventListener('click', (event) => {

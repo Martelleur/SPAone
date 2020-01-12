@@ -1,14 +1,15 @@
 const template = document.createElement('template')
 template.innerHTML = /* html */ `
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <div id="chatConteiner">
 <form action="">
     <fieldset id="tools">
-        <button id="deletChat">Delet chat</button>
         <button id="goLiveChat">Go online</button>
         <button id="closeLiveChat">Go offline</button>
-        <button id="bigWindow">+</button>
-        <button id="adjustableWindow">%</button>
-        <button id="hideWindow">-</button>
+        <i id="deletChat" class="material-icons">close</i>
+        <i id="bigWindow" class="material-icons">add_box</i>
+        <i id="adjustableWindow" class="material-icons">exposure</i>
+        <i id="hideWindow" class="material-icons">indeterminate_check_box</i>
         <p id="onlineStatus">You are online</p>
     </fieldset>
 
@@ -56,6 +57,7 @@ template.innerHTML = /* html */ `
   top: 0;
   background-color: black;
   margin: 0;
+  padding: 0;
 }
 :host #newMessage {
   position: -webkit-sticky;
@@ -67,6 +69,12 @@ template.innerHTML = /* html */ `
 :host #messages, :host #onlineStatus, :host #chatTitle, {
   background-color: white;
   color: black;
+}
+:host .material-icons {
+  float: right;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
 }
 </style>
 `

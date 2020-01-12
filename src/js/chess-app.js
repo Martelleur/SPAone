@@ -4,11 +4,10 @@ import './chat-app.js'
 
 const template = document.createElement('template')
 template.innerHTML = /* html */ `
-
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <div id="chessConteiner">
 
     <div id="tools">
-        <button id="deletChess">Delet</button>
         <button id="options1">White options</button>
         <button id="options2">Black options</button>
         <button id="chat">Chat</button>
@@ -17,9 +16,10 @@ template.innerHTML = /* html */ `
           <option value="clear">Hide history!</option>
           <option value="allRounds">All rounds!</option>
         </select>
-        <button id="bigWindow">+</button>
-        <button id="adjustableWindow">%</button>
-        <button id="hideWindow">-</button>
+        <i id="deletChess" class="material-icons">close</i>
+        <i id="bigWindow" class="material-icons">add_box</i>
+        <i id="adjustableWindow" class="material-icons">exposure</i>
+        <i id="hideWindow" class="material-icons">indeterminate_check_box</i>
     </div>
 
     <div id="chessBoard">
@@ -156,12 +156,6 @@ template.innerHTML = /* html */ `
   background-color: black;
   font-size: 1.5em;
 }
-:host #deletChess, :host #chat {
-  background-color: red;
-  color: white;
-  border: 3px solid red;
-  cursor: pointer;
-}
 :host #options1 {
   background-color: green;
   color: white;
@@ -174,11 +168,9 @@ template.innerHTML = /* html */ `
   border: 3px solid purple;
   cursor: pointer;
 }
-:host #history {
-  background-color: blue;
-  color: white;
-  border: 3px solid blue;
+:host #history, :host #chat {
   cursor: pointer;
+  color: black;
 }
 :host #historyConteiner {
   border-top: 3px solid black;
@@ -186,9 +178,10 @@ template.innerHTML = /* html */ `
   color: black;
   background-color: white;
 }
-:host #bigWindow, :host #hideWindow, :host #adjustableWindow {
-  color: black;
-  width: 20px;
+:host .material-icons {
+  float: right;
+  padding: 0;
+  margin: 0;
   cursor: pointer;
 } 
 

@@ -4,8 +4,8 @@ import './timecounter-app.js'
 const template = document.createElement('template')
 template.innerHTML = /* html */ `
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<div class=timeConteiner></div>
 <div id="minehunterConteiner">
+  <p id="title"></p>
     <div id="tools">
       <button id="restartMinehunter">Restart</button>
       <button id="chat">Chat</button>
@@ -18,14 +18,17 @@ template.innerHTML = /* html */ `
       <i id="bigWindow" class="material-icons">add_box</i>
       <i id="adjustableWindow" class="material-icons">exposure</i>
       <i id="hideWindow" class="material-icons">indeterminate_check_box</i>
-    </div>  
+    </div>
+    
+    <div class=timeConteiner></div>
+    
     <div id="gameField">
-    <button id="start">Click me to start the game</button>
-    <p>Rules: Clicks on a square with the left mouse button. The click reveals a number, each number tells you how many mines touch the square. You can mark a mine by putting a flag on it with the right mouse button.
-    You win by clearing all the safe squares and lose if you click on a mine. A time counter keeps track of your score. There are three levels of difficulty: medium has 10 mines, hard has 20 mines, and impossible has 30 mines.</p> 
+      <button id="start">Click me to start the game</button>
+      <p>Rules: Clicks on a square with the left mouse button. The click reveals a number, each number tells you how many mines touch the square. You can mark a mine by putting a flag on it with the right mouse button.
+      You win by clearing all the safe squares and lose if you click on a mine. A time counter keeps track of your score. There are three levels of difficulty: medium has 10 mines, hard has 20 mines, and impossible has 30 mines.</p> 
     </div>
-    <div id="gameFooter">
-    </div>
+    
+    <div id="gameFooter"></div>
 </div>
 <div id="chatConteiner"></div>
 <style>
@@ -52,10 +55,22 @@ template.innerHTML = /* html */ `
 :host #minehunterConteiner {
   background-color: black;
 }
+:host #title {
+  text-align: center;
+  background-color: #0c5cc4;
+  color: white;
+  padding: 0;
+  margin: 0;
+}
 :host #gameField {
   padding: 5%;
 }
-:host #tools:hover{
+:host #tools {
+  padding: 0;
+  padding-top: 3px;
+  padding-left: 3px;
+}
+:host #title:hover{
   cursor: move;
 }
 :host #start {
@@ -99,6 +114,7 @@ export class Minehunter extends window.HTMLElement {
     this._chatConteiner = this.shadowRoot.querySelector('#chatConteiner')
     this._timeConteiner = this.shadowRoot.querySelector('.timeConteiner')
     this._counter = document.createElement('timecounter-app')
+    this._title = this.shadowRoot.querySelector('#title')
 
     // Tools memory
     this._start = this.shadowRoot.querySelector('#start')
@@ -130,15 +146,9 @@ export class Minehunter extends window.HTMLElement {
    */
   attributeChangedCallback (name, oldValue, newValue) {
     if (name === 'id') {
-      // console.log('test attributeChangedCallback/JM')
-      const p = document.createElement('p')
-      p.innerText = this.getAttribute('id')
-      this._tools.appendChild(p)
-      // console.log(this.getAttribute('id'))
+      this._title.innerText = `${this.getAttribute('id')}-memory-app`
     }
     if (name === 'data-hide') {
-      // console.log(newValue)
-      // console.log(oldValue)
       if (newValue === 'true') {
         this.style.display = 'none'
       }

@@ -2,27 +2,28 @@ const template = document.createElement('template')
 template.innerHTML = /* html */ `
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <div id="chatConteiner">
-<form action="">
-    <fieldset id="tools">
-        <button id="goLiveChat">Go online</button>
-        <button id="closeLiveChat">Go offline</button>
-        <i id="deletChat" class="material-icons">close</i>
-        <i id="bigWindow" class="material-icons">add_box</i>
-        <i id="adjustableWindow" class="material-icons">exposure</i>
-        <i id="hideWindow" class="material-icons">indeterminate_check_box</i>
-        <p id="onlineStatus">You are online</p>
-    </fieldset>
+  <p id="title"></p>
+  <form action="">
+      <fieldset id="tools">
+          <button id="goLiveChat">Go online</button>
+          <button id="closeLiveChat">Go offline</button>
+          <i id="deletChat" class="material-icons">close</i>
+          <i id="bigWindow" class="material-icons">add_box</i>
+          <i id="adjustableWindow" class="material-icons">exposure</i>
+          <i id="hideWindow" class="material-icons">indeterminate_check_box</i>
+          <p id="onlineStatus">You are online</p>
+      </fieldset>
 
-    <fieldset id="messages"></fieldset>
-    
-    <fieldset id="newMessage">
-        <textarea id="inputUser" rows="10" name="usrtxt" wrap="hard" placeholder="Write message here..."></textarea>
-        <input type="submit" id="sendButton" value="Send">
-        <button id="emoji">Emoji</button>
-        <button id="changeUsername">Change username</button>
-        <button id="changeChannel">Change channel</button>
-    </fieldset>
-</form>
+      <fieldset id="messages"></fieldset>
+      
+      <fieldset id="newMessage">
+          <textarea id="inputUser" rows="10" name="usrtxt" wrap="hard" placeholder="Write message here..."></textarea>
+          <input type="submit" id="sendButton" value="Send">
+          <button id="emoji">Emoji</button>
+          <button id="changeUsername">Change username</button>
+          <button id="changeChannel">Change channel</button>
+      </fieldset>
+  </form>
 </div>
 <style>
 * {
@@ -39,12 +40,19 @@ template.innerHTML = /* html */ `
     resize: both;
     overflow: auto;
 }
+:host #title {
+  text-align: center;
+  background-color: #0c5cc4;
+  color: white;
+  padding: 0;
+  margin: 0;
+}
 :host #chatConteiner {
     width: 100%;
     color: white;
     background-color: black;
 }
-:host #tools:hover {
+:host #title:hover {
   cursor: move;
 }
 :host textarea {
@@ -58,6 +66,8 @@ template.innerHTML = /* html */ `
   background-color: black;
   margin: 0;
   padding: 0;
+  padding-top: 3px;
+  padding-left: 3px;
 }
 :host #newMessage {
   position: -webkit-sticky;
@@ -102,6 +112,7 @@ export class Chat extends window.HTMLElement {
     this._onlineStatus = this.shadowRoot.querySelector('#onlineStatus')
     this._chatConteiner = this.shadowRoot.querySelector('#chatConteiner')
     this._newMessage = this.shadowRoot.querySelector('#newMessage')
+    this._title = this.shadowRoot.querySelector('#title')
 
     // Tools chat
     this._emoji = this.shadowRoot.querySelector('#emoji')
@@ -161,11 +172,7 @@ export class Chat extends window.HTMLElement {
 
     // Changing of attribute id
     if (name === 'id') {
-      // console.log('test attributeChangedCallback/JM')
-      const p = document.createElement('p')
-      p.innerText = this.getAttribute('id')
-      this._tools.appendChild(p)
-      // console.log(this.getAttribute('id'))
+      this._title.innerText = `${this.getAttribute('id')}-memory-app`
     }
 
     // Changing of attribute id

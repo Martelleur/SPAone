@@ -6,6 +6,7 @@ const template = document.createElement('template')
 template.innerHTML = /* html */ `
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <div id="chessConteiner">
+    <p id="title"></p>
 
     <div id="tools">
         <button id="options1">White options</button>
@@ -124,12 +125,23 @@ template.innerHTML = /* html */ `
   height: 400px;
   margin: 0 auto;
 }
+:host #title {
+  text-align: center;
+  background-color: #0c5cc4;
+  color: white;
+  padding: 0;
+  margin: 0;
+}
+:host #title:hover {
+  cursor: move;
+}
 :host #tools {
   box-sizing: border-box;
   background-color: black;
   width: 100%;
-  cursor: move;
   margin: 0 auto;
+  padding: 3px;
+  padding-right: 0;
 }
 
 :host #chessBoard>div {
@@ -224,6 +236,7 @@ export class Chess extends window.HTMLElement {
     this._historyConteiner = this.shadowRoot.querySelector('#historyConteiner')
     this._winner = this.shadowRoot.querySelector('#winner')
     this._chatConteiner = this.shadowRoot.querySelector('#chatConteiner')
+    this._title = this.shadowRoot.querySelector('#title')
 
     // tools chess
     this._tools = this.shadowRoot.querySelector('#tools')
@@ -267,12 +280,9 @@ export class Chess extends window.HTMLElement {
    * @memberof Chess
    */
   attributeChangedCallback (name, oldValue, newValue) {
+    // Changing of attribute id
     if (name === 'id') {
-      // console.log('test attributeChangedCallback/JM')
-      const p = document.createElement('p')
-      p.innerText = this.getAttribute('id')
-      this._tools.appendChild(p)
-      // console.log(this.getAttribute('id'))
+      this._title.innerText = `${this.getAttribute('id')}-memory-app`
     }
     if (name === 'data-hide') {
       // console.log(newValue)

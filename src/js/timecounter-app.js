@@ -6,7 +6,10 @@ template.innerHTML = /* html */ `
 <style>
   :host #timeContainer, :host #counter{
       width: 100%;
+      padding-left: 0.5%;
+      padding-right: 0.5%;
       text-align: center;
+      box-sizing: border-box;
   }
 </style>
 `

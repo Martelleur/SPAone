@@ -1,15 +1,16 @@
+// First show backside of tiles then visibility hidden
 import './timecounter-app.js'
 
 const template = document.createElement('template')
 template.innerHTML = /* html */ `
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<div class=timeConteiner></div>
 <div id="memoryConteiner">
+  <p id="title"></p>
   
   <div id="tools">
     <button id="restartMemory">Restart</button>
     <select id="sizeMemory" name="size">
-      <option value="">Size</option>
+      <option value="">Tiles</option>
       <option value="4">4 tiles</option>
       <option value="8">8 tiles</option>
       <option value="12">12 tiles</option>
@@ -22,6 +23,8 @@ template.innerHTML = /* html */ `
     <i id="hideWindow" class="material-icons">indeterminate_check_box</i>
     <p id="paires"></p>
   </div>
+
+  <div class=timeConteiner></div>
     
   <div id="memoryPictures">
     <button id="start">Click me to start the game</button>
@@ -51,10 +54,19 @@ template.innerHTML = /* html */ `
 :host #memoryPictures:hover {
     cursor: pointer; 
 }
-:host #tools:hover {
-  cursor: move;
+:host #title {
+  text-align: center;
+  background-color: #0c5cc4;
+  color: white;
   padding: 0;
-  margin: 0; 
+  margin: 0;
+}
+:host #tools {
+  padding-top: 3px;
+  padding-left: 3px;
+}
+:host #title:hover {
+  cursor: move;
 }
 :host #sizeMemory, :host #restartMemory {
   display: none;
@@ -102,6 +114,7 @@ export class Memory extends window.HTMLElement {
     this._highscore = this.shadowRoot.querySelector('#highscore')
 
     // Data memory
+    this._title = this.shadowRoot.querySelector('#title')
     this._isStarting = false
     this._isFirstClick = false
     this._timeConteiner = this.shadowRoot.querySelector('.timeConteiner')
@@ -112,7 +125,6 @@ export class Memory extends window.HTMLElement {
     this._columns = 4
     this._numberOfPictures = this._rows * this._columns
     this._backOfTilesSrc = '../imageMemory/0.png'
-    // this._tiles = this.shuffleTiles(this._rows, this._columns)
     this._paires = this.shadowRoot.querySelector('#paires')
     this._quantityOfPaires = 0
     this._tempArray = []
@@ -143,11 +155,7 @@ export class Memory extends window.HTMLElement {
    */
   attributeChangedCallback (name, oldValue, newValue) {
     if (name === 'id') {
-      // console.log('test attributeChangedCallback/JM')
-      const p = document.createElement('p')
-      p.innerText = this.getAttribute('id')
-      this._tools.appendChild(p)
-      // console.log(this.getAttribute('id'))
+      this._title.innerText = `${this.getAttribute('id')}-memory-app`
     }
     if (name === 'data-hide') {
       // console.log(newValue)

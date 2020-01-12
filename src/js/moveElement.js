@@ -9,8 +9,8 @@ function moveElement (element) {
   console.log(element)
   console.log(element.shadowRoot.querySelector('#tools'))
   */
-  if (element.shadowRoot.querySelector('#tools')) {
-    element.shadowRoot.querySelector('#tools').onmousedown = moveMouseDown
+  if (element.shadowRoot.querySelector('#title')) {
+    element.shadowRoot.querySelector('#title').onmousedown = moveMouseDown
   } else {
     element.onmousedown = moveMouseDown
   }

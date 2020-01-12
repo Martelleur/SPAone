@@ -120,12 +120,9 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
   element.setAttribute('id', nameIdApplication)
   console.log(element.getAttribute('id'))
   element.setAttribute('data-hide', 'false')
-  // console.log(element.hasAttribute('data-hide'))
 
   // Adding created elements
-  // document.querySelector('#wrapper').appendChild(document.createElement('br'))
   document.querySelector('main').appendChild(element)
-  // document.querySelector('#wrapper').appendChild(document.createElement('br'))
 
   console.log(y + 'px')
   element.style.top = y + 'px'

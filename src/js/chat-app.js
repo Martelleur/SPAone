@@ -5,8 +5,8 @@ template.innerHTML = /* html */ `
   <p id="title"></p>
   <form action="">
       <fieldset id="tools">
-          <button id="goLiveChat">Go online</button>
-          <button id="closeLiveChat">Go offline</button>
+          <button id="goLiveChat" class="button">Go online</button>
+          <button id="closeLiveChat" class="button">Go offline</button>
           <i id="deletChat" class="material-icons">close</i>
           <i id="bigWindow" class="material-icons">add_box</i>
           <i id="adjustableWindow" class="material-icons">exposure</i>
@@ -18,10 +18,10 @@ template.innerHTML = /* html */ `
       
       <fieldset id="newMessage">
           <textarea id="inputUser" rows="10" name="usrtxt" wrap="hard" placeholder="Write message here..."></textarea>
-          <input type="submit" id="sendButton" value="Send">
-          <button id="emoji">Emoji</button>
-          <button id="changeUsername">Change username</button>
-          <button id="changeChannel">Change channel</button>
+          <input type="submit" class="button" id="sendButton" value="Send">
+          <button id="emoji" class="button">Emoji</button>
+          <button id="changeUsername" class="button">Change username</button>
+          <button id="changeChannel" class="button">Change channel</button>
       </fieldset>
   </form>
 </div>
@@ -39,6 +39,8 @@ template.innerHTML = /* html */ `
     border: 5px solid #0c5cc4;
     resize: both;
     overflow: auto;
+    z-index: 0;
+    outline: 1px solid black;
 }
 :host #title {
   text-align: center;
@@ -79,6 +81,9 @@ template.innerHTML = /* html */ `
 :host #messages, :host #onlineStatus, :host #chatTitle, {
   background-color: white;
   color: black;
+}
+:host .button {
+  cursor: pointer;
 }
 :host .material-icons {
   float: right;
@@ -137,10 +142,19 @@ export class Chat extends window.HTMLElement {
   }
 
   static get observedAttributes () {
-    return ['id', 'data-hide', 'data-freezewindow']
+    return ['id', 'data-hide', 'data-freezewindow', 'data-zedindex']
   }
 
   attributeChangedCallback (name, oldValue, newValue) {
+    if (name === 'data-zedindex') {
+      if (newValue === 'high') {
+        this.style.zIndex = '1'
+        console.log('zIndex: 1')
+      } else {
+        this.style.zIndex = '0'
+        console.log('zIndex: 0')
+      }
+    }
     // Changing of attribute data-freezeWindow
     if (name === 'data-freezewindow') {
       if (newValue === 'true') {
@@ -172,7 +186,7 @@ export class Chat extends window.HTMLElement {
 
     // Changing of attribute id
     if (name === 'id') {
-      this._title.innerText = `${this.getAttribute('id')}-memory-app`
+      this._title.innerText = `${this.getAttribute('id')}-chat-app`
     }
 
     // Changing of attribute id
@@ -264,10 +278,13 @@ export class Chat extends window.HTMLElement {
       this.style.position = 'absolute'
       this.style.resize = 'both'
       this.style.border = '5px solid #0c5cc4'
+      this.style.outline = '1px solid black'
       this._tools.style.border = 'none'
       this._newMessage.style.border = 'none'
-      this._tools.style.cursor = 'move'
+      this._title.style.cursor = 'move'
       this._messages.style.height = '50%'
+      const myEvent = new window.CustomEvent('adjustableWindow')
+      this.dispatchEvent(myEvent)
     })
 
     // eventlistner for this._bigWindow
@@ -276,11 +293,14 @@ export class Chat extends window.HTMLElement {
       this.style.position = 'static'
       this.style.resize = 'none'
       this.style.border = 'none'
+      this.style.outline = 'none'
       this._tools.style.border = '5px solid #0c5cc4'
       this._newMessage.style.border = '5px solid #0c5cc4'
       const temp = window.innerWidth
       this._messages.style.height = `${temp}px`
-      this._tools.style.cursor = 'default'
+      this._title.style.cursor = 'default'
+      const myEvent = new window.CustomEvent('bigWindow')
+      this.dispatchEvent(myEvent)
     })
 
     // eventlistner for this._hideWindow

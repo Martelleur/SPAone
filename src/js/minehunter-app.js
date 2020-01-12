@@ -7,9 +7,9 @@ template.innerHTML = /* html */ `
 <div id="minehunterConteiner">
   <p id="title"></p>
     <div id="tools">
-      <button id="restartMinehunter">Restart</button>
-      <button id="chat">Chat</button>
-      <select id="levelMinehunter" name="size">
+      <button id="restartMinehunter" class="button">Restart</button>
+      <button id="chat" class="button">Chat</button>
+      <select id="levelMinehunter" class="button" name="size">
         <option value="0">Medium</option>
         <option value="1">Hard</option>
         <option value="2">Impossible</option>
@@ -76,6 +76,9 @@ template.innerHTML = /* html */ `
 :host #start {
   display: block;
   margin: 0 auto;
+}
+:host .button {
+  cursor: pointer;
 }
 :host .material-icons {
   float: right;
@@ -146,7 +149,7 @@ export class Minehunter extends window.HTMLElement {
    */
   attributeChangedCallback (name, oldValue, newValue) {
     if (name === 'id') {
-      this._title.innerText = `${this.getAttribute('id')}-memory-app`
+      this._title.innerText = `${this.getAttribute('id')}-minehunter-app`
     }
     if (name === 'data-hide') {
       if (newValue === 'true') {
@@ -193,7 +196,7 @@ export class Minehunter extends window.HTMLElement {
       this.style.resize = 'both'
       this.style.border = '5px solid #0c5cc4'
       this._minehunterConteiner.style.border = 'none'
-      this._tools.style.cursor = 'move'
+      this._title.style.cursor = 'move'
     })
 
     // eventlistner for this._bigWindow
@@ -203,7 +206,7 @@ export class Minehunter extends window.HTMLElement {
       this.style.resize = 'none'
       this.style.border = 'none'
       this._minehunterConteiner.style.border = '5px solid #0c5cc4'
-      this._tools.style.cursor = 'default'
+      this._title.style.cursor = 'default'
     })
 
     // eventlistner for this._hideWindow

@@ -37,14 +37,14 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
   }
 
   if (y < (window.innerHeight - 600)) {
-    y = y + 10
+    y = y + 20
   } else {
-    y = 110
+    y = 120
   }
   if (x < (window.innerWidth - 600)) {
-    x = x + 10
+    x = x + 20
   } else {
-    x = 10
+    x = 20
   }
 
   // data
@@ -96,7 +96,6 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
   }
 
   // get type of element that will be created
-  console.log(event.target.getAttribute('data-create-element'))
   const elementType = event.target.getAttribute('data-create-element')
 
   // create element and ids for elements
@@ -118,13 +117,13 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
     nameIdApplication = `chess${counterChessApplication}`
   }
   element.setAttribute('id', nameIdApplication)
-  console.log(element.getAttribute('id'))
   element.setAttribute('data-hide', 'false')
+  element.setAttribute('data-zedindex', 'low')
+  console.log(element.getAttribute('data-zedindex'))
+  console.log(element.style.zIndex)
 
-  // Adding created elements
+  // Adding created elements and use operator moveElement
   document.querySelector('main').appendChild(element)
-
-  console.log(y + 'px')
   element.style.top = y + 'px'
   element.style.left = x + 'px'
   moveElement(element)
@@ -142,13 +141,38 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
     element: event.target.getAttribute('data-create-element'),
     id: element.getAttribute('id')
   }
-
   window.history.pushState(stateObj, `/${stateObj.id}`, `/${stateObj.element}/${stateObj.id}`)
-  console.log(stateObj)
+
+  element.addEventListener('click', event => {
+    window.history.pushState(stateObj, `/${stateObj.id}`, `/${stateObj.element}/${stateObj.id}`)
+    element.setAttribute('data-zedindex', 'high')
+    for (let i = 0; i < document.querySelector('main').children.length; i++) {
+      if (document.querySelector('main').children[i] !== element) {
+        document.querySelector('main').children[i].setAttribute('data-zedindex', 'low')
+      }
+    }
+  })
+
+  element.addEventListener('bigWindow', event => {
+    console.log('test')
+    for (let i = 0; i < document.querySelector('main').children.length; i++) {
+      if (document.querySelector('main').children[i] !== element) {
+        document.querySelector('main').children[i].style.visibility = 'hidden'
+      }
+    }
+  })
+
+  element.addEventListener('adjustableWindow', event => {
+    console.log('test')
+    for (let i = 0; i < document.querySelector('main').children.length; i++) {
+      document.querySelector('main').children[i].style.visibility = 'visible'
+    }
+  })
 
   const currentState = window.history.state
-  console.log('currentState: ')
-  console.log(currentState)
+  console.log('currentState.id: ')
+  console.log(typeof currentState.id)
+  console.log(currentState.id)
 })
 
 // Cache hidden elements in select-element

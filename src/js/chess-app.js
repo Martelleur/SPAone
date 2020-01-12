@@ -282,7 +282,7 @@ export class Chess extends window.HTMLElement {
   attributeChangedCallback (name, oldValue, newValue) {
     // Changing of attribute id
     if (name === 'id') {
-      this._title.innerText = `${this.getAttribute('id')}-memory-app`
+      this._title.innerText = `${this.getAttribute('id')}-chess-app`
     }
     if (name === 'data-hide') {
       // console.log(newValue)
@@ -605,7 +605,7 @@ export class Chess extends window.HTMLElement {
     this._adjustableWindow.addEventListener('click', (event) => {
       event.preventDefault()
       this.style.position = 'absolute'
-      this._tools.style.cursor = 'move'
+      this._title.style.cursor = 'move'
       this._chessConteiner.style.border = 'none'
       this.style.border = '5px solid #0c5cc4'
       this._chessConteiner.style.height = 'initial'
@@ -615,7 +615,7 @@ export class Chess extends window.HTMLElement {
     this._bigWindow.addEventListener('click', (event) => {
       event.preventDefault()
       this.style.position = 'static'
-      this._tools.style.cursor = 'default'
+      this._title.style.cursor = 'default'
       this._chessConteiner.style.border = '5px solid #0c5cc4'
       this.style.border = 'none'
       this._chessConteiner.style.height = '100%'

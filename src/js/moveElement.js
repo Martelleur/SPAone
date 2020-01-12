@@ -35,8 +35,8 @@ function moveElement (element) {
       // console.log(possitionY - event.clientY)
       // set elements new position
       element.style.left = (element.offsetLeft - newPossitionX) + 'px'
-      console.log(element.offsetTop)
-      console.log(element.offsetLeft)
+      // console.log(element.offsetTop)
+      // console.log(element.offsetLeft)
     } else {
       // element.style.top = '1px'
       element.style.left = '1px'
@@ -48,8 +48,8 @@ function moveElement (element) {
       // console.log(possitionY - event.clientY)
       // set elements new position
       element.style.top = (element.offsetTop - newPossitionY) + 'px'
-      console.log(element.offsetTop)
-      console.log(element.offsetLeft)
+      // console.log(element.offsetTop)
+      // console.log(element.offsetLeft)
     } else {
       element.style.top = '1px'
     }

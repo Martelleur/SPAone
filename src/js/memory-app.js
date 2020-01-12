@@ -8,15 +8,15 @@ template.innerHTML = /* html */ `
   <p id="title"></p>
   
   <div id="tools">
-    <button id="restartMemory">Restart</button>
-    <select id="sizeMemory" name="size">
+    <button id="restartMemory" class="button">Restart</button>
+    <select id="sizeMemory" class="button" name="size">
       <option value="">Tiles</option>
       <option value="4">4 tiles</option>
       <option value="8">8 tiles</option>
       <option value="12">12 tiles</option>
       <option value="16">16 tiles</option>
     </select>
-    <button id="highscore">Highscore</button>
+    <button id="highscore" class="button">Highscore</button>
     <i id="deletMemory" class="material-icons">close</i>
     <i id="bigWindow" class="material-icons">add_box</i>
     <i id="adjustableWindow" class="material-icons">exposure</i>
@@ -74,6 +74,9 @@ template.innerHTML = /* html */ `
 :host #start {
   display: block;
   margin: 0 auto;
+}
+:host .button {
+  cursor: pointer;
 }
 :host .material-icons {
   float: right;
@@ -212,7 +215,7 @@ export class Memory extends window.HTMLElement {
       this.style.resize = 'both'
       this.style.border = '5px solid #0c5cc4'
       this._memoryConteiner.style.border = 'none'
-      this._tools.style.cursor = 'move'
+      this._title.style.cursor = 'move'
     })
 
     // eventlistner for this._bigWindow
@@ -222,7 +225,7 @@ export class Memory extends window.HTMLElement {
       this.style.resize = 'none'
       this.style.border = 'none'
       this._memoryConteiner.style.border = '5px solid #0c5cc4'
-      this._tools.style.cursor = 'default'
+      this._title.style.cursor = 'default'
     })
 
     // eventlistner for this._hideWindow

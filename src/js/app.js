@@ -148,7 +148,6 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
 
   // Listning on custom event bigWindow
   element.addEventListener('bigWindow', event => {
-    console.log('test')
     for (let i = 0; i < document.querySelector('main').children.length; i++) {
       if (document.querySelector('main').children[i] !== element) {
         document.querySelector('main').children[i].style.visibility = 'hidden'
@@ -158,7 +157,6 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
 
   // Listning on custom event notBigWindow
   element.addEventListener('notBigWindow', event => {
-    console.log('test')
     for (let i = 0; i < document.querySelector('main').children.length; i++) {
       document.querySelector('main').children[i].style.visibility = 'visible'
     }

@@ -1534,6 +1534,7 @@ export class Chess extends window.HTMLElement {
     bigDiv.addEventListener('mouseover', event => {
       this._historyConteiner.style.border = '5px solid #0c5cc4'
     })
+    /*
     bigDiv.addEventListener('dblclick', event => {
       const newShadow = this._clonedShadow[argument.slice(-1) - 1]
       console.log(newShadow)
@@ -1541,6 +1542,7 @@ export class Chess extends window.HTMLElement {
       this.remove()
       window.sessionStorage.clear()
     })
+    */
   }
 }
 

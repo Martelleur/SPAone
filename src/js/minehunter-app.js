@@ -14,6 +14,7 @@ template.innerHTML = /* html */ `
         <option value="1">Hard</option>
         <option value="2">Impossible</option>
       </select>
+      <button id="highscore" class="button">Highscore</button>
       <i id="deletMinehunter" class="material-icons">close</i>
       <i id="bigWindow" class="material-icons">add_box</i>
       <i id="adjustableWindow" class="material-icons">exposure</i>
@@ -49,7 +50,7 @@ template.innerHTML = /* html */ `
     outline: 1px solid black;
     z-index: 0;
 }
-:host #restartMinehunter{
+:host #restartMinehunter, :host #levelMinehunter {
   display: none;
 }
 :host #minehunterConteiner, :host #gameField {
@@ -80,6 +81,9 @@ template.innerHTML = /* html */ `
   display: block;
   margin: 0 auto;
   cursor: pointer;
+}
+:host #gameFooter {
+  padding: 5%;
 }
 :host .button {
   cursor: pointer;
@@ -135,6 +139,7 @@ export class Minehunter extends window.HTMLElement {
     this._restartMinehunter = this.shadowRoot.querySelector('#restartMinehunter')
     this._sizeMinehunter = this.shadowRoot.querySelector('#sizeMinehunter')
     this._levelMinehunter = this.shadowRoot.querySelector('#levelMinehunter')
+    this._highscore = this.shadowRoot.querySelector('#highscore')
   }
 
   /**
@@ -179,6 +184,36 @@ export class Minehunter extends window.HTMLElement {
    * @memberof Minehunter
    */
   connectedCallback () {
+    // eventlistner for this._highscore
+    this._highscore.addEventListener('click', event => {
+      event.preventDefault()
+      this._gameFooter.innerHTML = ''
+      const p = document.createElement('p')
+      const argument = `highScoreMinehunter${this._currentLevel}`
+      p.textContent = `Top 5 result level ${this._currentLevel}:`
+      this._gameFooter.appendChild(p)
+      const highscore = JSON.parse(window.localStorage.getItem(argument)) || []
+      const tempArray = []
+      for (let i = 0; i < highscore.length; i++) {
+        tempArray.push(highscore[i].result)
+      }
+      console.log(tempArray.sort((a, b) => a - b))
+      if (tempArray.length !== 0) {
+        for (let i = 0; i < tempArray.length; i++) {
+          const p = document.createElement('p')
+          p.textContent = `Number${i + 1}, result: ${tempArray[i]}`
+          this._gameFooter.appendChild(p)
+          if (i === 4) {
+            break
+          }
+        }
+      } else {
+        const p = document.createElement('p')
+        p.textContent = 'No result'
+        this._gameFooter.appendChild(p)
+      }
+    })
+
     // eventlistner for this._start
     this._start.addEventListener('click', event => {
       event.preventDefault()
@@ -187,6 +222,7 @@ export class Minehunter extends window.HTMLElement {
       this.style.height = 'initial'
       this._minehunterConteiner.style.height = 'initial'
       this._restartMinehunter.style.display = 'initial'
+      this._levelMinehunter.style.display = 'initial'
       this._mines = this.setMines()
       this.setGamefield()
       this._timeConteiner.appendChild(this._counter)
@@ -577,11 +613,16 @@ export class Minehunter extends window.HTMLElement {
         }
 
         // timeCounter stop
+        const argument = `highScoreMinehunter${this._currentLevel}`
+        const highscore = JSON.parse(window.localStorage.getItem(argument)) || []
         this._counter.setAttribute('state', 'freeze')
         const result = window.sessionStorage.getItem('timecountervalue')
         window.sessionStorage.removeItem('timecountervalue')
-        const argument = `highScoreMinehunter${this._currentLevel}`
-        window.localStorage.setItem(argument, result)
+        const score = {
+          result: result
+        }
+        highscore.push(score)
+        window.localStorage.setItem(argument, JSON.stringify(highscore))
 
         const congratulation = document.createElement('h3')
         congratulation.innerText = `CONGRATULATION! Your time is: ${result}`

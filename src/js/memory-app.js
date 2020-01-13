@@ -78,6 +78,9 @@ template.innerHTML = /* html */ `
   margin: 0 auto;
   cursor: pointer;
 }
+:host #gameFooter {
+  padding: 5%;
+}
 :host .button {
   cursor: pointer;
 }

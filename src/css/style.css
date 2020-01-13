@@ -4,6 +4,12 @@
     box-sizing: border-box;
 }
 
+#imageChess {
+    display: block;
+    width: 100px;
+    height: 100px;
+}
+
 html {
     background-color: white;
     height: 100vh;

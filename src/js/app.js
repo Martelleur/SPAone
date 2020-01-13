@@ -9,6 +9,51 @@ import { moveElement } from './moveElement.js'
 // Check if online not always true but a good check
 // Insted we define online when client connected to server
 // Like the heartbeat in websocketconnection
+document.querySelector('#memoryButton').innerHTML = `
+Memory  
+<img id="chessIcon" src="../imageIcons/memory.png" alt="chess icon"></img>
+<style>
+  #chessIcon {
+    height: 4vh;
+    width: 4vh;
+    padding-bottom: 1px;
+  }
+</style>
+`
+document.querySelector('#chatButton').innerHTML = `
+Chat
+<img id="chessIcon" src="../imageIcons/chat.png" alt="chess icon"></img>
+<style>
+  #chessIcon {
+    height: 4vh;
+    width: 4vh;
+    padding-bottom: 1px;
+  }
+</style>
+`
+document.querySelector('#chessButton').innerHTML = `
+Chess
+<img id="chessIcon" src="../imageIcons/chess.png" alt="chess icon"></img>
+<style>
+  #chessIcon {
+    height: 4vh;
+    width: 4vh;
+    padding-bottom: 1px;
+  }
+</style>
+`
+document.querySelector('#minehunterButton').innerHTML = `
+Minehunter
+<img id="chessIcon" src="../imageIcons/minehunter.png" alt="chess icon"></img>
+<style>
+  #chessIcon {
+    height: 4vh;
+    width: 4vh;
+    padding-bottom: 1px;
+  }
+</style>
+`
+
 if (window.navigator.onLine) {
   console.log('You are online!')
 }
@@ -55,7 +100,7 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
 
   // if user not click on a a-tag
   if (event.target.tagName !== 'A') {
-    console.log('Not an image-tag')
+    console.log('Not an a-tag')
     return
   }
 

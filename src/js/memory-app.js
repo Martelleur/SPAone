@@ -28,7 +28,7 @@ template.innerHTML = /* html */ `
     
   <div id="memoryPictures">
     <button id="start">Click me to start the game</button>
-    <p>Rules: Finish the meory as fast as you can. Result = time + tries. You can choice between 4 diffrent of sizes: 4 tiles, 8 tiles, 12 tiles and 16 tiles. Good luck!</p> 
+    <p>Rules: Finish the memory as fast as you can. Result = time + tries. You can choice between 4 diffrent of sizes: 4 tiles, 8 tiles, 12 tiles and 16 tiles (default value of tiles). Good luck!</p> 
   </div>
   
   <div id="gameFooter">
@@ -174,7 +174,19 @@ export class Memory extends window.HTMLElement {
       }
     }
     if (name === 'id') {
-      this._title.innerText = `${this.getAttribute('id')}-memory-app`
+      this._title.innerHTML = `
+      <p id="title">${this.getAttribute('id')}-chess-app
+        <img id="chessIcon" src="../imageIcons/memory.png" alt="chess icon"></img>
+        <style>
+          #chessIcon {
+            height: 15px;
+            width: 15px;
+            float: left;
+            padding-bottom: 1px;
+          }
+        </style>
+      </p>
+      `
     }
     if (name === 'data-hide') {
       // console.log(newValue)

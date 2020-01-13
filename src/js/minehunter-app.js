@@ -26,7 +26,7 @@ template.innerHTML = /* html */ `
     <div id="gameField">
       <button id="start">Click me to start the game</button>
       <p>Rules: Clicks on a square with the left mouse button. The click reveals a number, each number tells you how many mines touch the square. You can mark a mine by putting a flag on it with the right mouse button.
-      You win by clearing all the safe squares and lose if you click on a mine. A time counter keeps track of your score. There are three levels of difficulty: medium has 10 mines, hard has 20 mines, and impossible has 30 mines.</p> 
+      You win by clearing all the safe squares and lose if you click on a mine. A time counter keeps track of your score. There are three levels of difficulty: medium has 10 mines (default level), hard has 20 mines, and impossible has 30 mines.</p> 
     </div>
     
     <div id="gameFooter"></div>
@@ -168,7 +168,19 @@ export class Minehunter extends window.HTMLElement {
       }
     }
     if (name === 'id') {
-      this._title.innerText = `${this.getAttribute('id')}-minehunter-app`
+      this._title.innerHTML = `
+      <p id="title">${this.getAttribute('id')}-chess-app
+        <img id="chessIcon" src="../imageIcons/minehunter.png" alt="chess icon"></img>
+        <style>
+          #chessIcon {
+            height: 15px;
+            width: 15px;
+            float: left;
+            padding-bottom: 1px;
+          }
+        </style>
+      </p>
+      `
     }
     if (name === 'data-hide') {
       if (newValue === 'true') {
@@ -190,7 +202,15 @@ export class Minehunter extends window.HTMLElement {
       this._gameFooter.innerHTML = ''
       const p = document.createElement('p')
       const argument = `highScoreMinehunter${this._currentLevel}`
-      p.textContent = `Top 5 result level ${this._currentLevel}:`
+      if (this._currentLevel === 1) {
+        p.textContent = 'Top 5 result level medium:'
+      } else if (this._currentLevel === 2) {
+        p.textContent = 'Top 5 result level hard:'
+      } else if (this._currentLevel === 3) {
+        p.textContent = 'Top 5 result level impossible:'
+      } else {
+        p.textContent = 'Top 5 result undefined level:'
+      }
       this._gameFooter.appendChild(p)
       const highscore = JSON.parse(window.localStorage.getItem(argument)) || []
       const tempArray = []
@@ -624,10 +644,10 @@ export class Minehunter extends window.HTMLElement {
         window.localStorage.setItem(argument, JSON.stringify(highscore))
 
         const congratulation = document.createElement('h3')
-        congratulation.innerText = `CONGRATULATION! Your time is: ${result}`
+        congratulation.innerText = `CONGRATULATION! Your result is: ${result}`
         congratulation.style.textAlign = 'center'
         congratulation.style.color = 'white'
-        this._gameFooter.appendChild(congratulation)
+        this._gameFooter.insertAdjacentElement('afterbegin', congratulation)
       }, 2000)
     }
   }

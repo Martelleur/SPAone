@@ -184,7 +184,19 @@ export class Chat extends window.HTMLElement {
 
     // Changing of attribute id
     if (name === 'id') {
-      this._title.innerText = `${this.getAttribute('id')}-chat-app`
+      this._title.innerHTML = `
+      <p id="title">${this.getAttribute('id')}-chess-app
+        <img id="chessIcon" src="../imageIcons/chat.png" alt="chess icon"></img>
+        <style>
+          #chessIcon {
+            height: 15px;
+            width: 15px;
+            float: left;
+            padding-bottom: 1px;
+          }
+        </style>
+      </p>
+      `
     }
 
     // Changing of attribute id

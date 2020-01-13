@@ -167,7 +167,7 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
   console.log(typeof currentState.id)
   console.log(currentState.id)
 
-  // Cache hidden elements in select-element
+  // Listning on custom event hidewindow and cache hidden elements in select-element
   element.addEventListener('hideWindow', event => {
     event.preventDefault()
 

@@ -308,11 +308,10 @@ export class Minehunter extends window.HTMLElement {
     // event for levelButton
     this._levelMinehunter.addEventListener('change', event => {
       event.preventDefault()
-      // console.log('this._levelMinehunter.value/JM')
-      // console.log(this._levelMinehunter.value)
-
-      // set level for game
       this.setGamefield()
+      this._counter.setAttribute('state', 'remove')
+      this._counter = document.createElement('timecounter-app')
+      this._timeConteiner.appendChild(this._counter)
       this._currentLevel = this._levels[this._levelMinehunter.value]
       this._mines = this.setMines()
     })

@@ -5,10 +5,178 @@ import './chess-app.js'
 import './timecounter-app.js'
 import { moveElement } from './moveElement.js'
 // import SimpleCrypto from 'simple-crypto-js'
-
 // Check if online not always true but a good check
 // Insted we define online when client connected to server
 // Like the heartbeat in websocketconnection
+
+/**
+ * @param {*} element
+ */
+function showMemorySpan (element) {
+  document.querySelector('#memorySpan').style.display = 'initial'
+}
+
+/**
+ * @param {*} element
+ */
+function showChessSpan (element) {
+  document.querySelector('#chessSpan').style.display = 'initial'
+}
+
+/**
+ * @param {*} element
+ */
+function showMinehunterSpan (element) {
+  document.querySelector('#minehunterSpan').style.display = 'initial'
+}
+
+/**
+ * @param {*} element
+ */
+function showChatSpan (element) {
+  document.querySelector('#chatSpan').style.display = 'initial'
+}
+
+/**
+ * @param {*} element
+ */
+function showFullScreenSpan (element) {
+  document.querySelector('#fullScreenSpan').style.display = 'initial'
+}
+let tempShowInfo
+document.querySelector('#memoryButton').innerHTML = `
+<img id="memoryIcon" src="../imageIcons/memory.png" alt="chess icon"></img>
+<div id="memorySpan">Memory</div>
+<style>
+  #memoryIcon {
+    position: absolute;
+    top: 0;
+    left: 5vh;
+    height: 4vh;
+    width: 4vh;
+    padding-bottom: 1px;
+    border: 1px solid black;
+  }
+  #memorySpan {
+    top: 5vh;
+    left: 5vh;
+    position: absolute;
+    display: none;
+    border: 1px solid black;
+    background-color: #0c5cc4;
+  }
+</style>
+`
+document.querySelector('#memoryIcon').addEventListener('mouseover', event => {
+  tempShowInfo = window.setTimeout(showMemorySpan, 500)
+})
+document.querySelector('#memoryIcon').addEventListener('mouseout', event => {
+  clearTimeout(tempShowInfo)
+  document.querySelector('#memorySpan').style.display = 'none'
+})
+
+document.querySelector('#chatButton').innerHTML = `
+<img id="chatIcon" src="../imageIcons/chat.png" alt="chess icon"></img>
+<span id="chatSpan">Chat</span>
+<style>
+  #chatIcon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 4vh;
+    width: 4vh;
+    padding-bottom: 1px;
+    border: 1px solid black;
+  }
+  #chatSpan {
+    position: absolute;
+    top: 5vh;
+    left: 0;
+    display: none;
+    border: 1px solid black;
+    background-color: #0c5cc4;
+  }
+</style>
+`
+document.querySelector('#chatIcon').addEventListener('mouseover', event => {
+  tempShowInfo = window.setTimeout(showChatSpan, 500)
+})
+document.querySelector('#chatIcon').addEventListener('mouseout', event => {
+  clearTimeout(tempShowInfo)
+  document.querySelector('#chatSpan').style.display = 'none'
+})
+
+document.querySelector('#chessButton').innerHTML = `
+<img id="chessIcon" src="../imageIcons/chess.png" alt="chess icon"></img>
+<span id="chessSpan">Chess</span>
+<style>
+  #chessIcon {
+    position: absolute;
+    top: 0;
+    left: 15vh;
+    height: 4vh;
+    width: 4vh;
+    padding-bottom: 1px;
+    border: 1px solid black;
+  }
+  #chessSpan {
+    position: absolute;
+    top: 5vh;
+    left: 15vh;
+    display: none;
+    border: 1px solid black;
+    background-color: #0c5cc4;
+  }
+</style>
+`
+document.querySelector('#chessIcon').addEventListener('mouseover', event => {
+  tempShowInfo = window.setTimeout(showChessSpan, 500)
+})
+document.querySelector('#chessIcon').addEventListener('mouseout', event => {
+  clearTimeout(tempShowInfo)
+  document.querySelector('#chessSpan').style.display = 'none'
+})
+
+document.querySelector('#minehunterButton').innerHTML = `
+<img id="minehunterIcon" src="../imageIcons/minehunter.png" alt="chess icon"></img>
+<span id="minehunterSpan">Minehunter</span>
+<style>
+  #minehunterIcon {
+    position: absolute;
+    top: 0;
+    left: 10vh;
+    height: 4vh;
+    width: 4vh;
+    padding-bottom: 1px;
+    border: 1px solid black;
+  }
+  #minehunterSpan {
+    position: absolute;
+    top: 5vh;
+    left: 10vh;
+    display: none;
+    border: 1px solid black;
+    background-color: #0c5cc4;
+  }
+</style>
+`
+
+document.querySelector('#minehunterIcon').addEventListener('mouseover', event => {
+  tempShowInfo = window.setTimeout(showMinehunterSpan, 500)
+})
+document.querySelector('#minehunterIcon').addEventListener('mouseout', event => {
+  clearTimeout(tempShowInfo)
+  document.querySelector('#minehunterSpan').style.display = 'none'
+})
+
+document.querySelector('.material-icons').addEventListener('mouseover', event => {
+  tempShowInfo = window.setTimeout(showFullScreenSpan, 500)
+})
+document.querySelector('.material-icons').addEventListener('mouseout', event => {
+  clearTimeout(tempShowInfo)
+  document.querySelector('#fullScreenSpan').style.display = 'none'
+})
+
 if (window.navigator.onLine) {
   console.log('You are online!')
 }
@@ -32,7 +200,9 @@ let x = 0
 document.querySelector('#buttons').addEventListener('click', (event) => {
   event.preventDefault()
 
-  if (event.target.getAttribute('id') === 'fullScreen') {
+  // if user not click on a a-tag
+  if (event.target.tagName !== 'IMG') {
+    console.log('Not an img-tag')
     return
   }
 
@@ -52,12 +222,6 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
   const memoryApp = document.querySelectorAll('memory-app')
   const minehunterApp = document.querySelectorAll('minehunter-app')
   const chessApp = document.querySelectorAll('chess-app')
-
-  // if user not click on a a-tag
-  if (event.target.tagName !== 'A') {
-    console.log('Not an image-tag')
-    return
-  }
 
   // reset counters to 0 if elements not exist
   if (chatApp.length === 0) {
@@ -96,31 +260,30 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
   }
 
   // get type of element that will be created
-  const elementType = event.target.getAttribute('data-create-element')
+  const elementType = event.target.parentElement.getAttribute('data-create-element')
 
   // create element and ids for elements
   const element = document.createElement(elementType)
-  if (event.target.getAttribute('data-create-element') === 'chat-app') {
+  if (event.target.parentElement.getAttribute('data-create-element') === 'chat-app') {
     counterChatApplication++
     nameIdApplication = `chat${counterChatApplication}`
   }
-  if (event.target.getAttribute('data-create-element') === 'memory-app') {
+  if (event.target.parentElement.getAttribute('data-create-element') === 'memory-app') {
     counterMemoryApplication++
     nameIdApplication = `memory${counterMemoryApplication}`
   }
-  if (event.target.getAttribute('data-create-element') === 'minehunter-app') {
+  if (event.target.parentElement.getAttribute('data-create-element') === 'minehunter-app') {
     counterMinehunterApplication++
     nameIdApplication = `minehunter${counterMinehunterApplication}`
   }
-  if (event.target.getAttribute('data-create-element') === 'chess-app') {
+  if (event.target.parentElement.getAttribute('data-create-element') === 'chess-app') {
     counterChessApplication++
     nameIdApplication = `chess${counterChessApplication}`
   }
+
   element.setAttribute('id', nameIdApplication)
   element.setAttribute('data-hide', 'false')
   element.setAttribute('data-zedindex', 'high')
-  console.log(element.getAttribute('data-zedindex'))
-  console.log(element.style.zIndex)
 
   // Adding created elements and use operator moveElement
   document.querySelector('main').appendChild(element)
@@ -130,13 +293,14 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
 
   // window.history and window.location
   const stateObj = {
-    element: event.target.getAttribute('data-create-element'),
+    element: event.target.parentElement.getAttribute('data-create-element'),
     id: element.getAttribute('id')
   }
+
   window.history.pushState(stateObj, `/${stateObj.id}`, `/${stateObj.element}/${stateObj.id}`)
 
+  // Event changing url
   element.addEventListener('click', event => {
-    console.log('test')
     window.history.pushState(stateObj, `/${stateObj.id}`, `/${stateObj.element}/${stateObj.id}`)
     element.setAttribute('data-zedindex', 'high')
     for (let i = 0; i < document.querySelector('main').children.length; i++) {
@@ -380,11 +544,12 @@ window.addEventListener('popstate', event => {
 document.querySelector('#fullScreen').addEventListener('click', event => {
   event.preventDefault()
 
-  console.log(event.target)
-  if (event.target.textContent === 'Full screen') {
-    event.target.textContent = 'Exit full screen'
+  if (document.querySelector('.material-icons').textContent === 'fullscreen') {
+    event.target.textContent = 'fullscreen_exit'
+    document.querySelector('#fullScreenSpan').textContent = 'Exit fullscreen'
   } else {
-    event.target.textContent = 'Full screen'
+    document.querySelector('.material-icons').textContent = 'fullscreen'
+    document.querySelector('#fullScreenSpan').textContent = 'Fullscreen'
     document.exitFullscreen()
     return
   }

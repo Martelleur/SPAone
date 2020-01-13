@@ -5,103 +5,104 @@ import './chat-app.js'
 const template = document.createElement('template')
 template.innerHTML = /* html */ `
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<div id="chessConteiner">
-    <p id="title"></p>
+<div id="wrapper">
+  <div id="chessConteiner">
+      <p id="title"></p>
 
-    <div id="tools">
-        <button id="options1">White options</button>
-        <button id="options2">Black options</button>
-        <button id="chat">Chat</button>
-        <select id="history">
-          <option value="history">History</option>
-          <option value="clear">Hide history!</option>
-          <option value="allRounds">All rounds!</option>
-        </select>
-        <i id="deletChess" class="material-icons">close</i>
-        <i id="bigWindow" class="material-icons">add_box</i>
-        <i id="adjustableWindow" class="material-icons">exposure</i>
-        <i id="hideWindow" class="material-icons">indeterminate_check_box</i>
-    </div>
+      <div id="tools">
+          <button id="options1">White options</button>
+          <button id="options2">Black options</button>
+          <button id="chat">Chat</button>
+          <select id="history">
+            <option value="history">History</option>
+            <option value="clear">Hide history!</option>
+            <option value="allRounds">All rounds!</option>
+          </select>
+          <i id="deletChess" class="material-icons">close</i>
+          <i id="bigWindow" class="material-icons">add_box</i>
+          <i id="adjustableWindow" class="material-icons">exposure</i>
+          <i id="hideWindow" class="material-icons">indeterminate_check_box</i>
+      </div>
 
-    <div id="chessBoard">
-    <div class="droptarget"><img src="../imageChess/tower.png" draggable="true" id="dragTarget1" class="acceptableSquare" data-color="black"></div>
-    <div class="droptarget"><img src="../imageChess/hoarse.png" draggable="true" id="dragTarget2" class="acceptableSquare" data-color="black"></div>
-    <div class="droptarget"><img src="../imageChess/runner.png" draggable="true" id="dragTarget3" class="acceptableSquare" data-color="black"></div>
-    <div class="droptarget"><img src="../imageChess/king.png" draggable="true" id="dragTarget4" class="acceptableSquare" data-color="black"></div>
-    <div class="droptarget"><img src="../imageChess/queen.png" draggable="true" id="dragTarget5" class="acceptableSquare" data-color="black"></div>
-    <div class="droptarget"><img src="../imageChess/runner.png" draggable="true" id="dragTarget6" class="acceptableSquare" data-color="black"></div>
-    <div class="droptarget"><img src="../imageChess/hoarse.png" draggable="true" id="dragTarget7" class="acceptableSquare" data-color="black"></div>
-    <div class="droptarget"><img src="../imageChess/tower.png" draggable="true" id="dragTarget8" class="acceptableSquare" data-color="black"></div>
-    <div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget9" class="acceptableSquare" data-color="black" data-first="true"></div>
-    <div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget10" class="acceptableSquare" data-color="black" data-first="true"></div>
-    <div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget11" class="acceptableSquare" data-color="black" data-first="true"></div>
-    <div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget12" class="acceptableSquare" data-color="black" data-first="true"></div>
-    <div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget13" class="acceptableSquare" data-color="black" data-first="true"></div>
-    <div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget14" class="acceptableSquare" data-color="black" data-first="true"></div>
-    <div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget15" class="acceptableSquare" data-color="black" data-first="true"></div>
-    <div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget16" class="acceptableSquare" data-color="black" data-first="true"></div>
-    <div class="droptarget"></div>
-    <div class="droptarget"></div>
-    <div class="droptarget"></div>
-    <div class="droptarget"></div>
-    <div class="droptarget"></div>
-    <div class="droptarget"></div>
-    <div class="droptarget"></div>
-    <div class="droptarget"></div>
-    <div class="droptarget"></div>
-    <div class="droptarget"></div>
-    <div class="droptarget"></div>
-    <div class="droptarget"></div>
-    <div class="droptarget"></div>
-    <div class="droptarget"></div>
-    <div class="droptarget"></div>
-    <div class="droptarget"></div>
-    <div class="droptarget"></div>
-    <div class="droptarget"></div>
-    <div class="droptarget"></div>
-    <div class="droptarget"></div>
-    <div class="droptarget"></div>
-    <div class="droptarget"></div>
-    <div class="droptarget"></div>
-    <div class="droptarget"></div>
-    <div class="droptarget"></div>
-    <div class="droptarget"></div>
-    <div class="droptarget"></div>
-    <div class="droptarget"></div>
-    <div class="droptarget"></div>
-    <div class="droptarget"></div>
-    <div class="droptarget"></div>
-    <div class="droptarget"></div>
-    <div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget17" class="acceptableSquare" data-color="white" data-first="true"></div>
-    <div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget18" class="acceptableSquare" data-color="white" data-first="true"></div>
-    <div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget19" class="acceptableSquare" data-color="white" data-first="true"></div>
-    <div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget20" class="acceptableSquare" data-color="white" data-first="true"></div>
-    <div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget21" class="acceptableSquare" data-color="white" data-first="true"></div>
-    <div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget22" class="acceptableSquare" data-color="white" data-first="true"></div>
-    <div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget23" class="acceptableSquare" data-color="white" data-first="true"></div>
-    <div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget24" class="acceptableSquare" data-color="white" data-first="true"></div>
-    <div class="droptarget"><img src="../imageChess/towerWhite.png" draggable="true" id="dragTarget25" class="acceptableSquare" data-color="white"></div>
-    <div class="droptarget"><img src="../imageChess/hoarseWhite.png" draggable="true" id="dragTarget26" class="acceptableSquare" data-color="white"></div>
-    <div class="droptarget"><img src="../imageChess/runnerWhite.png" draggable="true" id="dragTarget27" class="acceptableSquare" data-color="white"></div>
-    <div class="droptarget"><img src="../imageChess/kingWhite.png" draggable="true" id="dragTarget28" class="acceptableSquare" data-color="white"></div>
-    <div class="droptarget"><img src="../imageChess/queenWhite.png" draggable="true" id="dragTarget29" class="acceptableSquare" data-color="white"></div>
-    <div class="droptarget"><img src="../imageChess/runnerWhite.png" draggable="true" id="dragTarget30" class="acceptableSquare" data-color="white"></div>
-    <div class="droptarget"><img src="../imageChess/hoarseWhite.png" draggable="true" id="dragTarget31" class="acceptableSquare" data-color="white"></div>
-    <div class="droptarget"><img src="../imageChess/towerWhite.png" draggable="true" id="dragTarget32" class="acceptableSquare" data-color="white"></div>
+      <div id="chessBoard">
+      <div class="droptarget"><img src="../imageChess/tower.png" draggable="true" id="dragTarget1" class="acceptableSquare" data-color="black"></div>
+      <div class="droptarget"><img src="../imageChess/hoarse.png" draggable="true" id="dragTarget2" class="acceptableSquare" data-color="black"></div>
+      <div class="droptarget"><img src="../imageChess/runner.png" draggable="true" id="dragTarget3" class="acceptableSquare" data-color="black"></div>
+      <div class="droptarget"><img src="../imageChess/king.png" draggable="true" id="dragTarget4" class="acceptableSquare" data-color="black"></div>
+      <div class="droptarget"><img src="../imageChess/queen.png" draggable="true" id="dragTarget5" class="acceptableSquare" data-color="black"></div>
+      <div class="droptarget"><img src="../imageChess/runner.png" draggable="true" id="dragTarget6" class="acceptableSquare" data-color="black"></div>
+      <div class="droptarget"><img src="../imageChess/hoarse.png" draggable="true" id="dragTarget7" class="acceptableSquare" data-color="black"></div>
+      <div class="droptarget"><img src="../imageChess/tower.png" draggable="true" id="dragTarget8" class="acceptableSquare" data-color="black"></div>
+      <div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget9" class="acceptableSquare" data-color="black" data-first="true"></div>
+      <div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget10" class="acceptableSquare" data-color="black" data-first="true"></div>
+      <div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget11" class="acceptableSquare" data-color="black" data-first="true"></div>
+      <div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget12" class="acceptableSquare" data-color="black" data-first="true"></div>
+      <div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget13" class="acceptableSquare" data-color="black" data-first="true"></div>
+      <div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget14" class="acceptableSquare" data-color="black" data-first="true"></div>
+      <div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget15" class="acceptableSquare" data-color="black" data-first="true"></div>
+      <div class="droptarget"><img src="../imageChess/pawn.png" draggable="true" id="dragTarget16" class="acceptableSquare" data-color="black" data-first="true"></div>
+      <div class="droptarget"></div>
+      <div class="droptarget"></div>
+      <div class="droptarget"></div>
+      <div class="droptarget"></div>
+      <div class="droptarget"></div>
+      <div class="droptarget"></div>
+      <div class="droptarget"></div>
+      <div class="droptarget"></div>
+      <div class="droptarget"></div>
+      <div class="droptarget"></div>
+      <div class="droptarget"></div>
+      <div class="droptarget"></div>
+      <div class="droptarget"></div>
+      <div class="droptarget"></div>
+      <div class="droptarget"></div>
+      <div class="droptarget"></div>
+      <div class="droptarget"></div>
+      <div class="droptarget"></div>
+      <div class="droptarget"></div>
+      <div class="droptarget"></div>
+      <div class="droptarget"></div>
+      <div class="droptarget"></div>
+      <div class="droptarget"></div>
+      <div class="droptarget"></div>
+      <div class="droptarget"></div>
+      <div class="droptarget"></div>
+      <div class="droptarget"></div>
+      <div class="droptarget"></div>
+      <div class="droptarget"></div>
+      <div class="droptarget"></div>
+      <div class="droptarget"></div>
+      <div class="droptarget"></div>
+      <div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget17" class="acceptableSquare" data-color="white" data-first="true"></div>
+      <div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget18" class="acceptableSquare" data-color="white" data-first="true"></div>
+      <div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget19" class="acceptableSquare" data-color="white" data-first="true"></div>
+      <div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget20" class="acceptableSquare" data-color="white" data-first="true"></div>
+      <div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget21" class="acceptableSquare" data-color="white" data-first="true"></div>
+      <div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget22" class="acceptableSquare" data-color="white" data-first="true"></div>
+      <div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget23" class="acceptableSquare" data-color="white" data-first="true"></div>
+      <div class="droptarget"><img src="../imageChess/pawnWhite.png" draggable="true" id="dragTarget24" class="acceptableSquare" data-color="white" data-first="true"></div>
+      <div class="droptarget"><img src="../imageChess/towerWhite.png" draggable="true" id="dragTarget25" class="acceptableSquare" data-color="white"></div>
+      <div class="droptarget"><img src="../imageChess/hoarseWhite.png" draggable="true" id="dragTarget26" class="acceptableSquare" data-color="white"></div>
+      <div class="droptarget"><img src="../imageChess/runnerWhite.png" draggable="true" id="dragTarget27" class="acceptableSquare" data-color="white"></div>
+      <div class="droptarget"><img src="../imageChess/kingWhite.png" draggable="true" id="dragTarget28" class="acceptableSquare" data-color="white"></div>
+      <div class="droptarget"><img src="../imageChess/queenWhite.png" draggable="true" id="dragTarget29" class="acceptableSquare" data-color="white"></div>
+      <div class="droptarget"><img src="../imageChess/runnerWhite.png" draggable="true" id="dragTarget30" class="acceptableSquare" data-color="white"></div>
+      <div class="droptarget"><img src="../imageChess/hoarseWhite.png" draggable="true" id="dragTarget31" class="acceptableSquare" data-color="white"></div>
+      <div class="droptarget"><img src="../imageChess/towerWhite.png" draggable="true" id="dragTarget32" class="acceptableSquare" data-color="white"></div>
 
+  </div>
+
+  <div id="information">
+      <p id="activePlayer">White players turn!</p>
+      <p id="checkStatusWhite">White player is NOT check!</p>
+      <p id="checkStatusBlack">Black player is NOT check!</p>
+      <p id="winner"></p>
+  </div>
+  <div id="historyConteiner"></div>
+
+  </div>
+  <div id="chatConteiner"></div>
 </div>
-
-<div id="information">
-    <p id="activePlayer">White players turn!</p>
-    <p id="checkStatusWhite">White player is NOT check!</p>
-    <p id="checkStatusBlack">Black player is NOT check!</p>
-    <p id="winner"></p>
-</div>
-<div id="historyConteiner"></div>
-
-</div>
-<div id="chatConteiner"></div>
-
 <style>
 :host {
   position: absolute;
@@ -134,7 +135,7 @@ template.innerHTML = /* html */ `
   padding: 0;
   margin: 0;
 }
-:host #title:hover {
+:host #title {
   cursor: move;
 }
 :host #tools {
@@ -161,14 +162,12 @@ template.innerHTML = /* html */ `
   padding: 1px;
   background-color: white;
 }
-:host #chessBoard>div img:hover {
+:host #chessBoard>div img {
   cursor: grab;
 }
 :host #information {
   text-align: center;
-  color: white;
   background-color: black;
-  font-size: 1.5em;
 }
 :host #options1 {
   background-color: green;
@@ -184,7 +183,12 @@ template.innerHTML = /* html */ `
 }
 :host #history, :host #chat {
   cursor: pointer;
-  color: black;
+  background-color: black;
+  border: 1px solid white;
+  padding: 1px;
+}
+:host #chat {
+  padding: 2px;
 }
 :host #historyConteiner {
   border-top: 3px solid black;
@@ -197,6 +201,7 @@ template.innerHTML = /* html */ `
   padding: 0;
   margin: 0;
   cursor: pointer;
+  color: white;
 } 
 
 </style>
@@ -220,8 +225,8 @@ export class Chess extends window.HTMLElement {
     this.shadowRoot.appendChild(template.content.cloneNode(true))
     this._chessConteiner = this.shadowRoot.querySelector('#chessConteiner')
     this._chessBoard = this.shadowRoot.querySelector('#chessBoard')
-    this._clonedChessBoards = []
-    this._clonedInformations = []
+    this._wrapper = this.shadowRoot.querySelector('#wrapper')
+    this._clonedShadow = []
     this._chessBoardDivLength = this._chessBoard.querySelectorAll('div').length
     this._chessBoardImgLength = this._chessBoard.querySelectorAll('div>img').length
     this._chessBoardDiv = this._chessBoard.querySelectorAll('div')
@@ -250,6 +255,8 @@ export class Chess extends window.HTMLElement {
     this._bigWindow = this.shadowRoot.querySelector('#bigWindow')
     this._deletChess = this.shadowRoot.querySelector('#deletChess')
     this._adjustableWindow = this.shadowRoot.querySelector('#adjustableWindow')
+    this._active = undefined
+    this._status = false
 
     // chesspieces image sources
     this._whitePawnSource = '../imageChess/pawnWhite.png'
@@ -293,7 +300,19 @@ export class Chess extends window.HTMLElement {
     }
     // Changing of attribute id
     if (name === 'id') {
-      this._title.innerText = `${this.getAttribute('id')}-chess-app`
+      this._title.innerHTML = `
+      <p id="title">${this.getAttribute('id')}-chess-app
+        <img id="chessIcon" src="../imageIcons/chess.png" alt="chess icon"></img>
+        <style>
+          #chessIcon {
+            height: 15px;
+            width: 15px;
+            float: left;
+            padding-bottom: 1px;
+          }
+        </style>
+      </p>
+      `
     }
     if (name === 'data-hide') {
       // console.log(newValue)
@@ -311,13 +330,11 @@ export class Chess extends window.HTMLElement {
    * @memberof Chess
    */
   connectedCallback () {
-    // what target shoulde i put my evenlistener on, this._chessConteiner or this._chessBoard?
-    // look on the method this.showHistory() and the statement this._chessBoard.remove()
-    // Not neccasary to implement
     // Events fired on the drag target
-    this._chessConteiner.addEventListener('dragstart', event => {
+    this._chessBoard.addEventListener('dragstart', event => {
       console.log(event.target.parentNode)
-      // event.target.style.opacity = 0
+      event.target.style.opacity = 0
+      this._active = event.target
 
       // Reset border color
       for (let i = 0; i < this._chessBoardDivLength; i++) {
@@ -366,14 +383,14 @@ export class Chess extends window.HTMLElement {
     })
 
     // Events fired when dragging
-    this._chessConteiner.addEventListener('drag', event => {
-      // event.preventDefault()
-    })
+    this._chessBoard.addEventListener('drag', event => {
+      event.preventDefault()
+      console.log('Dragging')
+    }, { once: true })
 
     // Events fired on the drop target
-    this._chessConteiner.addEventListener('dragover', event => {
+    this._chessBoard.addEventListener('dragover', event => {
       event.preventDefault()
-      // console.log(event.target)
       // Reset backgroundecolor color
       for (let i = 0; i < this._chessBoardDivLength; i++) {
         if (this._chessBoardDiv[i].style.backgroundColor === 'blue') {
@@ -381,7 +398,6 @@ export class Chess extends window.HTMLElement {
         }
       }
 
-      // Set backgroundecolor to blue over the event.target
       if (event.target.getAttribute('class') === 'acceptableSquare' && event.target.nodeName === 'DIV') {
         event.target.style.backgroundColor = 'blue'
       }
@@ -389,7 +405,6 @@ export class Chess extends window.HTMLElement {
 
     // The dragend event is fired when a drag operation is being ended (by releasing a mouse button or hitting the escape key).
     window.addEventListener('dragend', event => {
-      console.log('joel')
       event.target.style.opacity = 1
       for (let i = 0; i < this._chessBoardDivLength; i++) {
         if (this._chessBoardDiv[i].style.backgroundColor !== 'white') {
@@ -402,41 +417,23 @@ export class Chess extends window.HTMLElement {
       for (let i = 0; i < this._chessBoardImgLength; i++) {
         this._chessBoardImg[i].style.opacity = 1
       }
+      this._chessBoard.addEventListener('drag', event => {
+        event.preventDefault()
+        console.log('Dragging')
+      }, { once: true })
     })
 
     // Events fired when dropping over this._chessBoard
-    this._chessConteiner.addEventListener('drop', event => {
+    this._chessBoard.addEventListener('drop', event => {
       event.preventDefault()
-      // Dont work but try think this overar and yoy may find a solution
-      /*
-      // test if move of checkpiaece not make player scheck
-      if (this._whitePiecesTurn) {
-        this.evryAcceptableSquare('isWhiteSheck')
-        if (this._checkStatusWhite.innerText === 'White player is check!') {
-          return
-        }
-      }
-      if (!this._whitePiecesTurn) {
-        this.evryAcceptableSquare('isBlackSheck')
-        if (this._checkStatusBlack.innerText === 'Black player is check!') {
-          return
-        }
-      }
-      */
 
-      // when chesspiece id dropped
       try {
         if (event.target.className === 'acceptableSquare') {
           const data = event.dataTransfer.getData('chessPiece')
           event.target.removeAttribute('data-temp')
 
-          // console.log(data)
           const textArgument = `#${data}`
-          // console.log(this.shadowRoot.querySelector(textArgument))
-          /*
-          console.log(this.shadowRoot.querySelector(textArgument).getAttribute('data-color'))
-          console.log(event.target.getAttribute('data-color'))
-          */
+
           // drop over a img element
           if (event.target.nodeName === 'IMG' && event.target.getAttribute('data-color') !== this.shadowRoot.querySelector(textArgument).getAttribute('data-color')) {
             if (event.target.parentNode.style.border === '3px solid blue') {
@@ -450,12 +447,9 @@ export class Chess extends window.HTMLElement {
               event.target.setAttribute('src', srcArgument)
               event.target.setAttribute('id', idArgument)
             } else {
-              console.log('must move to blue squares')
               return
             }
           } else if (event.target.nodeName === 'IMG' && event.target.getAttribute('data-color') === this.shadowRoot.querySelector(textArgument).getAttribute('data-color')) {
-            console.log('must move to blue squares')
-            console.log('You can not take pieces with same color')
             return
           } else {
             // if player drop pawn for the first time
@@ -500,6 +494,10 @@ export class Chess extends window.HTMLElement {
           option.setAttribute('value', argumentValueOption)
           option.innerText = argumentValueOption
           this._history.appendChild(option)
+
+          // cloning
+          this._clonedShadow.push(this.cloneNode(true))
+          console.log(this._clonedShadow)
         } else {
           return
         }
@@ -541,13 +539,6 @@ export class Chess extends window.HTMLElement {
           this._chessBoardImg[i].setAttribute('data-color', 'undefined')
         }
       }
-
-      // cloning
-      this._clonedInformations.push(this._information.cloneNode(true))
-      this._clonedChessBoards.push(this._chessBoard.cloneNode(true))
-      console.log('cloned nodes')
-      console.log(this._clonedChessBoards)
-      console.log(this._clonedInformations)
     })
 
     // Events fired when click on this._deletChess
@@ -586,10 +577,11 @@ export class Chess extends window.HTMLElement {
       }
       this.evryAcceptableSquare('black')
     })
-    // try to create functionality so that user can start over from a point in history
+
     // Events fired when click on this._history
     this._history.addEventListener('click', event => {
       event.preventDefault()
+
       let round = event.target.value
       if (round === 'clear') {
         this._historyConteiner.innerHTML = ''
@@ -606,8 +598,6 @@ export class Chess extends window.HTMLElement {
         } catch (error) {
           console.log(error)
         }
-        // console.log(event.target.parentElement.querySelectorAll('option').length)
-        // console.log(event.target.parentElement.querySelectorAll('option')[3].value)
       } else {
         this._historyConteiner.innerHTML = ''
         this.showHistory(round)
@@ -686,41 +676,35 @@ export class Chess extends window.HTMLElement {
   squaresData () {
     const outerArray = []
     const outerArrayImages = []
+
     for (let i = 0; i < this._chessBoardDivLength; i++) {
       const innerArray = []
       const innerArrayImages = []
-      // console.log(Math.sqrt(this._chessBoard.querySelectorAll('div').length))
+
       for (let j = i; j < (i + Math.sqrt(this._chessBoardDivLength)); j++) {
         innerArray.push(this._chessBoardDiv[j])
-        // console.log(rowArray)
         try {
           const image = this._chessBoardDiv[j].firstElementChild
           innerArrayImages.push(image.getAttribute('src'))
         } catch (error) {
           innerArrayImages.push('No image')
-          // console.log('Contains nothing')
-          // console.log((`Square: ${square.getAttribute('id')}. Contains nothing`))
         }
       }
       i = i + Math.sqrt(this._chessBoardDivLength) - 1
-      // console.log(rowArray)
+
       outerArray.push(innerArray)
       outerArrayImages.push(innerArrayImages)
     }
-    // console.log('indexArray/JM')
-    // console.log(indexArray)
+
     const images = []
     const squares = []
     for (let i = 0; i < this._chessBoardDivLength; i++) {
       const image = this._chessBoardDiv[i].firstElementChild
       const square = this._chessBoardDiv[i]
       try {
-        // console.log(`Square: ${square.getAttribute('id')}. Contains picture: ${image.getAttribute('src')}`)
         images.push(image.getAttribute('src'))
       } catch (error) {
         images.push('No image')
-        // console.log('Contains nothing')
-        // console.log((`Square: ${square.getAttribute('id')}. Contains nothing`))
       }
       squares.push(square)
     }
@@ -769,28 +753,24 @@ export class Chess extends window.HTMLElement {
             return []
           }
         } catch (error) {
-          console.log(error)
         }
         try {
           if (square[i - 1][j].childElementCount === 1 && square[i - 1][j + 1].childElementCount === 1 && square[i - 1][j - 1].childElementCount === 1) {
             return [square[i - 1][j + 1], square[i - 1][j - 1]]
           }
         } catch (error) {
-          console.log(error)
         }
         try {
           if (square[i - 1][j].childElementCount === 1 && square[i - 1][j + 1].childElementCount === 1) {
             return [square[i - 1][j + 1]]
           }
         } catch (error) {
-          console.log(error)
         }
         try {
           if (square[i - 1][j].childElementCount === 1 && square[i - 1][j - 1].childElementCount === 1) {
             return [square[i - 1][j - 1]]
           }
         } catch (error) {
-          console.log(error)
         }
         try {
           if (square[i - 1][j].childElementCount === 0 && square[i - 1][j + 1].childElementCount === 1 && square[i - 1][j - 1].childElementCount === 1) {
@@ -799,18 +779,15 @@ export class Chess extends window.HTMLElement {
                 return [square[i - 1][j + 1], square[i - 1][j - 1], square[i - 1][j]]
               }
             } catch (error) {
-              console.log(error)
             }
             try {
               if (square[i - 2][j].childElementCount === 0) {
                 return [square[i - 1][j + 1], square[i - 1][j - 1], square[i - 1][j], square[i - 2][j]]
               }
             } catch (error) {
-              console.log(error)
             }
           }
         } catch (error) {
-          console.log(error)
         }
         try {
           if (square[i - 1][j].childElementCount === 0 && square[i - 1][j + 1].childElementCount === 1) {
@@ -819,18 +796,15 @@ export class Chess extends window.HTMLElement {
                 return [square[i - 1][j + 1], square[i - 1][j]]
               }
             } catch (error) {
-              console.log(error)
             }
             try {
               if (square[i - 2][j].childElementCount === 0) {
                 return [square[i - 1][j + 1], square[i - 1][j], square[i - 2][j]]
               }
             } catch (error) {
-              console.log(error)
             }
           }
         } catch (error) {
-          console.log(error)
         }
         try {
           if (square[i - 1][j].childElementCount === 0 && square[i - 1][j - 1].childElementCount === 1) {
@@ -839,18 +813,15 @@ export class Chess extends window.HTMLElement {
                 return [square[i - 1][j - 1], square[i - 1][j]]
               }
             } catch (error) {
-              console.log(error)
             }
             try {
               if (square[i - 2][j].childElementCount === 0) {
                 return [square[i - 1][j - 1], square[i - 1][j], square[i - 2][j]]
               }
             } catch (error) {
-              console.log(error)
             }
           }
         } catch (error) {
-          console.log(error)
         }
         try {
           if (square[i - 1][j].childElementCount === 0) {
@@ -859,18 +830,15 @@ export class Chess extends window.HTMLElement {
                 return [square[i - 1][j]]
               }
             } catch (error) {
-              console.log(error)
             }
             try {
               if (square[i - 2][j].childElementCount === 0) {
                 return [square[i - 1][j], square[i - 2][j]]
               }
             } catch (error) {
-              console.log(error)
             }
           }
         } catch (error) {
-          console.log(error)
         }
       } else {
         try {
@@ -878,56 +846,48 @@ export class Chess extends window.HTMLElement {
             return []
           }
         } catch (error) {
-          console.log(error)
         }
         try {
           if (square[i - 1][j].childElementCount === 1 && square[i - 1][j + 1].childElementCount === 1 && square[i - 1][j - 1].childElementCount === 1) {
             return [square[i - 1][j + 1], square[i - 1][j - 1]]
           }
         } catch (error) {
-          console.log(error)
         }
         try {
           if (square[i - 1][j].childElementCount === 1 && square[i - 1][j + 1].childElementCount === 1) {
             return [square[i - 1][j + 1]]
           }
         } catch (error) {
-          console.log(error)
         }
         try {
           if (square[i - 1][j].childElementCount === 1 && square[i - 1][j - 1].childElementCount === 1) {
             return [square[i - 1][j - 1]]
           }
         } catch (error) {
-          console.log(error)
         }
         try {
           if (square[i - 1][j].childElementCount === 0 && square[i - 1][j + 1].childElementCount === 1 && square[i - 1][j - 1].childElementCount === 1) {
             return [square[i - 1][j + 1], square[i - 1][j - 1], square[i - 1][j]]
           }
         } catch (error) {
-          console.log(error)
         }
         try {
           if (square[i - 1][j].childElementCount === 0 && square[i - 1][j + 1].childElementCount === 1) {
             return [square[i - 1][j + 1], square[i - 1][j]]
           }
         } catch (error) {
-          console.log(error)
         }
         try {
           if (square[i - 1][j].childElementCount === 0 && square[i - 1][j - 1].childElementCount === 1) {
             return [square[i - 1][j - 1], square[i - 1][j]]
           }
         } catch (error) {
-          console.log(error)
         }
         try {
           if (square[i - 1][j].childElementCount === 0) {
             return [square[i - 1][j]]
           }
         } catch (error) {
-          console.log(error)
         }
       }
     }
@@ -939,167 +899,119 @@ export class Chess extends window.HTMLElement {
           if (square[i + 1][j].childElementCount === 1 && square[i + 1][j + 1].childElementCount === 0 && square[i + 1][j - 1].childElementCount === 0) {
             return []
           }
-        } catch (error) {
-          console.log(error)
-        }
+        } catch (error) {}
         try {
           if (square[i + 1][j].childElementCount === 1 && square[i + 1][j + 1].childElementCount === 1 && square[i + 1][j - 1].childElementCount === 1) {
             return [square[i + 1][j + 1], square[i + 1][j - 1]]
           }
-        } catch (error) {
-          console.log(error)
-        }
+        } catch (error) {}
         try {
           if (square[i + 1][j].childElementCount === 1 && square[i + 1][j + 1].childElementCount === 1) {
             return [square[i + 1][j + 1]]
           }
-        } catch (error) {
-          console.log(error)
-        }
+        } catch (error) {}
         try {
           if (square[i + 1][j].childElementCount === 1 && square[i + 1][j - 1].childElementCount === 1) {
             return [square[i + 1][j - 1]]
           }
-        } catch (error) {
-          console.log(error)
-        }
+        } catch (error) {}
         try {
           if (square[i + 1][j].childElementCount === 0 && square[i + 1][j + 1].childElementCount === 1 && square[i + 1][j - 1].childElementCount === 1) {
             try {
               if (square[i + 2][j].childElementCount === 1) {
                 return [square[i + 1][j + 1], square[i + 1][j - 1], square[i + 1][j]]
               }
-            } catch (error) {
-              console.log(error)
-            }
+            } catch (error) {}
             try {
               if (square[i + 2][j].childElementCount === 0) {
                 return [square[i + 1][j + 1], square[i + 1][j - 1], square[i + 1][j], square[i + 2][j]]
               }
-            } catch (error) {
-              console.log(error)
-            }
+            } catch (error) {}
           }
-        } catch (error) {
-          console.log(error)
-        }
+        } catch (error) {}
         try {
           if (square[i + 1][j].childElementCount === 0 && square[i + 1][j + 1].childElementCount === 1) {
             try {
               if (square[i + 2][j].childElementCount === 1) {
                 return [square[i + 1][j + 1], square[i + 1][j]]
               }
-            } catch (error) {
-              console.log(error)
-            }
+            } catch (error) {}
             try {
               if (square[i + 2][j].childElementCount === 0) {
                 return [square[i + 1][j + 1], square[i + 1][j], square[i + 2][j]]
               }
-            } catch (error) {
-              console.log(error)
-            }
+            } catch (error) {}
           }
-        } catch (error) {
-          console.log(error)
-        }
+        } catch (error) {}
         try {
           if (square[i + 1][j].childElementCount === 0 && square[i + 1][j - 1].childElementCount === 1) {
             try {
               if (square[i + 2][j].childElementCount === 1) {
                 return [square[i + 1][j - 1], square[i + 1][j]]
               }
-            } catch (error) {
-              console.log(error)
-            }
+            } catch (error) {}
             try {
               if (square[i + 2][j].childElementCount === 0) {
                 return [square[i + 1][j - 1], square[i + 1][j], square[i + 2][j]]
               }
-            } catch (error) {
-              console.log(error)
-            }
+            } catch (error) {}
           }
-        } catch (error) {
-          console.log(error)
-        }
+        } catch (error) {}
         try {
           if (square[i + 1][j].childElementCount === 0) {
             try {
               if (square[i + 2][j].childElementCount === 1) {
                 return [square[i + 1][j]]
               }
-            } catch (error) {
-              console.log(error)
-            }
+            } catch (error) {}
             try {
               if (square[i + 2][j].childElementCount === 0) {
                 return [square[i + 1][j], square[i + 2][j]]
               }
-            } catch (error) {
-              console.log(error)
-            }
+            } catch (error) {}
           }
-        } catch (error) {
-          console.log(error)
-        }
+        } catch (error) {}
       } else {
         try {
           if (square[i + 1][j].childElementCount === 1 && square[i + 1][j + 1].childElementCount === 0 && square[i + 1][j - 1].childElementCount === 0) {
             return []
           }
-        } catch (error) {
-          console.log(error)
-        }
+        } catch (error) {}
         try {
           if (square[i + 1][j].childElementCount === 1 && square[i + 1][j + 1].childElementCount === 1 && square[i + 1][j - 1].childElementCount === 1) {
             return [square[i + 1][j + 1], square[i + 1][j - 1]]
           }
-        } catch (error) {
-          console.log(error)
-        }
+        } catch (error) {}
         try {
           if (square[i + 1][j].childElementCount === 1 && square[i + 1][j + 1].childElementCount === 1) {
             return [square[i + 1][j + 1]]
           }
-        } catch (error) {
-          console.log(error)
-        }
+        } catch (error) {}
         try {
           if (square[i + 1][j].childElementCount === 1 && square[i + 1][j - 1].childElementCount === 1) {
             return [square[i + 1][j - 1]]
           }
-        } catch (error) {
-          console.log(error)
-        }
+        } catch (error) {}
         try {
           if (square[i + 1][j].childElementCount === 0 && square[i + 1][j + 1].childElementCount === 1 && square[i - 1][j - 1].childElementCount === 1) {
             return [square[i + 1][j + 1], square[i + 1][j - 1], square[i + 1][j]]
           }
-        } catch (error) {
-          console.log(error)
-        }
+        } catch (error) {}
         try {
           if (square[i + 1][j].childElementCount === 0 && square[i + 1][j + 1].childElementCount === 1) {
             return [square[i + 1][j + 1], square[i + 1][j]]
           }
-        } catch (error) {
-          console.log(error)
-        }
+        } catch (error) {}
         try {
           if (square[i + 1][j].childElementCount === 0 && square[i + 1][j - 1].childElementCount === 1) {
             return [square[i + 1][j - 1], square[i + 1][j]]
           }
-        } catch (error) {
-          console.log(error)
-        }
+        } catch (error) {}
         try {
           if (square[i + 1][j].childElementCount === 0) {
             return [square[i + 1][j]]
           }
-        } catch (error) {
-          console.log(error)
-        }
+        } catch (error) {}
       }
     }
 
@@ -1116,9 +1028,7 @@ export class Chess extends window.HTMLElement {
             }
           }
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         for (let y = 1; y < 8; y++) {
           if (square[i + y][j] !== undefined && stopArray[1] === false) {
@@ -1128,9 +1038,7 @@ export class Chess extends window.HTMLElement {
             }
           }
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         for (let x = 1; x < 8; x++) {
           if (square[i][j + x] !== undefined && stopArray[2] === false) {
@@ -1140,9 +1048,7 @@ export class Chess extends window.HTMLElement {
             }
           }
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         for (let x = 1; x < 8; x++) {
           if (square[i][j - x] !== undefined && stopArray[3] === false) {
@@ -1152,11 +1058,8 @@ export class Chess extends window.HTMLElement {
             }
           }
         }
-      } catch (error) {
-        console.log(error)
-      }
-      console.log('returnArray/JM')
-      console.log(returnArray)
+      } catch (error) {}
+
       return returnArray
     }
 
@@ -1176,9 +1079,7 @@ export class Chess extends window.HTMLElement {
             y++
           }
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         for (let y = 1; y < 8; y++) {
           for (let x = 1; x < 8; x++) {
@@ -1191,9 +1092,7 @@ export class Chess extends window.HTMLElement {
             y++
           }
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         for (let y = 1; y < 8; y++) {
           for (let x = 1; x < 8; x++) {
@@ -1206,9 +1105,7 @@ export class Chess extends window.HTMLElement {
             y++
           }
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         for (let y = 1; y < 8; y++) {
           for (let x = 1; x < 8; x++) {
@@ -1221,11 +1118,8 @@ export class Chess extends window.HTMLElement {
             y++
           }
         }
-      } catch (error) {
-        console.log(error)
-      }
-      console.log('returnArray/JM')
-      console.log(returnArray)
+      } catch (error) {}
+
       return returnArray
     }
 
@@ -1242,9 +1136,7 @@ export class Chess extends window.HTMLElement {
             }
           }
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         for (let y = 1; y < 8; y++) {
           if (square[i + y][j] !== undefined && stopArray[1] === false) {
@@ -1254,9 +1146,7 @@ export class Chess extends window.HTMLElement {
             }
           }
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         for (let x = 1; x < 8; x++) {
           if (square[i][j + x] !== undefined && stopArray[2] === false) {
@@ -1266,9 +1156,7 @@ export class Chess extends window.HTMLElement {
             }
           }
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         for (let x = 1; x < 8; x++) {
           if (square[i][j - x] !== undefined && stopArray[3] === false) {
@@ -1278,9 +1166,7 @@ export class Chess extends window.HTMLElement {
             }
           }
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         for (let y = 1; y < 8; y++) {
           for (let x = 1; x < 8; x++) {
@@ -1293,9 +1179,7 @@ export class Chess extends window.HTMLElement {
             y++
           }
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         for (let y = 1; y < 8; y++) {
           for (let x = 1; x < 8; x++) {
@@ -1308,9 +1192,7 @@ export class Chess extends window.HTMLElement {
             y++
           }
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         for (let y = 1; y < 8; y++) {
           for (let x = 1; x < 8; x++) {
@@ -1323,9 +1205,7 @@ export class Chess extends window.HTMLElement {
             y++
           }
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         for (let y = 1; y < 8; y++) {
           for (let x = 1; x < 8; x++) {
@@ -1338,11 +1218,8 @@ export class Chess extends window.HTMLElement {
             y++
           }
         }
-      } catch (error) {
-        console.log(error)
-      }
-      console.log('returnArray/JM')
-      console.log(returnArray)
+      } catch (error) {}
+
       return returnArray
     }
 
@@ -1353,60 +1230,43 @@ export class Chess extends window.HTMLElement {
         if (square[i - 1][j] !== undefined) {
           returnArray.push(square[i - 1][j])
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         if (square[i + 1][j] !== undefined) {
           returnArray.push(square[i + 1][j])
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         if (square[i][j - 1] !== undefined) {
           returnArray.push(square[i][j - 1])
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         if (square[i][j + 1] !== undefined) {
           returnArray.push(square[i][j + 1])
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         if (square[i - 1][j - 1] !== undefined) {
           returnArray.push(square[i - 1][j - 1])
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         if (square[i - 1][j + 1] !== undefined) {
           returnArray.push(square[i - 1][j + 1])
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         if (square[i + 1][j - 1] !== undefined) {
           returnArray.push(square[i + 1][j - 1])
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         if (square[i + 1][j + 1] !== undefined) {
           returnArray.push(square[i + 1][j + 1])
         }
-      } catch (error) {
-        console.log(error)
-      }
-      console.log('returnArray/JM')
-      console.log(returnArray)
+      } catch (error) {}
+
       return returnArray
     }
 
@@ -1417,60 +1277,43 @@ export class Chess extends window.HTMLElement {
         if (square[i - 2][j + 1] !== undefined) {
           returnArray.push(square[i - 2][j + 1])
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         if (square[i - 2][j - 1] !== undefined) {
           returnArray.push(square[i - 2][j - 1])
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         if (square[i + 2][j - 1] !== undefined) {
           returnArray.push(square[i + 2][j - 1])
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         if (square[i + 2][j + 1] !== undefined) {
           returnArray.push(square[i + 2][j + 1])
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         if (square[i - 1][j + 2] !== undefined) {
           returnArray.push(square[i - 1][j + 2])
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         if (square[i + 1][j + 2] !== undefined) {
           returnArray.push(square[i + 1][j + 2])
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         if (square[i + 1][j - 2] !== undefined) {
           returnArray.push(square[i + 1][j - 2])
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         if (square[i - 1][j - 2] !== undefined) {
           returnArray.push(square[i - 1][j - 2])
         }
-      } catch (error) {
-        console.log(error)
-      }
-      console.log('returnArray/JM')
-      console.log(returnArray)
+      } catch (error) {}
+
       return returnArray
     }
   }
@@ -1498,13 +1341,12 @@ export class Chess extends window.HTMLElement {
         if (this._chessBoardDiv[i].firstElementChild.getAttribute('src') === this._blackPawnSource) {
           this._chessBoardDiv[i].firstElementChild.setAttribute('src', this._blackQueenSource)
         }
-      } catch (error) {
-        // console.log(error)
-      }
+      } catch (error) {}
     }
   }
 
   /**
+   * index all div with childe-element (img)
    * @returns
    * @memberof Chess
    */
@@ -1515,6 +1357,7 @@ export class Chess extends window.HTMLElement {
       columnValue: [],
       imageSource: []
     }
+
     for (let i = 0; i < this._chessBoardDivLength; i++) {
       if (this._chessBoardDiv[i].childElementCount === 1) {
         chessPieaceArray.push(this.indexTarget(this._chessBoardDiv[i]))
@@ -1523,23 +1366,7 @@ export class Chess extends window.HTMLElement {
         chessPieaceObject.imageSource.push(this._chessBoardDiv[i].firstElementChild.getAttribute('src'))
       }
     }
-    // console.log(chessPieaceObject)
-    // console.log(chessPieaceObject.acceptableSquares)
-    /*
-    console.log(typeof chessPieaceObject.roweValue)
-    console.log(typeof chessPieaceObject.columnValue)
-    console.log(typeof chessPieaceObject.imageSource)
-    console.log(chessPieaceObject.roweValue)
-    console.log(chessPieaceObject.columnValue)
-    console.log(chessPieaceObject.imageSource)
-    */
-    /*
-    for (let i = 0; i < chessPieaceObject.roweValue.lenght; i++) {
-      const temp = this.acceptableSquares(chessPieaceObject.imageSource[i], chessPieaceObject.roweValue[i], chessPieaceObject.columnValue[i], false)
-      console.log(temp)
-      acceptableSquaresArray.push(temp)
-    }
-    */
+
     return chessPieaceObject
   }
 
@@ -1574,14 +1401,7 @@ export class Chess extends window.HTMLElement {
 
     const blackPiecesOptionsFlat = blackPiecesOptions.flat()
     const whitePiecesOptionsFlat = whitePiecesOptions.flat()
-    /*
-    console.log('tempObject/JM')
-    console.log(tempObject)
-    console.log('blackPiecesOptions.flat/JM')
-    console.log(blackPiecesOptions.flat())
-    console.log('whitePiecesOptions.flat/JM')
-    console.log(whitePiecesOptions.flat())
-    */
+
     // Black players otions
     if (color === 'black') {
       for (let i = 0; i < blackPiecesOptionsFlat.length; i++) {
@@ -1613,19 +1433,16 @@ export class Chess extends window.HTMLElement {
         try {
           if (blackPiecesOptionsFlat[i].childElementCount === 1) {
             if (blackPiecesOptionsFlat[i].firstElementChild.getAttribute('src') === this._whiteKingSource) {
-              // console.log('white is sheck')
               this._checkStatusWhite.innerText = 'White player is scheck!'
               window.alert('OBS! White player is check, if still check after this round white player loose!')
+              this._status = true
               break
             } else {
-              // console.log('white is NOT sheck')
+              this._status = false
               this._checkStatusWhite.innerText = 'White player is NOT scheck!'
-              // return false
             }
           }
-        } catch (error) {
-          // console.log(error)
-        }
+        } catch (error) {}
       }
     }
     // test if black is shack
@@ -1634,20 +1451,16 @@ export class Chess extends window.HTMLElement {
         try {
           if (whitePiecesOptionsFlat[i].childElementCount === 1) {
             if (whitePiecesOptionsFlat[i].firstElementChild.getAttribute('src') === this._blackKingSource) {
-              // console.log('black is sheck')
               this._checkStatusBlack.innerText = 'Black player is scheck!'
               window.alert('OBS! Black player is check, if still check after this round black player loose!')
+              this._status = true
               break
-              // return true
             } else {
-              // console.log('black is NOT sheck')
               this._checkStatusBlack.innerText = 'Black player is NOT scheck!'
-              // return false
+              this._status = false
             }
           }
-        } catch (error) {
-          // console.log(error)
-        }
+        } catch (error) {}
       }
     }
   }
@@ -1660,14 +1473,6 @@ export class Chess extends window.HTMLElement {
     // this._information.innerHTML = ''
     const data = JSON.parse(window.sessionStorage.getItem(argument))
     const fragment = document.createDocumentFragment()
-    // const header = document.createElement('h1')
-    // const header2 = document.createElement('h1')
-    // header.innerText = `History ${argument}`
-    // header.style.borderTop = '3px solid black'
-    // fragment.appendChild(header)
-    // header2.innerText = `History ${argument}`
-    // header.style.color = 'black'
-    // header2.style.color = 'black'
 
     let counter = 0
     for (let i = 0; i < 8; i++) {
@@ -1714,7 +1519,6 @@ export class Chess extends window.HTMLElement {
     bigDiv.style.border = '3px solid black'
     bigDiv.appendChild(fragment)
     bigDiv.addEventListener('mouseover', event => {
-      // console.log(argument)
       bigDiv.style.border = '3px solid #0c5cc4'
     })
     bigDiv.addEventListener('mouseout', event => {
@@ -1725,21 +1529,20 @@ export class Chess extends window.HTMLElement {
     this._historyConteiner.appendChild(index)
     this._historyConteiner.style.paddingTop = '2px'
     this._historyConteiner.style.border = '5px solid #0c5cc4'
-    bigDiv.addEventListener('dblclick', event => {
-      const newChessBoard = this._clonedChessBoards[argument.slice(-1) - 1]
-      const newInformation = this._clonedInformations[argument.slice(-1) - 1]
-      console.log(newChessBoard)
-      console.log(newChessBoard.isEqualNode(this._chessBoard))
-      console.log(newInformation.isEqualNode(this._information))
-      this._chessBoard.remove()
-      this._information.remove()
-      this._chessBoard = newChessBoard
-      this._information = newInformation
-      this._tools.insertAdjacentElement('afterend', this._chessBoard)
-      this._chessBoard.insertAdjacentElement('afterend', this._information)
-      console.log(this._chessBoard)
+
+    // Event for bigDiv
+    bigDiv.addEventListener('mouseover', event => {
       this._historyConteiner.style.border = '5px solid #0c5cc4'
     })
+    /*
+    bigDiv.addEventListener('dblclick', event => {
+      const newShadow = this._clonedShadow[argument.slice(-1) - 1]
+      console.log(newShadow)
+      this.parentElement.appendChild(newShadow)
+      this.remove()
+      window.sessionStorage.clear()
+    })
+    */
   }
 }
 

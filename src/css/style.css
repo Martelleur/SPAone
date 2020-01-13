@@ -3,6 +3,19 @@
 * {
     box-sizing: border-box;
 }
+#fullScreen {
+    position: absolute;
+    left: 19vh;
+}
+
+#fullScreenSpan {
+    position: absolute;
+    top: 4vh;
+    left: 0;
+    display: none;
+    border: 1px solid black;
+    background-color: #0c5cc4;
+}
 
 html {
     background-color: white;

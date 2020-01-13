@@ -12,26 +12,6 @@
 </head>
 <body>
     <div id="wrapper">
-        <!--
-            <div class="container">
-                <textarea class="text"></textarea>
-                <button id="emoji">Emoji</button>
-            </div>
-            
-            <script src="https://cdn.jsdelivr.net/npm/emoji-button@latest/dist/index.min.js"></script>
-            <script>
-                var input = document.querySelector('.text')
-                var picker = new EmojiButton({
-                    position: 'right-start'
-                })
-                picker.on('emoji', function(emoji) {
-                    input.value += emoji
-                })
-                document.querySelector('#emoji').addEventListener('click', function() {
-                    picker.pickerVisible ? picker.hidePicker() : picker.showPicker(input) 
-                })
-            </script>
-        -->
         <header>
             <ul id="buttons">
                 <li>
@@ -47,40 +27,14 @@
                     <a href="#!/chess/" id="chessButton" data-chat="dataChess" data-create-element="chess-app">Chess</a>
                 </li>
                 <li>
-                    <a href="#!/fullScreen/" id="fullScreen" >Full screen</a>
+                    <a href="#!/fullScreen/" id="fullScreen" ><i class="large material-icons">fullscreen</i></a>
                 </li>
             </ul>
 
         </header>
         
         <main>
-            <!--
-            <template id="emojiTemplate">
-                <div class="emojiContainer">
-                    <button id="emoji">Emoji</button>
-                    <textarea class="text"></textarea>
-                </div>
-            </template>
-            <div class="emojiContainer">
-                <button id="emoji">Emoji</button>
-                <textarea class="text"></textarea>
-            </div>
-            <script src="lib/emoji/index.min.js"></script>
-            -->
-            <!--
-            <script>
-                let input = document.querySelector('.text')
-                let picker = new EmojiButton({
-                    position: 'right-start'
-                })
-                picker.on('emoji', function(emoji) {
-                    input.value += emoji
-                })
-                document.querySelector('#emoji').addEventListener('click', function() {
-                    picker.pickerVisible ? picker.hidePicker() : picker.showPicker(input) 
-                })
-            </script>
-            -->
+            
             <script src="lib/moment/moment.min.js"></script>
             <script>
                 

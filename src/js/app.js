@@ -10,7 +10,6 @@ import { moveElement } from './moveElement.js'
 // Insted we define online when client connected to server
 // Like the heartbeat in websocketconnection
 document.querySelector('#memoryButton').innerHTML = `
-Memory  
 <img id="chessIcon" src="../imageIcons/memory.png" alt="chess icon"></img>
 <style>
   #chessIcon {
@@ -21,7 +20,6 @@ Memory
 </style>
 `
 document.querySelector('#chatButton').innerHTML = `
-Chat
 <img id="chessIcon" src="../imageIcons/chat.png" alt="chess icon"></img>
 <style>
   #chessIcon {
@@ -32,7 +30,6 @@ Chat
 </style>
 `
 document.querySelector('#chessButton').innerHTML = `
-Chess
 <img id="chessIcon" src="../imageIcons/chess.png" alt="chess icon"></img>
 <style>
   #chessIcon {
@@ -43,7 +40,6 @@ Chess
 </style>
 `
 document.querySelector('#minehunterButton').innerHTML = `
-Minehunter
 <img id="chessIcon" src="../imageIcons/minehunter.png" alt="chess icon"></img>
 <style>
   #chessIcon {
@@ -77,7 +73,9 @@ let x = 0
 document.querySelector('#buttons').addEventListener('click', (event) => {
   event.preventDefault()
 
-  if (event.target.getAttribute('id') === 'fullScreen') {
+  // if user not click on a a-tag
+  if (event.target.tagName !== 'IMG') {
+    console.log('Not an img-tag')
     return
   }
 
@@ -97,12 +95,6 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
   const memoryApp = document.querySelectorAll('memory-app')
   const minehunterApp = document.querySelectorAll('minehunter-app')
   const chessApp = document.querySelectorAll('chess-app')
-
-  // if user not click on a a-tag
-  if (event.target.tagName !== 'A') {
-    console.log('Not an a-tag')
-    return
-  }
 
   // reset counters to 0 if elements not exist
   if (chatApp.length === 0) {
@@ -141,7 +133,7 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
   }
 
   // get type of element that will be created
-  const elementType = event.target.getAttribute('data-create-element')
+  const elementType = event.target.parentElement.getAttribute('data-create-element')
 
   // create element and ids for elements
   const element = document.createElement(elementType)
@@ -426,10 +418,10 @@ document.querySelector('#fullScreen').addEventListener('click', event => {
   event.preventDefault()
 
   console.log(event.target)
-  if (event.target.textContent === 'Full screen') {
-    event.target.textContent = 'Exit full screen'
+  if (document.querySelector('.material-icons').textContent === 'fullscreen') {
+    event.target.textContent = 'fullscreen_exit'
   } else {
-    event.target.textContent = 'Full screen'
+    document.querySelector('.material-icons').textContent = 'fullscreen'
     document.exitFullscreen()
     return
   }

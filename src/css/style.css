@@ -4,10 +4,9 @@
     box-sizing: border-box;
 }
 
-#imageChess {
-    display: block;
-    width: 100px;
-    height: 100px;
+#fullScreenIcon {
+    width: 4vh;
+    height: 4vh;
 }
 
 html {

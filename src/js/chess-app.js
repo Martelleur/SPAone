@@ -383,7 +383,6 @@ export class Chess extends window.HTMLElement {
     // Events fired on the drop target
     this._chessBoard.addEventListener('dragover', event => {
       event.preventDefault()
-      // console.log(event.target)
       // Reset backgroundecolor color
       for (let i = 0; i < this._chessBoardDivLength; i++) {
         if (this._chessBoardDiv[i].style.backgroundColor === 'blue') {
@@ -391,7 +390,6 @@ export class Chess extends window.HTMLElement {
         }
       }
 
-      // Set backgroundecolor to blue over the event.target
       if (event.target.getAttribute('class') === 'acceptableSquare' && event.target.nodeName === 'DIV') {
         event.target.style.backgroundColor = 'blue'
       }
@@ -399,7 +397,6 @@ export class Chess extends window.HTMLElement {
 
     // The dragend event is fired when a drag operation is being ended (by releasing a mouse button or hitting the escape key).
     window.addEventListener('dragend', event => {
-      console.log('joel')
       event.target.style.opacity = 1
       for (let i = 0; i < this._chessBoardDivLength; i++) {
         if (this._chessBoardDiv[i].style.backgroundColor !== 'white') {
@@ -418,13 +415,11 @@ export class Chess extends window.HTMLElement {
     this._chessBoard.addEventListener('drop', event => {
       event.preventDefault()
 
-      // when chesspiece id dropped
       try {
         if (event.target.className === 'acceptableSquare') {
           const data = event.dataTransfer.getData('chessPiece')
           event.target.removeAttribute('data-temp')
 
-          // console.log(data)
           const textArgument = `#${data}`
 
           // drop over a img element
@@ -440,12 +435,9 @@ export class Chess extends window.HTMLElement {
               event.target.setAttribute('src', srcArgument)
               event.target.setAttribute('id', idArgument)
             } else {
-              console.log('must move to blue squares')
               return
             }
           } else if (event.target.nodeName === 'IMG' && event.target.getAttribute('data-color') === this.shadowRoot.querySelector(textArgument).getAttribute('data-color')) {
-            console.log('must move to blue squares')
-            console.log('You can not take pieces with same color')
             return
           } else {
             // if player drop pawn for the first time
@@ -597,8 +589,6 @@ export class Chess extends window.HTMLElement {
         } catch (error) {
           console.log(error)
         }
-        // console.log(event.target.parentElement.querySelectorAll('option').length)
-        // console.log(event.target.parentElement.querySelectorAll('option')[3].value)
       } else {
         this._historyConteiner.innerHTML = ''
         this.showHistory(round)
@@ -1342,9 +1332,7 @@ export class Chess extends window.HTMLElement {
         if (this._chessBoardDiv[i].firstElementChild.getAttribute('src') === this._blackPawnSource) {
           this._chessBoardDiv[i].firstElementChild.setAttribute('src', this._blackQueenSource)
         }
-      } catch (error) {
-        // console.log(error)
-      }
+      } catch (error) {}
     }
   }
 
@@ -1434,19 +1422,15 @@ export class Chess extends window.HTMLElement {
         try {
           if (blackPiecesOptionsFlat[i].childElementCount === 1) {
             if (blackPiecesOptionsFlat[i].firstElementChild.getAttribute('src') === this._whiteKingSource) {
-              // console.log('white is sheck')
               this._checkStatusWhite.innerText = 'White player is scheck!'
               window.alert('OBS! White player is check, if still check after this round white player loose!')
               break
             } else {
-              // console.log('white is NOT sheck')
               this._checkStatusWhite.innerText = 'White player is NOT scheck!'
               // return false
             }
           }
-        } catch (error) {
-          // console.log(error)
-        }
+        } catch (error) {}
       }
     }
     // test if black is shack
@@ -1455,20 +1439,16 @@ export class Chess extends window.HTMLElement {
         try {
           if (whitePiecesOptionsFlat[i].childElementCount === 1) {
             if (whitePiecesOptionsFlat[i].firstElementChild.getAttribute('src') === this._blackKingSource) {
-              // console.log('black is sheck')
               this._checkStatusBlack.innerText = 'Black player is scheck!'
               window.alert('OBS! Black player is check, if still check after this round black player loose!')
               break
               // return true
             } else {
-              // console.log('black is NOT sheck')
               this._checkStatusBlack.innerText = 'Black player is NOT scheck!'
               // return false
             }
           }
-        } catch (error) {
-          // console.log(error)
-        }
+        } catch (error) {}
       }
     }
   }

@@ -63,7 +63,7 @@ document.querySelector('#memoryButton').innerHTML = `
     position: absolute;
     display: none;
     border: 1px solid black;
-    background-color: #011626;
+    background-color: #0c5cc4;
   }
 </style>
 `
@@ -94,7 +94,7 @@ document.querySelector('#chatButton').innerHTML = `
     left: 0;
     display: none;
     border: 1px solid black;
-    background-color: #011626;
+    background-color: #0c5cc4;
   }
 </style>
 `
@@ -125,7 +125,7 @@ document.querySelector('#chessButton').innerHTML = `
     left: 15vh;
     display: none;
     border: 1px solid black;
-    background-color: #011626;
+    background-color: #0c5cc4;
   }
 </style>
 `
@@ -156,7 +156,7 @@ document.querySelector('#minehunterButton').innerHTML = `
     left: 10vh;
     display: none;
     border: 1px solid black;
-    background-color: #011626;
+    background-color: #0c5cc4;
   }
 </style>
 `

@@ -117,7 +117,7 @@ template.innerHTML = /* html */ `
   padding: 0;
   margin: 0;
   text-aligne: center;
-  color: black;
+  color: white;
   border-collapse: collapse;
 }
 :host #chessBoard {
@@ -161,14 +161,12 @@ template.innerHTML = /* html */ `
   padding: 1px;
   background-color: white;
 }
-:host #chessBoard>div img:hover {
+:host #chessBoard>div img {
   cursor: grab;
 }
 :host #information {
   text-align: center;
-  color: white;
   background-color: black;
-  font-size: 1.5em;
 }
 :host #options1 {
   background-color: green;
@@ -184,6 +182,12 @@ template.innerHTML = /* html */ `
 }
 :host #history, :host #chat {
   cursor: pointer;
+  background-color: black;
+  border: 1px solid white;
+  padding: 1px;
+}
+:host #chat {
+  padding: 2px;
 }
 :host #historyConteiner {
   border-top: 3px solid black;
@@ -250,6 +254,8 @@ export class Chess extends window.HTMLElement {
     this._bigWindow = this.shadowRoot.querySelector('#bigWindow')
     this._deletChess = this.shadowRoot.querySelector('#deletChess')
     this._adjustableWindow = this.shadowRoot.querySelector('#adjustableWindow')
+    this._active = undefined
+    this._status = false
 
     // chesspieces image sources
     this._whitePawnSource = '../imageChess/pawnWhite.png'
@@ -293,7 +299,6 @@ export class Chess extends window.HTMLElement {
     }
     // Changing of attribute id
     if (name === 'id') {
-      // this._title.innerText = `${this.getAttribute('id')}-chess-app`
       this._title.innerHTML = `
       <p id="title">${this.getAttribute('id')}-chess-app
         <img id="chessIcon" src="../imageIcons/chess.png" alt="chess icon"></img>
@@ -328,6 +333,7 @@ export class Chess extends window.HTMLElement {
     this._chessBoard.addEventListener('dragstart', event => {
       console.log(event.target.parentNode)
       event.target.style.opacity = 0
+      this._active = event.target
 
       // Reset border color
       for (let i = 0; i < this._chessBoardDivLength; i++) {
@@ -378,9 +384,8 @@ export class Chess extends window.HTMLElement {
     // Events fired when dragging
     this._chessBoard.addEventListener('drag', event => {
       event.preventDefault()
-      this.evryAcceptableSquare('isBlackSheck', event.target)
-      this.evryAcceptableSquare('isWhiteSheck', event.target)
-    })
+      console.log('Dragging')
+    }, { once: true })
 
     // Events fired on the drop target
     this._chessBoard.addEventListener('dragover', event => {
@@ -411,12 +416,16 @@ export class Chess extends window.HTMLElement {
       for (let i = 0; i < this._chessBoardImgLength; i++) {
         this._chessBoardImg[i].style.opacity = 1
       }
+      this._chessBoard.addEventListener('drag', event => {
+        event.preventDefault()
+        console.log('Dragging')
+      }, { once: true })
     })
 
     // Events fired when dropping over this._chessBoard
     this._chessBoard.addEventListener('drop', event => {
       event.preventDefault()
-      console.log(event.target)
+
       try {
         if (event.target.className === 'acceptableSquare') {
           const data = event.dataTransfer.getData('chessPiece')
@@ -1339,10 +1348,11 @@ export class Chess extends window.HTMLElement {
   }
 
   /**
+   * index all div with childe-element (img)
    * @returns
    * @memberof Chess
    */
-  indexAllSquares (element) {
+  indexAllSquares () {
     const chessPieaceArray = []
     const chessPieaceObject = {
       roweValue: [],
@@ -1350,17 +1360,15 @@ export class Chess extends window.HTMLElement {
       imageSource: []
     }
 
-    const elementSource = element.getAttribute('src')
-
     for (let i = 0; i < this._chessBoardDivLength; i++) {
-      if (this._chessBoardDiv[i].childElementCount === 1 && this._chessBoardDiv[i].firstElementChild.getAttribute('src') !== elementSource) {
+      if (this._chessBoardDiv[i].childElementCount === 1) {
         chessPieaceArray.push(this.indexTarget(this._chessBoardDiv[i]))
         chessPieaceObject.roweValue.push(this.indexTarget(this._chessBoardDiv[i])[0])
         chessPieaceObject.columnValue.push(this.indexTarget(this._chessBoardDiv[i])[1])
         chessPieaceObject.imageSource.push(this._chessBoardDiv[i].firstElementChild.getAttribute('src'))
       }
     }
-    // console.log(chessPieaceObject)
+    console.log(chessPieaceObject)
     return chessPieaceObject
   }
 
@@ -1368,8 +1376,8 @@ export class Chess extends window.HTMLElement {
    * @param {*} color
    * @memberof Chess
    */
-  evryAcceptableSquare (color, element) {
-    const tempObject = this.indexAllSquares(element) || this.indexAllSquares()
+  evryAcceptableSquare (color) {
+    const tempObject = this.indexAllSquares()
     const blackPiecesOptions = []
     const whitePiecesOptions = []
     for (let i = 0; i < tempObject.roweValue.length; i++) {
@@ -1429,10 +1437,11 @@ export class Chess extends window.HTMLElement {
             if (blackPiecesOptionsFlat[i].firstElementChild.getAttribute('src') === this._whiteKingSource) {
               this._checkStatusWhite.innerText = 'White player is scheck!'
               window.alert('OBS! White player is check, if still check after this round white player loose!')
+              this._status = true
               break
             } else {
+              this._status = false
               this._checkStatusWhite.innerText = 'White player is NOT scheck!'
-              // return false
             }
           }
         } catch (error) {}
@@ -1446,11 +1455,11 @@ export class Chess extends window.HTMLElement {
             if (whitePiecesOptionsFlat[i].firstElementChild.getAttribute('src') === this._blackKingSource) {
               this._checkStatusBlack.innerText = 'Black player is scheck!'
               window.alert('OBS! Black player is check, if still check after this round black player loose!')
+              this._status = true
               break
-              // return true
             } else {
               this._checkStatusBlack.innerText = 'Black player is NOT scheck!'
-              // return false
+              this._status = false
             }
           }
         } catch (error) {}
@@ -1525,10 +1534,12 @@ export class Chess extends window.HTMLElement {
 
     // Event for bigDiv
     bigDiv.addEventListener('mouseover', event => {
+      /*
       const newChessBoard = this._clonedChessBoards[argument.slice(-1) - 1]
       const newInformation = this._clonedInformations[argument.slice(-1) - 1]
       console.log(newChessBoard)
       console.log(newInformation)
+      */
       this._historyConteiner.style.border = '5px solid #0c5cc4'
     })
   }

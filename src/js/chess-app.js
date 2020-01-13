@@ -377,7 +377,9 @@ export class Chess extends window.HTMLElement {
 
     // Events fired when dragging
     this._chessBoard.addEventListener('drag', event => {
-      // event.preventDefault()
+      event.preventDefault()
+      this.evryAcceptableSquare('isBlackSheck', event.target)
+      this.evryAcceptableSquare('isWhiteSheck', event.target)
     })
 
     // Events fired on the drop target
@@ -414,7 +416,7 @@ export class Chess extends window.HTMLElement {
     // Events fired when dropping over this._chessBoard
     this._chessBoard.addEventListener('drop', event => {
       event.preventDefault()
-
+      console.log(event.target)
       try {
         if (event.target.className === 'acceptableSquare') {
           const data = event.dataTransfer.getData('chessPiece')
@@ -1340,22 +1342,25 @@ export class Chess extends window.HTMLElement {
    * @returns
    * @memberof Chess
    */
-  indexAllSquares () {
+  indexAllSquares (element) {
     const chessPieaceArray = []
     const chessPieaceObject = {
       roweValue: [],
       columnValue: [],
       imageSource: []
     }
+
+    const elementSource = element.getAttribute('src')
+
     for (let i = 0; i < this._chessBoardDivLength; i++) {
-      if (this._chessBoardDiv[i].childElementCount === 1) {
+      if (this._chessBoardDiv[i].childElementCount === 1 && this._chessBoardDiv[i].firstElementChild.getAttribute('src') !== elementSource) {
         chessPieaceArray.push(this.indexTarget(this._chessBoardDiv[i]))
         chessPieaceObject.roweValue.push(this.indexTarget(this._chessBoardDiv[i])[0])
         chessPieaceObject.columnValue.push(this.indexTarget(this._chessBoardDiv[i])[1])
         chessPieaceObject.imageSource.push(this._chessBoardDiv[i].firstElementChild.getAttribute('src'))
       }
     }
-
+    // console.log(chessPieaceObject)
     return chessPieaceObject
   }
 
@@ -1363,8 +1368,8 @@ export class Chess extends window.HTMLElement {
    * @param {*} color
    * @memberof Chess
    */
-  evryAcceptableSquare (color) {
-    const tempObject = this.indexAllSquares()
+  evryAcceptableSquare (color, element) {
+    const tempObject = this.indexAllSquares(element) || this.indexAllSquares()
     const blackPiecesOptions = []
     const whitePiecesOptions = []
     for (let i = 0; i < tempObject.roweValue.length; i++) {

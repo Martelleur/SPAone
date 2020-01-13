@@ -55,6 +55,7 @@ document.querySelector('#memoryButton').innerHTML = `
     height: 4vh;
     width: 4vh;
     padding-bottom: 1px;
+    border: 1px solid black;
   }
   #memorySpan {
     top: 5vh;
@@ -85,6 +86,7 @@ document.querySelector('#chatButton').innerHTML = `
     height: 4vh;
     width: 4vh;
     padding-bottom: 1px;
+    border: 1px solid black;
   }
   #chatSpan {
     position: absolute;
@@ -115,6 +117,7 @@ document.querySelector('#chessButton').innerHTML = `
     height: 4vh;
     width: 4vh;
     padding-bottom: 1px;
+    border: 1px solid black;
   }
   #chessSpan {
     position: absolute;
@@ -145,6 +148,7 @@ document.querySelector('#minehunterButton').innerHTML = `
     height: 4vh;
     width: 4vh;
     padding-bottom: 1px;
+    border: 1px solid black;
   }
   #minehunterSpan {
     position: absolute;

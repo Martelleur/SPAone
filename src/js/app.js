@@ -5,50 +5,154 @@ import './chess-app.js'
 import './timecounter-app.js'
 import { moveElement } from './moveElement.js'
 // import SimpleCrypto from 'simple-crypto-js'
-
 // Check if online not always true but a good check
 // Insted we define online when client connected to server
 // Like the heartbeat in websocketconnection
+
+function showMemorySpan (element) {
+  document.querySelector('#memorySpan').style.display = 'initial'
+}
+function showChessSpan (element) {
+  document.querySelector('#chessSpan').style.display = 'initial'
+}
+function showMinehunterSpan (element) {
+  document.querySelector('#minehunterSpan').style.display = 'initial'
+}
+function showChatSpan (element) {
+  document.querySelector('#chatSpan').style.display = 'initial'
+}
+function showFullScreenSpan (element) {
+  document.querySelector('#fullScreenSpan').style.display = 'initial'
+}
+let tempShowInfo
 document.querySelector('#memoryButton').innerHTML = `
-<img id="chessIcon" src="../imageIcons/memory.png" alt="chess icon"></img>
+<img id="memoryIcon" src="../imageIcons/memory.png" alt="chess icon"></img>
+<div id="memorySpan">Memory</div>
 <style>
-  #chessIcon {
+  #memoryIcon {
+    position: absolute;
+    top: 0;
+    left: 5vh;
     height: 4vh;
     width: 4vh;
     padding-bottom: 1px;
   }
+  #memorySpan {
+    top: 5vh;
+    left: 5vh;
+    position: absolute;
+    display: none;
+    border: 1px solid black;
+    background-color: #011626;
+  }
 </style>
 `
+document.querySelector('#memoryIcon').addEventListener('mouseover', event => {
+  tempShowInfo = window.setTimeout(showMemorySpan, 500)
+})
+document.querySelector('#memoryIcon').addEventListener('mouseout', event => {
+  clearTimeout(tempShowInfo)
+  document.querySelector('#memorySpan').style.display = 'none'
+})
+
 document.querySelector('#chatButton').innerHTML = `
-<img id="chessIcon" src="../imageIcons/chat.png" alt="chess icon"></img>
+<img id="chatIcon" src="../imageIcons/chat.png" alt="chess icon"></img>
+<span id="chatSpan">Chat</span>
 <style>
-  #chessIcon {
+  #chatIcon {
+    position: absolute;
+    top: 0;
+    left: 0;
     height: 4vh;
     width: 4vh;
     padding-bottom: 1px;
   }
+  #chatSpan {
+    position: absolute;
+    top: 5vh;
+    left: 0;
+    display: none;
+    border: 1px solid black;
+    background-color: #011626;
+  }
 </style>
 `
+document.querySelector('#chatIcon').addEventListener('mouseover', event => {
+  tempShowInfo = window.setTimeout(showChatSpan, 500)
+})
+document.querySelector('#chatIcon').addEventListener('mouseout', event => {
+  clearTimeout(tempShowInfo)
+  document.querySelector('#chatSpan').style.display = 'none'
+})
+
 document.querySelector('#chessButton').innerHTML = `
 <img id="chessIcon" src="../imageIcons/chess.png" alt="chess icon"></img>
+<span id="chessSpan">Chess</span>
 <style>
   #chessIcon {
+    position: absolute;
+    top: 0;
+    left: 15vh;
     height: 4vh;
     width: 4vh;
     padding-bottom: 1px;
   }
+  #chessSpan {
+    position: absolute;
+    top: 5vh;
+    left: 15vh;
+    display: none;
+    border: 1px solid black;
+    background-color: #011626;
+  }
 </style>
 `
+document.querySelector('#chessIcon').addEventListener('mouseover', event => {
+  tempShowInfo = window.setTimeout(showChessSpan, 500)
+})
+document.querySelector('#chessIcon').addEventListener('mouseout', event => {
+  clearTimeout(tempShowInfo)
+  document.querySelector('#chessSpan').style.display = 'none'
+})
+
 document.querySelector('#minehunterButton').innerHTML = `
-<img id="chessIcon" src="../imageIcons/minehunter.png" alt="chess icon"></img>
+<img id="minehunterIcon" src="../imageIcons/minehunter.png" alt="chess icon"></img>
+<span id="minehunterSpan">Minehunter</span>
 <style>
-  #chessIcon {
+  #minehunterIcon {
+    position: absolute;
+    top: 0;
+    left: 10vh;
     height: 4vh;
     width: 4vh;
     padding-bottom: 1px;
   }
+  #minehunterSpan {
+    position: absolute;
+    top: 5vh;
+    left: 10vh;
+    display: none;
+    border: 1px solid black;
+    background-color: #011626;
+  }
 </style>
 `
+
+document.querySelector('#minehunterIcon').addEventListener('mouseover', event => {
+  tempShowInfo = window.setTimeout(showMinehunterSpan, 500)
+})
+document.querySelector('#minehunterIcon').addEventListener('mouseout', event => {
+  clearTimeout(tempShowInfo)
+  document.querySelector('#minehunterSpan').style.display = 'none'
+})
+
+document.querySelector('.material-icons').addEventListener('mouseover', event => {
+  tempShowInfo = window.setTimeout(showFullScreenSpan, 500)
+})
+document.querySelector('.material-icons').addEventListener('mouseout', event => {
+  clearTimeout(tempShowInfo)
+  document.querySelector('#fullScreenSpan').style.display = 'none'
+})
 
 if (window.navigator.onLine) {
   console.log('You are online!')
@@ -417,11 +521,12 @@ window.addEventListener('popstate', event => {
 document.querySelector('#fullScreen').addEventListener('click', event => {
   event.preventDefault()
 
-  console.log(event.target)
   if (document.querySelector('.material-icons').textContent === 'fullscreen') {
     event.target.textContent = 'fullscreen_exit'
+    document.querySelector('#fullScreenSpan').textContent = 'Exit fullscreen'
   } else {
     document.querySelector('.material-icons').textContent = 'fullscreen'
+    document.querySelector('#fullScreenSpan').textContent = 'Fullscreen'
     document.exitFullscreen()
     return
   }

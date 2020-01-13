@@ -117,7 +117,7 @@ template.innerHTML = /* html */ `
   padding: 0;
   margin: 0;
   text-aligne: center;
-  color: white;
+  color: black;
   border-collapse: collapse;
 }
 :host #chessBoard {
@@ -134,7 +134,7 @@ template.innerHTML = /* html */ `
   padding: 0;
   margin: 0;
 }
-:host #title:hover {
+:host #title {
   cursor: move;
 }
 :host #tools {
@@ -184,7 +184,6 @@ template.innerHTML = /* html */ `
 }
 :host #history, :host #chat {
   cursor: pointer;
-  color: black;
 }
 :host #historyConteiner {
   border-top: 3px solid black;
@@ -197,6 +196,7 @@ template.innerHTML = /* html */ `
   padding: 0;
   margin: 0;
   cursor: pointer;
+  color: white;
 } 
 
 </style>
@@ -324,13 +324,10 @@ export class Chess extends window.HTMLElement {
    * @memberof Chess
    */
   connectedCallback () {
-    // what target shoulde i put my evenlistener on, this._chessConteiner or this._chessBoard?
-    // look on the method this.showHistory() and the statement this._chessBoard.remove()
-    // Not neccasary to implement
     // Events fired on the drag target
-    this._chessConteiner.addEventListener('dragstart', event => {
+    this._chessBoard.addEventListener('dragstart', event => {
       console.log(event.target.parentNode)
-      // event.target.style.opacity = 0
+      event.target.style.opacity = 0
 
       // Reset border color
       for (let i = 0; i < this._chessBoardDivLength; i++) {
@@ -379,12 +376,12 @@ export class Chess extends window.HTMLElement {
     })
 
     // Events fired when dragging
-    this._chessConteiner.addEventListener('drag', event => {
+    this._chessBoard.addEventListener('drag', event => {
       // event.preventDefault()
     })
 
     // Events fired on the drop target
-    this._chessConteiner.addEventListener('dragover', event => {
+    this._chessBoard.addEventListener('dragover', event => {
       event.preventDefault()
       // console.log(event.target)
       // Reset backgroundecolor color
@@ -418,24 +415,8 @@ export class Chess extends window.HTMLElement {
     })
 
     // Events fired when dropping over this._chessBoard
-    this._chessConteiner.addEventListener('drop', event => {
+    this._chessBoard.addEventListener('drop', event => {
       event.preventDefault()
-      // Dont work but try think this overar and yoy may find a solution
-      /*
-      // test if move of checkpiaece not make player scheck
-      if (this._whitePiecesTurn) {
-        this.evryAcceptableSquare('isWhiteSheck')
-        if (this._checkStatusWhite.innerText === 'White player is check!') {
-          return
-        }
-      }
-      if (!this._whitePiecesTurn) {
-        this.evryAcceptableSquare('isBlackSheck')
-        if (this._checkStatusBlack.innerText === 'Black player is check!') {
-          return
-        }
-      }
-      */
 
       // when chesspiece id dropped
       try {
@@ -445,11 +426,7 @@ export class Chess extends window.HTMLElement {
 
           // console.log(data)
           const textArgument = `#${data}`
-          // console.log(this.shadowRoot.querySelector(textArgument))
-          /*
-          console.log(this.shadowRoot.querySelector(textArgument).getAttribute('data-color'))
-          console.log(event.target.getAttribute('data-color'))
-          */
+
           // drop over a img element
           if (event.target.nodeName === 'IMG' && event.target.getAttribute('data-color') !== this.shadowRoot.querySelector(textArgument).getAttribute('data-color')) {
             if (event.target.parentNode.style.border === '3px solid blue') {
@@ -599,10 +576,11 @@ export class Chess extends window.HTMLElement {
       }
       this.evryAcceptableSquare('black')
     })
-    // try to create functionality so that user can start over from a point in history
+
     // Events fired when click on this._history
     this._history.addEventListener('click', event => {
       event.preventDefault()
+
       let round = event.target.value
       if (round === 'clear') {
         this._historyConteiner.innerHTML = ''
@@ -699,41 +677,35 @@ export class Chess extends window.HTMLElement {
   squaresData () {
     const outerArray = []
     const outerArrayImages = []
+
     for (let i = 0; i < this._chessBoardDivLength; i++) {
       const innerArray = []
       const innerArrayImages = []
-      // console.log(Math.sqrt(this._chessBoard.querySelectorAll('div').length))
+
       for (let j = i; j < (i + Math.sqrt(this._chessBoardDivLength)); j++) {
         innerArray.push(this._chessBoardDiv[j])
-        // console.log(rowArray)
         try {
           const image = this._chessBoardDiv[j].firstElementChild
           innerArrayImages.push(image.getAttribute('src'))
         } catch (error) {
           innerArrayImages.push('No image')
-          // console.log('Contains nothing')
-          // console.log((`Square: ${square.getAttribute('id')}. Contains nothing`))
         }
       }
       i = i + Math.sqrt(this._chessBoardDivLength) - 1
-      // console.log(rowArray)
+
       outerArray.push(innerArray)
       outerArrayImages.push(innerArrayImages)
     }
-    // console.log('indexArray/JM')
-    // console.log(indexArray)
+
     const images = []
     const squares = []
     for (let i = 0; i < this._chessBoardDivLength; i++) {
       const image = this._chessBoardDiv[i].firstElementChild
       const square = this._chessBoardDiv[i]
       try {
-        // console.log(`Square: ${square.getAttribute('id')}. Contains picture: ${image.getAttribute('src')}`)
         images.push(image.getAttribute('src'))
       } catch (error) {
         images.push('No image')
-        // console.log('Contains nothing')
-        // console.log((`Square: ${square.getAttribute('id')}. Contains nothing`))
       }
       squares.push(square)
     }
@@ -782,28 +754,24 @@ export class Chess extends window.HTMLElement {
             return []
           }
         } catch (error) {
-          console.log(error)
         }
         try {
           if (square[i - 1][j].childElementCount === 1 && square[i - 1][j + 1].childElementCount === 1 && square[i - 1][j - 1].childElementCount === 1) {
             return [square[i - 1][j + 1], square[i - 1][j - 1]]
           }
         } catch (error) {
-          console.log(error)
         }
         try {
           if (square[i - 1][j].childElementCount === 1 && square[i - 1][j + 1].childElementCount === 1) {
             return [square[i - 1][j + 1]]
           }
         } catch (error) {
-          console.log(error)
         }
         try {
           if (square[i - 1][j].childElementCount === 1 && square[i - 1][j - 1].childElementCount === 1) {
             return [square[i - 1][j - 1]]
           }
         } catch (error) {
-          console.log(error)
         }
         try {
           if (square[i - 1][j].childElementCount === 0 && square[i - 1][j + 1].childElementCount === 1 && square[i - 1][j - 1].childElementCount === 1) {
@@ -812,18 +780,15 @@ export class Chess extends window.HTMLElement {
                 return [square[i - 1][j + 1], square[i - 1][j - 1], square[i - 1][j]]
               }
             } catch (error) {
-              console.log(error)
             }
             try {
               if (square[i - 2][j].childElementCount === 0) {
                 return [square[i - 1][j + 1], square[i - 1][j - 1], square[i - 1][j], square[i - 2][j]]
               }
             } catch (error) {
-              console.log(error)
             }
           }
         } catch (error) {
-          console.log(error)
         }
         try {
           if (square[i - 1][j].childElementCount === 0 && square[i - 1][j + 1].childElementCount === 1) {
@@ -832,18 +797,15 @@ export class Chess extends window.HTMLElement {
                 return [square[i - 1][j + 1], square[i - 1][j]]
               }
             } catch (error) {
-              console.log(error)
             }
             try {
               if (square[i - 2][j].childElementCount === 0) {
                 return [square[i - 1][j + 1], square[i - 1][j], square[i - 2][j]]
               }
             } catch (error) {
-              console.log(error)
             }
           }
         } catch (error) {
-          console.log(error)
         }
         try {
           if (square[i - 1][j].childElementCount === 0 && square[i - 1][j - 1].childElementCount === 1) {
@@ -852,18 +814,15 @@ export class Chess extends window.HTMLElement {
                 return [square[i - 1][j - 1], square[i - 1][j]]
               }
             } catch (error) {
-              console.log(error)
             }
             try {
               if (square[i - 2][j].childElementCount === 0) {
                 return [square[i - 1][j - 1], square[i - 1][j], square[i - 2][j]]
               }
             } catch (error) {
-              console.log(error)
             }
           }
         } catch (error) {
-          console.log(error)
         }
         try {
           if (square[i - 1][j].childElementCount === 0) {
@@ -872,18 +831,15 @@ export class Chess extends window.HTMLElement {
                 return [square[i - 1][j]]
               }
             } catch (error) {
-              console.log(error)
             }
             try {
               if (square[i - 2][j].childElementCount === 0) {
                 return [square[i - 1][j], square[i - 2][j]]
               }
             } catch (error) {
-              console.log(error)
             }
           }
         } catch (error) {
-          console.log(error)
         }
       } else {
         try {
@@ -891,56 +847,48 @@ export class Chess extends window.HTMLElement {
             return []
           }
         } catch (error) {
-          console.log(error)
         }
         try {
           if (square[i - 1][j].childElementCount === 1 && square[i - 1][j + 1].childElementCount === 1 && square[i - 1][j - 1].childElementCount === 1) {
             return [square[i - 1][j + 1], square[i - 1][j - 1]]
           }
         } catch (error) {
-          console.log(error)
         }
         try {
           if (square[i - 1][j].childElementCount === 1 && square[i - 1][j + 1].childElementCount === 1) {
             return [square[i - 1][j + 1]]
           }
         } catch (error) {
-          console.log(error)
         }
         try {
           if (square[i - 1][j].childElementCount === 1 && square[i - 1][j - 1].childElementCount === 1) {
             return [square[i - 1][j - 1]]
           }
         } catch (error) {
-          console.log(error)
         }
         try {
           if (square[i - 1][j].childElementCount === 0 && square[i - 1][j + 1].childElementCount === 1 && square[i - 1][j - 1].childElementCount === 1) {
             return [square[i - 1][j + 1], square[i - 1][j - 1], square[i - 1][j]]
           }
         } catch (error) {
-          console.log(error)
         }
         try {
           if (square[i - 1][j].childElementCount === 0 && square[i - 1][j + 1].childElementCount === 1) {
             return [square[i - 1][j + 1], square[i - 1][j]]
           }
         } catch (error) {
-          console.log(error)
         }
         try {
           if (square[i - 1][j].childElementCount === 0 && square[i - 1][j - 1].childElementCount === 1) {
             return [square[i - 1][j - 1], square[i - 1][j]]
           }
         } catch (error) {
-          console.log(error)
         }
         try {
           if (square[i - 1][j].childElementCount === 0) {
             return [square[i - 1][j]]
           }
         } catch (error) {
-          console.log(error)
         }
       }
     }
@@ -952,167 +900,119 @@ export class Chess extends window.HTMLElement {
           if (square[i + 1][j].childElementCount === 1 && square[i + 1][j + 1].childElementCount === 0 && square[i + 1][j - 1].childElementCount === 0) {
             return []
           }
-        } catch (error) {
-          console.log(error)
-        }
+        } catch (error) {}
         try {
           if (square[i + 1][j].childElementCount === 1 && square[i + 1][j + 1].childElementCount === 1 && square[i + 1][j - 1].childElementCount === 1) {
             return [square[i + 1][j + 1], square[i + 1][j - 1]]
           }
-        } catch (error) {
-          console.log(error)
-        }
+        } catch (error) {}
         try {
           if (square[i + 1][j].childElementCount === 1 && square[i + 1][j + 1].childElementCount === 1) {
             return [square[i + 1][j + 1]]
           }
-        } catch (error) {
-          console.log(error)
-        }
+        } catch (error) {}
         try {
           if (square[i + 1][j].childElementCount === 1 && square[i + 1][j - 1].childElementCount === 1) {
             return [square[i + 1][j - 1]]
           }
-        } catch (error) {
-          console.log(error)
-        }
+        } catch (error) {}
         try {
           if (square[i + 1][j].childElementCount === 0 && square[i + 1][j + 1].childElementCount === 1 && square[i + 1][j - 1].childElementCount === 1) {
             try {
               if (square[i + 2][j].childElementCount === 1) {
                 return [square[i + 1][j + 1], square[i + 1][j - 1], square[i + 1][j]]
               }
-            } catch (error) {
-              console.log(error)
-            }
+            } catch (error) {}
             try {
               if (square[i + 2][j].childElementCount === 0) {
                 return [square[i + 1][j + 1], square[i + 1][j - 1], square[i + 1][j], square[i + 2][j]]
               }
-            } catch (error) {
-              console.log(error)
-            }
+            } catch (error) {}
           }
-        } catch (error) {
-          console.log(error)
-        }
+        } catch (error) {}
         try {
           if (square[i + 1][j].childElementCount === 0 && square[i + 1][j + 1].childElementCount === 1) {
             try {
               if (square[i + 2][j].childElementCount === 1) {
                 return [square[i + 1][j + 1], square[i + 1][j]]
               }
-            } catch (error) {
-              console.log(error)
-            }
+            } catch (error) {}
             try {
               if (square[i + 2][j].childElementCount === 0) {
                 return [square[i + 1][j + 1], square[i + 1][j], square[i + 2][j]]
               }
-            } catch (error) {
-              console.log(error)
-            }
+            } catch (error) {}
           }
-        } catch (error) {
-          console.log(error)
-        }
+        } catch (error) {}
         try {
           if (square[i + 1][j].childElementCount === 0 && square[i + 1][j - 1].childElementCount === 1) {
             try {
               if (square[i + 2][j].childElementCount === 1) {
                 return [square[i + 1][j - 1], square[i + 1][j]]
               }
-            } catch (error) {
-              console.log(error)
-            }
+            } catch (error) {}
             try {
               if (square[i + 2][j].childElementCount === 0) {
                 return [square[i + 1][j - 1], square[i + 1][j], square[i + 2][j]]
               }
-            } catch (error) {
-              console.log(error)
-            }
+            } catch (error) {}
           }
-        } catch (error) {
-          console.log(error)
-        }
+        } catch (error) {}
         try {
           if (square[i + 1][j].childElementCount === 0) {
             try {
               if (square[i + 2][j].childElementCount === 1) {
                 return [square[i + 1][j]]
               }
-            } catch (error) {
-              console.log(error)
-            }
+            } catch (error) {}
             try {
               if (square[i + 2][j].childElementCount === 0) {
                 return [square[i + 1][j], square[i + 2][j]]
               }
-            } catch (error) {
-              console.log(error)
-            }
+            } catch (error) {}
           }
-        } catch (error) {
-          console.log(error)
-        }
+        } catch (error) {}
       } else {
         try {
           if (square[i + 1][j].childElementCount === 1 && square[i + 1][j + 1].childElementCount === 0 && square[i + 1][j - 1].childElementCount === 0) {
             return []
           }
-        } catch (error) {
-          console.log(error)
-        }
+        } catch (error) {}
         try {
           if (square[i + 1][j].childElementCount === 1 && square[i + 1][j + 1].childElementCount === 1 && square[i + 1][j - 1].childElementCount === 1) {
             return [square[i + 1][j + 1], square[i + 1][j - 1]]
           }
-        } catch (error) {
-          console.log(error)
-        }
+        } catch (error) {}
         try {
           if (square[i + 1][j].childElementCount === 1 && square[i + 1][j + 1].childElementCount === 1) {
             return [square[i + 1][j + 1]]
           }
-        } catch (error) {
-          console.log(error)
-        }
+        } catch (error) {}
         try {
           if (square[i + 1][j].childElementCount === 1 && square[i + 1][j - 1].childElementCount === 1) {
             return [square[i + 1][j - 1]]
           }
-        } catch (error) {
-          console.log(error)
-        }
+        } catch (error) {}
         try {
           if (square[i + 1][j].childElementCount === 0 && square[i + 1][j + 1].childElementCount === 1 && square[i - 1][j - 1].childElementCount === 1) {
             return [square[i + 1][j + 1], square[i + 1][j - 1], square[i + 1][j]]
           }
-        } catch (error) {
-          console.log(error)
-        }
+        } catch (error) {}
         try {
           if (square[i + 1][j].childElementCount === 0 && square[i + 1][j + 1].childElementCount === 1) {
             return [square[i + 1][j + 1], square[i + 1][j]]
           }
-        } catch (error) {
-          console.log(error)
-        }
+        } catch (error) {}
         try {
           if (square[i + 1][j].childElementCount === 0 && square[i + 1][j - 1].childElementCount === 1) {
             return [square[i + 1][j - 1], square[i + 1][j]]
           }
-        } catch (error) {
-          console.log(error)
-        }
+        } catch (error) {}
         try {
           if (square[i + 1][j].childElementCount === 0) {
             return [square[i + 1][j]]
           }
-        } catch (error) {
-          console.log(error)
-        }
+        } catch (error) {}
       }
     }
 
@@ -1129,9 +1029,7 @@ export class Chess extends window.HTMLElement {
             }
           }
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         for (let y = 1; y < 8; y++) {
           if (square[i + y][j] !== undefined && stopArray[1] === false) {
@@ -1141,9 +1039,7 @@ export class Chess extends window.HTMLElement {
             }
           }
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         for (let x = 1; x < 8; x++) {
           if (square[i][j + x] !== undefined && stopArray[2] === false) {
@@ -1153,9 +1049,7 @@ export class Chess extends window.HTMLElement {
             }
           }
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         for (let x = 1; x < 8; x++) {
           if (square[i][j - x] !== undefined && stopArray[3] === false) {
@@ -1165,11 +1059,8 @@ export class Chess extends window.HTMLElement {
             }
           }
         }
-      } catch (error) {
-        console.log(error)
-      }
-      console.log('returnArray/JM')
-      console.log(returnArray)
+      } catch (error) {}
+
       return returnArray
     }
 
@@ -1189,9 +1080,7 @@ export class Chess extends window.HTMLElement {
             y++
           }
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         for (let y = 1; y < 8; y++) {
           for (let x = 1; x < 8; x++) {
@@ -1204,9 +1093,7 @@ export class Chess extends window.HTMLElement {
             y++
           }
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         for (let y = 1; y < 8; y++) {
           for (let x = 1; x < 8; x++) {
@@ -1219,9 +1106,7 @@ export class Chess extends window.HTMLElement {
             y++
           }
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         for (let y = 1; y < 8; y++) {
           for (let x = 1; x < 8; x++) {
@@ -1234,11 +1119,8 @@ export class Chess extends window.HTMLElement {
             y++
           }
         }
-      } catch (error) {
-        console.log(error)
-      }
-      console.log('returnArray/JM')
-      console.log(returnArray)
+      } catch (error) {}
+
       return returnArray
     }
 
@@ -1255,9 +1137,7 @@ export class Chess extends window.HTMLElement {
             }
           }
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         for (let y = 1; y < 8; y++) {
           if (square[i + y][j] !== undefined && stopArray[1] === false) {
@@ -1267,9 +1147,7 @@ export class Chess extends window.HTMLElement {
             }
           }
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         for (let x = 1; x < 8; x++) {
           if (square[i][j + x] !== undefined && stopArray[2] === false) {
@@ -1279,9 +1157,7 @@ export class Chess extends window.HTMLElement {
             }
           }
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         for (let x = 1; x < 8; x++) {
           if (square[i][j - x] !== undefined && stopArray[3] === false) {
@@ -1291,9 +1167,7 @@ export class Chess extends window.HTMLElement {
             }
           }
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         for (let y = 1; y < 8; y++) {
           for (let x = 1; x < 8; x++) {
@@ -1306,9 +1180,7 @@ export class Chess extends window.HTMLElement {
             y++
           }
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         for (let y = 1; y < 8; y++) {
           for (let x = 1; x < 8; x++) {
@@ -1321,9 +1193,7 @@ export class Chess extends window.HTMLElement {
             y++
           }
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         for (let y = 1; y < 8; y++) {
           for (let x = 1; x < 8; x++) {
@@ -1336,9 +1206,7 @@ export class Chess extends window.HTMLElement {
             y++
           }
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         for (let y = 1; y < 8; y++) {
           for (let x = 1; x < 8; x++) {
@@ -1351,11 +1219,8 @@ export class Chess extends window.HTMLElement {
             y++
           }
         }
-      } catch (error) {
-        console.log(error)
-      }
-      console.log('returnArray/JM')
-      console.log(returnArray)
+      } catch (error) {}
+
       return returnArray
     }
 
@@ -1366,60 +1231,43 @@ export class Chess extends window.HTMLElement {
         if (square[i - 1][j] !== undefined) {
           returnArray.push(square[i - 1][j])
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         if (square[i + 1][j] !== undefined) {
           returnArray.push(square[i + 1][j])
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         if (square[i][j - 1] !== undefined) {
           returnArray.push(square[i][j - 1])
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         if (square[i][j + 1] !== undefined) {
           returnArray.push(square[i][j + 1])
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         if (square[i - 1][j - 1] !== undefined) {
           returnArray.push(square[i - 1][j - 1])
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         if (square[i - 1][j + 1] !== undefined) {
           returnArray.push(square[i - 1][j + 1])
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         if (square[i + 1][j - 1] !== undefined) {
           returnArray.push(square[i + 1][j - 1])
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         if (square[i + 1][j + 1] !== undefined) {
           returnArray.push(square[i + 1][j + 1])
         }
-      } catch (error) {
-        console.log(error)
-      }
-      console.log('returnArray/JM')
-      console.log(returnArray)
+      } catch (error) {}
+
       return returnArray
     }
 
@@ -1430,60 +1278,43 @@ export class Chess extends window.HTMLElement {
         if (square[i - 2][j + 1] !== undefined) {
           returnArray.push(square[i - 2][j + 1])
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         if (square[i - 2][j - 1] !== undefined) {
           returnArray.push(square[i - 2][j - 1])
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         if (square[i + 2][j - 1] !== undefined) {
           returnArray.push(square[i + 2][j - 1])
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         if (square[i + 2][j + 1] !== undefined) {
           returnArray.push(square[i + 2][j + 1])
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         if (square[i - 1][j + 2] !== undefined) {
           returnArray.push(square[i - 1][j + 2])
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         if (square[i + 1][j + 2] !== undefined) {
           returnArray.push(square[i + 1][j + 2])
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         if (square[i + 1][j - 2] !== undefined) {
           returnArray.push(square[i + 1][j - 2])
         }
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       try {
         if (square[i - 1][j - 2] !== undefined) {
           returnArray.push(square[i - 1][j - 2])
         }
-      } catch (error) {
-        console.log(error)
-      }
-      console.log('returnArray/JM')
-      console.log(returnArray)
+      } catch (error) {}
+
       return returnArray
     }
   }
@@ -1536,23 +1367,7 @@ export class Chess extends window.HTMLElement {
         chessPieaceObject.imageSource.push(this._chessBoardDiv[i].firstElementChild.getAttribute('src'))
       }
     }
-    // console.log(chessPieaceObject)
-    // console.log(chessPieaceObject.acceptableSquares)
-    /*
-    console.log(typeof chessPieaceObject.roweValue)
-    console.log(typeof chessPieaceObject.columnValue)
-    console.log(typeof chessPieaceObject.imageSource)
-    console.log(chessPieaceObject.roweValue)
-    console.log(chessPieaceObject.columnValue)
-    console.log(chessPieaceObject.imageSource)
-    */
-    /*
-    for (let i = 0; i < chessPieaceObject.roweValue.lenght; i++) {
-      const temp = this.acceptableSquares(chessPieaceObject.imageSource[i], chessPieaceObject.roweValue[i], chessPieaceObject.columnValue[i], false)
-      console.log(temp)
-      acceptableSquaresArray.push(temp)
-    }
-    */
+
     return chessPieaceObject
   }
 
@@ -1587,14 +1402,7 @@ export class Chess extends window.HTMLElement {
 
     const blackPiecesOptionsFlat = blackPiecesOptions.flat()
     const whitePiecesOptionsFlat = whitePiecesOptions.flat()
-    /*
-    console.log('tempObject/JM')
-    console.log(tempObject)
-    console.log('blackPiecesOptions.flat/JM')
-    console.log(blackPiecesOptions.flat())
-    console.log('whitePiecesOptions.flat/JM')
-    console.log(whitePiecesOptions.flat())
-    */
+
     // Black players otions
     if (color === 'black') {
       for (let i = 0; i < blackPiecesOptionsFlat.length; i++) {
@@ -1673,14 +1481,6 @@ export class Chess extends window.HTMLElement {
     // this._information.innerHTML = ''
     const data = JSON.parse(window.sessionStorage.getItem(argument))
     const fragment = document.createDocumentFragment()
-    // const header = document.createElement('h1')
-    // const header2 = document.createElement('h1')
-    // header.innerText = `History ${argument}`
-    // header.style.borderTop = '3px solid black'
-    // fragment.appendChild(header)
-    // header2.innerText = `History ${argument}`
-    // header.style.color = 'black'
-    // header2.style.color = 'black'
 
     let counter = 0
     for (let i = 0; i < 8; i++) {
@@ -1727,7 +1527,6 @@ export class Chess extends window.HTMLElement {
     bigDiv.style.border = '3px solid black'
     bigDiv.appendChild(fragment)
     bigDiv.addEventListener('mouseover', event => {
-      // console.log(argument)
       bigDiv.style.border = '3px solid #0c5cc4'
     })
     bigDiv.addEventListener('mouseout', event => {
@@ -1738,19 +1537,13 @@ export class Chess extends window.HTMLElement {
     this._historyConteiner.appendChild(index)
     this._historyConteiner.style.paddingTop = '2px'
     this._historyConteiner.style.border = '5px solid #0c5cc4'
-    bigDiv.addEventListener('dblclick', event => {
+
+    // Event for bigDiv
+    bigDiv.addEventListener('mouseover', event => {
       const newChessBoard = this._clonedChessBoards[argument.slice(-1) - 1]
       const newInformation = this._clonedInformations[argument.slice(-1) - 1]
       console.log(newChessBoard)
-      console.log(newChessBoard.isEqualNode(this._chessBoard))
-      console.log(newInformation.isEqualNode(this._information))
-      this._chessBoard.remove()
-      this._information.remove()
-      this._chessBoard = newChessBoard
-      this._information = newInformation
-      this._tools.insertAdjacentElement('afterend', this._chessBoard)
-      this._chessBoard.insertAdjacentElement('afterend', this._information)
-      console.log(this._chessBoard)
+      console.log(newInformation)
       this._historyConteiner.style.border = '5px solid #0c5cc4'
     })
   }

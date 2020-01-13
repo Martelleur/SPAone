@@ -9,18 +9,37 @@ import { moveElement } from './moveElement.js'
 // Insted we define online when client connected to server
 // Like the heartbeat in websocketconnection
 
+/**
+ * @param {*} element
+ */
 function showMemorySpan (element) {
   document.querySelector('#memorySpan').style.display = 'initial'
 }
+
+/**
+ * @param {*} element
+ */
 function showChessSpan (element) {
   document.querySelector('#chessSpan').style.display = 'initial'
 }
+
+/**
+ * @param {*} element
+ */
 function showMinehunterSpan (element) {
   document.querySelector('#minehunterSpan').style.display = 'initial'
 }
+
+/**
+ * @param {*} element
+ */
 function showChatSpan (element) {
   document.querySelector('#chatSpan').style.display = 'initial'
 }
+
+/**
+ * @param {*} element
+ */
 function showFullScreenSpan (element) {
   document.querySelector('#fullScreenSpan').style.display = 'initial'
 }
@@ -241,27 +260,26 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
 
   // create element and ids for elements
   const element = document.createElement(elementType)
-  if (event.target.getAttribute('data-create-element') === 'chat-app') {
+  if (event.target.parentElement.getAttribute('data-create-element') === 'chat-app') {
     counterChatApplication++
     nameIdApplication = `chat${counterChatApplication}`
   }
-  if (event.target.getAttribute('data-create-element') === 'memory-app') {
+  if (event.target.parentElement.getAttribute('data-create-element') === 'memory-app') {
     counterMemoryApplication++
     nameIdApplication = `memory${counterMemoryApplication}`
   }
-  if (event.target.getAttribute('data-create-element') === 'minehunter-app') {
+  if (event.target.parentElement.getAttribute('data-create-element') === 'minehunter-app') {
     counterMinehunterApplication++
     nameIdApplication = `minehunter${counterMinehunterApplication}`
   }
-  if (event.target.getAttribute('data-create-element') === 'chess-app') {
+  if (event.target.parentElement.getAttribute('data-create-element') === 'chess-app') {
     counterChessApplication++
     nameIdApplication = `chess${counterChessApplication}`
   }
+
   element.setAttribute('id', nameIdApplication)
   element.setAttribute('data-hide', 'false')
   element.setAttribute('data-zedindex', 'high')
-  console.log(element.getAttribute('data-zedindex'))
-  console.log(element.style.zIndex)
 
   // Adding created elements and use operator moveElement
   document.querySelector('main').appendChild(element)
@@ -271,13 +289,14 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
 
   // window.history and window.location
   const stateObj = {
-    element: event.target.getAttribute('data-create-element'),
+    element: event.target.parentElement.getAttribute('data-create-element'),
     id: element.getAttribute('id')
   }
+
   window.history.pushState(stateObj, `/${stateObj.id}`, `/${stateObj.element}/${stateObj.id}`)
 
+  // Event changing url
   element.addEventListener('click', event => {
-    console.log('test')
     window.history.pushState(stateObj, `/${stateObj.id}`, `/${stateObj.element}/${stateObj.id}`)
     element.setAttribute('data-zedindex', 'high')
     for (let i = 0; i < document.querySelector('main').children.length; i++) {

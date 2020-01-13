@@ -53,8 +53,8 @@ template.innerHTML = /* html */ `
     color: white;
     background-color: black;
 } 
-:host #memoryPictures:hover {
-    cursor: pointer; 
+:host #memoryPictures {
+    padding: 5%; 
 }
 :host #title {
   text-align: center;
@@ -76,6 +76,7 @@ template.innerHTML = /* html */ `
 :host #start {
   display: block;
   margin: 0 auto;
+  cursor: pointer;
 }
 :host .button {
   cursor: pointer;
@@ -122,6 +123,7 @@ export class Memory extends window.HTMLElement {
     this._title = this.shadowRoot.querySelector('#title')
     this._isStarting = false
     this._isFirstClick = false
+    this._isBig = false
     this._timeConteiner = this.shadowRoot.querySelector('.timeConteiner')
     this._counter = undefined
     this._memoryConteiner = this.shadowRoot.querySelector('#memoryConteiner')
@@ -231,12 +233,16 @@ export class Memory extends window.HTMLElement {
       this.style.outline = '1px solid black'
       this._memoryConteiner.style.border = 'none'
       this._title.style.cursor = 'move'
+
       const myEvent = new window.CustomEvent('notBigWindow')
       this.dispatchEvent(myEvent)
+
+      this._isBig = false
     })
 
     // eventlistner for this._bigWindow
     this._bigWindow.addEventListener('click', (event) => {
+      this._isBig = true
       event.preventDefault()
       this.style.position = 'static'
       this.style.resize = 'none'
@@ -246,8 +252,10 @@ export class Memory extends window.HTMLElement {
         this.style.height = '100%'
         this._memoryConteiner.style.height = '100%'
       }
+
       this._memoryConteiner.style.border = '5px solid #0c5cc4'
       this._title.style.cursor = 'default'
+
       const myEvent = new window.CustomEvent('bigWindow')
       this.dispatchEvent(myEvent)
     })
@@ -255,9 +263,16 @@ export class Memory extends window.HTMLElement {
     // eventlistner for this._hideWindow
     this._hideWindow.addEventListener('click', (event) => {
       event.preventDefault()
+
       this.setAttribute('data-hide', 'true')
+
       const myEvent = new window.CustomEvent('notBigWindow')
       this.dispatchEvent(myEvent)
+
+      const myEvent2 = new window.CustomEvent('hideWindow')
+      this.dispatchEvent(myEvent2)
+
+      this._isBig = false
     })
 
     // something is wrong here
@@ -381,6 +396,8 @@ export class Memory extends window.HTMLElement {
       this._gameFooter.innerHTML = ''
       this._memoryPictures.innerHTML = ''
       this.style.height = 'initial'
+      this._memoryPictures.style.cursor = 'pointer'
+      this._memoryPictures.style.padding = '0'
       this._memoryConteiner.style.height = 'initial'
       this._paires.innerText = this._paires.innerText = `Paires: ${this._quantityOfPaires / 2}\nTries: ${Math.floor(this._tries / 2)}`
       this._counter = document.createElement('timecounter-app')
@@ -403,7 +420,7 @@ export class Memory extends window.HTMLElement {
       }
       const myEvent = new window.CustomEvent('notBigWindow')
       this.dispatchEvent(myEvent)
-
+      this._isBig = false
       this.remove()
     })
 

@@ -645,8 +645,12 @@ export class Chess extends window.HTMLElement {
     this._hideWindow.addEventListener('click', (event) => {
       event.preventDefault()
       this.setAttribute('data-hide', 'true')
+
       const myEvent = new window.CustomEvent('notBigWindow')
       this.dispatchEvent(myEvent)
+
+      const myEvent2 = new window.CustomEvent('hideWindow')
+      this.dispatchEvent(myEvent2)
     })
 
     // eventlistner for this._chat

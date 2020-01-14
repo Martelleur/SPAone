@@ -10,6 +10,7 @@ template.innerHTML = /* html */ `
   
   <div id="tools">
     <button id="restartMemory" class="button">Restart</button>
+    <button id="chat" class="button">Chat</button>
     <select id="sizeMemory" class="button" name="size">
       <option value="">Tiles</option>
       <option value="4">4 tiles</option>
@@ -38,6 +39,7 @@ template.innerHTML = /* html */ `
   <div id="commentContainer"></div>
   
 </div>
+<div id="chatConteiner"></div>
 <style>
 * {
     box-sizing: border-box;
@@ -129,8 +131,10 @@ export class Memory extends window.HTMLElement {
     this._bigWindow = this.shadowRoot.querySelector('#bigWindow')
     this._adjustableWindow = this.shadowRoot.querySelector('#adjustableWindow')
     this._highscore = this.shadowRoot.querySelector('#highscore')
+    this._chatConteiner = this.shadowRoot.querySelector('#chatConteiner')
 
     // Data memory
+    this._chat = this.shadowRoot.querySelector('#chat')
     this._title = this.shadowRoot.querySelector('#title')
     this._isStarting = false
     this._isFirstClick = false
@@ -216,6 +220,20 @@ export class Memory extends window.HTMLElement {
    * @memberof Memory
    */
   connectedCallback () {
+    // eventlistner for this._chat
+    this._chat.addEventListener('click', (event) => {
+      event.preventDefault()
+      // Only one chat can be created
+      if (this._chatConteiner.childElementCount === 1) {
+        return
+      }
+      const chat = document.createElement('chat-app')
+      chat.setAttribute('data-freezewindow', 'true')
+      console.log(chat.getAttribute('data-freezewindow'))
+      this._chatConteiner.appendChild(chat)
+      this._chatConteiner.appendChild(chat)
+    })
+
     // eventlistener for this._commentBox
     this._commentBox.addEventListener('click', event => {
       if (this._commentContainer.style.display === '' || this._commentContainer.style.display === 'none') {

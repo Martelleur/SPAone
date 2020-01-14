@@ -32,9 +32,9 @@ template.innerHTML = /* html */ `
     </div>
     
     <div id="gameFooter"></div>
-</div>
 
-<div id="commentContainer"></div>
+    <div id="commentContainer"></div>
+</div>
 
 <div id="chatConteiner"></div>
 

@@ -12,7 +12,7 @@ template.innerHTML = /* html */`
 <div class="comment commentNew flex itemsStart justifyStart">
     <div class="flex1">
         <form action="#" class="commentForm">
-            <textarea placeholder="Add a comment" class="commentInput"></textarea>
+            <textarea placeholder="Add a comment..." class="commentInput"></textarea>
             <input type="submit" class="button commentSubmit" value="Submit">
             <button id="userComments" class="button" >Reveal past comments</button>
         </form>

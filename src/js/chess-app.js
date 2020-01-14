@@ -101,13 +101,13 @@ template.innerHTML = /* html */ `
   </div>
   
   <div id="historyConteiner"></div>
-
-  </div>
   
   <div id="commentContainer"></div>
 
-  <div id="chatConteiner"></div>
 </div>
+
+<div id="chatConteiner"></div>
+
 <style>
 :host {
   position: absolute;

@@ -159,6 +159,7 @@ export class Minehunter extends window.HTMLElement {
     this._commentContainer.appendChild(this._commentApp)
     this._commentBox = this.shadowRoot.querySelector('#commentBox')
     this._keyHighscore = true
+    this._keyChat = true
   }
 
   /**
@@ -285,14 +286,15 @@ export class Minehunter extends window.HTMLElement {
     // eventlistner for this._chat
     this._chat.addEventListener('click', (event) => {
       event.preventDefault()
-      // Only one chat can be created
-      if (this._chatConteiner.childElementCount === 1) {
+      this._chatConteiner.innerHTML = ''
+      if (!this._keyChat) {
+        this._keyChat = true
         return
       }
+
+      this._keyChat = false
       const chat = document.createElement('chat-app')
       chat.setAttribute('data-freezewindow', 'true')
-      console.log(chat.getAttribute('data-freezewindow'))
-      this._chatConteiner.appendChild(chat)
       this._chatConteiner.appendChild(chat)
     })
 
@@ -390,7 +392,6 @@ export class Minehunter extends window.HTMLElement {
     // event for gamefield
     this._gameField.addEventListener('click', event => {
       event.preventDefault()
-      // console.log(event.target.tagName)
 
       // if user not click on a img-tag
       if (event.target.tagName !== 'IMG') {
@@ -403,13 +404,10 @@ export class Minehunter extends window.HTMLElement {
         console.log('Not a black brick')
         return
       }
-      // console.log('this._mines array/JM')
-      // console.log(this._mines)
-      // console.log(event.target.id)
+
       const srcAttribute = this._mines[event.target.id].getAttribute('src')
       event.target.setAttribute('src', srcAttribute)
       event.target.style.border = '2px solid black'
-      // console.log(srcAttribute)
 
       // If user click on mine user lose
       if (srcAttribute === '../imageMinehunter/mine.png') {

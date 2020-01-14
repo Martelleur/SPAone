@@ -274,6 +274,7 @@ export class Chess extends window.HTMLElement {
     this._adjustableWindow = this.shadowRoot.querySelector('#adjustableWindow')
     this._active = undefined
     this._status = false
+    this._keyChat = true
 
     // chesspieces image sources
     this._whitePawnSource = '../imageChess/pawnWhite.png'
@@ -662,12 +663,14 @@ export class Chess extends window.HTMLElement {
 
     // eventlistner for this._chat
     this._chat.addEventListener('click', (event) => {
-      // Only one chat can be created
-      if (this._chatConteiner.childElementCount === 1) {
+      event.preventDefault()
+      this._chatConteiner.innerHTML = ''
+      if (!this._keyChat) {
+        this._keyChat = true
         return
       }
 
-      event.preventDefault()
+      this._keyChat = false
       const chat = document.createElement('chat-app')
       chat.setAttribute('data-freezewindow', 'true')
       console.log(chat.getAttribute('data-freezewindow'))

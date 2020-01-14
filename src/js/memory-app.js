@@ -161,6 +161,7 @@ export class Memory extends window.HTMLElement {
     this._commentContainer.appendChild(this._commentApp)
     this._commentBox = this.shadowRoot.querySelector('#commentBox')
     this._keyHighscore = true
+    this._keyChat = true
   }
 
   /**
@@ -223,13 +224,15 @@ export class Memory extends window.HTMLElement {
     // eventlistner for this._chat
     this._chat.addEventListener('click', (event) => {
       event.preventDefault()
-      // Only one chat can be created
-      if (this._chatConteiner.childElementCount === 1) {
+      this._chatConteiner.innerHTML = ''
+      if (!this._keyChat) {
+        this._keyChat = true
         return
       }
+
+      this._keyChat = false
       const chat = document.createElement('chat-app')
       chat.setAttribute('data-freezewindow', 'true')
-      console.log(chat.getAttribute('data-freezewindow'))
       this._chatConteiner.appendChild(chat)
       this._chatConteiner.appendChild(chat)
     })

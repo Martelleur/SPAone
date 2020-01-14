@@ -325,10 +325,6 @@ export class Chat extends window.HTMLElement {
       this._tools.style.border = '5px solid #0c5cc4'
       this._newMessage.style.border = '5px solid #0c5cc4'
 
-      if (parseInt(this._messages.style.height) < (window.innerHeight * 0.6)) {
-        this._messages.style.height = `${window.innerHeight * 0.6}px`
-      }
-
       this._title.style.cursor = 'default'
       const myEvent = new window.CustomEvent('bigWindow')
       this.dispatchEvent(myEvent)
@@ -412,10 +408,6 @@ export class Chat extends window.HTMLElement {
 
         p.innerHTML = `Date: ${d}.<br>Username: ${dataParse.username}.<br>Channel: ${dataParse.channel}.<br>Data: ${dataParse.data}<br>Type: ${dataParse.type}<hr>`
         this._messages.appendChild(p)
-        const temp = parseInt(this._messages.style.height) + 100
-        const tempText = `${temp}px`
-        console.log(tempText)
-        this._messages.style.height = tempText
       }
     })
 

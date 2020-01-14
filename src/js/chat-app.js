@@ -324,8 +324,7 @@ export class Chat extends window.HTMLElement {
       this.style.outline = 'none'
       this._tools.style.border = '5px solid #0c5cc4'
       this._newMessage.style.border = '5px solid #0c5cc4'
-      const temp = window.innerWidth
-      this._messages.style.height = `${temp}px`
+
       this._title.style.cursor = 'default'
       const myEvent = new window.CustomEvent('bigWindow')
       this.dispatchEvent(myEvent)

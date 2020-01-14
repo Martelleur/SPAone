@@ -10,6 +10,7 @@ template.innerHTML = /* html */ `
   
   <div id="tools">
     <button id="restartMemory" class="button">Restart</button>
+    <button id="chat" class="button">Chat</button>
     <select id="sizeMemory" class="button" name="size">
       <option value="">Tiles</option>
       <option value="4">4 tiles</option>
@@ -18,7 +19,7 @@ template.innerHTML = /* html */ `
       <option value="16">16 tiles</option>
     </select>
     <button id="highscore" class="button">Highscore</button>
-    <button id="commentBox" class="button">Open comment-box</button>
+    <button id="commentBox" class="button">Comment-box</button>
     <i id="deletMemory" class="material-icons">close</i>
     <i id="bigWindow" class="material-icons">add_box</i>
     <i id="adjustableWindow" class="material-icons">exposure</i>
@@ -38,6 +39,7 @@ template.innerHTML = /* html */ `
   <div id="commentContainer"></div>
   
 </div>
+<div id="chatConteiner"></div>
 <style>
 * {
     box-sizing: border-box;
@@ -129,8 +131,10 @@ export class Memory extends window.HTMLElement {
     this._bigWindow = this.shadowRoot.querySelector('#bigWindow')
     this._adjustableWindow = this.shadowRoot.querySelector('#adjustableWindow')
     this._highscore = this.shadowRoot.querySelector('#highscore')
+    this._chatConteiner = this.shadowRoot.querySelector('#chatConteiner')
 
     // Data memory
+    this._chat = this.shadowRoot.querySelector('#chat')
     this._title = this.shadowRoot.querySelector('#title')
     this._isStarting = false
     this._isFirstClick = false
@@ -153,8 +157,11 @@ export class Memory extends window.HTMLElement {
     this._tools = this.shadowRoot.querySelector('#tools')
     this._commentContainer = this.shadowRoot.querySelector('#commentContainer')
     this._commentApp = document.createElement('comment-app')
+    this._commentApp.setAttribute('data-storagename', 'memory')
     this._commentContainer.appendChild(this._commentApp)
     this._commentBox = this.shadowRoot.querySelector('#commentBox')
+    this._keyHighscore = true
+    this._keyChat = true
   }
 
   /**
@@ -214,15 +221,28 @@ export class Memory extends window.HTMLElement {
    * @memberof Memory
    */
   connectedCallback () {
+    // eventlistner for this._chat
+    this._chat.addEventListener('click', (event) => {
+      event.preventDefault()
+      this._chatConteiner.innerHTML = ''
+      if (!this._keyChat) {
+        this._keyChat = true
+        return
+      }
+
+      this._keyChat = false
+      const chat = document.createElement('chat-app')
+      chat.setAttribute('data-freezewindow', 'true')
+      this._chatConteiner.appendChild(chat)
+      this._chatConteiner.appendChild(chat)
+    })
+
     // eventlistener for this._commentBox
     this._commentBox.addEventListener('click', event => {
-      console.log(this._commentContainer.style.display)
       if (this._commentContainer.style.display === '' || this._commentContainer.style.display === 'none') {
         this._commentContainer.style.display = 'initial'
-        this._commentBox.textContent = 'Close comment-box'
       } else {
         this._commentContainer.style.display = 'none'
-        this._commentBox.textContent = 'Open comment-box'
       }
     })
 
@@ -231,6 +251,12 @@ export class Memory extends window.HTMLElement {
       event.preventDefault()
       this._gameFooter.innerHTML = ''
       this._paires.innerHTML = ''
+      if (!this._keyHighscore) {
+        this._keyHighscore = true
+        return
+      }
+
+      this._keyHighscore = false
       const p = document.createElement('p')
       const argument = `highScoreMemory${this._numberOfPictures}`
       p.textContent = `Top 5 result ${this._numberOfPictures} tiles memory:`

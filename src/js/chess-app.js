@@ -12,8 +12,9 @@ template.innerHTML = /* html */ `
       <div id="tools">
           <button id="options1">White options</button>
           <button id="options2">Black options</button>
-          <button id="chat">Chat</button>
-          <select id="history">
+          <button id="chat" class="button">Chat</button>
+          <button id="commentBox" class="button">Comment-box</button>
+          <select id="history" class="button">
             <option value="history">History</option>
             <option value="clear">Hide history!</option>
             <option value="allRounds">All rounds!</option>
@@ -100,10 +101,13 @@ template.innerHTML = /* html */ `
   </div>
   
   <div id="historyConteiner"></div>
+  
+  <div id="commentContainer"></div>
 
-  </div>
-  <div id="chatConteiner"></div>
 </div>
+
+<div id="chatConteiner"></div>
+
 <style>
 :host {
   position: absolute;
@@ -125,8 +129,8 @@ template.innerHTML = /* html */ `
 :host #chessBoard {
   box-sizing: border-box;
   background-color: white;
-  width: 400px;
-  height: 400px;
+  width: 60vw;
+  height: 60vw;
   margin: 0 auto;
 }
 :host #title {
@@ -182,13 +186,13 @@ template.innerHTML = /* html */ `
   border: 3px solid purple;
   cursor: pointer;
 }
-:host #history, :host #chat {
+:host .button {
   cursor: pointer;
   background-color: black;
   border: 1px solid white;
   padding: 1px;
 }
-:host #chat {
+:host #chat, :host #commentBox {
   padding: 2px;
 }
 :host #historyConteiner {
@@ -203,6 +207,11 @@ template.innerHTML = /* html */ `
   margin: 0;
   cursor: pointer;
   color: white;
+}
+:host #commentContainer {
+  width: 100%;
+  display: none;
+  background-color: black;
 } 
 
 </style>
@@ -221,9 +230,11 @@ export class Chess extends window.HTMLElement {
   constructor () {
     super()
 
-    // Creating shadowroot and data
+    // Creating shadowroot
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
+
+    // Data chess-app
     this._chessConteiner = this.shadowRoot.querySelector('#chessConteiner')
     this._chessBoard = this.shadowRoot.querySelector('#chessBoard')
     this._wrapper = this.shadowRoot.querySelector('#wrapper')
@@ -245,6 +256,11 @@ export class Chess extends window.HTMLElement {
     this._winner = this.shadowRoot.querySelector('#winner')
     this._chatConteiner = this.shadowRoot.querySelector('#chatConteiner')
     this._title = this.shadowRoot.querySelector('#title')
+    this._commentContainer = this.shadowRoot.querySelector('#commentContainer')
+    this._commentApp = document.createElement('comment-app')
+    this._commentApp.setAttribute('data-storagename', 'chess')
+    this._commentContainer.appendChild(this._commentApp)
+    this._commentBox = this.shadowRoot.querySelector('#commentBox')
 
     // tools chess
     this._tools = this.shadowRoot.querySelector('#tools')
@@ -258,6 +274,7 @@ export class Chess extends window.HTMLElement {
     this._adjustableWindow = this.shadowRoot.querySelector('#adjustableWindow')
     this._active = undefined
     this._status = false
+    this._keyChat = true
 
     // chesspieces image sources
     this._whitePawnSource = '../imageChess/pawnWhite.png'
@@ -331,6 +348,15 @@ export class Chess extends window.HTMLElement {
    * @memberof Chess
    */
   connectedCallback () {
+    // eventlistener for this._commentBox
+    this._commentBox.addEventListener('click', event => {
+      if (this._commentContainer.style.display === '' || this._commentContainer.style.display === 'none') {
+        this._commentContainer.style.display = 'initial'
+      } else {
+        this._commentContainer.style.display = 'none'
+      }
+    })
+
     // Events fired on the drag target
     this._chessBoard.addEventListener('dragstart', event => {
       console.log(event.target.parentNode)
@@ -637,12 +663,14 @@ export class Chess extends window.HTMLElement {
 
     // eventlistner for this._chat
     this._chat.addEventListener('click', (event) => {
-      // Only one chat can be created
-      if (this._chatConteiner.childElementCount === 1) {
+      event.preventDefault()
+      this._chatConteiner.innerHTML = ''
+      if (!this._keyChat) {
+        this._keyChat = true
         return
       }
 
-      event.preventDefault()
+      this._keyChat = false
       const chat = document.createElement('chat-app')
       chat.setAttribute('data-freezewindow', 'true')
       console.log(chat.getAttribute('data-freezewindow'))

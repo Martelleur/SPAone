@@ -40,7 +40,7 @@ body {
 header {
     position: absolute;
     top: 0;
-    background-color:#3b121f;
+    background-color:#4a121e;
     width: 100%;
     border-bottom: 5px solid #23d96c;
     height: 5%;
@@ -61,7 +61,7 @@ main {
 footer {
     position: absolute;
     bottom: 0;
-    background-color:#3b121f;
+    background-color:#4a121e;
     width: 100%;
     height: 5%;
     border-top: 5px solid #23d96c;

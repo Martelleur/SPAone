@@ -28,7 +28,7 @@ template.innerHTML = /* html */ `
   </form>
 </div>
 <div id="footer">
-  <span id="emojiButton" class="button">😀</span>
+<span id="emojiButton" class="button">😀</span>
 </div>
 
 <style>
@@ -173,7 +173,9 @@ export class Chat extends window.HTMLElement {
         this._bigWindow.style.display = 'none'
         this._hideWindow.style.display = 'none'
         this._adjustableWindow.style.display = 'none'
+        this._deletChat.style.display = 'none'
         this.style.width = '100%'
+        this.style.boxSizing = 'border-box'
         this._tools.style.cursor = 'default'
       }
       if (newValue === 'false') {

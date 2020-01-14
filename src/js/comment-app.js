@@ -12,15 +12,16 @@ template.innerHTML = /* html */`
     <div class="flex1">
         <form action="#" class="commentForm">
             <textarea placeholder="Add a comment" class="commentInput"></textarea>
-            <input type="submit" class="commentSubmit" value="Submit">
-            <button id="userComments">REVEAL PAST COMMENTS</button>
+            <input type="submit" class="button commentSubmit" value="Submit">
+            <button id="userComments" class="button" >Reveal past comments</button>
         </form>
     </div>
 </div>
 </div>
 <style>
 :host {
-    box-sizing: border-box;    
+    box-sizing: border-box;
+    width: 100%;    
 }
 :host .flex {
     display: flex;
@@ -29,6 +30,9 @@ template.innerHTML = /* html */`
     flex: 1;
     overflow: hidden;
 }
+:host .button {
+  cursor: pointer;
+}
 :host .itemsStart {
     align-items: flex-start;
 }
@@ -36,58 +40,28 @@ template.innerHTML = /* html */`
     justify-content: flex-start;
 }
 :host #commentContainer {
-    width: 80%;
-    border: 2px solid #3b121f;
-    min-height: 400px;
+    width: 100%;
     margin: 0 auto;
     background-color: black;
-    color: #0c5cc4;
-    text-transform: uppercase;
 }
 :host .commentBody {
-    background-color: #011626;
-    color: #0c5cc4;
-    line-height: 2em;
+    background-color: white;
+    color: black;
     max-width: 95%;
     margin: 0 auto;
-    border: 2px solid black;
     overflow: hidden;
 }
 :host .comment {
     padding: 1em;  
 }
-:host .commentBody:hover {
-    background-color: #3b121f;
-    border: 2px solid #0c5cc4;
-}
 :host .commentInput {
-    font-size: 1.3em;
-    border: 2px solid #3b121f;
     width: 95%;
-    color: #0c5cc4;
+    color: black;
     min-height: 100px;
-    background-color: #011626; 
-    text-transform: uppercase;
+    background-color: white; 
+    resize: none;
 }
-:host .commentInput:focus, .commentInput:hover {
-    background-color: #3b121f;
-    border: 2px solid #0c5cc4;
-    outline: none;
-    color: #81a655;
-    cursor: pointer;
-}
-:host .commentSubmit, :host #userComments {
-    background: #011626;
-    border: 2px solid #3b121f;
-    color:  #8f6d47;
-    cursor: pointer;
-    text-transform: uppercase;
-}
-:host .commentSubmit:hover, :host #userComments:hover {
-    background-color: #3b121f;
-    border: 2px solid #0c5cc4;
-    color: #0c5cc4; 
-}
+
 </style>
 `
 export default class CommentsElement extends window.HTMLElement {
@@ -131,17 +105,14 @@ export default class CommentsElement extends window.HTMLElement {
       const data = {
         comment: this._commentInput.value
       }
-      // prevent form from submitting
       event.preventDefault()
 
       // if commet textarea value < 1 exit
       if (this._commentInput.value.length < 1) {
         return
       }
-      // append comment
       this.template(data)
 
-      // reset textarea value
       this._commentInput.value = ''
 
       // Save to local storage
@@ -151,10 +122,8 @@ export default class CommentsElement extends window.HTMLElement {
     this.shadowRoot.querySelector('#userComments').addEventListener('click', (event) => {
       event.preventDefault()
 
-      // get instance of local storage key/value
       const saved = window.localStorage.getItem('commentListning')
 
-      // checked if it exits and if so set HTML to value
       if (saved) {
         this._commentList.innerHTML = saved
       }
@@ -176,4 +145,4 @@ export default class CommentsElement extends window.HTMLElement {
   }
 }
 // Register custum element
-window.customElements.define('comments-element', CommentsElement)
+window.customElements.define('comment-app', CommentsElement)

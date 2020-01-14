@@ -389,17 +389,17 @@ export class Chat extends window.HTMLElement {
     // listning for message from other users
     this._socket.addEventListener('message', event => {
       const dataParse = JSON.parse(event.data)
-      console.log(dataParse)
       const d = window.moment().format('MMMM Do YYYY, h:mm:ss a')
 
       const p = document.createElement('p')
       if (dataParse.username !== 'The Server') {
         const messages = JSON.parse(window.sessionStorage.getItem('messages')) || []
+        /*
         console.log(window.sessionStorage.getItem('messages').lenght)
-
         if (window.sessionStorage.getItem('messages').lenght >= 10) {
           window.sessionStorage.removeItem('messages')
         }
+        */
 
         dataParse.date = d
         messages.push(dataParse)

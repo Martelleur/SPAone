@@ -3,7 +3,6 @@ template.innerHTML = /* html */ `
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <div id="header">
   <p id="title"></p>
-  <button id="emojiButton" class="button">😀</button>
 <div>
 
 <div id="chatConteiner">
@@ -28,6 +27,10 @@ template.innerHTML = /* html */ `
     </fieldset>
   </form>
 </div>
+<div id="footer">
+  <span id="emojiButton" class="button">😀</span>
+</div>
+
 <style>
 * {
     box-sizing: border-box;
@@ -94,12 +97,11 @@ template.innerHTML = /* html */ `
   margin: 0;
   cursor: pointer;
 }
-:host #header {
+:host #footer, :host #emojiButton {
   background-color: black;
-}
-:host #emojiButton {
   display: block;
-  margin: 0 auto;
+  text-align: center;
+  cursor: pointer;
 }
 </style>
 `
@@ -142,8 +144,7 @@ export class Chat extends window.HTMLElement {
     console.log(window.moment())
     console.log(window.moment().format('MMMM Do YYYY, h:mm:ss a'))
     this._picker = new window.EmojiButton({
-      position: 'auto'
-
+      position: 'left-end'
     })
     console.log(this._picker)
     this._picker.on('emoji', emoji => {
@@ -253,14 +254,8 @@ export class Chat extends window.HTMLElement {
       if (this._picker.pickerVisible) {
         this._picker.hidePicker()
       } else {
-        this._picker.showPicker(this._emoji)
-      }// window.history and window.location
-      const stateObj = {
-        element: this.parentElement.getAttribute('data-create-element'),
-        id: this.getAttribute('id')
+        this._picker.showPicker(document.querySelector('main'))
       }
-
-      window.history.pushState(stateObj, `/${stateObj.id}`, `/${stateObj.element}/${stateObj.id}`)
     })
 
     // eventlistner for this._changeUsername

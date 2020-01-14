@@ -1,10 +1,11 @@
 const template = document.createElement('template')
 template.innerHTML = /* html */`
-<div id="commentContainer">    
-<div class="comments">
+<div id="commentContainer">
+<p id="header"></p>    
+<div id="comments">
     <div class="comment flex itemsStart justifyStart">
         <div class="flex1">
-            <div class="commentBody">Comments</div> 
+            <div class="commentBody"></div> 
         </div>
     </div>
 </div>    
@@ -44,11 +45,11 @@ template.innerHTML = /* html */`
     margin: 0 auto;
     background-color: black;
 }
+:host #comments {
+  background-color: black;
+  color: white;
+}
 :host .commentBody {
-    background-color: white;
-    color: black;
-    max-width: 95%;
-    margin: 0 auto;
     overflow: hidden;
 }
 :host .comment {
@@ -71,8 +72,11 @@ export default class CommentsElement extends window.HTMLElement {
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
     this._submit = this.shadowRoot.querySelector('.commentSubmit')
-    this._commentList = this.shadowRoot.querySelector('.comments')
+    this._commentList = this.shadowRoot.querySelector('#comments')
     this._commentInput = this.shadowRoot.querySelector('.commentInput')
+    this._tempTest = true
+    this._revealButton = this.shadowRoot.querySelector('#userComments')
+    this._storageName = 'undefined'
   }
 
   /**
@@ -81,7 +85,7 @@ export default class CommentsElement extends window.HTMLElement {
    * @memberof CommentsElement
    */
   static get observedAttributes () {
-    return ['src', 'class', 'id']
+    return ['data-storagename']
   }
 
   /**
@@ -92,8 +96,16 @@ export default class CommentsElement extends window.HTMLElement {
    * @memberof CommentsElement
    */
   attributeChangedCallback (name, oldValue, newValue) {
-    if (name === 'src') {
-      this._src = newValue
+    if (name === 'data-storagename') {
+      if (newValue === 'minehunter') {
+        this._storageName = 'minehunterComments'
+      } else if (newValue === 'chess') {
+        this._storageName = 'chessComments'
+      } else if (newValue === 'memory') {
+        this._storageName = 'memoryComments'
+      } else {
+        this._storageName = 'commentListning'
+      }
     }
   }
 
@@ -103,7 +115,8 @@ export default class CommentsElement extends window.HTMLElement {
   connectedCallback () {
     this._submit.addEventListener('click', event => {
       const data = {
-        comment: this._commentInput.value
+        comment: this._commentInput.value,
+        date: window.moment().format('MMMM Do YYYY, h:mm:ss a')
       }
       event.preventDefault()
 
@@ -116,16 +129,23 @@ export default class CommentsElement extends window.HTMLElement {
       this._commentInput.value = ''
 
       // Save to local storage
-      window.localStorage.setItem('commentListning', this._commentList.innerHTML)
+      window.localStorage.setItem(this._storageName, this._commentList.innerHTML)
     }, false)
 
     this.shadowRoot.querySelector('#userComments').addEventListener('click', (event) => {
       event.preventDefault()
 
-      const saved = window.localStorage.getItem('commentListning')
-
-      if (saved) {
-        this._commentList.innerHTML = saved
+      if (this._tempTest) {
+        this._tempTest = false
+        const saved = window.localStorage.getItem(this._storageName)
+        if (saved) {
+          this._commentList.innerHTML = saved
+        }
+        this._revealButton.textContent = 'Hide past comments'
+      } else {
+        this._commentList.innerHTML = ''
+        this._tempTest = true
+        this._revealButton.textContent = 'Reveal past comments'
       }
     })
   }
@@ -138,7 +158,11 @@ export default class CommentsElement extends window.HTMLElement {
     this._commentList.insertAdjacentHTML('beforeend', `
     <div class="comment flex itemsStart justifyStart">
       <div class="flex1">
-        <div class="commentBody">${data.comment}</div> 
+        <div class="commentBody">
+          ${data.date}
+          <br>
+          ${data.comment}
+        </div> 
       </div>
     </div>
     `)

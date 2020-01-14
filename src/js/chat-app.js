@@ -28,7 +28,7 @@ template.innerHTML = /* html */ `
   </form>
 </div>
 <div id="footer">
-  <span id="emojiButton" class="button">😀</span>
+<span id="emojiButton" class="button">😀</span>
 </div>
 
 <style>

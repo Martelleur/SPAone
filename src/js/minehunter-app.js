@@ -1,5 +1,6 @@
 import './chat-app.js'
 import './timecounter-app.js'
+import './comment-app.js'
 
 const template = document.createElement('template')
 template.innerHTML = /* html */ `
@@ -15,6 +16,7 @@ template.innerHTML = /* html */ `
         <option value="2">Impossible</option>
       </select>
       <button id="highscore" class="button">Highscore</button>
+      <button id="commentBox" class="button">Comment-box</button>
       <i id="deletMinehunter" class="material-icons">close</i>
       <i id="bigWindow" class="material-icons">add_box</i>
       <i id="adjustableWindow" class="material-icons">exposure</i>
@@ -31,15 +33,19 @@ template.innerHTML = /* html */ `
     
     <div id="gameFooter"></div>
 </div>
+
+<div id="commentContainer"></div>
+
 <div id="chatConteiner"></div>
+
 <style>
 * {
     box-sizing: border-box;
 }
 :host {
     position: absolute;
-    width: 50%;
-    hight: 50%;
+    width: 60%;
+    hight: 60%;
     display: block;
     resize: both;
     overflow: auto;
@@ -94,6 +100,11 @@ template.innerHTML = /* html */ `
   margin: 0;
   cursor: pointer;
 }
+:host #commentContainer {
+  width: 100%;
+  display: none;
+  background-color: black;
+}
 </style>
 `
 
@@ -114,6 +125,8 @@ export class Minehunter extends window.HTMLElement {
     // Creatig shadowroot
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
+
+    // Data memory
     this._gameField = this.shadowRoot.querySelector('#gameField')
     this._minehunterConteiner = this.shadowRoot.querySelector('#minehunterConteiner')
     this._quantityOfBricks = 100
@@ -140,6 +153,12 @@ export class Minehunter extends window.HTMLElement {
     this._sizeMinehunter = this.shadowRoot.querySelector('#sizeMinehunter')
     this._levelMinehunter = this.shadowRoot.querySelector('#levelMinehunter')
     this._highscore = this.shadowRoot.querySelector('#highscore')
+    this._commentContainer = this.shadowRoot.querySelector('#commentContainer')
+    this._commentApp = document.createElement('comment-app')
+    this._commentApp.setAttribute('data-storagename', 'minehunter')
+    this._commentContainer.appendChild(this._commentApp)
+    this._commentBox = this.shadowRoot.querySelector('#commentBox')
+    this._keyHighscore = true
   }
 
   /**
@@ -196,10 +215,25 @@ export class Minehunter extends window.HTMLElement {
    * @memberof Minehunter
    */
   connectedCallback () {
+    // eventlistener for this._commentBox
+    this._commentBox.addEventListener('click', event => {
+      if (this._commentContainer.style.display === '' || this._commentContainer.style.display === 'none') {
+        this._commentContainer.style.display = 'initial'
+      } else {
+        this._commentContainer.style.display = 'none'
+      }
+    })
+
     // eventlistner for this._highscore
     this._highscore.addEventListener('click', event => {
       event.preventDefault()
       this._gameFooter.innerHTML = ''
+      if (!this._keyHighscore) {
+        this._keyHighscore = true
+        return
+      }
+
+      this._keyHighscore = false
       const p = document.createElement('p')
       const argument = `highScoreMinehunter${this._currentLevel}`
       if (this._currentLevel === 1) {
@@ -394,19 +428,11 @@ export class Minehunter extends window.HTMLElement {
         sorry.style.color = 'white'
         this._gameFooter.appendChild(sorry)
 
-        /*
-        window.setTimeout(() => {
-          this.setGamefield()
-          this._mines = this.setMines()
-        }, 5000)
-        */
         return
       }
 
       // reconstruct this._mines to an array of arrays
       const newMinesArray = this.reconstructArray(this._mines)
-      // console.log('newMinesArray/JM')
-      // console.log(newMinesArray)
 
       const quantityOfBricks = this._gameField.querySelectorAll('img').length
 
@@ -417,17 +443,11 @@ export class Minehunter extends window.HTMLElement {
 
       // reconstruct imageArray to an array of arrays
       const newImageArray = this.reconstructArray(imageArr)
-      console.log('newImageArray/JM')
-      console.log(newImageArray)
 
       // Only if gamefield 10 * 10
       const indexLenght = event.target.id.length
       const indexNumber = event.target.id[indexLenght - 1]
       const arrayNumber = event.target.id[indexLenght - 2] || 0
-      // console.log(`indexNumber: ${indexNumber}`)
-      // console.log(`arrayNumber: ${arrayNumber}`)
-      // console.log(typeof indexNumber)
-      // console.log(typeof indexNumber)
 
       // Open up neighboutbricks
       const executeArray = [true, true, true, true]

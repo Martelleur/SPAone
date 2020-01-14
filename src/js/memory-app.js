@@ -18,7 +18,7 @@ template.innerHTML = /* html */ `
       <option value="16">16 tiles</option>
     </select>
     <button id="highscore" class="button">Highscore</button>
-    <button id="commentBox" class="button">Open comment-box</button>
+    <button id="commentBox" class="button">Comment-box</button>
     <i id="deletMemory" class="material-icons">close</i>
     <i id="bigWindow" class="material-icons">add_box</i>
     <i id="adjustableWindow" class="material-icons">exposure</i>
@@ -153,8 +153,10 @@ export class Memory extends window.HTMLElement {
     this._tools = this.shadowRoot.querySelector('#tools')
     this._commentContainer = this.shadowRoot.querySelector('#commentContainer')
     this._commentApp = document.createElement('comment-app')
+    this._commentApp.setAttribute('data-storagename', 'memory')
     this._commentContainer.appendChild(this._commentApp)
     this._commentBox = this.shadowRoot.querySelector('#commentBox')
+    this._keyHighscore = true
   }
 
   /**
@@ -216,13 +218,10 @@ export class Memory extends window.HTMLElement {
   connectedCallback () {
     // eventlistener for this._commentBox
     this._commentBox.addEventListener('click', event => {
-      console.log(this._commentContainer.style.display)
       if (this._commentContainer.style.display === '' || this._commentContainer.style.display === 'none') {
         this._commentContainer.style.display = 'initial'
-        this._commentBox.textContent = 'Close comment-box'
       } else {
         this._commentContainer.style.display = 'none'
-        this._commentBox.textContent = 'Open comment-box'
       }
     })
 
@@ -231,6 +230,12 @@ export class Memory extends window.HTMLElement {
       event.preventDefault()
       this._gameFooter.innerHTML = ''
       this._paires.innerHTML = ''
+      if (!this._keyHighscore) {
+        this._keyHighscore = true
+        return
+      }
+
+      this._keyHighscore = false
       const p = document.createElement('p')
       const argument = `highScoreMemory${this._numberOfPictures}`
       p.textContent = `Top 5 result ${this._numberOfPictures} tiles memory:`

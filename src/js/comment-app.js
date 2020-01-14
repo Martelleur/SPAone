@@ -105,17 +105,14 @@ export default class CommentsElement extends window.HTMLElement {
       const data = {
         comment: this._commentInput.value
       }
-      // prevent form from submitting
       event.preventDefault()
 
       // if commet textarea value < 1 exit
       if (this._commentInput.value.length < 1) {
         return
       }
-      // append comment
       this.template(data)
 
-      // reset textarea value
       this._commentInput.value = ''
 
       // Save to local storage
@@ -125,10 +122,8 @@ export default class CommentsElement extends window.HTMLElement {
     this.shadowRoot.querySelector('#userComments').addEventListener('click', (event) => {
       event.preventDefault()
 
-      // get instance of local storage key/value
       const saved = window.localStorage.getItem('commentListning')
 
-      // checked if it exits and if so set HTML to value
       if (saved) {
         this._commentList.innerHTML = saved
       }

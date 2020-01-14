@@ -1,25 +1,27 @@
 const template = document.createElement('template')
 template.innerHTML = /* html */ `
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<div id="chatConteiner">
+<div id="header">
   <p id="title"></p>
-  <form action="">
-      <fieldset id="tools">
-          <button id="goLiveChat" class="button">Go online</button>
-          <button id="closeLiveChat" class="button">Go offline</button>
-          <i id="deletChat" class="material-icons">close</i>
-          <i id="bigWindow" class="material-icons">add_box</i>
-          <i id="adjustableWindow" class="material-icons">exposure</i>
-          <i id="hideWindow" class="material-icons">indeterminate_check_box</i>
-          <p id="onlineStatus">You are online</p>
-      </fieldset>
+  <button id="emojiButton" class="button">😀</button>
+  <div id="tools">
+      <button id="goLiveChat" class="button">Go online</button>
+      <button id="closeLiveChat" class="button">Go offline</button>
+      <i id="deletChat" class="material-icons">close</i>
+      <i id="bigWindow" class="material-icons">add_box</i>
+      <i id="adjustableWindow" class="material-icons">exposure</i>
+      <i id="hideWindow" class="material-icons">indeterminate_check_box</i>
+      <p id="onlineStatus">You are online</p>
+  </div>
+<div>
 
+<div id="chatConteiner">
+  <form action="">
       <fieldset id="messages"></fieldset>
       
       <fieldset id="newMessage">
-          <textarea id="inputUser" rows="10" wrap="hard" placeholder="Write message here..."></textarea>
+          <textarea id="inputUser" rows="5" placeholder="Write message here..."></textarea>
           <input type="submit" class="button" id="sendButton" value="Send">
-          <button id="emoji-button" class="button">😀</button>
           <button id="changeUsername" class="button">Change username</button>
           <button id="changeChannel" class="button">Change channel</button>
       </fieldset>
@@ -29,10 +31,12 @@ template.innerHTML = /* html */ `
 * {
     box-sizing: border-box;
     margin: 0;
+    background-color: black;
 }
 :host {
     position: absolute;
     width: 50%;
+    height: 50%;
     color: white;
     background-color: black;
     box-sizing: border-box;
@@ -62,34 +66,43 @@ template.innerHTML = /* html */ `
   resize: none;
 }
 :host #tools {
-  position: -webkit-sticky;
-  position: sticky;
-  top: 0;
-  background-color: black;
   margin: 0;
   padding: 0;
   padding-top: 3px;
   padding-left: 3px;
 }
-:host #newMessage {
-  position: -webkit-sticky;
-  position: sticky;
-  bottom: 0;
-  background-color: black;
-  margin: 0;
-}
 :host #messages, :host #onlineStatus, :host #chatTitle, {
   background-color: white;
   color: black;
 }
+:host #newMessage {
+  position: -webkit-sticky;
+  position: sticky;
+  bottom: 0px;
+}
 :host .button {
   cursor: pointer;
+  background-color: white;
+}
+:host #inputUser {
+  background-color: white;
 }
 :host .material-icons {
   float: right;
   padding: 0;
   margin: 0;
   cursor: pointer;
+}
+:host #emojiButton {
+  display: block;
+  margin: 0 auto; 
+}
+:host #header {
+  height: 50px;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  background-color: black;
 }
 </style>
 `
@@ -120,7 +133,7 @@ export class Chat extends window.HTMLElement {
     this._title = this.shadowRoot.querySelector('#title')
 
     // Tools chat
-    this._emoji = this.shadowRoot.querySelector('#emoji-button')
+    this._emoji = this.shadowRoot.querySelector('#emojiButton')
     this._tools = this.shadowRoot.querySelector('#tools')
     this._adjustableWindow = this.shadowRoot.querySelector('#adjustableWindow')
     this._hideWindow = this.shadowRoot.querySelector('#hideWindow')
@@ -132,10 +145,11 @@ export class Chat extends window.HTMLElement {
     console.log(window.moment())
     console.log(window.moment().format('MMMM Do YYYY, h:mm:ss a'))
     this._picker = new window.EmojiButton({
-      position: 'auto'
+      position: 'bottom'
+
     })
     console.log(this._picker)
-    this._picker.on('emoji', (emoji) => {
+    this._picker.on('emoji', emoji => {
       this._input.value += emoji
     })
     console.log()
@@ -239,7 +253,17 @@ export class Chat extends window.HTMLElement {
   connectedCallback () {
     // eventlistner for this._emoji
     this._emoji.addEventListener('click', event => {
-      this._picker.pickerVisible ? this._picker.hidePicker() : this._picker.showPicker(this._emoji)
+      if (this._picker.pickerVisible) {
+        this._picker.hidePicker()
+      } else {
+        this._picker.showPicker(this._emoji)
+      }// window.history and window.location
+      const stateObj = {
+        element: this.parentElement.getAttribute('data-create-element'),
+        id: this.getAttribute('id')
+      }
+
+      window.history.pushState(stateObj, `/${stateObj.id}`, `/${stateObj.element}/${stateObj.id}`)
     })
 
     // eventlistner for this._changeUsername
@@ -289,10 +313,8 @@ export class Chat extends window.HTMLElement {
       this.style.resize = 'both'
       this.style.border = '5px solid #0c5cc4'
       this.style.outline = '1px solid black'
-      this._tools.style.border = 'none'
-      this._newMessage.style.border = 'none'
       this._title.style.cursor = 'move'
-      this._messages.style.height = '50%'
+      this.style.height = '50%'
       const myEvent = new window.CustomEvent('notBigWindow')
       this.dispatchEvent(myEvent)
     })
@@ -304,10 +326,7 @@ export class Chat extends window.HTMLElement {
       this.style.resize = 'none'
       this.style.border = 'none'
       this.style.outline = 'none'
-      this._tools.style.border = '5px solid #0c5cc4'
-      this._newMessage.style.border = '5px solid #0c5cc4'
-      const temp = window.innerWidth
-      this._messages.style.height = `${temp}px`
+      this.style.height = '100%'
       this._title.style.cursor = 'default'
       const myEvent = new window.CustomEvent('bigWindow')
       this.dispatchEvent(myEvent)
@@ -372,22 +391,18 @@ export class Chat extends window.HTMLElement {
 
     // listning for message from other users
     this._socket.addEventListener('message', event => {
-      // console.log('websocket message event.data:')
-      // console.log(event.data)
       const dataParse = JSON.parse(event.data)
       const p = document.createElement('p')
-      // p.textContent = event.data
+
       if (dataParse.username !== 'The Server') {
         p.innerHTML = `Date: ${new Date()}.<br>Username: ${dataParse.username}.<br>Channel: ${dataParse.channel}.<br>Data: ${dataParse.data}<br>Type: ${dataParse.type}<hr>`
         this._messages.appendChild(p)
       }
-      console.log('event.data:')
-      console.log(event.data)
     })
 
     // close WS
     this._closeLiveChat.addEventListener('click', event => {
-      console.log('ws offline/JM')
+      console.log('ws offline')
       this._socket.close()
       this._onlineStatus.innerText = 'You are offline'
     })

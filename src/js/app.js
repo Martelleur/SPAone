@@ -10,7 +10,6 @@ import { moveElement } from './moveElement.js'
 // Like the heartbeat in websocketconnection
 
 // register service worker
-
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./js/sw.js', { scope: './js/' }).then(function (reg) {
     if (reg.installing) {
@@ -25,6 +24,37 @@ if ('serviceWorker' in navigator) {
     console.log('Registration failed with ' + error)
   })
 }
+
+// using moment-api
+setInterval(() => {
+  // let c = window.moment().format('LLLL')
+  const d = window.moment().format('MMMM Do YYYY, h:mm:ss a')
+  document.querySelector('#time').innerHTML = d
+  document.querySelector('#time').style.float = 'right'
+}, 1000)
+
+// using emoji-api
+window.addEventListener('DOMContentLoaded', () => {
+  const button = document.querySelector('#emojiButton')
+  const picker = new window.EmojiButton({
+    position: 'bottom'
+  })
+  picker.on('emoji', emoji => {
+    document.querySelector('input').value += emoji
+  })
+
+  button.addEventListener('click', () => {
+    if (picker.pickerVisible) {
+      picker.hidePicker()
+    } else {
+      picker.showPicker(button)
+    }
+  })
+})
+document.querySelector('#inputEmoji').style.float = 'right'
+document.querySelector('#emojiButton').style.float = 'right'
+document.querySelector('#emojiButton').style.cursor = 'pointer'
+
 /**
  * @param {*} element
  */

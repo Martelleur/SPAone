@@ -1,5 +1,6 @@
 // First show backside of tiles then visibility hidden
 import './timecounter-app.js'
+import './comment-app.js'
 
 const template = document.createElement('template')
 template.innerHTML = /* html */ `
@@ -31,8 +32,13 @@ template.innerHTML = /* html */ `
     <p>Rules: Finish the memory as fast as you can. Result = time + tries. You can choice between 4 diffrent of sizes: 4 tiles, 8 tiles, 12 tiles and 16 tiles (default value of tiles). Good luck!</p> 
   </div>
   
-  <div id="gameFooter">
+  <div id="gameFooter"></div>
+  
+  <div id="commentWrapper">
+    <button id="commentBox">Open comment-box</button>
+    <div id="commentContainer"></div>
   </div>
+  
 </div>
 <style>
 * {
@@ -90,6 +96,14 @@ template.innerHTML = /* html */ `
   margin: 0;
   cursor: pointer;
 }
+:host #commentContainer {
+  width: 100%;
+  display: none;
+}
+:host #commentBox {
+  display: block;
+  margin: 0 auto;
+}
   </style>
 `
 
@@ -143,9 +157,11 @@ export class Memory extends window.HTMLElement {
     this._countHiddenPictures = 0
     this._tries = 0
     this._tools = this.shadowRoot.querySelector('#tools')
-
-    // Building new memory
-    // this.setTiles()
+    this._commentContainer = this.shadowRoot.querySelector('#commentContainer')
+    this._commentWrapper = this.shadowRoot.querySelector('#commenWrapper')
+    this._commentApp = document.createElement('comment-app')
+    this._commentContainer.appendChild(this._commentApp)
+    this._commentBox = this.shadowRoot.querySelector('#commentBox')
   }
 
   /**
@@ -205,6 +221,21 @@ export class Memory extends window.HTMLElement {
    * @memberof Memory
    */
   connectedCallback () {
+    // eventlistener for this._commentBox
+    this._commentBox.addEventListener('click', event => {
+      this._commentContainer.style.display = 'initial'
+      // let temp = this._commentContainer.style.display
+      /*
+      if (this._commentContainer.style.display === 'none') {
+        this._commentContainer.style.display = 'initial'
+        this._commentBox.textContent = 'Close comment-box'
+      } else {
+        this._commentContainer.style.display = 'none'
+        this._commentBox.textContent = 'Open comment-box'
+      }
+      */
+    })
+
     // eventlistner for this._highscore
     this._highscore.addEventListener('click', event => {
       event.preventDefault()

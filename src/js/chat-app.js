@@ -17,9 +17,9 @@ template.innerHTML = /* html */ `
       <fieldset id="messages"></fieldset>
       
       <fieldset id="newMessage">
-          <textarea id="inputUser" rows="10" name="usrtxt" wrap="hard" placeholder="Write message here..."></textarea>
+          <textarea id="inputUser" rows="10" wrap="hard" placeholder="Write message here..."></textarea>
           <input type="submit" class="button" id="sendButton" value="Send">
-          <button id="emoji" class="button">Emoji</button>
+          <button id="emoji-button" class="button">😀</button>
           <button id="changeUsername" class="button">Change username</button>
           <button id="changeChannel" class="button">Change channel</button>
       </fieldset>
@@ -120,7 +120,7 @@ export class Chat extends window.HTMLElement {
     this._title = this.shadowRoot.querySelector('#title')
 
     // Tools chat
-    this._emoji = this.shadowRoot.querySelector('#emoji')
+    this._emoji = this.shadowRoot.querySelector('#emoji-button')
     this._tools = this.shadowRoot.querySelector('#tools')
     this._adjustableWindow = this.shadowRoot.querySelector('#adjustableWindow')
     this._hideWindow = this.shadowRoot.querySelector('#hideWindow')
@@ -239,7 +239,7 @@ export class Chat extends window.HTMLElement {
   connectedCallback () {
     // eventlistner for this._emoji
     this._emoji.addEventListener('click', event => {
-      this._picker.pickerVisible ? this._picker.hidePicker() : this._picker.showPicker(this._input)
+      this._picker.pickerVisible ? this._picker.hidePicker() : this._picker.showPicker(this._emoji)
     })
 
     // eventlistner for this._changeUsername

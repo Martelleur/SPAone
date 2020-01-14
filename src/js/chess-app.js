@@ -98,6 +98,7 @@ template.innerHTML = /* html */ `
       <p id="checkStatusBlack">Black player is NOT check!</p>
       <p id="winner"></p>
   </div>
+  
   <div id="historyConteiner"></div>
 
   </div>
@@ -350,8 +351,6 @@ export class Chess extends window.HTMLElement {
 
       // Finding acceptable squares for event.target
       const index = this.indexTarget(event.target.parentNode)
-      console.log('index')
-      console.log(index)
 
       const acceptableSquares = this.acceptableSquares(event.target.getAttribute('src'), index[0], index[1], this._first) || []
       for (let i = 0; i < acceptableSquares.length; i++) {
@@ -361,9 +360,6 @@ export class Chess extends window.HTMLElement {
             acceptableSquares[i].style.border = '3px solid blue'
           }
         } else {
-          console.log('acceptableSquares')
-          console.log(acceptableSquares)
-          console.log(event.target.getAttribute('data-color'))
           acceptableSquares[i].setAttribute('class', 'acceptableSquare')
           acceptableSquares[i].style.border = '3px solid blue'
           acceptableSquares[i].setAttribute('class', 'acceptableSquare')
@@ -374,11 +370,9 @@ export class Chess extends window.HTMLElement {
       // white or black player
       if (event.target.getAttribute('data-color') === 'white' && this._whitePiecesTurn === true) {
         event.dataTransfer.setData('chessPiece', event.target.id)
-        console.log('test event.dataTransfer.setData white')
       }
       if (event.target.getAttribute('data-color') === 'black' && this._whitePiecesTurn === false) {
         event.dataTransfer.setData('chessPiece', event.target.id)
-        console.log('test event.dataTransfer.setData black')
       }
     })
 
@@ -497,7 +491,6 @@ export class Chess extends window.HTMLElement {
 
           // cloning
           this._clonedShadow.push(this.cloneNode(true))
-          console.log(this._clonedShadow)
         } else {
           return
         }
@@ -518,7 +511,6 @@ export class Chess extends window.HTMLElement {
       // recount img
       this._chessBoardImgLength = this._chessBoard.querySelectorAll('div>img').length
       this._chessBoardImg = this._chessBoard.querySelectorAll('div>img')
-      console.log(this._chessBoardImgLength)
 
       // decide winner
       if (this._activePlayer.innerText === 'White players turn!' && this._checkStatusBlack.innerText === 'Black player is scheck!') {

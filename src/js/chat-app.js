@@ -395,7 +395,7 @@ export class Chat extends window.HTMLElement {
       const p = document.createElement('p')
       if (dataParse.username !== 'The Server') {
         const messages = JSON.parse(window.sessionStorage.getItem('messages')) || []
-        console.log(messages.is)
+        console.log(window.sessionStorage.getItem('messages').lenght)
 
         if (window.sessionStorage.getItem('messages').lenght >= 10) {
           window.sessionStorage.removeItem('messages')

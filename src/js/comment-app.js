@@ -12,8 +12,8 @@ template.innerHTML = /* html */`
     <div class="flex1">
         <form action="#" class="commentForm">
             <textarea placeholder="Add a comment" class="commentInput"></textarea>
-            <input type="submit" class="commentSubmit" value="Submit">
-            <button id="userComments">Reveal past comments</button>
+            <input type="submit" class="button commentSubmit" value="Submit">
+            <button id="userComments" class="button" >Reveal past comments</button>
         </form>
     </div>
 </div>
@@ -29,6 +29,9 @@ template.innerHTML = /* html */`
 :host .flex1 {
     flex: 1;
     overflow: hidden;
+}
+:host .button {
+  cursor: pointer;
 }
 :host .itemsStart {
     align-items: flex-start;

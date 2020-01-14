@@ -18,6 +18,7 @@ template.innerHTML = /* html */ `
       <option value="16">16 tiles</option>
     </select>
     <button id="highscore" class="button">Highscore</button>
+    <button id="commentBox" class="button">Open comment-box</button>
     <i id="deletMemory" class="material-icons">close</i>
     <i id="bigWindow" class="material-icons">add_box</i>
     <i id="adjustableWindow" class="material-icons">exposure</i>
@@ -34,10 +35,7 @@ template.innerHTML = /* html */ `
   
   <div id="gameFooter"></div>
   
-  <div id="commentWrapper">
-    <button id="commentBox">Open comment-box</button>
-    <div id="commentContainer"></div>
-  </div>
+  <div id="commentContainer"></div>
   
 </div>
 <style>
@@ -46,7 +44,7 @@ template.innerHTML = /* html */ `
 }
 :host {
     position: absolute;
-    width: 40%;
+    width: 50%;
     display: block;
     resize: both;
     overflow: auto;
@@ -100,11 +98,7 @@ template.innerHTML = /* html */ `
   width: 100%;
   display: none;
 }
-:host #commentBox {
-  display: block;
-  margin: 0 auto;
-}
-  </style>
+</style>
 `
 
 /**
@@ -158,7 +152,6 @@ export class Memory extends window.HTMLElement {
     this._tries = 0
     this._tools = this.shadowRoot.querySelector('#tools')
     this._commentContainer = this.shadowRoot.querySelector('#commentContainer')
-    this._commentWrapper = this.shadowRoot.querySelector('#commenWrapper')
     this._commentApp = document.createElement('comment-app')
     this._commentContainer.appendChild(this._commentApp)
     this._commentBox = this.shadowRoot.querySelector('#commentBox')
@@ -223,17 +216,14 @@ export class Memory extends window.HTMLElement {
   connectedCallback () {
     // eventlistener for this._commentBox
     this._commentBox.addEventListener('click', event => {
-      this._commentContainer.style.display = 'initial'
-      // let temp = this._commentContainer.style.display
-      /*
-      if (this._commentContainer.style.display === 'none') {
+      console.log(this._commentContainer.style.display)
+      if (this._commentContainer.style.display === '' || this._commentContainer.style.display === 'none') {
         this._commentContainer.style.display = 'initial'
         this._commentBox.textContent = 'Close comment-box'
       } else {
         this._commentContainer.style.display = 'none'
         this._commentBox.textContent = 'Open comment-box'
       }
-      */
     })
 
     // eventlistner for this._highscore

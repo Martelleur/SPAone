@@ -337,7 +337,6 @@ export class Memory extends window.HTMLElement {
       this._isBig = false
     })
 
-    // something is wrong here
     // eventlistner for this._memoryPictures
     this._memoryPictures.addEventListener('click', (event) => {
       event.preventDefault()
@@ -373,8 +372,6 @@ export class Memory extends window.HTMLElement {
           return
         }
       }
-
-      // something is wrong here
       // print tries and paires
       this._tries++
       this._paires.innerText = `Paires: ${this._quantityOfPaires / 2}\nTries: ${Math.floor(this._tries / 2)}`

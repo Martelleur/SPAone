@@ -477,14 +477,9 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
     }
 
     // Display hidden elements
-    console.log(selectChat.length)
     selectChat.addEventListener('change', event => {
       event.preventDefault()
       const value = event.target.value.slice(1)
-      console.log('document.querySelectorAll(chatApp).length')
-      console.log(document.querySelectorAll('chat-app').length)
-      console.log('counterChatApplication')
-      console.log(counterChatApplication)
       for (let i = 0; i < counterChatApplication; i++) {
         const temp = `#chat${i + 1}`
         // console.log(document.querySelector(temp).getAttribute('id'))
@@ -611,27 +606,3 @@ document.querySelector('#fullScreen').addEventListener('click', event => {
     html.msRequestFullscreen()
   }
 })
-
-/*
-// Router
-window.addEventListener('hashchange', event => {
-  const hash = window.location.hash
-
-  if (hash === '#!/minehunter/') {
-    console.log('haschchange/Joel Martelleur')
-    console.log(hash)
-  }
-})
-*/
-
-// window.history.back()
-
-/*
-console.log(`window.location.host: ${window.location.host}`)
-console.log(`window.location.hostname: ${window.location.hostname}`)
-console.log(`window.location.port: ${window.location.port}`)
-console.log(`window.location.hash: ${window.location.hash}`)
-console.log(`window.location.search: ${window.location.search}`)
-console.log(`window.location.pathname: ${window.location.pathname}`)
-console.log(stateObj)
-*/

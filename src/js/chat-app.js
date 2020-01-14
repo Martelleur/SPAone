@@ -4,7 +4,11 @@ template.innerHTML = /* html */ `
 <div id="header">
   <p id="title"></p>
   <button id="emojiButton" class="button">😀</button>
-  <div id="tools">
+<div>
+
+<div id="chatConteiner">
+  <form action="">
+    <fieldset id="tools">
       <button id="goLiveChat" class="button">Go online</button>
       <button id="closeLiveChat" class="button">Go offline</button>
       <i id="deletChat" class="material-icons">close</i>
@@ -12,31 +16,26 @@ template.innerHTML = /* html */ `
       <i id="adjustableWindow" class="material-icons">exposure</i>
       <i id="hideWindow" class="material-icons">indeterminate_check_box</i>
       <p id="onlineStatus">You are online</p>
-  </div>
-<div>
+    </fieldset>
 
-<div id="chatConteiner">
-  <form action="">
-      <fieldset id="messages"></fieldset>
+    <fieldset id="messages"></fieldset>
       
-      <fieldset id="newMessage">
-          <textarea id="inputUser" rows="5" placeholder="Write message here..."></textarea>
-          <input type="submit" class="button" id="sendButton" value="Send">
-          <button id="changeUsername" class="button">Change username</button>
-          <button id="changeChannel" class="button">Change channel</button>
-      </fieldset>
+    <fieldset id="newMessage">
+      <textarea id="inputUser" rows="5" placeholder="Write message here..."></textarea>
+      <input type="submit" class="button" id="sendButton" value="Send">
+      <button id="changeUsername" class="button">Change username</button>
+      <button id="changeChannel" class="button">Change channel</button>
+    </fieldset>
   </form>
 </div>
 <style>
 * {
     box-sizing: border-box;
     margin: 0;
-    background-color: black;
 }
 :host {
     position: absolute;
     width: 50%;
-    height: 50%;
     color: white;
     background-color: black;
     box-sizing: border-box;
@@ -66,26 +65,28 @@ template.innerHTML = /* html */ `
   resize: none;
 }
 :host #tools {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  background-color: black;
   margin: 0;
   padding: 0;
   padding-top: 3px;
   padding-left: 3px;
 }
+:host #newMessage {
+  position: -webkit-sticky;
+  position: sticky;
+  bottom: 0;
+  background-color: black;
+  margin: 0;
+}
 :host #messages, :host #onlineStatus, :host #chatTitle, {
   background-color: white;
   color: black;
 }
-:host #newMessage {
-  position: -webkit-sticky;
-  position: sticky;
-  bottom: 0px;
-}
 :host .button {
   cursor: pointer;
-  background-color: white;
-}
-:host #inputUser {
-  background-color: white;
 }
 :host .material-icons {
   float: right;
@@ -93,16 +94,12 @@ template.innerHTML = /* html */ `
   margin: 0;
   cursor: pointer;
 }
+:host #header {
+  background-color: black;
+}
 :host #emojiButton {
   display: block;
-  margin: 0 auto; 
-}
-:host #header {
-  height: 50px;
-  position: -webkit-sticky;
-  position: sticky;
-  top: 0;
-  background-color: black;
+  margin: 0 auto;
 }
 </style>
 `
@@ -145,7 +142,7 @@ export class Chat extends window.HTMLElement {
     console.log(window.moment())
     console.log(window.moment().format('MMMM Do YYYY, h:mm:ss a'))
     this._picker = new window.EmojiButton({
-      position: 'bottom'
+      position: 'auto'
 
     })
     console.log(this._picker)
@@ -313,8 +310,10 @@ export class Chat extends window.HTMLElement {
       this.style.resize = 'both'
       this.style.border = '5px solid #0c5cc4'
       this.style.outline = '1px solid black'
+      this._tools.style.border = 'none'
+      this._newMessage.style.border = 'none'
       this._title.style.cursor = 'move'
-      this.style.height = '50%'
+      this._messages.style.height = '50%'
       const myEvent = new window.CustomEvent('notBigWindow')
       this.dispatchEvent(myEvent)
     })
@@ -326,7 +325,10 @@ export class Chat extends window.HTMLElement {
       this.style.resize = 'none'
       this.style.border = 'none'
       this.style.outline = 'none'
-      this.style.height = '100%'
+      this._tools.style.border = '5px solid #0c5cc4'
+      this._newMessage.style.border = '5px solid #0c5cc4'
+      const temp = window.innerWidth
+      this._messages.style.height = `${temp}px`
       this._title.style.cursor = 'default'
       const myEvent = new window.CustomEvent('bigWindow')
       this.dispatchEvent(myEvent)

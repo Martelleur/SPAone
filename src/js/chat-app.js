@@ -130,6 +130,7 @@ export class Chat extends window.HTMLElement {
     this._chatConteiner = this.shadowRoot.querySelector('#chatConteiner')
     this._newMessage = this.shadowRoot.querySelector('#newMessage')
     this._title = this.shadowRoot.querySelector('#title')
+    this._messages.style.height = `${window.innerWidth * 0.4}px`
 
     // Tools chat
     this._emoji = this.shadowRoot.querySelector('#emojiButton')
@@ -324,8 +325,11 @@ export class Chat extends window.HTMLElement {
       this.style.outline = 'none'
       this._tools.style.border = '5px solid #0c5cc4'
       this._newMessage.style.border = '5px solid #0c5cc4'
-      const temp = window.innerWidth
-      this._messages.style.height = `${temp}px`
+
+      if (parseInt(this._messages.style.height) < (window.innerHeight * 0.6)) {
+        this._messages.style.height = `${window.innerHeight * 0.6}px`
+      }
+
       this._title.style.cursor = 'default'
       const myEvent = new window.CustomEvent('bigWindow')
       this.dispatchEvent(myEvent)
@@ -409,6 +413,9 @@ export class Chat extends window.HTMLElement {
 
         p.innerHTML = `Date: ${d}.<br>Username: ${dataParse.username}.<br>Channel: ${dataParse.channel}.<br>Data: ${dataParse.data}<br>Type: ${dataParse.type}<hr>`
         this._messages.appendChild(p)
+        const temp = parseInt(this._messages.style.height) + 100
+        const tempText = `${temp}px`
+        this._messages.style.height = tempText
       }
     })
 

@@ -55,6 +55,7 @@ document.querySelector('#inputEmoji').style.float = 'right'
 document.querySelector('#emojiButton').style.float = 'right'
 document.querySelector('#emojiButton').style.cursor = 'pointer'
 
+// Creating icons
 /**
  * @param {*} element
  */

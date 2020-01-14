@@ -389,10 +389,23 @@ export class Chat extends window.HTMLElement {
     // listning for message from other users
     this._socket.addEventListener('message', event => {
       const dataParse = JSON.parse(event.data)
-      const p = document.createElement('p')
+      console.log(dataParse)
+      const d = window.moment().format('MMMM Do YYYY, h:mm:ss a')
 
+      const p = document.createElement('p')
       if (dataParse.username !== 'The Server') {
-        p.innerHTML = `Date: ${new Date()}.<br>Username: ${dataParse.username}.<br>Channel: ${dataParse.channel}.<br>Data: ${dataParse.data}<br>Type: ${dataParse.type}<hr>`
+        const messages = JSON.parse(window.sessionStorage.getItem('messages')) || []
+        console.log(messages.is)
+
+        if (window.sessionStorage.getItem('messages').lenght >= 10) {
+          window.sessionStorage.removeItem('messages')
+        }
+
+        dataParse.date = d
+        messages.push(dataParse)
+        window.sessionStorage.setItem('messages', JSON.stringify(messages))
+
+        p.innerHTML = `Date: ${d}.<br>Username: ${dataParse.username}.<br>Channel: ${dataParse.channel}.<br>Data: ${dataParse.data}<br>Type: ${dataParse.type}<hr>`
         this._messages.appendChild(p)
       }
     })

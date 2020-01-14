@@ -130,7 +130,6 @@ export class Chat extends window.HTMLElement {
     this._chatConteiner = this.shadowRoot.querySelector('#chatConteiner')
     this._newMessage = this.shadowRoot.querySelector('#newMessage')
     this._title = this.shadowRoot.querySelector('#title')
-    this._messages.style.height = `${window.innerWidth * 0.4}px`
 
     // Tools chat
     this._emoji = this.shadowRoot.querySelector('#emojiButton')
@@ -415,6 +414,7 @@ export class Chat extends window.HTMLElement {
         this._messages.appendChild(p)
         const temp = parseInt(this._messages.style.height) + 100
         const tempText = `${temp}px`
+        console.log(tempText)
         this._messages.style.height = tempText
       }
     })

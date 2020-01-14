@@ -9,6 +9,53 @@ import { moveElement } from './moveElement.js'
 // Insted we define online when client connected to server
 // Like the heartbeat in websocketconnection
 
+// register service worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./js/sw.js', { scope: './js/' }).then(function (reg) {
+    if (reg.installing) {
+      console.log('Service worker installing')
+    } else if (reg.waiting) {
+      console.log('Service worker installed')
+    } else if (reg.active) {
+      console.log('Service worker active')
+    }
+  }).catch(function (error) {
+    // registration failed
+    console.log('Registration failed with ' + error)
+  })
+}
+
+// using moment-api
+setInterval(() => {
+  // let c = window.moment().format('LLLL')
+  const d = window.moment().format('MMMM Do YYYY, h:mm:ss a')
+  document.querySelector('#time').innerHTML = d
+  document.querySelector('#time').style.float = 'right'
+}, 1000)
+
+// using emoji-api
+window.addEventListener('DOMContentLoaded', () => {
+  const button = document.querySelector('#emojiButton')
+  const picker = new window.EmojiButton({
+    position: 'bottom'
+  })
+  picker.on('emoji', emoji => {
+    document.querySelector('input').value += emoji
+  })
+
+  button.addEventListener('click', () => {
+    if (picker.pickerVisible) {
+      picker.hidePicker()
+    } else {
+      picker.showPicker(button)
+    }
+  })
+})
+document.querySelector('#inputEmoji').style.float = 'right'
+document.querySelector('#emojiButton').style.float = 'right'
+document.querySelector('#emojiButton').style.cursor = 'pointer'
+
+// Creating icons
 /**
  * @param {*} element
  */
@@ -431,14 +478,9 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
     }
 
     // Display hidden elements
-    console.log(selectChat.length)
     selectChat.addEventListener('change', event => {
       event.preventDefault()
       const value = event.target.value.slice(1)
-      console.log('document.querySelectorAll(chatApp).length')
-      console.log(document.querySelectorAll('chat-app').length)
-      console.log('counterChatApplication')
-      console.log(counterChatApplication)
       for (let i = 0; i < counterChatApplication; i++) {
         const temp = `#chat${i + 1}`
         // console.log(document.querySelector(temp).getAttribute('id'))
@@ -565,27 +607,3 @@ document.querySelector('#fullScreen').addEventListener('click', event => {
     html.msRequestFullscreen()
   }
 })
-
-/*
-// Router
-window.addEventListener('hashchange', event => {
-  const hash = window.location.hash
-
-  if (hash === '#!/minehunter/') {
-    console.log('haschchange/Joel Martelleur')
-    console.log(hash)
-  }
-})
-*/
-
-// window.history.back()
-
-/*
-console.log(`window.location.host: ${window.location.host}`)
-console.log(`window.location.hostname: ${window.location.hostname}`)
-console.log(`window.location.port: ${window.location.port}`)
-console.log(`window.location.hash: ${window.location.hash}`)
-console.log(`window.location.search: ${window.location.search}`)
-console.log(`window.location.pathname: ${window.location.pathname}`)
-console.log(stateObj)
-*/

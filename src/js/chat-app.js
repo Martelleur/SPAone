@@ -1,30 +1,36 @@
 const template = document.createElement('template')
 template.innerHTML = /* html */ `
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<div id="chatConteiner">
+<div id="header">
   <p id="title"></p>
-  <form action="">
-      <fieldset id="tools">
-          <button id="goLiveChat" class="button">Go online</button>
-          <button id="closeLiveChat" class="button">Go offline</button>
-          <i id="deletChat" class="material-icons">close</i>
-          <i id="bigWindow" class="material-icons">add_box</i>
-          <i id="adjustableWindow" class="material-icons">exposure</i>
-          <i id="hideWindow" class="material-icons">indeterminate_check_box</i>
-          <p id="onlineStatus">You are online</p>
-      </fieldset>
+<div>
 
-      <fieldset id="messages"></fieldset>
+<div id="chatConteiner">
+  <form action="">
+    <fieldset id="tools">
+      <button id="goLiveChat" class="button">Go online</button>
+      <button id="closeLiveChat" class="button">Go offline</button>
+      <i id="deletChat" class="material-icons">close</i>
+      <i id="bigWindow" class="material-icons">add_box</i>
+      <i id="adjustableWindow" class="material-icons">exposure</i>
+      <i id="hideWindow" class="material-icons">indeterminate_check_box</i>
+      <p id="onlineStatus">You are online</p>
+    </fieldset>
+
+    <fieldset id="messages"></fieldset>
       
-      <fieldset id="newMessage">
-          <textarea id="inputUser" rows="10" name="usrtxt" wrap="hard" placeholder="Write message here..."></textarea>
-          <input type="submit" class="button" id="sendButton" value="Send">
-          <button id="emoji" class="button">Emoji</button>
-          <button id="changeUsername" class="button">Change username</button>
-          <button id="changeChannel" class="button">Change channel</button>
-      </fieldset>
+    <fieldset id="newMessage">
+      <textarea id="inputUser" rows="5" placeholder="Write message here..."></textarea>
+      <input type="submit" class="button" id="sendButton" value="Send">
+      <button id="changeUsername" class="button">Change username</button>
+      <button id="changeChannel" class="button">Change channel</button>
+    </fieldset>
   </form>
 </div>
+<div id="footer">
+  <span id="emojiButton" class="button">😀</span>
+</div>
+
 <style>
 * {
     box-sizing: border-box;
@@ -91,6 +97,12 @@ template.innerHTML = /* html */ `
   margin: 0;
   cursor: pointer;
 }
+:host #footer, :host #emojiButton {
+  background-color: black;
+  display: block;
+  text-align: center;
+  cursor: pointer;
+}
 </style>
 `
 
@@ -120,7 +132,7 @@ export class Chat extends window.HTMLElement {
     this._title = this.shadowRoot.querySelector('#title')
 
     // Tools chat
-    this._emoji = this.shadowRoot.querySelector('#emoji')
+    this._emoji = this.shadowRoot.querySelector('#emojiButton')
     this._tools = this.shadowRoot.querySelector('#tools')
     this._adjustableWindow = this.shadowRoot.querySelector('#adjustableWindow')
     this._hideWindow = this.shadowRoot.querySelector('#hideWindow')
@@ -132,10 +144,10 @@ export class Chat extends window.HTMLElement {
     console.log(window.moment())
     console.log(window.moment().format('MMMM Do YYYY, h:mm:ss a'))
     this._picker = new window.EmojiButton({
-      position: 'auto'
+      position: 'left-end'
     })
     console.log(this._picker)
-    this._picker.on('emoji', (emoji) => {
+    this._picker.on('emoji', emoji => {
       this._input.value += emoji
     })
     console.log()
@@ -239,7 +251,11 @@ export class Chat extends window.HTMLElement {
   connectedCallback () {
     // eventlistner for this._emoji
     this._emoji.addEventListener('click', event => {
-      this._picker.pickerVisible ? this._picker.hidePicker() : this._picker.showPicker(this._input)
+      if (this._picker.pickerVisible) {
+        this._picker.hidePicker()
+      } else {
+        this._picker.showPicker(document.querySelector('main'))
+      }
     })
 
     // eventlistner for this._changeUsername
@@ -372,22 +388,31 @@ export class Chat extends window.HTMLElement {
 
     // listning for message from other users
     this._socket.addEventListener('message', event => {
-      // console.log('websocket message event.data:')
-      // console.log(event.data)
       const dataParse = JSON.parse(event.data)
+      console.log(dataParse)
+      const d = window.moment().format('MMMM Do YYYY, h:mm:ss a')
+
       const p = document.createElement('p')
-      // p.textContent = event.data
       if (dataParse.username !== 'The Server') {
-        p.innerHTML = `Date: ${new Date()}.<br>Username: ${dataParse.username}.<br>Channel: ${dataParse.channel}.<br>Data: ${dataParse.data}<br>Type: ${dataParse.type}<hr>`
+        const messages = JSON.parse(window.sessionStorage.getItem('messages')) || []
+        console.log(window.sessionStorage.getItem('messages').lenght)
+
+        if (window.sessionStorage.getItem('messages').lenght >= 10) {
+          window.sessionStorage.removeItem('messages')
+        }
+
+        dataParse.date = d
+        messages.push(dataParse)
+        window.sessionStorage.setItem('messages', JSON.stringify(messages))
+
+        p.innerHTML = `Date: ${d}.<br>Username: ${dataParse.username}.<br>Channel: ${dataParse.channel}.<br>Data: ${dataParse.data}<br>Type: ${dataParse.type}<hr>`
         this._messages.appendChild(p)
       }
-      console.log('event.data:')
-      console.log(event.data)
     })
 
     // close WS
     this._closeLiveChat.addEventListener('click', event => {
-      console.log('ws offline/JM')
+      console.log('ws offline')
       this._socket.close()
       this._onlineStatus.innerText = 'You are offline'
     })

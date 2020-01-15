@@ -179,13 +179,14 @@ export class Chat extends window.HTMLElement {
         this._deletChat.style.display = 'none'
         this.style.width = '100%'
         this.style.boxSizing = 'border-box'
-        this._tools.style.cursor = 'default'
+        this._title.style.cursor = 'default'
       }
       if (newValue === 'false') {
         this._bigWindow.style.display = 'initial'
         this._hideWindow.style.display = 'initial'
         this._adjustableWindow.style.display = 'initial'
         this.style.width = '50%'
+        this._title.style.cursor = 'move'
       }
     }
 
@@ -254,6 +255,12 @@ export class Chat extends window.HTMLElement {
   }
 
   connectedCallback () {
+    function hashHandler () {
+      console.log('The hash has changed!')
+    }
+
+    window.addEventListener('hashchange', hashHandler, false)
+
     // eventlistner for this._scrollToBottom
     this._scrollToBottom.addEventListener('click', event => {
       event.preventDefault()
@@ -341,7 +348,6 @@ export class Chat extends window.HTMLElement {
       this.style.resize = 'none'
       this.style.border = 'none'
       this.style.outline = '0'
-      this._title.style.cursor = 'none'
       this._tools.style.border = '5px solid #0c5cc4'
       this._newMessage.style.border = '5px solid #0c5cc4'
       // this.style.height = '100%'
@@ -427,7 +433,9 @@ export class Chat extends window.HTMLElement {
         p.innerHTML = `Date: ${d}.<br>Username: ${dataParse.username}.<br>Channel: ${dataParse.channel}.<br>Data: ${dataParse.data}<br>Type: ${dataParse.type}<hr>`
         this._messages.appendChild(p)
 
-        if (this._scrollKey) {
+        const tempStr = `/chat-app/${this.getAttribute('id')}`
+
+        if (this._scrollKey && tempStr === window.location.pathname) {
           this.scrollIntoView(false)
         }
       }

@@ -109,8 +109,10 @@ document.querySelector('#memoryButton').innerHTML = `
     left: 5vh;
     position: absolute;
     display: none;
-    border: 1px solid black;
-    background-color: #0c5cc4;
+    color: #8f6d47;
+    border: 1px solid #23d96c;
+    background-color: #4a121e;
+    z-index: 1000;
   }
 </style>
 `
@@ -140,8 +142,10 @@ document.querySelector('#chatButton').innerHTML = `
     top: 5vh;
     left: 0;
     display: none;
-    border: 1px solid black;
-    background-color: #0c5cc4;
+    color: #8f6d47;
+    border: 1px solid #23d96c;
+    background-color: #4a121e;
+    z-index: 1000;
   }
 </style>
 `
@@ -171,8 +175,10 @@ document.querySelector('#chessButton').innerHTML = `
     top: 5vh;
     left: 15vh;
     display: none;
-    border: 1px solid black;
-    background-color: #0c5cc4;
+    color: #8f6d47;
+    border: 1px solid #23d96c;
+    background-color: #4a121e;
+    z-index: 1000;
   }
 </style>
 `
@@ -202,8 +208,10 @@ document.querySelector('#minehunterButton').innerHTML = `
     top: 5vh;
     left: 10vh;
     display: none;
-    border: 1px solid black;
-    background-color: #0c5cc4;
+    color: #8f6d47;
+    border: 1px solid #23d96c;
+    background-color: #4a121e;
+    z-index: 1000;
   }
 </style>
 `
@@ -367,12 +375,13 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
   <style>
     #info {
       top: 1vh;
-      left: 1vh;
+      left: 50vh;
       position: absolute;
       display: none;
-      color: white;
-      border: 1px solid black;
-      background-color: #0c5cc4;
+      color: #8f6d47;
+      border: 1px solid #23d96c;
+      background-color: #4a121e;
+      z-index: 1000;
     } 
   </style>
   `

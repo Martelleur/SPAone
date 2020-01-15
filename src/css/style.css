@@ -13,8 +13,10 @@
     top: 4vh;
     left: 0;
     display: none;
-    border: 1px solid black;
-    background-color: #0c5cc4;
+    color: #8f6d47;
+    border: 1px solid #23d96c;
+    background-color: #4a121e;
+    z-index: 1000;
 }
 
 html {

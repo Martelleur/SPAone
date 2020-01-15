@@ -615,6 +615,12 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
 
 // popstate event
 window.addEventListener('popstate', event => {
+  console.log(window.location.pathname)
+  console.log(window.location.href)
+  if (window.location.pathname === '/') {
+    document.querySelector('main').innerHTML = ''
+    return
+  }
   try {
     console.log(`id: ${event.state.id}. Element: ${event.state.element}`)
   } catch (error) {

@@ -417,7 +417,8 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
   // Listning on custom event hidewindow and cache hidden elements in select-element
   element.addEventListener('hideWindow', event => {
     event.preventDefault()
-    window.history.pushState(stateObj, `/${stateObj.id}`, `/${stateObj.element}/${stateObj.id}/hidden`)
+    stateObj.visibility = 'hidden'
+    window.history.pushState(stateObj, `/${stateObj.id}`, `/${stateObj.element}/${stateObj.id}/${stateObj.visibility}`)
     /*
     window.history.back()
     console.log(window.location.pathname)
@@ -529,6 +530,18 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
             for (let j = 0; j < event.target.children.length; j++) {
               if (event.target.children[j].value === temp) {
                 event.target.children[j].remove()
+                // changing url
+                stateObj.id = temp.slice(1)
+                stateObj.element = 'chat-app'
+                window.history.pushState(stateObj, `/${stateObj.id}`, `/${stateObj.element}/${stateObj.id}`)
+                // Change focus to the element showing in the url
+                for (let i = 0; i < document.querySelector('main').children.length; i++) {
+                  if (document.querySelector('main').children[i].getAttribute('id') !== stateObj.id) {
+                    document.querySelector('main').children[i].setAttribute('data-zedindex', 'low')
+                  } else {
+                    document.querySelector('main').children[i].setAttribute('data-zedindex', 'high')
+                  }
+                }
                 if (event.target.children.length === 1) {
                   event.target.remove()
                 }
@@ -553,6 +566,18 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
             for (let j = 0; j < event.target.children.length; j++) {
               if (event.target.children[j].value === temp) {
                 event.target.children[j].remove()
+                // changing url
+                stateObj.id = temp.slice(1)
+                stateObj.element = 'memory-app'
+                // Change focus to the element showing in the url
+                for (let i = 0; i < document.querySelector('main').children.length; i++) {
+                  if (document.querySelector('main').children[i].getAttribute('id') !== stateObj.id) {
+                    document.querySelector('main').children[i].setAttribute('data-zedindex', 'low')
+                  } else {
+                    document.querySelector('main').children[i].setAttribute('data-zedindex', 'high')
+                  }
+                }
+                window.history.pushState(stateObj, `/${stateObj.id}`, `/${stateObj.element}/${stateObj.id}`)
                 if (event.target.children.length === 1) {
                   event.target.remove()
                 }
@@ -576,6 +601,18 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
             for (let j = 0; j < event.target.children.length; j++) {
               if (event.target.children[j].value === temp) {
                 event.target.children[j].remove()
+                // changing url
+                stateObj.id = temp.slice(1)
+                stateObj.element = 'minehunter-app'
+                window.history.pushState(stateObj, `/${stateObj.id}`, `/${stateObj.element}/${stateObj.id}`)
+                // Change focus to the element showing in the url
+                for (let i = 0; i < document.querySelector('main').children.length; i++) {
+                  if (document.querySelector('main').children[i].getAttribute('id') !== stateObj.id) {
+                    document.querySelector('main').children[i].setAttribute('data-zedindex', 'low')
+                  } else {
+                    document.querySelector('main').children[i].setAttribute('data-zedindex', 'high')
+                  }
+                }
                 if (event.target.children.length === 1) {
                   event.target.remove()
                 }
@@ -599,6 +636,18 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
             for (let j = 0; j < event.target.children.length; j++) {
               if (event.target.children[j].value === temp) {
                 event.target.children[j].remove()
+                // changing url
+                stateObj.id = temp.slice(1)
+                stateObj.element = 'chess-app'
+                window.history.pushState(stateObj, `/${stateObj.id}`, `/${stateObj.element}/${stateObj.id}`)
+                // Change focus to the element showing in the url
+                for (let i = 0; i < document.querySelector('main').children.length; i++) {
+                  if (document.querySelector('main').children[i].getAttribute('id') !== stateObj.id) {
+                    document.querySelector('main').children[i].setAttribute('data-zedindex', 'low')
+                  } else {
+                    document.querySelector('main').children[i].setAttribute('data-zedindex', 'high')
+                  }
+                }
                 if (event.target.children.length === 1) {
                   event.target.remove()
                 }
@@ -615,8 +664,7 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
 
 // popstate event
 window.addEventListener('popstate', event => {
-  console.log(window.location.pathname)
-  console.log(window.location.href)
+  // remove element when window.location.pathname === '/'
   if (window.location.pathname === '/') {
     document.querySelector('main').innerHTML = ''
     return
@@ -627,10 +675,10 @@ window.addEventListener('popstate', event => {
     console.log(error)
   }
 
+  // Change focus to the element that shows in the url
   for (let i = 0; i < document.querySelector('main').children.length; i++) {
     let tempStr
     document.querySelector('main').children[i].style.visibility = 'visible'
-    console.log(document.querySelector('main').children[i].nodeName)
     if (document.querySelector('main').children[i].nodeName === 'CHAT-APP') {
       tempStr = `/chat-app/${document.querySelector('main').children[i].getAttribute('id')}`
     }
@@ -651,20 +699,16 @@ window.addEventListener('popstate', event => {
     }
   }
 
+  // Open upp hided element if that element shows in the url
   for (let i = 0; i < document.querySelectorAll('select').length; i++) {
     let tempStr2
     let tempStr3
     let tempStr4
-    console.log(document.querySelectorAll('select').length)
-    console.log(document.querySelectorAll('select'))
     const select = document.querySelectorAll('select')[i]
-    console.log(select.querySelectorAll('option').length)
+
     for (let j = 1; j < select.querySelectorAll('option').length; j++) {
       try {
         tempStr3 = select.querySelectorAll('option')[j]
-        console.log(tempStr3.getAttribute('value'))
-        console.log(tempStr3.value)
-        console.log(tempStr3.textContent)
         if (tempStr3.getAttribute('value') === tempStr3.value && tempStr3.value === tempStr3.textContent) {
           console.log(true)
         }
@@ -696,10 +740,6 @@ window.addEventListener('popstate', event => {
       if (tempStr2 === window.location.pathname) {
         //  && document.querySelector(temp).getAttribute('id') === value
         try {
-          console.log(document.querySelector(tempStr3.textContent).getAttribute('data-hide'))
-          console.log(document.querySelector(tempStr3.textContent).style.visibility)
-          console.log(document.querySelector(tempStr3.textContent))
-
           if (document.querySelector(tempStr3.textContent).getAttribute('data-hide') === 'true') {
             document.querySelector(tempStr3.textContent).setAttribute('data-hide', 'false')
             document.querySelector(tempStr3.textContent).style.visibility = 'visible'

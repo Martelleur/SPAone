@@ -347,7 +347,8 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
   window.history.pushState(stateObj, `/${stateObj.id}`, `/${stateObj.element}/${stateObj.id}`)
 
   // Event changing url
-  element.addEventListener('click', event => {
+  element.addEventListener('dblclick', event => {
+    console.log(event.taregt)
     window.history.pushState(stateObj, `/${stateObj.id}`, `/${stateObj.element}/${stateObj.id}`)
     element.setAttribute('data-zedindex', 'high')
     for (let i = 0; i < document.querySelector('main').children.length; i++) {
@@ -355,6 +356,41 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
         document.querySelector('main').children[i].setAttribute('data-zedindex', 'low')
       }
     }
+  })
+
+  // Info to user
+  const info = document.createElement('div')
+  info.setAttribute('id', 'info')
+  document.querySelector('main').appendChild(info)
+  info.innerHTML = `
+  <p>dblclick on an element to get focus</p>
+  <style>
+    #info {
+      top: 1vh;
+      left: 1vh;
+      position: absolute;
+      display: none;
+      color: white;
+      border: 1px solid black;
+      background-color: #0c5cc4;
+    } 
+  </style>
+  `
+  function hoverCustomElement () {
+    console.log('dblclick to get focus')
+    info.style.display = 'initial'
+  }
+  function hoverCustomElement2 () {
+    info.style.display = 'none'
+  }
+  element.addEventListener('mouseover', event => {
+    window.setTimeout(hoverCustomElement, 1000)
+    window.setTimeout(hoverCustomElement2, 4000)
+  })
+  element.addEventListener('mousemove', event => {
+    clearTimeout(hoverCustomElement)
+    clearTimeout(hoverCustomElement)
+    info.style.display = 'none'
   })
 
   // Listning on custom event bigWindow
@@ -381,12 +417,12 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
   // Listning on custom event hidewindow and cache hidden elements in select-element
   element.addEventListener('hideWindow', event => {
     event.preventDefault()
-
-    // Only custumelements else return with ending -app
-    if (event.target.tagName.slice(-4) !== '-APP') {
-      return
-    }
-
+    window.history.pushState(stateObj, `/${stateObj.id}`, `/${stateObj.element}/${stateObj.id}/hidden`)
+    /*
+    window.history.back()
+    console.log(window.location.pathname)
+    window.history.forward()
+    */
     // Creating select-elements for caching in
     console.log(document.querySelectorAll('chat-app').length)
     const selectChat = document.createElement('select')
@@ -579,7 +615,11 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
 
 // popstate event
 window.addEventListener('popstate', event => {
-  console.log(`id: ${event.state.id}. Element: ${event.state.element}`)
+  try {
+    console.log(`id: ${event.state.id}. Element: ${event.state.element}`)
+  } catch (error) {
+    console.log(error)
+  }
 
   for (let i = 0; i < document.querySelector('main').children.length; i++) {
     let tempStr
@@ -627,22 +667,22 @@ window.addEventListener('popstate', event => {
       }
 
       if (tempStr3.textContent.slice(1, 5) === 'chat') {
-        tempStr4 = tempStr3.textContent
+        tempStr4 = tempStr3.textContent.slice(1)
         console.log(tempStr4)
         tempStr2 = '/chat-app/' + tempStr4
         console.log(tempStr2)
       } else if (tempStr3.textContent.slice(1, 6) === 'chess') {
-        tempStr4 = tempStr3.textContent
+        tempStr4 = tempStr3.textContent.slice(1)
         console.log(tempStr4)
         tempStr2 = '/chess-app/' + tempStr4
         console.log(tempStr2)
       } else if (tempStr3.textContent.slice(1, 7) === 'memory') {
-        tempStr4 = tempStr3.textContent
+        tempStr4 = tempStr3.textContent.slice(1)
         console.log(tempStr4)
         tempStr2 = '/memory-app/' + tempStr4
         console.log(tempStr2)
       } else if (tempStr3.textContent.slice(1, 11) === 'minehunter') {
-        tempStr4 = tempStr3.textContent
+        tempStr4 = tempStr3.textContent.slice(1)
         console.log(tempStr4)
         tempStr2 = '/minehunter-app/' + tempStr4
         console.log(tempStr2)
@@ -650,11 +690,18 @@ window.addEventListener('popstate', event => {
       if (tempStr2 === window.location.pathname) {
         //  && document.querySelector(temp).getAttribute('id') === value
         try {
-          if (document.querySelector(tempStr3).getAttribute('data-hide') === 'true') {
-            document.querySelector(tempStr3).setAttribute('data-hide', 'false')
-            document.querySelector(tempStr3).style.visibility = 'visible'
+          console.log(document.querySelector(tempStr3.textContent).getAttribute('data-hide'))
+          console.log(document.querySelector(tempStr3.textContent).style.visibility)
+          console.log(document.querySelector(tempStr3.textContent))
+
+          if (document.querySelector(tempStr3.textContent).getAttribute('data-hide') === 'true') {
+            document.querySelector(tempStr3.textContent).setAttribute('data-hide', 'false')
+            document.querySelector(tempStr3.textContent).style.visibility = 'visible'
             // event.target.children[i + 1].remove()
-            select.querySelectorAll('option')[j].remove()
+            tempStr3.remove()
+            if (select.length === 1) {
+              select.remove()
+            }
           }
         } catch (error) {
           console.log(error)

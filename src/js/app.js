@@ -604,26 +604,48 @@ window.addEventListener('popstate', event => {
       document.querySelector('main').children[i].setAttribute('data-zedindex', 'high')
     }
   }
-  /*
-  for (let i = 0; document.querySelectorAll('select').length; i++) {
+
+  for (let i = 0; i < document.querySelectorAll('select').length; i++) {
     let tempStr2
     let tempStr3
+    let tempStr4
     console.log(document.querySelectorAll('select').length)
     console.log(document.querySelectorAll('select'))
-    for (let j = 1; document.querySelectorAll('select')[i].length; j++) {
-      tempStr3 = document.querySelectorAll('select')[i][j].value
-      console.log(document.querySelectorAll('select')[i].length)
-      console.log(document.querySelectorAll('select')[i])
-      console.log(tempStr3)
-      console.log(document.querySelectorAll('select')[i][j].value.slice(1, 11))
-      if (document.querySelectorAll('select')[i][j].value.slice(1, 5) === '#chat') {
-        tempStr2 = `/chat-app/${document.querySelector('main').children[i].getAttribute('id')}`
-      } else if (document.querySelectorAll('select')[i][j].value.slice(1, 6) === '#chess') {
-        tempStr2 = `/chess-app/${document.querySelector('main').children[i].getAttribute('id')}`
-      } else if (document.querySelectorAll('select')[i][j].value.slice(1, 7) === '#memory') {
-        tempStr2 = `/memory-app/${document.querySelector('main').children[i].getAttribute('id')}`
-      } else if (document.querySelectorAll('select')[i][j].value.slice(1, 11) === '#minehunter') {
-        tempStr2 = `/minehunter-app/${document.querySelector('main').children[i].getAttribute('id')}`
+    const select = document.querySelectorAll('select')[i]
+    console.log(select.querySelectorAll('option').length)
+    for (let j = 1; j < select.querySelectorAll('option').length; j++) {
+      try {
+        tempStr3 = select.querySelectorAll('option')[j]
+        console.log(tempStr3.getAttribute('value'))
+        console.log(tempStr3.value)
+        console.log(tempStr3.textContent)
+        if (tempStr3.getAttribute('value') === tempStr3.value && tempStr3.value === tempStr3.textContent) {
+          console.log(true)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+
+      if (tempStr3.textContent.slice(1, 5) === 'chat') {
+        tempStr4 = tempStr3.textContent
+        console.log(tempStr4)
+        tempStr2 = '/chat-app/' + tempStr4
+        console.log(tempStr2)
+      } else if (tempStr3.textContent.slice(1, 6) === 'chess') {
+        tempStr4 = tempStr3.textContent
+        console.log(tempStr4)
+        tempStr2 = '/chess-app/' + tempStr4
+        console.log(tempStr2)
+      } else if (tempStr3.textContent.slice(1, 7) === 'memory') {
+        tempStr4 = tempStr3.textContent
+        console.log(tempStr4)
+        tempStr2 = '/memory-app/' + tempStr4
+        console.log(tempStr2)
+      } else if (tempStr3.textContent.slice(1, 11) === 'minehunter') {
+        tempStr4 = tempStr3.textContent
+        console.log(tempStr4)
+        tempStr2 = '/minehunter-app/' + tempStr4
+        console.log(tempStr2)
       }
       if (tempStr2 === window.location.pathname) {
         //  && document.querySelector(temp).getAttribute('id') === value
@@ -632,7 +654,7 @@ window.addEventListener('popstate', event => {
             document.querySelector(tempStr3).setAttribute('data-hide', 'false')
             document.querySelector(tempStr3).style.visibility = 'visible'
             // event.target.children[i + 1].remove()
-            document.querySelectorAll('select')[i][j].remove()
+            select.querySelectorAll('option')[j].remove()
           }
         } catch (error) {
           console.log(error)
@@ -640,7 +662,6 @@ window.addEventListener('popstate', event => {
       }
     }
   }
-  */
 })
 
 // Full screen mode

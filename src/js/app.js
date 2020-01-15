@@ -580,8 +580,9 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
 // popstate event
 window.addEventListener('popstate', event => {
   console.log(`id: ${event.state.id}. Element: ${event.state.element}`)
-  let tempStr
+
   for (let i = 0; i < document.querySelector('main').children.length; i++) {
+    let tempStr
     document.querySelector('main').children[i].style.visibility = 'visible'
     console.log(document.querySelector('main').children[i].nodeName)
     if (document.querySelector('main').children[i].nodeName === 'CHAT-APP') {
@@ -603,6 +604,43 @@ window.addEventListener('popstate', event => {
       document.querySelector('main').children[i].setAttribute('data-zedindex', 'high')
     }
   }
+  /*
+  for (let i = 0; document.querySelectorAll('select').length; i++) {
+    let tempStr2
+    let tempStr3
+    console.log(document.querySelectorAll('select').length)
+    console.log(document.querySelectorAll('select'))
+    for (let j = 1; document.querySelectorAll('select')[i].length; j++) {
+      tempStr3 = document.querySelectorAll('select')[i][j].value
+      console.log(document.querySelectorAll('select')[i].length)
+      console.log(document.querySelectorAll('select')[i])
+      console.log(tempStr3)
+      console.log(document.querySelectorAll('select')[i][j].value.slice(1, 11))
+      if (document.querySelectorAll('select')[i][j].value.slice(1, 5) === '#chat') {
+        tempStr2 = `/chat-app/${document.querySelector('main').children[i].getAttribute('id')}`
+      } else if (document.querySelectorAll('select')[i][j].value.slice(1, 6) === '#chess') {
+        tempStr2 = `/chess-app/${document.querySelector('main').children[i].getAttribute('id')}`
+      } else if (document.querySelectorAll('select')[i][j].value.slice(1, 7) === '#memory') {
+        tempStr2 = `/memory-app/${document.querySelector('main').children[i].getAttribute('id')}`
+      } else if (document.querySelectorAll('select')[i][j].value.slice(1, 11) === '#minehunter') {
+        tempStr2 = `/minehunter-app/${document.querySelector('main').children[i].getAttribute('id')}`
+      }
+      if (tempStr2 === window.location.pathname) {
+        //  && document.querySelector(temp).getAttribute('id') === value
+        try {
+          if (document.querySelector(tempStr3).getAttribute('data-hide') === 'true') {
+            document.querySelector(tempStr3).setAttribute('data-hide', 'false')
+            document.querySelector(tempStr3).style.visibility = 'visible'
+            // event.target.children[i + 1].remove()
+            document.querySelectorAll('select')[i][j].remove()
+          }
+        } catch (error) {
+          console.log(error)
+        }
+      }
+    }
+  }
+  */
 })
 
 // Full screen mode

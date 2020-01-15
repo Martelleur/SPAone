@@ -580,6 +580,29 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
 // popstate event
 window.addEventListener('popstate', event => {
   console.log(`id: ${event.state.id}. Element: ${event.state.element}`)
+  let tempStr
+  for (let i = 0; i < document.querySelector('main').children.length; i++) {
+    document.querySelector('main').children[i].style.visibility = 'visible'
+    console.log(document.querySelector('main').children[i].nodeName)
+    if (document.querySelector('main').children[i].nodeName === 'CHAT-APP') {
+      tempStr = `/chat-app/${document.querySelector('main').children[i].getAttribute('id')}`
+    }
+    if (document.querySelector('main').children[i].nodeName === 'CHESS-APP') {
+      tempStr = `/chess-app/${document.querySelector('main').children[i].getAttribute('id')}`
+    }
+    if (document.querySelector('main').children[i].nodeName === 'MINEHUNTER-APP') {
+      tempStr = `/minehunter-app/${document.querySelector('main').children[i].getAttribute('id')}`
+    }
+    if (document.querySelector('main').children[i].nodeName === 'MEMORY-APP') {
+      tempStr = `/memory-app/${document.querySelector('main').children[i].getAttribute('id')}`
+    }
+
+    if (window.location.pathname !== tempStr) {
+      document.querySelector('main').children[i].setAttribute('data-zedindex', 'low')
+    } else {
+      document.querySelector('main').children[i].setAttribute('data-zedindex', 'high')
+    }
+  }
 })
 
 // Full screen mode

@@ -482,13 +482,13 @@ export class Chess extends window.HTMLElement {
           // change activePlayer and test if player is scheck
           if (this._whitePiecesTurn) {
             this._whitePiecesTurn = false
-            this.evryAcceptableSquare('isBlackSheck')
-            this.evryAcceptableSquare('isWhiteSheck')
+            this.isPlayerSheck('isBlackSheck')
+            this.isPlayerSheck('isWhiteSheck')
             this._activePlayer.innerHTML = 'Black players turn!'
           } else {
             this._whitePiecesTurn = true
-            this.evryAcceptableSquare('isWhiteSheck')
-            this.evryAcceptableSquare('isBlackSheck')
+            this.isPlayerSheck('isWhiteSheck')
+            this.isPlayerSheck('isBlackSheck')
             this._activePlayer.innerHTML = 'White players turn!'
           }
 
@@ -1391,10 +1391,11 @@ export class Chess extends window.HTMLElement {
   }
 
   /**
-   * @param {*} color
+   * @param {string} [color='black']
+   * @returns
    * @memberof Chess
    */
-  evryAcceptableSquare (color) {
+  evryAcceptableSquare (color = 'black') {
     const tempObject = this.indexAllSquares()
     const blackPiecesOptions = []
     const whitePiecesOptions = []
@@ -1433,6 +1434,7 @@ export class Chess extends window.HTMLElement {
           blackPiecesOptionsFlat[i].style.backgroundColor = 'purple'
         }
       }
+      return blackPiecesOptionsFlat
     }
     // White players otions
     if (color === 'white') {
@@ -1445,9 +1447,27 @@ export class Chess extends window.HTMLElement {
           whitePiecesOptionsFlat[i].style.backgroundColor = 'green'
         }
       }
+      return whitePiecesOptionsFlat
+    }
+  }
+
+  /**
+   * @param {string} [color='isWhiteSheck']
+   * @memberof Chess
+   */
+  isPlayerSheck (color = 'isWhiteSheck') {
+    // test if white is shack
+    let blackPiecesOptionsFlat
+    let whitePiecesOptionsFlat
+
+    if (color === 'isWhiteSheck') {
+      blackPiecesOptionsFlat = this.evryAcceptableSquare('black')
+    } else if (color === 'isBlackSheck') {
+      whitePiecesOptionsFlat = this.evryAcceptableSquare('white')
+    } else {
+      return
     }
 
-    // test if white is shack
     if (color === 'isWhiteSheck') {
       for (let i = 0; i < blackPiecesOptionsFlat.length; i++) {
         try {
@@ -1489,7 +1509,7 @@ export class Chess extends window.HTMLElement {
    * @param {*} argument
    * @memberof Chess
    */
-  showHistory (argument) {
+  showHistory (argument = 'history') {
     // this._information.innerHTML = ''
     const data = JSON.parse(window.sessionStorage.getItem(argument))
     const fragment = document.createDocumentFragment()

@@ -1,15 +1,14 @@
 const template = document.createElement('template')
 template.innerHTML = /* html */ `
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<div id="header">
-  <p id="title"></p>
-<div>
+<p id="title"></p>
 
 <div id="chatConteiner">
   <form action="">
     <fieldset id="tools">
       <button id="goLiveChat" class="button">Go online</button>
       <button id="closeLiveChat" class="button">Go offline</button>
+      <button id="scrollToBottom" class="button">Scroll to bottom</button>
       <i id="deletChat" class="material-icons">close</i>
       <i id="bigWindow" class="material-icons">add_box</i>
       <i id="adjustableWindow" class="material-icons">exposure</i>
@@ -17,18 +16,19 @@ template.innerHTML = /* html */ `
       <p id="onlineStatus">You are online</p>
     </fieldset>
 
-    <fieldset id="messages"></fieldset>
+    <fieldset id="messages"><img id="welcome" src="../imageIcons/welcome.png" alt="welcome"></fieldset>
       
     <fieldset id="newMessage">
       <textarea id="inputUser" rows="5" placeholder="Write message here..."></textarea>
       <input type="submit" class="button" id="sendButton" value="Send">
       <button id="changeUsername" class="button">Change username</button>
       <button id="changeChannel" class="button">Change channel</button>
+      <button id="scrollToTop" class="button">Scroll to top</button>
+      <button id="emojiButton" class="button">😀</button>
     </fieldset>
   </form>
 </div>
-<div id="footer">
-<span id="emojiButton" class="button">😀</span>
+<div id="footer"
 </div>
 
 <style>
@@ -38,7 +38,7 @@ template.innerHTML = /* html */ `
 }
 :host {
     position: absolute;
-    width: 50%;
+    width: 60%;
     color: white;
     background-color: black;
     box-sizing: border-box;
@@ -60,7 +60,7 @@ template.innerHTML = /* html */ `
     color: white;
     background-color: black;
 }
-:host #title:hover {
+:host #title {
   cursor: move;
 }
 :host textarea {
@@ -68,6 +68,7 @@ template.innerHTML = /* html */ `
   resize: none;
 }
 :host #tools {
+  border-bottom: 5px solid #0c5cc4;
   position: -webkit-sticky;
   position: sticky;
   top: 0;
@@ -78,11 +79,17 @@ template.innerHTML = /* html */ `
   padding-left: 3px;
 }
 :host #newMessage {
+  border-top: 5px solid #0c5cc4;
   position: -webkit-sticky;
   position: sticky;
   bottom: 0;
   background-color: black;
   margin: 0;
+}
+:host #welcome {
+  width: 100%;
+  height: 50vh;
+  padding: 0 10% 0 10%;
 }
 :host #messages, :host #onlineStatus, :host #chatTitle, {
   background-color: white;
@@ -95,12 +102,6 @@ template.innerHTML = /* html */ `
   float: right;
   padding: 0;
   margin: 0;
-  cursor: pointer;
-}
-:host #footer, :host #emojiButton {
-  background-color: black;
-  display: block;
-  text-align: center;
   cursor: pointer;
 }
 </style>
@@ -150,7 +151,9 @@ export class Chat extends window.HTMLElement {
     this._picker.on('emoji', emoji => {
       this._input.value += emoji
     })
-    console.log()
+    this._scrollToTop = this.shadowRoot.querySelector('#scrollToTop')
+    this._scrollToBottom = this.shadowRoot.querySelector('#scrollToBottom')
+    this._scrollKey = true
   }
 
   static get observedAttributes () {
@@ -251,12 +254,27 @@ export class Chat extends window.HTMLElement {
   }
 
   connectedCallback () {
+    // eventlistner for this._scrollToBottom
+    this._scrollToBottom.addEventListener('click', event => {
+      event.preventDefault()
+      this.scrollIntoView(false)
+      this._scrollKey = true
+    })
+
+    // eventlistner for this._scrollToTop
+    this._scrollToTop.addEventListener('click', event => {
+      event.preventDefault()
+      this.scrollIntoView(true)
+      this._scrollKey = false
+    })
+
     // eventlistner for this._emoji
     this._emoji.addEventListener('click', event => {
+      event.preventDefault()
       if (this._picker.pickerVisible) {
         this._picker.hidePicker()
       } else {
-        this._picker.showPicker(document.querySelector('main'))
+        this._picker.showPicker(this)
       }
     })
 
@@ -306,11 +324,12 @@ export class Chat extends window.HTMLElement {
       this.style.position = 'absolute'
       this.style.resize = 'both'
       this.style.border = '5px solid #0c5cc4'
-      this.style.outline = '1px solid black'
       this._tools.style.border = 'none'
       this._newMessage.style.border = 'none'
+      this._newMessage.style.borderTop = '5px solid #0c5cc4'
+      this._tools.style.borderBottom = '5px solid #0c5cc4'
+      this.style.outline = '1px solid black'
       this._title.style.cursor = 'move'
-      this._messages.style.height = '50%'
       const myEvent = new window.CustomEvent('notBigWindow')
       this.dispatchEvent(myEvent)
     })
@@ -321,11 +340,12 @@ export class Chat extends window.HTMLElement {
       this.style.position = 'static'
       this.style.resize = 'none'
       this.style.border = 'none'
-      this.style.outline = 'none'
+      this.style.outline = '0'
+      this._title.style.cursor = 'none'
       this._tools.style.border = '5px solid #0c5cc4'
       this._newMessage.style.border = '5px solid #0c5cc4'
+      // this.style.height = '100%'
 
-      this._title.style.cursor = 'default'
       const myEvent = new window.CustomEvent('bigWindow')
       this.dispatchEvent(myEvent)
     })
@@ -345,7 +365,6 @@ export class Chat extends window.HTMLElement {
     // eventlistner for this._input
     this._input.addEventListener('input', (event) => {
       this._message = this._input.value
-      // console.log(this._input.value)
     })
 
     // eventlistner for this._deletChat
@@ -361,7 +380,6 @@ export class Chat extends window.HTMLElement {
     // eventlistner for this._send
     this._send.addEventListener('click', (event) => {
       event.preventDefault()
-      console.log(this._input)
       const post = {
         type: this._type,
         data: this._message,
@@ -408,6 +426,10 @@ export class Chat extends window.HTMLElement {
 
         p.innerHTML = `Date: ${d}.<br>Username: ${dataParse.username}.<br>Channel: ${dataParse.channel}.<br>Data: ${dataParse.data}<br>Type: ${dataParse.type}<hr>`
         this._messages.appendChild(p)
+
+        if (this._scrollKey) {
+          this.scrollIntoView(false)
+        }
       }
     })
 

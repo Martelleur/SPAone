@@ -178,6 +178,7 @@ export class Chat extends window.HTMLElement {
         this._adjustableWindow.style.display = 'none'
         this._deletChat.style.display = 'none'
         this.style.width = '100%'
+        this.style.resize = 'none'
         this.style.boxSizing = 'border-box'
         this._title.style.cursor = 'default'
       }
@@ -187,6 +188,7 @@ export class Chat extends window.HTMLElement {
         this._adjustableWindow.style.display = 'initial'
         this.style.width = '50%'
         this._title.style.cursor = 'move'
+        this.style.resize = 'both'
       }
     }
 

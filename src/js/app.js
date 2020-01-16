@@ -254,6 +254,7 @@ let x = 0
 // creating custom-elements
 document.querySelector('#buttons').addEventListener('click', (event) => {
   event.preventDefault()
+  let keyClosePrograms = true
 
   // if user not click on a a-tag
   if (event.target.tagName !== 'IMG') {
@@ -369,13 +370,15 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
   })
 
   // Info to user
+  const infoId = `${element.getAttribute('id')}Info`
   const info = document.createElement('div')
-  info.setAttribute('id', 'info')
+  info.setAttribute('id', infoId)
+  info.setAttribute('class', 'info')
   document.querySelector('main').appendChild(info)
   info.innerHTML = `
   <p>dblclick on an element to get focus</p>
   <style>
-    #info {
+    #${infoId} {
       top: 1vh;
       left: 50vh;
       position: absolute;
@@ -425,6 +428,9 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
 
   // Listning on custom event deletedWindow
   element.addEventListener('deletedWindow', event => {
+    console.log(document.querySelector('main').children.length)
+    const temp = `#${element.getAttribute('id')}Info`
+    document.querySelector(temp).remove()
     window.history.replaceState(stateObj, `${stateObj.id}`, `${element.getAttribute('id')}_deleted`)
   }, { once: true })
 
@@ -681,14 +687,16 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
   // popstate event
   window.addEventListener('popstate', event => {
     // remove element when window.location.pathname === '/'
-
     if (window.location.pathname === '/') {
-      const userChoice = window.confirm('Press ok if you woulde like to close all the programs', 'close')
-      console.log(userChoice)
-      if (userChoice) {
-        document.querySelector('main').innerHTML = ''
-        document.querySelector('#hiddenElements').innerHTML = ''
+      if (document.querySelector('main').children.length > 0 && keyClosePrograms) {
+        const userChoice = window.confirm('Press ok if you woulde like to close all the programs', 'close')
+        console.log(userChoice)
+        if (userChoice) {
+          document.querySelector('main').innerHTML = ''
+          document.querySelector('#hiddenElements').innerHTML = ''
+        }
       }
+      keyClosePrograms = false
       return
     }
 

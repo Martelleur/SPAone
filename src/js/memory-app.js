@@ -162,10 +162,10 @@ export class Memory extends window.HTMLElement {
     this._commentBox = this.shadowRoot.querySelector('#commentBox')
     this._keyHighscore = true
     this._keyChat = true
-    this._keyTurnBackPictures = true
-    this._keyOpenPictures = true
+    this._keyTurnBackPictures = false
     this._timeOut1 = undefined
     this._timeOut2 = undefined
+    this._timeOut3 = undefined
   }
 
   /**
@@ -344,12 +344,6 @@ export class Memory extends window.HTMLElement {
     // eventlistner for this._memoryPictures
     this._memoryPictures.addEventListener('click', (event) => {
       event.preventDefault()
-      if (!this._keyOpenPictures) {
-        return
-      }
-      this._keyTurnBackPictures = true
-      // event.stopPropagation()
-
       if (!this._isStarting) {
         return
       }
@@ -365,6 +359,7 @@ export class Memory extends window.HTMLElement {
 
       clearTimeout(this._timeOut1)
       clearTimeout(this._timeOut2)
+      clearTimeout(this._timeOut3)
 
       // if user click on a turned picture with the mouse
       if (event.target.tagName === 'IMG') {
@@ -405,6 +400,7 @@ export class Memory extends window.HTMLElement {
       // storing even.target in temp array
       target.setAttribute('src', attributeSrc)
       this._tempArray.push(target)
+      console.log(this._tempArray)
 
       // check if picture are the same
       if (this._tempArray.length === 2) {
@@ -413,26 +409,21 @@ export class Memory extends window.HTMLElement {
           for (let i = 0; i < this.shadowRoot.querySelectorAll('#memoryPictures img').length; i++) {
             if (this.shadowRoot.querySelectorAll('#memoryPictures img')[i].getAttribute('src') === this._tempArray[1].getAttribute('src')) {
               this._quantityOfPaires++
-              this._keyTurnBackPictures = false
-              this._keyOpenPictures = false
               this._paires.innerText = `Paires: ${this._quantityOfPaires / 2}\nTries: ${Math.floor(this._tries / 2)}`
               this._timeOut1 = window.setTimeout(() => {
                 this.shadowRoot.querySelectorAll('#memoryPictures img')[i].style.visibility = 'hidden'
-                this._keyOpenPictures = true
+                this._tempArray = []
               }, 500)
             }
           }
         }
       }
-
-      if (this._keyTurnBackPictures) {
-        this._timeOut2 = window.setTimeout(() => {
-          this.turnbackPictures()
-        }, 2000)
-      }
+      this._timeOut2 = window.setTimeout(() => {
+        this.turnbackPictures()
+      }, 2000)
 
       // Congrat the user an shoulde later also show result
-      window.setTimeout(() => {
+      this._timeOut3 = window.setTimeout(() => {
         this._countHiddenPictures = 0
         for (let i = 0; i < this._memoryPictures.querySelectorAll('img').length; i++) {
           if (this._memoryPictures.querySelectorAll('img')[i].style.visibility === 'hidden') {

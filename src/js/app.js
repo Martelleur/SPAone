@@ -677,135 +677,126 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
       }
     })
   })
-})
 
-// popstate event
-window.addEventListener('popstate', event => {
-  // remove element when window.location.pathname === '/'
-  if (window.location.pathname === '/') {
-    document.querySelector('main').innerHTML = ''
-    return
-  }
-  try {
-    console.log(`id: ${event.state.id}. Element: ${event.state.element}`)
-  } catch (error) {
-    console.log(error)
-  }
+  // popstate event
+  window.addEventListener('popstate', event => {
+    // remove element when window.location.pathname === '/'
 
-  // Change focus to the element that shows in the url
-  for (let i = 0; i < document.querySelector('main').children.length; i++) {
-    let tempStr
-    document.querySelector('main').children[i].style.visibility = 'visible'
-    if (document.querySelector('main').children[i].nodeName === 'CHAT-APP') {
-      tempStr = `/chat-app/${document.querySelector('main').children[i].getAttribute('id')}`
-    }
-    if (document.querySelector('main').children[i].nodeName === 'CHESS-APP') {
-      tempStr = `/chess-app/${document.querySelector('main').children[i].getAttribute('id')}`
-    }
-    if (document.querySelector('main').children[i].nodeName === 'MINEHUNTER-APP') {
-      tempStr = `/minehunter-app/${document.querySelector('main').children[i].getAttribute('id')}`
-    }
-    if (document.querySelector('main').children[i].nodeName === 'MEMORY-APP') {
-      tempStr = `/memory-app/${document.querySelector('main').children[i].getAttribute('id')}`
+    if (window.location.pathname === '/') {
+      const userChoice = window.confirm('Press ok if you woulde like to close all the programs', 'close')
+      console.log(userChoice)
+      if (userChoice) {
+        document.querySelector('main').innerHTML = ''
+        document.querySelector('#hiddenElements').innerHTML = ''
+      }
+      return
     }
 
-    if (window.location.pathname !== tempStr) {
-      document.querySelector('main').children[i].setAttribute('data-zedindex', 'low')
-    } else {
-      document.querySelector('main').children[i].setAttribute('data-zedindex', 'high')
+    try {
+      console.log(`id: ${event.state.id}. Element: ${event.state.element}`)
+    } catch (error) {
+      console.log(error)
     }
-  }
 
-  // Change pathname if element have been deleted
-  /*
-  let testValue = true
-  for (let i = 0; i < document.querySelector('main').children.length; i++) {
-    const childId = document.querySelector('main').children[i].getAttribute('id')
-    if (document.querySelector('main').children[i].nodeName === 'CHAT-APP') {
-      if (childId === window.location.pathname.slice(10)) {
-        testValue = false
+    // Change focus to the element that shows in the url
+    for (let i = 0; i < document.querySelector('main').children.length; i++) {
+      let tempStr
+      document.querySelector('main').children[i].style.visibility = 'visible'
+      if (document.querySelector('main').children[i].nodeName === 'CHAT-APP') {
+        tempStr = `/chat-app/${document.querySelector('main').children[i].getAttribute('id')}`
+      }
+      if (document.querySelector('main').children[i].nodeName === 'CHESS-APP') {
+        tempStr = `/chess-app/${document.querySelector('main').children[i].getAttribute('id')}`
+      }
+      if (document.querySelector('main').children[i].nodeName === 'MINEHUNTER-APP') {
+        tempStr = `/minehunter-app/${document.querySelector('main').children[i].getAttribute('id')}`
+      }
+      if (document.querySelector('main').children[i].nodeName === 'MEMORY-APP') {
+        tempStr = `/memory-app/${document.querySelector('main').children[i].getAttribute('id')}`
+      }
+
+      if (window.location.pathname !== tempStr) {
+        document.querySelector('main').children[i].setAttribute('data-zedindex', 'low')
+      } else {
+        document.querySelector('main').children[i].setAttribute('data-zedindex', 'high')
       }
     }
-    if (document.querySelector('main').children[i].nodeName === 'CHESS-APP') {
-      if (childId === window.location.pathname.slice(11)) {
-        testValue = false
-      }
-    }
-    if (document.querySelector('main').children[i].nodeName === 'MINEHUNTER-APP') {
-      if (childId === window.location.pathname.slice(16)) {
-        testValue = false
-      }
-    }
-    if (document.querySelector('main').children[i].nodeName === 'MEMORY-APP') {
-      if (childId === window.location.pathname.slice(12)) {
-        testValue = false
-      }
-    }
-  }
-  if (testValue && window.location.pathname.slice(-8) !== '_deleted' && window.location.pathname.slice(-7) !== '_hidden') {
-    const pathName = `${window.location.pathname}_deleted`
-    window.history.replaceState(stateObj, `${stateObj.id}`, pathName)
-  }
-  */
-  /*
-  // Change pathname if element have been hidden
-  for (let i = 0; i < document.querySelectorAll('select').length; i++) {
-    let tempStr2
-    let tempStr3
-    let tempStr4
-    const select = document.querySelectorAll('select')[i]
 
-    for (let j = 1; j < select.querySelectorAll('option').length; j++) {
-      try {
-        tempStr3 = select.querySelectorAll('option')[j]
-        if (tempStr3.getAttribute('value') === tempStr3.value && tempStr3.value === tempStr3.textContent) {
-          console.log(true)
+    // Change pathname if element have been deleted
+    let testValue = true
+    for (let i = 0; i < document.querySelector('main').children.length; i++) {
+      const childId = document.querySelector('main').children[i].getAttribute('id')
+      if (document.querySelector('main').children[i].nodeName === 'CHAT-APP') {
+        if (childId === window.location.pathname.slice(10)) {
+          testValue = false
         }
-      } catch (error) {
-        console.log(error)
       }
+      if (document.querySelector('main').children[i].nodeName === 'CHESS-APP') {
+        if (childId === window.location.pathname.slice(11)) {
+          testValue = false
+        }
+      }
+      if (document.querySelector('main').children[i].nodeName === 'MINEHUNTER-APP') {
+        if (childId === window.location.pathname.slice(16)) {
+          testValue = false
+        }
+      }
+      if (document.querySelector('main').children[i].nodeName === 'MEMORY-APP') {
+        if (childId === window.location.pathname.slice(12)) {
+          testValue = false
+        }
+      }
+    }
+    if (testValue && window.location.pathname.slice(-8) !== '_deleted' && window.location.pathname.slice(-7) !== '_hidden') {
+      const pathName = `${window.location.pathname}_deleted`
+      window.history.replaceState(stateObj, `${stateObj.id}`, pathName)
+    }
 
-      if (tempStr3.textContent.slice(1, 5) === 'chat') {
-        tempStr4 = tempStr3.textContent.slice(1)
-        console.log(tempStr4)
-        tempStr2 = '/chat-app/' + tempStr4
-        console.log(tempStr2)
-      } else if (tempStr3.textContent.slice(1, 6) === 'chess') {
-        tempStr4 = tempStr3.textContent.slice(1)
-        console.log(tempStr4)
-        tempStr2 = '/chess-app/' + tempStr4
-        console.log(tempStr2)
-      } else if (tempStr3.textContent.slice(1, 7) === 'memory') {
-        tempStr4 = tempStr3.textContent.slice(1)
-        console.log(tempStr4)
-        tempStr2 = '/memory-app/' + tempStr4
-        console.log(tempStr2)
-      } else if (tempStr3.textContent.slice(1, 11) === 'minehunter') {
-        tempStr4 = tempStr3.textContent.slice(1)
-        console.log(tempStr4)
-        tempStr2 = '/minehunter-app/' + tempStr4
-        console.log(tempStr2)
-      }
-      if (tempStr2 === window.location.pathname) {
-        //  && document.querySelector(temp).getAttribute('id') === value
+    // Open up elements if the elements id displays in pathname
+    for (let i = 0; i < document.querySelectorAll('select').length; i++) {
+      let tempStr2
+      let tempStr3
+      let tempStr4
+      const select = document.querySelectorAll('select')[i]
+
+      for (let j = 1; j < select.querySelectorAll('option').length; j++) {
         try {
-          if (document.querySelector(tempStr3.textContent).getAttribute('data-hide') === 'true') {
-            document.querySelector(tempStr3.textContent).setAttribute('data-hide', 'false')
-            document.querySelector(tempStr3.textContent).setAttribute('data-zedindex', 'high')
-            document.querySelector(tempStr3.textContent).style.visibility = 'visible'
-            // event.target.children[i + 1].remove()
-            tempStr3.remove()
-            if (select.length === 1) {
-              select.remove()
-            }
+          tempStr3 = select.querySelectorAll('option')[j]
+          if (tempStr3.getAttribute('value') === tempStr3.value && tempStr3.value === tempStr3.textContent) {
+            console.log(true)
           }
         } catch (error) {
           console.log(error)
         }
+
+        if (tempStr3.textContent.slice(1, 5) === 'chat') {
+          tempStr4 = tempStr3.textContent.slice(1)
+          console.log(tempStr4)
+          tempStr2 = '/chat-app/' + tempStr4
+          console.log(tempStr2)
+        } else if (tempStr3.textContent.slice(1, 6) === 'chess') {
+          tempStr4 = tempStr3.textContent.slice(1)
+          console.log(tempStr4)
+          tempStr2 = '/chess-app/' + tempStr4
+          console.log(tempStr2)
+        } else if (tempStr3.textContent.slice(1, 7) === 'memory') {
+          tempStr4 = tempStr3.textContent.slice(1)
+          console.log(tempStr4)
+          tempStr2 = '/memory-app/' + tempStr4
+          console.log(tempStr2)
+        } else if (tempStr3.textContent.slice(1, 11) === 'minehunter') {
+          tempStr4 = tempStr3.textContent.slice(1)
+          console.log(tempStr4)
+          tempStr2 = '/minehunter-app/' + tempStr4
+          console.log(tempStr2)
+        }
+        if (tempStr2 === window.location.pathname) {
+          const pathName = `${tempStr2}_hidden`
+          window.history.replaceState(stateObj, `${stateObj.id}`, pathName)
+        }
       }
     }
-  }
-  */
+  })
 })
 
 // Full screen mode

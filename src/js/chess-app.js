@@ -578,6 +578,10 @@ export class Chess extends window.HTMLElement {
       }
       const myEvent = new window.CustomEvent('notBigWindow')
       this.dispatchEvent(myEvent)
+
+      const myEvent2 = new window.CustomEvent('deletedWindow')
+      this.dispatchEvent(myEvent2)
+
       window.sessionStorage.clear()
       this.remove()
     })

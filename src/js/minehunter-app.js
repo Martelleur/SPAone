@@ -382,6 +382,10 @@ export class Minehunter extends window.HTMLElement {
 
       const myEvent = new window.CustomEvent('notBigWindow')
       this.dispatchEvent(myEvent)
+
+      const myEvent2 = new window.CustomEvent('deletedWindow')
+      this.dispatchEvent(myEvent2)
+
       this.remove()
       this._counter.setAttribute('state', 'remove')
     })

@@ -251,6 +251,7 @@ let counterChessApplication = 0
 let y = 50
 let x = 0
 
+const stateObj = {}
 // creating custom-elements
 document.querySelector('#buttons').addEventListener('click', (event) => {
   event.preventDefault()
@@ -350,11 +351,14 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
   moveElement(element)
 
   // window.history and window.location
+  /*
   const stateObj = {
     element: event.target.parentElement.getAttribute('data-create-element'),
     id: element.getAttribute('id')
   }
-
+  */
+  stateObj.element = event.target.parentElement.getAttribute('data-create-element')
+  stateObj.id = element.getAttribute('id')
   window.history.pushState(stateObj, `/${stateObj.id}`, `/${stateObj.element}/${stateObj.id}`)
 
   // Event changing url
@@ -424,6 +428,11 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
     element.setAttribute('data-zedindex', 'high')
   })
 
+  // Listning on custom event deletedWindow
+  element.addEventListener('deletedWindow', event => {
+    window.history.replaceState(stateObj, `${stateObj.id}`, `${element.getAttribute('id')}_deleted`)
+  }, { once: true })
+
   const currentState = window.history.state
   console.log('currentState.id: ')
   console.log(typeof currentState.id)
@@ -432,9 +441,7 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
   // Listning on custom event hidewindow and cache hidden elements in select-element
   element.addEventListener('hideWindow', event => {
     event.preventDefault()
-    stateObj.visibility = 'hidden'
-    window.history.pushState(stateObj, `/${stateObj.id}`, `/${stateObj.element}/${stateObj.id}/${stateObj.visibility}`)
-    /*
+    window.history.replaceState(stateObj, `${stateObj.id}`, `${element.getAttribute('id')}_hidden`)/*
     window.history.back()
     console.log(window.location.pathname)
     window.history.forward()
@@ -714,7 +721,37 @@ window.addEventListener('popstate', event => {
     }
   }
 
-  // Open upp hided element if that element shows in the url
+  // Change pathname if element have been deleted
+  let testValue = true
+  for (let i = 0; i < document.querySelector('main').children.length; i++) {
+    const childId = document.querySelector('main').children[i].getAttribute('id')
+    if (document.querySelector('main').children[i].nodeName === 'CHAT-APP') {
+      if (childId === window.location.pathname.slice(10)) {
+        testValue = false
+      }
+    }
+    if (document.querySelector('main').children[i].nodeName === 'CHESS-APP') {
+      if (childId === window.location.pathname.slice(11)) {
+        testValue = false
+      }
+    }
+    if (document.querySelector('main').children[i].nodeName === 'MINEHUNTER-APP') {
+      if (childId === window.location.pathname.slice(16)) {
+        testValue = false
+      }
+    }
+    if (document.querySelector('main').children[i].nodeName === 'MEMORY-APP') {
+      if (childId === window.location.pathname.slice(12)) {
+        testValue = false
+      }
+    }
+  }
+  if (testValue && window.location.pathname.slice(-8) !== '_deleted' && window.location.pathname.slice(-7) === '_hidden') {
+    const pathName = `${window.location.pathname}_deleted`
+    window.history.replaceState(stateObj, `${stateObj.id}`, pathName)
+  }
+
+  // Change pathname if element have been hidden
   for (let i = 0; i < document.querySelectorAll('select').length; i++) {
     let tempStr2
     let tempStr3

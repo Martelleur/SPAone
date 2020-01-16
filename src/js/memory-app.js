@@ -162,6 +162,9 @@ export class Memory extends window.HTMLElement {
     this._commentBox = this.shadowRoot.querySelector('#commentBox')
     this._keyHighscore = true
     this._keyChat = true
+    this._timeOut1 = undefined
+    this._timeOut2 = undefined
+    this._timeOut3 = undefined
   }
 
   /**
@@ -340,8 +343,6 @@ export class Memory extends window.HTMLElement {
     // eventlistner for this._memoryPictures
     this._memoryPictures.addEventListener('click', (event) => {
       event.preventDefault()
-      // event.stopPropagation()
-
       if (!this._isStarting) {
         return
       }
@@ -354,6 +355,10 @@ export class Memory extends window.HTMLElement {
       if (this.countOpenTiles() > 1) {
         return
       }
+
+      clearTimeout(this._timeOut1)
+      clearTimeout(this._timeOut2)
+      clearTimeout(this._timeOut3)
 
       // if user click on a turned picture with the mouse
       if (event.target.tagName === 'IMG') {
@@ -403,21 +408,20 @@ export class Memory extends window.HTMLElement {
             if (this.shadowRoot.querySelectorAll('#memoryPictures img')[i].getAttribute('src') === this._tempArray[1].getAttribute('src')) {
               this._quantityOfPaires++
               this._paires.innerText = `Paires: ${this._quantityOfPaires / 2}\nTries: ${Math.floor(this._tries / 2)}`
-              window.setTimeout(() => {
+              this._timeOut1 = window.setTimeout(() => {
                 this.shadowRoot.querySelectorAll('#memoryPictures img')[i].style.visibility = 'hidden'
+                this._tempArray = []
               }, 500)
             }
           }
         }
       }
-      // console.log('this.turnbackPictures()/JM')
-      // console.log(this.turnbackPictures())
-      window.setTimeout(() => {
+      this._timeOut2 = window.setTimeout(() => {
         this.turnbackPictures()
       }, 2000)
 
       // Congrat the user an shoulde later also show result
-      window.setTimeout(() => {
+      this._timeOut3 = window.setTimeout(() => {
         this._countHiddenPictures = 0
         for (let i = 0; i < this._memoryPictures.querySelectorAll('img').length; i++) {
           if (this._memoryPictures.querySelectorAll('img')[i].style.visibility === 'hidden') {

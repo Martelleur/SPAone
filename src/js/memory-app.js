@@ -162,7 +162,6 @@ export class Memory extends window.HTMLElement {
     this._commentBox = this.shadowRoot.querySelector('#commentBox')
     this._keyHighscore = true
     this._keyChat = true
-    this._keyTurnBackPictures = false
     this._timeOut1 = undefined
     this._timeOut2 = undefined
     this._timeOut3 = undefined
@@ -400,7 +399,6 @@ export class Memory extends window.HTMLElement {
       // storing even.target in temp array
       target.setAttribute('src', attributeSrc)
       this._tempArray.push(target)
-      console.log(this._tempArray)
 
       // check if picture are the same
       if (this._tempArray.length === 2) {

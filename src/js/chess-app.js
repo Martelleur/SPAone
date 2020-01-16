@@ -275,6 +275,7 @@ export class Chess extends window.HTMLElement {
     this._active = undefined
     this._status = false
     this._keyChat = true
+    this._key = true
 
     // chesspieces image sources
     this._whitePawnSource = '../imageChess/pawnWhite.png'
@@ -310,8 +311,12 @@ export class Chess extends window.HTMLElement {
     if (name === 'data-zedindex') {
       if (newValue === 'high') {
         this.style.zIndex = '1'
+        this.style.outline = '1px solid white'
+        this._key = true
         console.log('zIndex: 1')
       } else {
+        this.style.outline = '1px solid black'
+        this._key = false
         this.style.zIndex = '0'
         console.log('zIndex: 0')
       }
@@ -350,6 +355,9 @@ export class Chess extends window.HTMLElement {
   connectedCallback () {
     // eventlistener for this._commentBox
     this._commentBox.addEventListener('click', event => {
+      if (!this._key) {
+        return
+      }
       if (this._commentContainer.style.display === '' || this._commentContainer.style.display === 'none') {
         this._commentContainer.style.display = 'initial'
       } else {
@@ -359,6 +367,9 @@ export class Chess extends window.HTMLElement {
 
     // Events fired on the drag target
     this._chessBoard.addEventListener('dragstart', event => {
+      if (!this._key) {
+        return
+      }
       console.log(event.target.parentNode)
       event.target.style.opacity = 0
       this._active = event.target
@@ -562,6 +573,9 @@ export class Chess extends window.HTMLElement {
     // Events fired when click on this._deletChess
     this._deletChess.addEventListener('click', event => {
       event.preventDefault()
+      if (!this._key) {
+        return
+      }
       const myEvent = new window.CustomEvent('notBigWindow')
       this.dispatchEvent(myEvent)
       window.sessionStorage.clear()
@@ -571,6 +585,9 @@ export class Chess extends window.HTMLElement {
     // Events fired when click on this._showWhiteOptions
     this._showWhiteOptions.addEventListener('click', event => {
       event.preventDefault()
+      if (!this._key) {
+        return
+      }
       // Reset border color and background color
       for (let i = 0; i < this._chessBoardDivLength; i++) {
         this._chessBoardDiv[i].style.border = '1px solid black'
@@ -585,6 +602,9 @@ export class Chess extends window.HTMLElement {
     // Events fired when click on this._showBlackOptions
     this._showBlackOptions.addEventListener('click', event => {
       event.preventDefault()
+      if (!this._key) {
+        return
+      }
       // Reset border color and background color
       for (let i = 0; i < this._chessBoardDivLength; i++) {
         this._chessBoardDiv[i].style.border = '1px solid black'
@@ -599,6 +619,9 @@ export class Chess extends window.HTMLElement {
     // Events fired when click on this._history
     this._history.addEventListener('click', event => {
       event.preventDefault()
+      if (!this._key) {
+        return
+      }
 
       let round = event.target.value
       if (round === 'clear') {
@@ -625,6 +648,10 @@ export class Chess extends window.HTMLElement {
     // eventlistner for this._adjustableWindow
     this._adjustableWindow.addEventListener('click', (event) => {
       event.preventDefault()
+      if (!this._key) {
+        return
+      }
+
       this.style.position = 'absolute'
       this._title.style.cursor = 'move'
       this._chessConteiner.style.border = 'none'
@@ -638,6 +665,10 @@ export class Chess extends window.HTMLElement {
     // eventlistner for this._bigWindow
     this._bigWindow.addEventListener('click', (event) => {
       event.preventDefault()
+      if (!this._key) {
+        return
+      }
+
       this.style.position = 'static'
       this._title.style.cursor = 'default'
       this._chessConteiner.style.border = '5px solid #0c5cc4'
@@ -652,6 +683,10 @@ export class Chess extends window.HTMLElement {
     // eventlistner for this._hideWindow
     this._hideWindow.addEventListener('click', (event) => {
       event.preventDefault()
+      if (!this._key) {
+        return
+      }
+
       this.setAttribute('data-hide', 'true')
 
       const myEvent = new window.CustomEvent('notBigWindow')
@@ -664,6 +699,10 @@ export class Chess extends window.HTMLElement {
     // eventlistner for this._chat
     this._chat.addEventListener('click', (event) => {
       event.preventDefault()
+      if (!this._key) {
+        return
+      }
+
       this._chatConteiner.innerHTML = ''
       if (!this._keyChat) {
         this._keyChat = true

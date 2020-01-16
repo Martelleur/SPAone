@@ -162,6 +162,7 @@ export class Memory extends window.HTMLElement {
     this._commentBox = this.shadowRoot.querySelector('#commentBox')
     this._keyHighscore = true
     this._keyChat = true
+    this._key = true
     this._timeOut1 = undefined
     this._timeOut2 = undefined
     this._timeOut3 = undefined
@@ -186,8 +187,12 @@ export class Memory extends window.HTMLElement {
     if (name === 'data-zedindex') {
       if (newValue === 'high') {
         this.style.zIndex = '1'
+        this.style.outline = '1px solid white'
+        this._key = true
         console.log('zIndex: 1')
       } else {
+        this.style.outline = '1px solid black'
+        this._key = false
         this.style.zIndex = '0'
         console.log('zIndex: 0')
       }
@@ -227,6 +232,10 @@ export class Memory extends window.HTMLElement {
     // eventlistner for this._chat
     this._chat.addEventListener('click', (event) => {
       event.preventDefault()
+      if (!this._key) {
+        return
+      }
+
       this._chatConteiner.innerHTML = ''
       if (!this._keyChat) {
         this._keyChat = true
@@ -241,6 +250,9 @@ export class Memory extends window.HTMLElement {
     })
 
     // eventlistener for this._commentBox
+    if (!this._key) {
+      return
+    }
     this._commentBox.addEventListener('click', event => {
       if (this._commentContainer.style.display === '' || this._commentContainer.style.display === 'none') {
         this._commentContainer.style.display = 'initial'
@@ -251,6 +263,9 @@ export class Memory extends window.HTMLElement {
 
     // eventlistner for this._highscore
     this._highscore.addEventListener('click', event => {
+      if (!this._key) {
+        return
+      }
       event.preventDefault()
       this._gameFooter.innerHTML = ''
       this._paires.innerHTML = ''
@@ -289,6 +304,9 @@ export class Memory extends window.HTMLElement {
     // eventlistner for this._adjustableWindow
     this._adjustableWindow.addEventListener('click', (event) => {
       event.preventDefault()
+      if (!this._key) {
+        return
+      }
       this.style.position = 'absolute'
       this.style.resize = 'both'
       this.style.border = '5px solid #0c5cc4'
@@ -307,6 +325,9 @@ export class Memory extends window.HTMLElement {
 
     // eventlistner for this._bigWindow
     this._bigWindow.addEventListener('click', (event) => {
+      if (!this._key) {
+        return
+      }
       this._isBig = true
       event.preventDefault()
       this.style.position = 'static'
@@ -328,6 +349,9 @@ export class Memory extends window.HTMLElement {
     // eventlistner for this._hideWindow
     this._hideWindow.addEventListener('click', (event) => {
       event.preventDefault()
+      if (!this._key) {
+        return
+      }
 
       this.setAttribute('data-hide', 'true')
 
@@ -343,6 +367,9 @@ export class Memory extends window.HTMLElement {
     // eventlistner for this._memoryPictures
     this._memoryPictures.addEventListener('click', (event) => {
       event.preventDefault()
+      if (!this._key) {
+        return
+      }
       if (!this._isStarting) {
         return
       }
@@ -455,6 +482,9 @@ export class Memory extends window.HTMLElement {
 
     // eventlistner for this._start
     this._start.addEventListener('click', event => {
+      if (!this._key) {
+        return
+      }
       event.preventDefault()
       this._gameFooter.innerHTML = ''
       this._memoryPictures.innerHTML = ''
@@ -474,6 +504,9 @@ export class Memory extends window.HTMLElement {
 
     // eventlistner for this._deletMemory
     this._deletMemory.addEventListener('click', (event) => {
+      if (!this._key) {
+        return
+      }
       event.preventDefault()
       // remove this._counter
       try {
@@ -490,6 +523,9 @@ export class Memory extends window.HTMLElement {
     // eventlistner for this._restartMemory
     this._restartMemory.addEventListener('click', (event) => {
       event.preventDefault()
+      if (!this._key) {
+        return
+      }
 
       // reset this._counter
       this._counter.setAttribute('state', 'remove')
@@ -514,6 +550,9 @@ export class Memory extends window.HTMLElement {
 
     // eventlistner for this._sizeMemory
     this._sizeMemory.addEventListener('change', (event) => {
+      if (!this._key) {
+        return
+      }
       event.preventDefault()
       // reset this._counter
       this._counter.setAttribute('state', 'remove')

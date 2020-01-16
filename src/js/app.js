@@ -337,6 +337,9 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
   }
 
   element.setAttribute('id', nameIdApplication)
+  for (let i = 0; i < document.querySelector('main').children.length; i++) {
+    document.querySelector('main').children[i].setAttribute('data-zedindex', 'low')
+  }
   element.setAttribute('data-hide', 'false')
   element.setAttribute('data-zedindex', 'high')
 
@@ -393,8 +396,10 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
     info.style.display = 'none'
   }
   element.addEventListener('mouseover', event => {
-    window.setTimeout(hoverCustomElement, 1000)
-    window.setTimeout(hoverCustomElement2, 4000)
+    if (element.getAttribute('data-zedindex') === 'low') {
+      window.setTimeout(hoverCustomElement, 1000)
+      window.setTimeout(hoverCustomElement2, 4000)
+    }
   })
   element.addEventListener('mousemove', event => {
     clearTimeout(hoverCustomElement)
@@ -416,6 +421,7 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
     for (let i = 0; i < document.querySelector('main').children.length; i++) {
       document.querySelector('main').children[i].style.visibility = 'visible'
     }
+    element.setAttribute('data-zedindex', 'high')
   })
 
   const currentState = window.history.state
@@ -751,6 +757,7 @@ window.addEventListener('popstate', event => {
         try {
           if (document.querySelector(tempStr3.textContent).getAttribute('data-hide') === 'true') {
             document.querySelector(tempStr3.textContent).setAttribute('data-hide', 'false')
+            document.querySelector(tempStr3.textContent).setAttribute('data-zedindex', 'high')
             document.querySelector(tempStr3.textContent).style.visibility = 'visible'
             // event.target.children[i + 1].remove()
             tempStr3.remove()

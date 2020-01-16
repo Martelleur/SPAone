@@ -160,6 +160,7 @@ export class Minehunter extends window.HTMLElement {
     this._commentBox = this.shadowRoot.querySelector('#commentBox')
     this._keyHighscore = true
     this._keyChat = true
+    this._key = true
   }
 
   /**
@@ -181,8 +182,12 @@ export class Minehunter extends window.HTMLElement {
     if (name === 'data-zedindex') {
       if (newValue === 'high') {
         this.style.zIndex = '1'
+        this.style.outline = '1px solid white'
+        this._key = true
         console.log('zIndex: 1')
       } else {
+        this.style.outline = '1px solid black'
+        this._key = false
         this.style.zIndex = '0'
         console.log('zIndex: 0')
       }
@@ -218,6 +223,9 @@ export class Minehunter extends window.HTMLElement {
   connectedCallback () {
     // eventlistener for this._commentBox
     this._commentBox.addEventListener('click', event => {
+      if (!this._key) {
+        return
+      }
       if (this._commentContainer.style.display === '' || this._commentContainer.style.display === 'none') {
         this._commentContainer.style.display = 'initial'
       } else {
@@ -228,6 +236,9 @@ export class Minehunter extends window.HTMLElement {
     // eventlistner for this._highscore
     this._highscore.addEventListener('click', event => {
       event.preventDefault()
+      if (!this._key) {
+        return
+      }
       this._gameFooter.innerHTML = ''
       if (!this._keyHighscore) {
         this._keyHighscore = true
@@ -272,6 +283,10 @@ export class Minehunter extends window.HTMLElement {
     // eventlistner for this._start
     this._start.addEventListener('click', event => {
       event.preventDefault()
+      if (!this._key) {
+        return
+      }
+
       this._isStarting = true
       this._gameField.innerHTML = ''
       this.style.height = 'initial'
@@ -286,6 +301,10 @@ export class Minehunter extends window.HTMLElement {
     // eventlistner for this._chat
     this._chat.addEventListener('click', (event) => {
       event.preventDefault()
+      if (!this._key) {
+        return
+      }
+
       this._chatConteiner.innerHTML = ''
       if (!this._keyChat) {
         this._keyChat = true
@@ -301,6 +320,10 @@ export class Minehunter extends window.HTMLElement {
     // eventlistner for this._adjustableWindow
     this._adjustableWindow.addEventListener('click', (event) => {
       event.preventDefault()
+      if (!this._key) {
+        return
+      }
+
       this.style.position = 'absolute'
       this.style.resize = 'both'
       this.style.border = '5px solid #0c5cc4'
@@ -316,6 +339,10 @@ export class Minehunter extends window.HTMLElement {
     // eventlistner for this._bigWindow
     this._bigWindow.addEventListener('click', (event) => {
       event.preventDefault()
+      if (!this._key) {
+        return
+      }
+
       this.style.position = 'static'
       if (!this._isStarting) {
         this.style.height = '100%'
@@ -333,6 +360,10 @@ export class Minehunter extends window.HTMLElement {
     // eventlistner for this._hideWindow
     this._hideWindow.addEventListener('click', (event) => {
       event.preventDefault()
+      if (!this._key) {
+        return
+      }
+
       this.setAttribute('data-hide', 'true')
 
       const myEvent = new window.CustomEvent('notBigWindow')
@@ -345,6 +376,10 @@ export class Minehunter extends window.HTMLElement {
     // event for deletbutton
     this._deletMinehunter.addEventListener('click', event => {
       event.preventDefault()
+      if (!this._key) {
+        return
+      }
+
       const myEvent = new window.CustomEvent('notBigWindow')
       this.dispatchEvent(myEvent)
       this.remove()
@@ -354,6 +389,10 @@ export class Minehunter extends window.HTMLElement {
     // event for restartButton
     this._restartMinehunter.addEventListener('click', event => {
       event.preventDefault()
+      if (!this._key) {
+        return
+      }
+
       this.setGamefield()
       this._mines = this.setMines()
       this._counter.setAttribute('state', 'remove')
@@ -364,6 +403,10 @@ export class Minehunter extends window.HTMLElement {
     // event for levelButton
     this._levelMinehunter.addEventListener('change', event => {
       event.preventDefault()
+      if (!this._key) {
+        return
+      }
+
       this.setGamefield()
       this._counter.setAttribute('state', 'remove')
       this._counter = document.createElement('timecounter-app')
@@ -375,6 +418,9 @@ export class Minehunter extends window.HTMLElement {
     // event for gamefield rightclick
     this._gameField.addEventListener('contextmenu', event => {
       event.preventDefault()
+      if (!this._key) {
+        return
+      }
 
       // reset this._flagcounter and this._blackPictureCounter
       this._flagCounter = 0
@@ -392,6 +438,9 @@ export class Minehunter extends window.HTMLElement {
     // event for gamefield
     this._gameField.addEventListener('click', event => {
       event.preventDefault()
+      if (!this._key) {
+        return
+      }
 
       // if user not click on a img-tag
       if (event.target.tagName !== 'IMG') {

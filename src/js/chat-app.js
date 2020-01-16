@@ -154,6 +154,7 @@ export class Chat extends window.HTMLElement {
     this._scrollToTop = this.shadowRoot.querySelector('#scrollToTop')
     this._scrollToBottom = this.shadowRoot.querySelector('#scrollToBottom')
     this._scrollKey = true
+    this._key = true
   }
 
   static get observedAttributes () {
@@ -164,8 +165,12 @@ export class Chat extends window.HTMLElement {
     if (name === 'data-zedindex') {
       if (newValue === 'high') {
         this.style.zIndex = '1'
+        this.style.outline = '1px solid white'
+        this._key = true
         console.log('zIndex: 1')
       } else {
+        this.style.outline = '1px solid black'
+        this._key = false
         this.style.zIndex = '0'
         console.log('zIndex: 0')
       }
@@ -257,15 +262,18 @@ export class Chat extends window.HTMLElement {
   }
 
   connectedCallback () {
+    // Test
     function hashHandler () {
       console.log('The hash has changed!')
     }
-
     window.addEventListener('hashchange', hashHandler, false)
 
     // eventlistner for this._scrollToBottom
     this._scrollToBottom.addEventListener('click', event => {
       event.preventDefault()
+      if (!this._key) {
+        return
+      }
       this.scrollIntoView(false)
       this._scrollKey = true
     })
@@ -273,6 +281,9 @@ export class Chat extends window.HTMLElement {
     // eventlistner for this._scrollToTop
     this._scrollToTop.addEventListener('click', event => {
       event.preventDefault()
+      if (!this._key) {
+        return
+      }
       this.scrollIntoView(true)
       this._scrollKey = false
     })
@@ -280,6 +291,9 @@ export class Chat extends window.HTMLElement {
     // eventlistner for this._emoji
     this._emoji.addEventListener('click', event => {
       event.preventDefault()
+      if (!this._key) {
+        return
+      }
       if (this._picker.pickerVisible) {
         this._picker.hidePicker()
       } else {
@@ -290,6 +304,9 @@ export class Chat extends window.HTMLElement {
     // eventlistner for this._changeUsername
     this._changeChannel.addEventListener('click', (event) => {
       event.preventDefault()
+      if (!this._key) {
+        return
+      }
       const channel = window.prompt('Please enter channel', this._channel)
       if (channel != null) {
         this._channel = channel
@@ -310,6 +327,9 @@ export class Chat extends window.HTMLElement {
     // eventlistner for this._changeUsername
     this._changeUsername.addEventListener('click', (event) => {
       event.preventDefault()
+      if (!this._key) {
+        return
+      }
       const username = window.prompt('Please enter your username', 'user1')
       if (username != null) {
         this._username = username
@@ -330,6 +350,9 @@ export class Chat extends window.HTMLElement {
     // eventlistner for this._adjustableWindow
     this._adjustableWindow.addEventListener('click', (event) => {
       event.preventDefault()
+      if (!this._key) {
+        return
+      }
       this.style.position = 'absolute'
       this.style.resize = 'both'
       this.style.border = '5px solid #0c5cc4'
@@ -346,6 +369,9 @@ export class Chat extends window.HTMLElement {
     // eventlistner for this._bigWindow
     this._bigWindow.addEventListener('click', (event) => {
       event.preventDefault()
+      if (!this._key) {
+        return
+      }
       this.style.position = 'static'
       this.style.resize = 'none'
       this.style.border = 'none'
@@ -361,6 +387,9 @@ export class Chat extends window.HTMLElement {
     // eventlistner for this._hideWindow
     this._hideWindow.addEventListener('click', (event) => {
       event.preventDefault()
+      if (!this._key) {
+        return
+      }
       this.setAttribute('data-hide', 'true')
 
       const myEvent = new window.CustomEvent('notBigWindow')
@@ -372,12 +401,19 @@ export class Chat extends window.HTMLElement {
 
     // eventlistner for this._input
     this._input.addEventListener('input', (event) => {
+      event.preventDefault()
+      if (!this._key) {
+        return
+      }
       this._message = this._input.value
     })
 
     // eventlistner for this._deletChat
     this._deletChat.addEventListener('click', (event) => {
       event.preventDefault()
+      if (!this._key) {
+        return
+      }
       const myEvent = new window.CustomEvent('notBigWindow')
       this.dispatchEvent(myEvent)
       // Close websocket
@@ -388,6 +424,9 @@ export class Chat extends window.HTMLElement {
     // eventlistner for this._send
     this._send.addEventListener('click', (event) => {
       event.preventDefault()
+      if (!this._key) {
+        return
+      }
       const post = {
         type: this._type,
         data: this._message,
@@ -402,6 +441,9 @@ export class Chat extends window.HTMLElement {
     // eventlistner for this._goLiveChat (bygger på callback) (kan göras om till async awaite)
     this._goLiveChat.addEventListener('click', (event) => {
       event.preventDefault()
+      if (!this._key) {
+        return
+      }
       this._onlineStatus.innerText = 'You are online'
       // console.log('websocket trys to connect to server/JM')
       this._socket = new window.WebSocket('ws://vhost3.lnu.se:20080/socket/', 'charcords')
@@ -409,7 +451,7 @@ export class Chat extends window.HTMLElement {
 
     // eventlistner for this._socket
     this._socket.addEventListener('open', event => {
-      console.log('websocket in action/JM')
+      // console.log('websocket in action/JM')
       this._socket.send(JSON.stringify(this._data))
     })
 
@@ -445,6 +487,10 @@ export class Chat extends window.HTMLElement {
 
     // close WS
     this._closeLiveChat.addEventListener('click', event => {
+      event.preventDefault()
+      if (!this._key) {
+        return
+      }
       console.log('ws offline')
       this._socket.close()
       this._onlineStatus.innerText = 'You are offline'

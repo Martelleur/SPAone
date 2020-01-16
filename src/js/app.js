@@ -251,7 +251,6 @@ let counterChessApplication = 0
 let y = 50
 let x = 0
 
-const stateObj = {}
 // creating custom-elements
 document.querySelector('#buttons').addEventListener('click', (event) => {
   event.preventDefault()
@@ -351,14 +350,10 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
   moveElement(element)
 
   // window.history and window.location
-  /*
   const stateObj = {
     element: event.target.parentElement.getAttribute('data-create-element'),
     id: element.getAttribute('id')
   }
-  */
-  stateObj.element = event.target.parentElement.getAttribute('data-create-element')
-  stateObj.id = element.getAttribute('id')
   window.history.pushState(stateObj, `/${stateObj.id}`, `/${stateObj.element}/${stateObj.id}`)
 
   // Event changing url
@@ -722,6 +717,7 @@ window.addEventListener('popstate', event => {
   }
 
   // Change pathname if element have been deleted
+  /*
   let testValue = true
   for (let i = 0; i < document.querySelector('main').children.length; i++) {
     const childId = document.querySelector('main').children[i].getAttribute('id')
@@ -746,11 +742,12 @@ window.addEventListener('popstate', event => {
       }
     }
   }
-  if (testValue && window.location.pathname.slice(-8) !== '_deleted' && window.location.pathname.slice(-7) === '_hidden') {
+  if (testValue && window.location.pathname.slice(-8) !== '_deleted' && window.location.pathname.slice(-7) !== '_hidden') {
     const pathName = `${window.location.pathname}_deleted`
     window.history.replaceState(stateObj, `${stateObj.id}`, pathName)
   }
-
+  */
+  /*
   // Change pathname if element have been hidden
   for (let i = 0; i < document.querySelectorAll('select').length; i++) {
     let tempStr2
@@ -808,6 +805,7 @@ window.addEventListener('popstate', event => {
       }
     }
   }
+  */
 })
 
 // Full screen mode

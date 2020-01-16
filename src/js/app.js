@@ -701,10 +701,12 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
     }
 
     try {
-      console.log(`id: ${event.state.id}. Element: ${event.state.element}`)
+      console.log(`id: ${event.state.id}\nElement: ${event.state.element}\n`
+      )
     } catch (error) {
       console.log(error)
     }
+    console.log(window.history.state)
 
     // Change focus to the element that shows in the url
     for (let i = 0; i < document.querySelector('main').children.length; i++) {

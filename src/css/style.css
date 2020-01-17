@@ -44,23 +44,12 @@ body {
 
 #emojiContainer {
     position: absolute;
-    left: 40vw;
-    width: 20vw;
-    top: 0;
+    left: 50vw;
+    top: 0.5vh;
 }
 #emojiButton {
-    height: 100%;
-    width: 20%;
-    top: 0;
     cursor: pointer;
-}
-#inputEmoji {
-    height: 100%;
-    width: 60%;
-    top: 0;
-}
-
-#inputEmoji {
+    font-size: 3vh;
 }
 
 header {

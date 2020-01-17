@@ -40,7 +40,8 @@ window.addEventListener('DOMContentLoaded', () => {
     position: 'bottom'
   })
   picker.on('emoji', emoji => {
-    document.querySelector('input').value += emoji
+    // document.querySelector('input').value += emoji
+    document.querySelector('#emojiButton').textContent = emoji
   })
 
   button.addEventListener('click', () => {

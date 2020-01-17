@@ -8,7 +8,7 @@ import { moveElement } from './moveElement.js'
 // Check if online not always true but a good check
 // Insted we define online when client connected to server
 // Like the heartbeat in websocketconnection
-
+/*
 // register service worker
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./js/sw.js', { scope: './js/' }).then(function (reg) {
@@ -24,7 +24,7 @@ if ('serviceWorker' in navigator) {
     console.log('Registration failed with ' + error)
   })
 }
-
+*/
 // using moment-api
 setInterval(() => {
   // let c = window.moment().format('LLLL')
@@ -40,7 +40,6 @@ window.addEventListener('DOMContentLoaded', () => {
     position: 'bottom'
   })
   picker.on('emoji', emoji => {
-    // document.querySelector('input').value += emoji
     document.querySelector('#emojiButton').textContent = emoji
   })
 

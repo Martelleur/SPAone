@@ -503,6 +503,7 @@ export class Chess extends window.HTMLElement {
             event.target.appendChild(this.shadowRoot.querySelector(textArgument))
           }
           // change activePlayer and test if player is scheck
+          console.log(this._whitePiecesTurn)
           if (this._whitePiecesTurn) {
             this._whitePiecesTurn = false
             this.isPlayerSheck('isBlackSheck')
@@ -528,14 +529,13 @@ export class Chess extends window.HTMLElement {
           // try to fix problem how to save when multipale tables is in action
           // saving in sessionstorage
           this._round++
-          const argument = `Round${this._round}`
+          const argument = `Round${this._round}${this.getAttribute('id')}`
           window.sessionStorage.setItem(argument, JSON.stringify(this.indexAllSquares()))
 
           // adding option to this._history
           const option = document.createElement('option')
-          const argumentValueOption = `Round${this._round}`
-          option.setAttribute('value', argumentValueOption)
-          option.innerText = argumentValueOption
+          option.setAttribute('value', argument)
+          option.innerText = argument
           this._history.appendChild(option)
 
           // cloning
@@ -593,8 +593,10 @@ export class Chess extends window.HTMLElement {
 
       const myEvent2 = new window.CustomEvent('deletedWindow')
       this.dispatchEvent(myEvent2)
-
-      window.sessionStorage.clear()
+      for (let i = 0; i < this._round; i++) {
+        const argument = `Round${i + 1}${this.getAttribute('id')}`
+        window.sessionStorage.removeItem(argument)
+      }
       this.remove()
     })
 
@@ -1615,7 +1617,15 @@ export class Chess extends window.HTMLElement {
     // create a div container bigDiv and indexnumber index
     const index = document.createElement('span')
     const bigDiv = document.createElement('div')
-    index.textContent = argument.slice(-1)
+    console.log(this.getAttribute('id').length)
+    console.log(this.getAttribute('id').length)
+    if (this.getAttribute('id').length === 6) {
+      index.textContent = argument.slice(-7, -6)
+    }
+    if (this.getAttribute('id').length === 7) {
+      index.textContent = argument.slice(-8, -7)
+    }
+
     index.style.color = 'black'
     bigDiv.style.width = '140px'
     bigDiv.style.height = '140px'

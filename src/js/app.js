@@ -380,7 +380,7 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
   info.setAttribute('class', 'info')
   document.querySelector('main').appendChild(info)
   info.innerHTML = `
-  <p>dblclick on an element to get focus</p>
+  <p>Dubbleclick on an element to get focus</p>
   <style>
     #${infoId} {
       top: 1vh;

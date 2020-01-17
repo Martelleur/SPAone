@@ -585,6 +585,22 @@ export class Memory extends window.HTMLElement {
   }
 
   /**
+   * @memberof Memory
+   */
+  disconnectedCallback () {
+    console.log('Goodby from element')
+    const myEvent = new window.CustomEvent('disconnectedElement')
+    this.dispatchEvent(myEvent)
+  }
+
+  /**
+   * @memberof Memory
+   */
+  adoptedCallback () {
+    console.log('Element moved to new page.')
+  }
+
+  /**
    * Turn back pictures
    * @memberof Memory
    */

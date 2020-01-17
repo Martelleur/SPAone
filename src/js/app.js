@@ -430,6 +430,11 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
     element.setAttribute('data-zedindex', 'high')
   })
 
+  // Listning on custom event disconnectedElement
+  element.addEventListener('disconnectedElement', event => {
+    console.log('Goodbye element')
+  })
+
   // Listning on custom event deletedWindow
   element.addEventListener('deletedWindow', event => {
     console.log(document.querySelector('main').children.length)

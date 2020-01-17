@@ -836,14 +836,11 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
       } else {
         x = 20
       }
+
       // create element and ids for elements
       const copyChessElement = document.createElement('chess-app')
       counterChessApplication++
       nameIdApplication = `chess${counterChessApplication}`
-      copyChessElement.setAttribute('id', nameIdApplication)
-      for (let i = 0; i < document.querySelector('main').children.length; i++) {
-        document.querySelector('main').children[i].setAttribute('data-zedindex', 'low')
-      }
       copyChessElement.setAttribute('data-hide', 'false')
       copyChessElement.setAttribute('data-zedindex', 'high')
 
@@ -852,6 +849,11 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
       copyChessElement.style.top = y + 'px'
       copyChessElement.style.left = x + 'px'
       moveElement(copyChessElement)
+
+      copyChessElement.setAttribute('id', nameIdApplication)
+      for (let i = 0; i < document.querySelector('main').children.length; i++) {
+        document.querySelector('main').children[i].setAttribute('data-zedindex', 'low')
+      }
 
       stateObj.element = 'chess-app'
       stateObj.id = copyChessElement.getAttribute('id')
@@ -862,7 +864,7 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
         window.history.pushState(stateObj, `/${stateObj.id}`, `/${stateObj.element}/${stateObj.id}`)
         copyChessElement.setAttribute('data-zedindex', 'high')
         for (let i = 0; i < document.querySelector('main').children.length; i++) {
-          if (document.querySelector('main').children[i] !== element) {
+          if (document.querySelector('main').children[i] !== copyChessElement) {
             document.querySelector('main').children[i].setAttribute('data-zedindex', 'low')
           }
         }
@@ -878,7 +880,7 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
       // Listning on custom event bigWindow
       copyChessElement.addEventListener('bigWindow', event => {
         for (let i = 0; i < document.querySelector('main').children.length; i++) {
-          if (document.querySelector('main').children[i] !== element) {
+          if (document.querySelector('main').children[i] !== copyChessElement) {
             document.querySelector('main').children[i].style.visibility = 'hidden'
           }
         }
@@ -899,16 +901,13 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
 
       // Listning on custom event deletedWindow
       copyChessElement.addEventListener('deletedWindow', event => {
-        console.log(document.querySelector('main').children.length)
-        const temp = `#${element.getAttribute('id')}Info`
-        document.querySelector(temp).remove()
         window.history.replaceState(stateObj, `${stateObj.id}`, `${copyChessElement.getAttribute('id')}_deleted`)
       }, { once: true })
 
       // Listning on custom event hidewindow and cache hidden elements in select-element
       copyChessElement.addEventListener('hideWindow', event => {
         event.preventDefault()
-        window.history.replaceState(stateObj, `${stateObj.id}`, `${element.getAttribute('id')}_hidden`)
+        window.history.replaceState(stateObj, `${stateObj.id}`, `${copyChessElement.getAttribute('id')}_hidden`)
 
         const selectChess = document.createElement('select')
         const option4 = document.createElement('option')

@@ -464,7 +464,11 @@ export class Chat extends window.HTMLElement {
       const dataParse = JSON.parse(event.data)
       const d = window.moment().format('MMMM Do YYYY, h:mm:ss a')
 
-      const p = document.createElement('p')
+      const p1 = document.createElement('p')
+      const p2 = document.createElement('p')
+      const p3 = document.createElement('p')
+      const p4 = document.createElement('p')
+      const p5 = document.createElement('p')
       if (dataParse.username !== 'The Server') {
         const messages = JSON.parse(window.sessionStorage.getItem('messages')) || []
         /*
@@ -478,8 +482,18 @@ export class Chat extends window.HTMLElement {
         messages.push(dataParse)
         window.sessionStorage.setItem('messages', JSON.stringify(messages))
 
-        p.innerHTML = `Date: ${d}.<br>Username: ${dataParse.username}.<br>Channel: ${dataParse.channel}.<br>Data: ${dataParse.data}<br>Type: ${dataParse.type}<hr>`
-        this._messages.appendChild(p)
+        p1.textContent = `Date: ${d}`
+        p2.textContent = `Username: ${dataParse.username}`
+        p3.textContent = `Channel: ${dataParse.channel}`
+        p4.textContent = `Data: ${dataParse.data}`
+        p5.textContent = `Type: ${dataParse.type}`
+        this._messages.appendChild(p1)
+        this._messages.appendChild(p2)
+        this._messages.appendChild(p3)
+        this._messages.appendChild(p4)
+        this._messages.appendChild(p5)
+        this._messages.appendChild(document.createElement('hr'))
+        this._messages.appendChild(document.createElement('br'))
 
         const tempStr = `/chat-app/${this.getAttribute('id')}`
 

@@ -1488,16 +1488,20 @@ export class Chess extends window.HTMLElement {
 
     const blackPiecesOptionsFlat = blackPiecesOptions.flat()
     const whitePiecesOptionsFlat = whitePiecesOptions.flat()
-
     // Black players otions
     if (color === 'black') {
+      console.log('blackPiecesOptionsFlat[i] TEST')
       for (let i = 0; i < blackPiecesOptionsFlat.length; i++) {
-        if (blackPiecesOptionsFlat[i].childElementCount === 1) {
-          if (blackPiecesOptionsFlat[i].firstElementChild.getAttribute('data-color') !== 'black') {
-            blackPiecesOptionsFlat[i].style.border = '3px solid purple'
+        console.log('blackPiecesOptionsFlat[' + i + ']' + blackPiecesOptionsFlat[i])
+        if (blackPiecesOptionsFlat[i] !== undefined) { // Solution for problem moving black hoarse from A7 to B8
+          console.log(blackPiecesOptionsFlat[i].childElementCount)
+          if (blackPiecesOptionsFlat[i].childElementCount === 1) {
+            if (blackPiecesOptionsFlat[i].firstElementChild.getAttribute('data-color') !== 'black') {
+              blackPiecesOptionsFlat[i].style.border = '3px solid purple'
+            }
+          } else {
+            blackPiecesOptionsFlat[i].style.backgroundColor = 'purple'
           }
-        } else {
-          blackPiecesOptionsFlat[i].style.backgroundColor = 'purple'
         }
       }
       return blackPiecesOptionsFlat
@@ -1505,12 +1509,14 @@ export class Chess extends window.HTMLElement {
     // White players otions
     if (color === 'white') {
       for (let i = 0; i < whitePiecesOptionsFlat.length; i++) {
-        if (whitePiecesOptionsFlat[i].childElementCount === 1) {
-          if (whitePiecesOptionsFlat[i].firstElementChild.getAttribute('data-color') !== 'white') {
-            whitePiecesOptionsFlat[i].style.border = '3px solid green'
+        if (whitePiecesOptionsFlat[i] !== undefined) { // Solution for problem moving black hoarse from A7 to B8
+          if (whitePiecesOptionsFlat[i].childElementCount === 1) {
+            if (whitePiecesOptionsFlat[i].firstElementChild.getAttribute('data-color') !== 'white') {
+              whitePiecesOptionsFlat[i].style.border = '3px solid green'
+            }
+          } else {
+            whitePiecesOptionsFlat[i].style.backgroundColor = 'green'
           }
-        } else {
-          whitePiecesOptionsFlat[i].style.backgroundColor = 'green'
         }
       }
       return whitePiecesOptionsFlat

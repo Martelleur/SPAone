@@ -129,8 +129,8 @@ template.innerHTML = /* html */ `
 :host #chessBoard {
   box-sizing: border-box;
   background-color: white;
-  width: 60vw;
-  height: 60vw;
+  width: 30vw;
+  height: 30vw;
   margin: 0 auto;
 }
 :host #title {
@@ -415,6 +415,9 @@ export class Chess extends window.HTMLElement {
 
     // Events fired when dragging
     this._chessBoard.addEventListener('drag', event => {
+      if (!this._key) {
+        return
+      }
       event.preventDefault()
       console.log('Dragging')
     }, { once: true })
@@ -422,6 +425,9 @@ export class Chess extends window.HTMLElement {
     // Events fired on the drop target
     this._chessBoard.addEventListener('dragover', event => {
       event.preventDefault()
+      if (!this._key) {
+        return
+      }
       // Reset backgroundecolor color
       for (let i = 0; i < this._chessBoardDivLength; i++) {
         if (this._chessBoardDiv[i].style.backgroundColor === 'blue') {
@@ -436,6 +442,9 @@ export class Chess extends window.HTMLElement {
 
     // The dragend event is fired when a drag operation is being ended (by releasing a mouse button or hitting the escape key).
     window.addEventListener('dragend', event => {
+      if (!this._key) {
+        return
+      }
       event.target.style.opacity = 1
       for (let i = 0; i < this._chessBoardDivLength; i++) {
         if (this._chessBoardDiv[i].style.backgroundColor !== 'white') {
@@ -456,6 +465,9 @@ export class Chess extends window.HTMLElement {
 
     // Events fired when dropping over this._chessBoard
     this._chessBoard.addEventListener('drop', event => {
+      if (!this._key) {
+        return
+      }
       event.preventDefault()
 
       try {
@@ -678,7 +690,7 @@ export class Chess extends window.HTMLElement {
       this._chessConteiner.style.border = '5px solid #0c5cc4'
       this.style.border = 'none'
       this.style.outline = 'none'
-      this._chessConteiner.style.height = '100%'
+      this._chessConteiner.style.height = '89vh'
       this._chessConteiner.style.backgroundColor = 'black'
       const myEvent = new window.CustomEvent('bigWindow')
       this.dispatchEvent(myEvent)

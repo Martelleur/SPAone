@@ -56,7 +56,7 @@ template.innerHTML = /* html */`
     padding: 1em;  
 }
 :host .commentInput {
-    width: 95%;
+    width: 100%;
     color: black;
     min-height: 100px;
     background-color: white; 

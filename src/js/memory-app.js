@@ -335,7 +335,6 @@ export class Memory extends window.HTMLElement {
       this.style.border = 'none'
       this.style.outline = 'none'
       if (!this._isStarting) {
-        this.style.height = '100%'
         this._memoryConteiner.style.height = '100%'
       }
 

@@ -51,9 +51,6 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   })
 })
-document.querySelector('#inputEmoji').style.float = 'right'
-document.querySelector('#emojiButton').style.float = 'right'
-document.querySelector('#emojiButton').style.cursor = 'pointer'
 
 // Creating icons
 /**
@@ -365,6 +362,13 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
     for (let i = 0; i < document.querySelector('main').children.length; i++) {
       if (document.querySelector('main').children[i] !== element) {
         document.querySelector('main').children[i].setAttribute('data-zedindex', 'low')
+      }
+    }
+    if (element.style.position === 'static') {
+      for (let i = 0; i < document.querySelector('main').children.length; i++) {
+        if (document.querySelector('main').children[i] !== element) {
+          document.querySelector('main').children[i].style.visibility = 'hidden'
+        }
       }
     }
   })

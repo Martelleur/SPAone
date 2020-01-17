@@ -6,6 +6,9 @@
 #fullScreen {
     position: absolute;
     left: 19vh;
+    height: 4vh;
+    width: 4vh;
+    top: 0;
 }
 
 #fullScreenSpan {
@@ -37,6 +40,27 @@ body {
     color: #8f6d47;
     height: 100%;
     width: 100%;
+}
+
+#emojiContainer {
+    position: absolute;
+    left: 40vw;
+    width: 20vw;
+    top: 0;
+}
+#emojiButton {
+    height: 100%;
+    width: 20%;
+    top: 0;
+    cursor: pointer;
+}
+#inputEmoji {
+    height: 100%;
+    width: 60%;
+    top: 0;
+}
+
+#inputEmoji {
 }
 
 header {

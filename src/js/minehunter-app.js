@@ -44,8 +44,8 @@ template.innerHTML = /* html */ `
 }
 :host {
     position: absolute;
-    width: 60%;
-    hight: 60%;
+    width: 50%;
+    hight: 50%;
     display: block;
     resize: both;
     overflow: auto;
@@ -345,7 +345,6 @@ export class Minehunter extends window.HTMLElement {
 
       this.style.position = 'static'
       if (!this._isStarting) {
-        this.style.height = '100%'
         this._minehunterConteiner.style.height = '100%'
       }
       this.style.resize = 'none'

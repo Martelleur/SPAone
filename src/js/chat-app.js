@@ -38,7 +38,7 @@ template.innerHTML = /* html */ `
 }
 :host {
     position: absolute;
-    width: 60%;
+    width: 50%;
     color: white;
     background-color: black;
     box-sizing: border-box;
@@ -88,7 +88,7 @@ template.innerHTML = /* html */ `
 }
 :host #welcome {
   width: 100%;
-  height: 50vh;
+  height: 30vh;
   padding: 0 10% 0 10%;
 }
 :host #messages, :host #onlineStatus, :host #chatTitle, {
@@ -126,11 +126,12 @@ export class Chat extends window.HTMLElement {
     this._username = 'Joel Martelleur'
     this._type = 'message'
     this._channel = 'my, not so secret, channel'
-    this._key = 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd'
+    this._chatKey = 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd'
     this._onlineStatus = this.shadowRoot.querySelector('#onlineStatus')
     this._chatConteiner = this.shadowRoot.querySelector('#chatConteiner')
     this._newMessage = this.shadowRoot.querySelector('#newMessage')
     this._title = this.shadowRoot.querySelector('#title')
+    this._welcome = this.shadowRoot.querySelector('#welcome')
 
     // Tools chat
     this._emoji = this.shadowRoot.querySelector('#emojiButton')
@@ -356,6 +357,7 @@ export class Chat extends window.HTMLElement {
       this.style.position = 'absolute'
       this.style.resize = 'both'
       this.style.border = '5px solid #0c5cc4'
+      this._welcome.style.height = '30vh'
       this._tools.style.border = 'none'
       this._newMessage.style.border = 'none'
       this._newMessage.style.borderTop = '5px solid #0c5cc4'
@@ -376,6 +378,7 @@ export class Chat extends window.HTMLElement {
       this.style.resize = 'none'
       this.style.border = 'none'
       this.style.outline = '0'
+      this._welcome.style.height = '60vh'
       this._tools.style.border = '5px solid #0c5cc4'
       this._newMessage.style.border = '5px solid #0c5cc4'
       // this.style.height = '100%'
@@ -405,15 +408,14 @@ export class Chat extends window.HTMLElement {
       if (!this._key) {
         return
       }
+
       this._message = this._input.value
     })
 
     // eventlistner for this._deletChat
     this._deletChat.addEventListener('click', (event) => {
       event.preventDefault()
-      if (!this._key) {
-        return
-      }
+
       const myEvent = new window.CustomEvent('notBigWindow')
       this.dispatchEvent(myEvent)
 
@@ -431,12 +433,13 @@ export class Chat extends window.HTMLElement {
       if (!this._key) {
         return
       }
+
       const post = {
         type: this._type,
         data: this._message,
         username: this._username,
         channel: this._channel,
-        key: this._key
+        key: this._chatKey
       }
 
       this._socket.send(JSON.stringify(post))
@@ -445,9 +448,6 @@ export class Chat extends window.HTMLElement {
     // eventlistner for this._goLiveChat (bygger på callback) (kan göras om till async awaite)
     this._goLiveChat.addEventListener('click', (event) => {
       event.preventDefault()
-      if (!this._key) {
-        return
-      }
       this._onlineStatus.innerText = 'You are online'
       // console.log('websocket trys to connect to server/JM')
       this._socket = new window.WebSocket('ws://vhost3.lnu.se:20080/socket/', 'charcords')

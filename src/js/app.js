@@ -819,10 +819,7 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
   // listning on custom event startover
   if (element.nodeName === 'CHESS-APP') {
     element.addEventListener('startover', event => {
-      console.log(event.detail)
-      console.log(event.detail.roweValue)
-      console.log(event.detail.columnValue)
-      console.log(event.detail.imageSource)
+      // console.log(event.detail)
       event.preventDefault()
 
       if (y < (window.innerHeight - 600)) {

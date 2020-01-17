@@ -261,6 +261,7 @@ export class Chess extends window.HTMLElement {
     this._commentApp.setAttribute('data-storagename', 'chess')
     this._commentContainer.appendChild(this._commentApp)
     this._commentBox = this.shadowRoot.querySelector('#commentBox')
+    this._startPositions = this.indexAllSquares()
 
     // tools chess
     this._tools = this.shadowRoot.querySelector('#tools')
@@ -310,7 +311,7 @@ export class Chess extends window.HTMLElement {
   attributeChangedCallback (name, oldValue, newValue) {
     // changing startpositions
     if (name === 'data-newpossitions') {
-      console.log(newValue)
+      // console.log(newValue)
       const arr = newValue.split('|')
       const arrRoweValue = arr[0].split(',')
       const arrColumnValue = arr[1].split(',')
@@ -318,7 +319,9 @@ export class Chess extends window.HTMLElement {
       console.log(arrRoweValue)
       console.log(arrColumnValue)
       console.log(arrSourceValue)
+      console.log(this._startPositions)
 
+      /*
       for (let i = 0; i < this._chessBoardDivLength; i++) {
         if (this._chessBoardDiv[i].childElementCount === 1) {
           const copy = this._chessBoardDiv[i].firstElementChild
@@ -332,15 +335,19 @@ export class Chess extends window.HTMLElement {
                 const temp2 = `#dropTarget${temp1}`
                 console.log(temp2)
                 this.shadowRoot.querySelector(temp2).appendChild(copy)
-              } else {
-                this._chessBoardDiv[i].firstElementChild.remove()
               }
             } catch (error) {
               console.log(error)
             }
           }
+          try {
+            this._chessBoardDiv[i].firstElementChild.remove()
+          } catch (error) {
+            console.log(error)
+          }
         }
       }
+      */
     }
 
     // changing z-index
@@ -1526,11 +1533,11 @@ export class Chess extends window.HTMLElement {
     const whitePiecesOptionsFlat = whitePiecesOptions.flat()
     // Black players otions
     if (color === 'black') {
-      console.log('blackPiecesOptionsFlat[i] TEST')
+      // console.log('blackPiecesOptionsFlat[i] TEST')
       for (let i = 0; i < blackPiecesOptionsFlat.length; i++) {
-        console.log('blackPiecesOptionsFlat[' + i + ']' + blackPiecesOptionsFlat[i])
+        // console.log('blackPiecesOptionsFlat[' + i + ']' + blackPiecesOptionsFlat[i])
         if (blackPiecesOptionsFlat[i] !== undefined) { // Solution for problem moving black hoarse from A7 to B8
-          console.log(blackPiecesOptionsFlat[i].childElementCount)
+          // console.log(blackPiecesOptionsFlat[i].childElementCount)
           if (blackPiecesOptionsFlat[i].childElementCount === 1) {
             if (blackPiecesOptionsFlat[i].firstElementChild.getAttribute('data-color') !== 'black') {
               blackPiecesOptionsFlat[i].style.border = '3px solid purple'

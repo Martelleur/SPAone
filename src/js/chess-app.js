@@ -320,14 +320,18 @@ export class Chess extends window.HTMLElement {
       console.log(arrSourceValue)
 
       for (let i = 0; this._chessBoardDivLength; i++) {
-        if (this._chessBoardDiv.firstElementChild[i].childElementCount === 1) {
-          const copy = this._chessBoardDiv.firstElementChild[i]
-          this._chessBoardDiv.firstElementChild[i].remove()
+        if (this._chessBoardDiv[i].childElementCount === 1) {
+          const copy = this._chessBoardDiv[i].firstElementChild
           for (let j = 0; j < arrRoweValue.length; j++) {
-            if (this._chessBoardDiv.firstElementChild[i].getAttribute('src') === arrSourceValue[j]) {
-              const temp1 = (parseInt(arrRoweValue[j]) + 1) * (parseInt(arrColumnValue[j]) + 1)
-              const temp2 = `#dropTarget${temp1}`
-              this.shadowRoot.querySelector(temp2).appendChild(copy)
+            try {
+              if (this._chessBoardDiv[i].firstElementChild.getAttribute('src') === arrSourceValue[j]) {
+                this._chessBoardDiv[i].firstElementChild.remove()
+                const temp1 = (parseInt(arrRoweValue[j]) + 1) * (parseInt(arrColumnValue[j]) + 1)
+                const temp2 = `#dropTarget${temp1}`
+                this.shadowRoot.querySelector(temp2).appendChild(copy)
+              }
+            } catch (error) {
+              console.log(error)
             }
           }
         }

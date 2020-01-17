@@ -818,12 +818,11 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
 
   // listning on custom event startover
   if (element.nodeName === 'CHESS-APP') {
-    // element.setAttribute('data-1a', 'dropTarget41')
     element.addEventListener('startover', event => {
       console.log(event.detail)
-      console.log(event.detail.roweValue[0])
-      console.log(event.detail.columnValue[0])
-      console.log(event.detail.imageSource[0])
+      console.log(event.detail.roweValue)
+      console.log(event.detail.columnValue)
+      console.log(event.detail.imageSource)
       event.preventDefault()
 
       if (y < (window.innerHeight - 600)) {
@@ -843,6 +842,17 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
       nameIdApplication = `chess${counterChessApplication}`
       copyChessElement.setAttribute('data-hide', 'false')
       copyChessElement.setAttribute('data-zedindex', 'high')
+
+      // setting new startposition from detail-object sent with the creation of custom-event startover (se chess-app)
+      /*
+      for (let i = 0; i < detail.roweValue.length; i++) {
+        const newPosition = `${event.detail.roweValue[31]}${event.detail.columnValue[31]}${event.detail.imageSource[31]}`
+        const temp = `data-possition${event.detail.roweValue[i]}${event.detail.columnValue[i]}`
+        copyChessElement.setAttribute(, newPosition)
+      }
+      */
+      const temp = `${event.detail.roweValue}|${event.detail.columnValue}|${event.detail.imageSource}`
+      copyChessElement.setAttribute('data-newpossitions', temp)
 
       // Adding created elements and use operator moveElement
       document.querySelector('main').appendChild(copyChessElement)

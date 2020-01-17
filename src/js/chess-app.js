@@ -298,7 +298,7 @@ export class Chess extends window.HTMLElement {
    * @memberof Chess
    */
   static get observedAttributes () {
-    return ['id', 'data-hide', 'data-zedindex', 'data-1a']
+    return ['id', 'data-hide', 'data-zedindex', 'data-newpossitions']
   }
 
   /**
@@ -309,12 +309,12 @@ export class Chess extends window.HTMLElement {
    */
   attributeChangedCallback (name, oldValue, newValue) {
     // changing startpositions
-    if (name === 'data-1a') {
+    if (name === 'data-newpossitions') {
       console.log(newValue)
-      const copy = this.shadowRoot.querySelector('#dragTarget25')
-      this.shadowRoot.querySelector('#dragTarget25').remove()
-      const temp = `#${newValue}`
-      this.shadowRoot.querySelector(temp).appendChild(copy)
+      const arr1 = newValue.split('|')
+      console.log(arr1[0].split(','))
+      console.log(arr1[1].split(','))
+      console.log(arr1[2].split(','))
     }
 
     // changing z-index
@@ -1442,7 +1442,7 @@ export class Chess extends window.HTMLElement {
   }
 
   /**
-   * index all div with childe-element (img)
+   * index squares with chesspiece
    * @returns
    * @memberof Chess
    */

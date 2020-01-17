@@ -311,10 +311,27 @@ export class Chess extends window.HTMLElement {
     // changing startpositions
     if (name === 'data-newpossitions') {
       console.log(newValue)
-      const arr1 = newValue.split('|')
-      console.log(arr1[0].split(','))
-      console.log(arr1[1].split(','))
-      console.log(arr1[2].split(','))
+      const arr = newValue.split('|')
+      const arrRoweValue = arr[0].split(',')
+      const arrColumnValue = arr[1].split(',')
+      const arrSourceValue = arr[2].split(',')
+      console.log(arrRoweValue)
+      console.log(arrColumnValue)
+      console.log(arrSourceValue)
+
+      for (let i = 0; this._chessBoardDivLength; i++) {
+        if (this._chessBoardDiv.firstElementChild[i].childElementCount === 1) {
+          const copy = this._chessBoardDiv.firstElementChild[i]
+          this._chessBoardDiv.firstElementChild[i].remove()
+          for (let j = 0; j < arrRoweValue.length; j++) {
+            if (this._chessBoardDiv.firstElementChild[i].getAttribute('src') === arrSourceValue[j]) {
+              const temp1 = (parseInt(arrRoweValue[j]) + 1) * (parseInt(arrColumnValue[j]) + 1)
+              const temp2 = `#dropTarget${temp1}`
+              this.shadowRoot.querySelector(temp2).appendChild(copy)
+            }
+          }
+        }
+      }
     }
 
     // changing z-index

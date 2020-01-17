@@ -262,6 +262,9 @@ export class Chat extends window.HTMLElement {
     }
   }
 
+  /**
+   * @memberof Chat
+   */
   connectedCallback () {
     // Test
     function hashHandler () {
@@ -513,6 +516,15 @@ export class Chat extends window.HTMLElement {
       this._socket.close()
       this._onlineStatus.innerText = 'You are offline'
     })
+  }
+
+  /**
+   * @memberof Chat
+   */
+  disconnectedCallback () {
+    console.log('Goodby from element')
+    const myEvent = new window.CustomEvent('disconnectedElement')
+    this.dispatchEvent(myEvent)
   }
 }
 

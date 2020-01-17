@@ -737,6 +737,15 @@ export class Chess extends window.HTMLElement {
   /**
    * @memberof Chess
    */
+  disconnectedCallback () {
+    console.log('Goodby from element')
+    const myEvent = new window.CustomEvent('disconnectedElement')
+    this.dispatchEvent(myEvent)
+  }
+
+  /**
+   * @memberof Chess
+   */
   createIdForSquares () {
     for (let i = 0; i < this._chessBoardDivLength; i++) {
       const idName = `dragtarget${i + 1}`

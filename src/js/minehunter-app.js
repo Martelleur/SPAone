@@ -673,6 +673,15 @@ export class Minehunter extends window.HTMLElement {
   /**
    * @memberof Minehunter
    */
+  disconnectedCallback () {
+    console.log('Goodby from element')
+    const myEvent = new window.CustomEvent('disconnectedElement')
+    this.dispatchEvent(myEvent)
+  }
+
+  /**
+   * @memberof Minehunter
+   */
   isPlayerFinished () {
     // reset this._flagcounter and this._blackPictureCounter
     this._flagCounter = 0

@@ -29,8 +29,8 @@ template.innerHTML = /* html */ `
       <div class="droptarget"><img src="../imageChess/tower.png" draggable="true" id="dragTarget1" class="acceptableSquare" data-color="black"></div>
       <div class="droptarget"><img src="../imageChess/hoarse.png" draggable="true" id="dragTarget2" class="acceptableSquare" data-color="black"></div>
       <div class="droptarget"><img src="../imageChess/runner.png" draggable="true" id="dragTarget3" class="acceptableSquare" data-color="black"></div>
-      <div class="droptarget"><img src="../imageChess/king.png" draggable="true" id="dragTarget4" class="acceptableSquare" data-color="black"></div>
-      <div class="droptarget"><img src="../imageChess/queen.png" draggable="true" id="dragTarget5" class="acceptableSquare" data-color="black"></div>
+      <div class="droptarget"><img src="../imageChess/queen.png" draggable="true" id="dragTarget4" class="acceptableSquare" data-color="black"></div>
+      <div class="droptarget"><img src="../imageChess/king.png" draggable="true" id="dragTarget5" class="acceptableSquare" data-color="black"></div>
       <div class="droptarget"><img src="../imageChess/runner.png" draggable="true" id="dragTarget6" class="acceptableSquare" data-color="black"></div>
       <div class="droptarget"><img src="../imageChess/hoarse.png" draggable="true" id="dragTarget7" class="acceptableSquare" data-color="black"></div>
       <div class="droptarget"><img src="../imageChess/tower.png" draggable="true" id="dragTarget8" class="acceptableSquare" data-color="black"></div>
@@ -85,8 +85,8 @@ template.innerHTML = /* html */ `
       <div class="droptarget"><img src="../imageChess/towerWhite.png" draggable="true" id="dragTarget25" class="acceptableSquare" data-color="white"></div>
       <div class="droptarget"><img src="../imageChess/hoarseWhite.png" draggable="true" id="dragTarget26" class="acceptableSquare" data-color="white"></div>
       <div class="droptarget"><img src="../imageChess/runnerWhite.png" draggable="true" id="dragTarget27" class="acceptableSquare" data-color="white"></div>
-      <div class="droptarget"><img src="../imageChess/kingWhite.png" draggable="true" id="dragTarget28" class="acceptableSquare" data-color="white"></div>
-      <div class="droptarget"><img src="../imageChess/queenWhite.png" draggable="true" id="dragTarget29" class="acceptableSquare" data-color="white"></div>
+      <div class="droptarget"><img src="../imageChess/queenWhite.png" draggable="true" id="dragTarget28" class="acceptableSquare" data-color="white"></div>
+      <div class="droptarget"><img src="../imageChess/kingWhite.png" draggable="true" id="dragTarget29" class="acceptableSquare" data-color="white"></div>
       <div class="droptarget"><img src="../imageChess/runnerWhite.png" draggable="true" id="dragTarget30" class="acceptableSquare" data-color="white"></div>
       <div class="droptarget"><img src="../imageChess/hoarseWhite.png" draggable="true" id="dragTarget31" class="acceptableSquare" data-color="white"></div>
       <div class="droptarget"><img src="../imageChess/towerWhite.png" draggable="true" id="dragTarget32" class="acceptableSquare" data-color="white"></div>
@@ -298,7 +298,7 @@ export class Chess extends window.HTMLElement {
    * @memberof Chess
    */
   static get observedAttributes () {
-    return ['id', 'data-hide', 'data-zedindex']
+    return ['id', 'data-hide', 'data-zedindex', 'data-1a']
   }
 
   /**
@@ -308,6 +308,16 @@ export class Chess extends window.HTMLElement {
    * @memberof Chess
    */
   attributeChangedCallback (name, oldValue, newValue) {
+    // changing startpositions
+    if (name === 'data-1a') {
+      console.log(newValue)
+      const copy = this.shadowRoot.querySelector('#dragTarget25')
+      this.shadowRoot.querySelector('#dragTarget25').remove()
+      const temp = `#${newValue}`
+      this.shadowRoot.querySelector(temp).appendChild(copy)
+    }
+
+    // changing z-index
     if (name === 'data-zedindex') {
       if (newValue === 'high') {
         this.style.zIndex = '1'
@@ -750,7 +760,7 @@ export class Chess extends window.HTMLElement {
    */
   createIdForSquares () {
     for (let i = 0; i < this._chessBoardDivLength; i++) {
-      const idName = `dragtarget${i + 1}`
+      const idName = `dropTarget${i + 1}`
       this._chessBoardDiv[i].setAttribute('id', idName)
     }
   }
@@ -1585,6 +1595,7 @@ export class Chess extends window.HTMLElement {
     // this._information.innerHTML = ''
     const data = JSON.parse(window.sessionStorage.getItem(argument))
     const fragment = document.createDocumentFragment()
+    console.log(data)
 
     let counter = 0
     for (let i = 0; i < 8; i++) {
@@ -1633,8 +1644,8 @@ export class Chess extends window.HTMLElement {
     }
 
     index.style.color = 'black'
-    bigDiv.style.width = '140px'
-    bigDiv.style.height = '140px'
+    bigDiv.style.width = '125px'
+    bigDiv.style.height = '125px'
     bigDiv.style.display = 'inline-block'
     bigDiv.style.border = '3px solid black'
     bigDiv.appendChild(fragment)
@@ -1654,15 +1665,12 @@ export class Chess extends window.HTMLElement {
     bigDiv.addEventListener('mouseover', event => {
       this._historyConteiner.style.border = '5px solid #0c5cc4'
     })
-    /*
+
+    // creating custom event startover
     bigDiv.addEventListener('dblclick', event => {
-      const newShadow = this._clonedShadow[argument.slice(-1) - 1]
-      console.log(newShadow)
-      this.parentElement.appendChild(newShadow)
-      this.remove()
-      window.sessionStorage.clear()
+      const myEvent = new window.CustomEvent('startover', { detail: data })
+      this.dispatchEvent(myEvent)
     })
-    */
   }
 }
 

@@ -356,7 +356,6 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
 
   // Event changing url
   element.addEventListener('dblclick', event => {
-    console.log(event.taregt)
     window.history.pushState(stateObj, `/${stateObj.id}`, `/${stateObj.element}/${stateObj.id}`)
     element.setAttribute('data-zedindex', 'high')
     for (let i = 0; i < document.querySelector('main').children.length; i++) {
@@ -816,6 +815,167 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
       }
     }
   })
+
+  // listning on custom event startover
+  if (element.nodeName === 'CHESS-APP') {
+    // element.setAttribute('data-1a', 'dropTarget41')
+    element.addEventListener('startover', event => {
+      console.log(event.detail)
+      console.log(event.detail.roweValue[0])
+      console.log(event.detail.columnValue[0])
+      console.log(event.detail.imageSource[0])
+      event.preventDefault()
+
+      if (y < (window.innerHeight - 600)) {
+        y = y + 20
+      } else {
+        y = 70
+      }
+      if (x < (window.innerWidth - 600)) {
+        x = x + 20
+      } else {
+        x = 20
+      }
+      // create element and ids for elements
+      const copyChessElement = document.createElement('chess-app')
+      counterChessApplication++
+      nameIdApplication = `chess${counterChessApplication}`
+      copyChessElement.setAttribute('id', nameIdApplication)
+      for (let i = 0; i < document.querySelector('main').children.length; i++) {
+        document.querySelector('main').children[i].setAttribute('data-zedindex', 'low')
+      }
+      copyChessElement.setAttribute('data-hide', 'false')
+      copyChessElement.setAttribute('data-zedindex', 'high')
+
+      // Adding created elements and use operator moveElement
+      document.querySelector('main').appendChild(copyChessElement)
+      copyChessElement.style.top = y + 'px'
+      copyChessElement.style.left = x + 'px'
+      moveElement(copyChessElement)
+
+      stateObj.element = 'chess-app'
+      stateObj.id = copyChessElement.getAttribute('id')
+      window.history.pushState(stateObj, `/${stateObj.id}`, `/${stateObj.element}/${stateObj.id}`)
+
+      // Event changing url
+      copyChessElement.addEventListener('dblclick', event => {
+        window.history.pushState(stateObj, `/${stateObj.id}`, `/${stateObj.element}/${stateObj.id}`)
+        copyChessElement.setAttribute('data-zedindex', 'high')
+        for (let i = 0; i < document.querySelector('main').children.length; i++) {
+          if (document.querySelector('main').children[i] !== element) {
+            document.querySelector('main').children[i].setAttribute('data-zedindex', 'low')
+          }
+        }
+        if (copyChessElement.style.position === 'static') {
+          for (let i = 0; i < document.querySelector('main').children.length; i++) {
+            if (document.querySelector('main').children[i] !== copyChessElement) {
+              document.querySelector('main').children[i].style.visibility = 'hidden'
+            }
+          }
+        }
+      })
+
+      // Listning on custom event bigWindow
+      copyChessElement.addEventListener('bigWindow', event => {
+        for (let i = 0; i < document.querySelector('main').children.length; i++) {
+          if (document.querySelector('main').children[i] !== element) {
+            document.querySelector('main').children[i].style.visibility = 'hidden'
+          }
+        }
+      })
+
+      // Listning on custom event notBigWindow
+      copyChessElement.addEventListener('notBigWindow', event => {
+        for (let i = 0; i < document.querySelector('main').children.length; i++) {
+          document.querySelector('main').children[i].style.visibility = 'visible'
+        }
+        copyChessElement.setAttribute('data-zedindex', 'high')
+      })
+
+      // Listning on custom event disconnectedElement
+      copyChessElement.addEventListener('disconnectedElement', event => {
+        console.log('Goodbye element')
+      })
+
+      // Listning on custom event deletedWindow
+      copyChessElement.addEventListener('deletedWindow', event => {
+        console.log(document.querySelector('main').children.length)
+        const temp = `#${element.getAttribute('id')}Info`
+        document.querySelector(temp).remove()
+        window.history.replaceState(stateObj, `${stateObj.id}`, `${copyChessElement.getAttribute('id')}_deleted`)
+      }, { once: true })
+
+      // Listning on custom event hidewindow and cache hidden elements in select-element
+      copyChessElement.addEventListener('hideWindow', event => {
+        event.preventDefault()
+        window.history.replaceState(stateObj, `${stateObj.id}`, `${element.getAttribute('id')}_hidden`)
+
+        const selectChess = document.createElement('select')
+        const option4 = document.createElement('option')
+        option4.textContent = 'Hidden chess-apps'
+        selectChess.appendChild(option4)
+
+        for (let i = 0; i < counterChessApplication; i++) {
+          const temp = `#chess${i + 1}`
+          try {
+            if (document.querySelector(temp).getAttribute('data-hide') === 'true') {
+              const option = document.createElement('option')
+              option.setAttribute('value', temp)
+              option.textContent = temp
+              selectChess.appendChild(option)
+            }
+          } catch (error) {
+            console.log(error)
+          }
+        }
+
+        // appending select-elements to document.querySelector('#hiddenElements')
+        if (document.querySelector('#hiddenElements').innerHTML !== null) {
+          document.querySelector('#hiddenElements').innerHTML = ''
+        }
+
+        if (selectChess.length >= 2) {
+          document.querySelector('#hiddenElements').appendChild(selectChess)
+        }
+
+        selectChess.addEventListener('change', event => {
+          event.preventDefault()
+          const value = event.target.value.slice(1)
+          for (let i = 0; i < counterChessApplication; i++) {
+            const temp = `#chess${i + 1}`
+            try {
+              if (document.querySelector(temp).getAttribute('data-hide') === 'true' && document.querySelector(temp).getAttribute('id') === value) {
+                document.querySelector(temp).setAttribute('data-hide', 'false')
+                document.querySelector(temp).style.visibility = 'visible'
+                for (let j = 0; j < event.target.children.length; j++) {
+                  if (event.target.children[j].value === temp) {
+                    event.target.children[j].remove()
+                    // changing url
+                    stateObj.id = temp.slice(1)
+                    stateObj.element = 'chess-app'
+                    window.history.pushState(stateObj, `/${stateObj.id}`, `/${stateObj.element}/${stateObj.id}`)
+                    // Change focus to the element showing in the url
+                    for (let i = 0; i < document.querySelector('main').children.length; i++) {
+                      if (document.querySelector('main').children[i].getAttribute('id') !== stateObj.id) {
+                        document.querySelector('main').children[i].setAttribute('data-zedindex', 'low')
+                      } else {
+                        document.querySelector('main').children[i].setAttribute('data-zedindex', 'high')
+                      }
+                    }
+                    if (event.target.children.length === 1) {
+                      event.target.remove()
+                    }
+                  }
+                }
+              }
+            } catch (error) {
+              console.log(error)
+            }
+          }
+        })
+      })
+    })
+  }
 })
 
 // Full screen mode

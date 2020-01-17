@@ -816,7 +816,7 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
     }
   })
 
-  // listning on custom event startover
+  // Listning on custom event startover
   if (element.nodeName === 'CHESS-APP') {
     element.addEventListener('startover', event => {
       // console.log(event.detail)

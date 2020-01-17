@@ -327,14 +327,27 @@ export class Chess extends window.HTMLElement {
           const copy = this._chessBoardDiv[i].firstElementChild
           for (let j = 0; j < arrRoweValue.length; j++) {
             try {
-              console.log(this._chessBoardDiv[i])
+              // console.log(this._chessBoardDiv[i])
               if (this._chessBoardDiv[i].firstElementChild.getAttribute('src') === arrSourceValue[j]) {
                 this._chessBoardDiv[i].firstElementChild.remove()
-                const temp1 = (parseInt(arrRoweValue[j]) + 1) * (parseInt(arrColumnValue[j]) + 1)
+                console.log(parseInt(arrRoweValue[j]))
+                console.log(parseInt(arrColumnValue[j]) + 1)
+                const temp1 = (parseInt(arrColumnValue[j]) + 1) + (parseInt(arrRoweValue[j])) * 8
                 console.log(temp1)
                 const temp2 = `#dropTarget${temp1}`
+                console.log(this._chessBoardDiv[i].getAttribute('id'))
                 console.log(temp2)
                 this.shadowRoot.querySelector(temp2).appendChild(copy)
+                if (j === 0) {
+                  arrColumnValue.shift()
+                  arrRoweValue.shift()
+                  arrSourceValue.shift()
+                } else {
+                  arrColumnValue.shift()
+                  arrRoweValue.shift()
+                  arrSourceValue.shift()
+                }
+                break
               }
             } catch (error) {
               console.log(error)
@@ -1667,8 +1680,6 @@ export class Chess extends window.HTMLElement {
     // create a div container bigDiv and indexnumber index
     const index = document.createElement('span')
     const bigDiv = document.createElement('div')
-    console.log(this.getAttribute('id').length)
-    console.log(this.getAttribute('id').length)
     if (this.getAttribute('id').length === 6) {
       index.textContent = argument.slice(-7, -6)
     }

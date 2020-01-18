@@ -432,8 +432,10 @@ export class Chess extends window.HTMLElement {
       const data = {
         roweValue: JSON.parse(roweValue),
         columnValue: JSON.parse(columnValue),
-        imageSource: JSON.parse(imageSource)
+        imageSource: JSON.parse(imageSource),
+        isWhitePlayersTurn: this._whitePiecesTurn
       }
+      console.log(this._whitePiecesTurn)
       console.log(data)
       console.log(this._dataThisRound)
       /*

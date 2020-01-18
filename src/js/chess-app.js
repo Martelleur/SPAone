@@ -316,14 +316,20 @@ export class Chess extends window.HTMLElement {
       const arrRoweValue = arr[0].split(',')
       const arrColumnValue = arr[1].split(',')
       const arrSourceValue = arr[2].split(',')
+      const isWhitePlayersTurn = arr[3]
 
-      console.log(arrRoweValue)
-      console.log(arrColumnValue)
-      console.log(arrSourceValue)
-      console.log(this._startPositions)
-      console.log(this._chessBoardDiv)
+      console.log(isWhitePlayersTurn)
+      console.log(typeof isWhitePlayersTurn)
+      if (isWhitePlayersTurn === 'true') {
+        this._whitePiecesTurn = true
+        this._activePlayer.innerHTML = 'White players turn!'
+      } else {
+        this._whitePiecesTurn = false
+        this._activePlayer.innerHTML = 'Black players turn!'
+      }
+
       const copychessBoardImg = this._chessBoardImg
-      console.log(copychessBoardImg)
+      // console.log(copychessBoardImg)
 
       for (let i = 0; i < this._chessBoardDivLength; i++) {
         if (this._chessBoardDiv[i].childElementCount === 1) {
@@ -332,23 +338,20 @@ export class Chess extends window.HTMLElement {
       }
 
       for (let i = 0; i < arrRoweValue.length; i++) {
-        console.log(arrSourceValue[i])
-        console.log(copychessBoardImg[i].getAttribute('src'))
+        // console.log(arrSourceValue[i])
+        // console.log(copychessBoardImg[i].getAttribute('src'))
         if (arrSourceValue[i] === copychessBoardImg[i].getAttribute('src')) {
-          console.log(true)
-          console.log(parseInt(arrRoweValue[i]))
-          console.log(parseInt(arrColumnValue[i]) + 1)
+          // console.log(true)
+          // console.log(parseInt(arrRoweValue[i]))
+          // console.log(parseInt(arrColumnValue[i]) + 1)
           const temp1 = (parseInt(arrColumnValue[i]) + 1) + (parseInt(arrRoweValue[i])) * 8
-          console.log(temp1)
+          // console.log(temp1)
           const temp2 = `#dropTarget${temp1}`
           this.shadowRoot.querySelector(temp2).appendChild(copychessBoardImg[i])
         } else {
           copychessBoardImg[i].setAttribute('src', arrSourceValue[i])
-          console.log(false)
-          console.log(parseInt(arrRoweValue[i]))
-          console.log(parseInt(arrColumnValue[i]) + 1)
+          // console.log(false)
           const temp1 = (parseInt(arrColumnValue[i]) + 1) + (parseInt(arrRoweValue[i])) * 8
-          console.log(temp1)
           const temp2 = `#dropTarget${temp1}`
           this.shadowRoot.querySelector(temp2).appendChild(copychessBoardImg[i])
         }
@@ -361,12 +364,10 @@ export class Chess extends window.HTMLElement {
         this.style.zIndex = '1'
         this.style.outline = '1px solid white'
         this._key = true
-        console.log('zIndex: 1')
       } else {
         this.style.outline = '1px solid black'
         this._key = false
         this.style.zIndex = '0'
-        console.log('zIndex: 0')
       }
     }
     // Changing of attribute id
@@ -551,7 +552,6 @@ export class Chess extends window.HTMLElement {
             event.target.appendChild(this.shadowRoot.querySelector(textArgument))
           }
           // change activePlayer and test if player is scheck
-          console.log(this._whitePiecesTurn)
           if (this._whitePiecesTurn) {
             this._whitePiecesTurn = false
             this.isPlayerSheck('isBlackSheck')
@@ -1639,7 +1639,7 @@ export class Chess extends window.HTMLElement {
     for (let i = 0; i < 8; i++) {
       for (let j = 0; j < 8; j++) {
         counter++
-        const idName = `dragtarget${counter}`
+        const idName = `dropTarget${counter}`
         const div = document.createElement('div')
         div.setAttribute('id', idName)
         div.setAttribute('class', 'droptarget')
@@ -1676,29 +1676,53 @@ export class Chess extends window.HTMLElement {
     bigDiv.style.display = 'inline-block'
     bigDiv.style.border = '3px solid black'
     bigDiv.style.padding = '2px'
-    const bigDivId = `bigDiv${this._round}`
-    bigDiv.setAttribute('id', bigDivId)
     bigDiv.setAttribute('class', 'bigDiv')
     bigDiv.appendChild(fragment)
     bigDiv.addEventListener('mouseover', event => {
       bigDiv.style.border = '3px solid #0c5cc4'
+      bigDiv.style.cursor = 'pointer'
     })
     bigDiv.addEventListener('mouseout', event => {
       bigDiv.style.border = '3px solid black'
+      bigDiv.style.cursor = 'default'
     })
 
     this._historyConteiner.appendChild(bigDiv)
     this._historyConteiner.style.padding = '2px'
     this._historyConteiner.style.border = '5px solid #0c5cc4'
 
-    // Event for bigDiv
-    bigDiv.addEventListener('mouseover', event => {
-      this._historyConteiner.style.border = '5px solid #0c5cc4'
-    })
-
-    // creating custom event startover
+    // DispatchEvent custom event startover
     bigDiv.addEventListener('dblclick', event => {
       console.log(data)
+      console.log(event.target)
+      let temp
+      for (let i = 0; this._historyConteiner.querySelectorAll('.bigDiv').length; i++) {
+        if (event.target.nodeName === 'IMG') {
+          if (this._historyConteiner.querySelectorAll('.bigDiv')[i] === event.target.parentElement.parentElement) {
+            temp = i
+            break
+          }
+        }
+        if (event.target.className === 'droptarget') {
+          if (this._historyConteiner.querySelectorAll('.bigDiv')[i] === event.target.parentElement) {
+            temp = i
+            break
+          }
+        }
+        if (event.target.className === 'bigDiv') {
+          if (this._historyConteiner.querySelectorAll('.bigDiv')[i] === event.target) {
+            temp = i
+            break
+          }
+        }
+      }
+
+      if (temp % 2 === 0) {
+        data.isWhitePlayersTurn = false
+      } else {
+        data.isWhitePlayersTurn = true
+      }
+
       const myEvent = new window.CustomEvent('startover', { detail: data })
       this.dispatchEvent(myEvent)
     })

@@ -4,6 +4,10 @@ import './minehunter-app.js'
 import './chess-app.js'
 import './timecounter-app.js'
 import { moveElement } from './moveElement.js'
+
+//
+window.sessionStorage.clear()
+
 // import SimpleCrypto from 'simple-crypto-js'
 // Check if online not always true but a good check
 // Insted we define online when client connected to server
@@ -841,7 +845,7 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
       copyChessElement.setAttribute('data-zedindex', 'high')
       console.log(event.detail)
 
-      const temp = `${event.detail.roweValue}|${event.detail.columnValue}|${event.detail.imageSource}`
+      const temp = `${event.detail.roweValue}|${event.detail.columnValue}|${event.detail.imageSource}|${event.detail.isWhitePlayersTurn}`
       copyChessElement.setAttribute('data-newpossitions', temp)
 
       // Adding created elements and use operator moveElement

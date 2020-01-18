@@ -7,25 +7,25 @@ template.innerHTML = /* html */ `
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <div id="wrapper">
   <div id="chessConteiner">
-      <p id="title"></p>
+    <p id="title"></p>
 
-      <div id="tools">
-          <button id="options1">White options</button>
-          <button id="options2">Black options</button>
-          <button id="chat" class="button">Chat</button>
-          <button id="commentBox" class="button">Comment-box</button>
-          <select id="history" class="button">
-            <option value="history">History</option>
-            <option value="clear">Hide history!</option>
-            <option value="allRounds">All rounds!</option>
-          </select>
-          <i id="deletChess" class="material-icons">close</i>
-          <i id="bigWindow" class="material-icons">add_box</i>
-          <i id="adjustableWindow" class="material-icons">exposure</i>
-          <i id="hideWindow" class="material-icons">indeterminate_check_box</i>
-      </div>
+    <div id="tools">
+      <button id="options1">White options</button>
+      <button id="options2">Black options</button>
+      <button id="chat" class="button">Chat</button>
+      <button id="commentBox" class="button">Comment-box</button>
+      <select id="history" class="button">
+        <option value="history">History</option>
+        <option value="clear">Hide history!</option>
+        <option value="allRounds">All rounds!</option>
+      </select>
+      <i id="deletChess" class="material-icons">close</i>
+      <i id="bigWindow" class="material-icons">add_box</i>
+      <i id="adjustableWindow" class="material-icons">exposure</i>
+      <i id="hideWindow" class="material-icons">indeterminate_check_box</i>
+    </div>
 
-      <div id="chessBoard">
+    <div id="chessBoard">
       <div class="droptarget"><img src="../imageChess/tower.png" draggable="true" id="dragTarget1" class="acceptableSquare" data-color="black"></div>
       <div class="droptarget"><img src="../imageChess/hoarse.png" draggable="true" id="dragTarget2" class="acceptableSquare" data-color="black"></div>
       <div class="droptarget"><img src="../imageChess/runner.png" draggable="true" id="dragTarget3" class="acceptableSquare" data-color="black"></div>
@@ -91,19 +91,21 @@ template.innerHTML = /* html */ `
       <div class="droptarget"><img src="../imageChess/hoarseWhite.png" draggable="true" id="dragTarget31" class="acceptableSquare" data-color="white"></div>
       <div class="droptarget"><img src="../imageChess/towerWhite.png" draggable="true" id="dragTarget32" class="acceptableSquare" data-color="white"></div>
 
-  </div>
+    </div>
 
-  <div id="information">
+    <div id="information">
       <p id="activePlayer">White players turn!</p>
       <p id="checkStatusWhite">White player is NOT check!</p>
       <p id="checkStatusBlack">Black player is NOT check!</p>
       <p id="winner"></p>
-  </div>
-  
-  <div id="historyConteiner"></div>
-  
-  <div id="commentContainer"></div>
+    </div>
+    
+    <div id="historyWrapper">
+      <div id="historyConteiner"></div>
+    </div>
 
+    <div id="commentContainer"></div>
+  </div>
 </div>
 
 <div id="chatConteiner"></div>
@@ -200,6 +202,10 @@ template.innerHTML = /* html */ `
   clear: both;
   color: black;
   background-color: white;
+}
+:host #historyWrapper {
+  clear: both;
+  border: 3px solid black;
 }
 :host .material-icons {
   float: right;
@@ -417,6 +423,12 @@ export class Chess extends window.HTMLElement {
     // Events fired on the drag target
     this._chessBoard.addEventListener('dragstart', event => {
       if (!this._key) {
+        return
+      }
+      if (!this._whitePiecesTurn && event.target.getAttribute('data-color') === 'white') {
+        return
+      }
+      if (this._whitePiecesTurn && event.target.getAttribute('data-color') === 'black') {
         return
       }
       console.log(event.target.parentNode)

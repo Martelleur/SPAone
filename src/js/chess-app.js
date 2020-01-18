@@ -621,11 +621,16 @@ export class Chess extends window.HTMLElement {
             }
           }
 
+          // Dispatch custumEvent on this._chatElement with info from this round
+          const dataThisRound = this.indexAllSquares()
+          const eventDataThisRound = new window.CustomEvent('newdata', { detail: dataThisRound })
+          this._chatElement.dispatchEvent(eventDataThisRound)
+
+          // saving in sessionstorage
           if (this._winner.innerText !== 'Black player win!' && this._winner.innerText !== 'White player win!') {
-            // saving in sessionstorage
             this._round++
             const argument = `Round${this._round}${this.getAttribute('id')}`
-            window.sessionStorage.setItem(argument, JSON.stringify(this.indexAllSquares()))
+            window.sessionStorage.setItem(argument, JSON.stringify(dataThisRound))
 
             // adding option to this._history
             const option = document.createElement('option')

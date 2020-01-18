@@ -448,6 +448,11 @@ export class Chat extends window.HTMLElement {
       this._socket.send(JSON.stringify(post))
     })
 
+    // Listning on custom-event newdata dispatched when new data creates from chess-app
+    this.addEventListener('newdata', event => {
+      console.log(event.detail)
+    })
+
     // eventlistner for this._goLiveChat (bygger på callback) (kan göras om till async awaite)
     this._goLiveChat.addEventListener('click', (event) => {
       event.preventDefault()

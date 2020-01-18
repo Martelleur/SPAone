@@ -246,7 +246,6 @@ export class Chess extends window.HTMLElement {
     this._chessConteiner = this.shadowRoot.querySelector('#chessConteiner')
     this._chessBoard = this.shadowRoot.querySelector('#chessBoard')
     this._wrapper = this.shadowRoot.querySelector('#wrapper')
-    this._clonedShadow = []
     this._chessBoardDivLength = this._chessBoard.querySelectorAll('div').length
     this._chessBoardImgLength = this._chessBoard.querySelectorAll('div>img').length
     this._chessBoardDiv = this._chessBoard.querySelectorAll('div')
@@ -587,20 +586,38 @@ export class Chess extends window.HTMLElement {
             this._chessBoardImg[i].style.backgroundColor = 'white'
           }
 
-          // try to fix problem how to save when multipale tables is in action
-          // saving in sessionstorage
-          this._round++
-          const argument = `Round${this._round}${this.getAttribute('id')}`
-          window.sessionStorage.setItem(argument, JSON.stringify(this.indexAllSquares()))
+          // decide winner
+          if (this._activePlayer.innerText === 'White players turn!' && this._checkStatusBlack.innerText === 'Black player is scheck!') {
+            this._checkStatusBlack.innerText = ''
+            this._checkStatusWhite.innerText = ''
+            this._activePlayer.innerText = ''
+            this._winner.innerText = 'White player win!'
+            for (let i = 0; i < this._chessBoardImgLength; i++) {
+              this._chessBoardImg[i].setAttribute('data-color', 'undefined')
+            }
+          }
+          if (this._activePlayer.innerText === 'Black players turn!' && this._checkStatusWhite.innerText === 'White player is scheck!') {
+            this._checkStatusBlack.innerText = ''
+            this._checkStatusWhite.innerText = ''
+            this._activePlayer.innerText = ''
+            this._winner.innerText = 'Black player win!'
+            for (let i = 0; i < this._chessBoardImgLength; i++) {
+              this._chessBoardImg[i].setAttribute('data-color', 'undefined')
+            }
+          }
 
-          // adding option to this._history
-          const option = document.createElement('option')
-          option.setAttribute('value', argument)
-          option.innerText = argument
-          this._history.appendChild(option)
+          if (this._winner.innerText !== 'Black player win!' && this._winner.innerText !== 'White player win!') {
+            // saving in sessionstorage
+            this._round++
+            const argument = `Round${this._round}${this.getAttribute('id')}`
+            window.sessionStorage.setItem(argument, JSON.stringify(this.indexAllSquares()))
 
-          // cloning
-          this._clonedShadow.push(this.cloneNode(true))
+            // adding option to this._history
+            const option = document.createElement('option')
+            option.setAttribute('value', argument)
+            option.innerText = argument
+            this._history.appendChild(option)
+          }
         } else {
           return
         }
@@ -621,26 +638,6 @@ export class Chess extends window.HTMLElement {
       // recount img
       this._chessBoardImgLength = this._chessBoard.querySelectorAll('div>img').length
       this._chessBoardImg = this._chessBoard.querySelectorAll('div>img')
-
-      // decide winner
-      if (this._activePlayer.innerText === 'White players turn!' && this._checkStatusBlack.innerText === 'Black player is scheck!') {
-        this._checkStatusBlack.innerText = ''
-        this._checkStatusWhite.innerText = ''
-        this._activePlayer.innerText = ''
-        this._winner.innerText = 'White player win!'
-        for (let i = 0; i < this._chessBoardImgLength; i++) {
-          this._chessBoardImg[i].setAttribute('data-color', 'undefined')
-        }
-      }
-      if (this._activePlayer.innerText === 'Black players turn!' && this._checkStatusWhite.innerText === 'White player is scheck!') {
-        this._checkStatusBlack.innerText = ''
-        this._checkStatusWhite.innerText = ''
-        this._activePlayer.innerText = ''
-        this._winner.innerText = 'Black player win!'
-        for (let i = 0; i < this._chessBoardImgLength; i++) {
-          this._chessBoardImg[i].setAttribute('data-color', 'undefined')
-        }
-      }
     })
 
     // Events fired when click on this._deletChess

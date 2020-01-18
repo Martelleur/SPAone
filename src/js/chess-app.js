@@ -295,6 +295,7 @@ export class Chess extends window.HTMLElement {
     this._keyChat = true
     this._key = true
     this._dataThisRound = undefined
+    this._playOnline = false
 
     // chesspieces image sources
     this._whitePawnSource = '../imageChess/pawnWhite.png'
@@ -372,6 +373,7 @@ export class Chess extends window.HTMLElement {
           this.shadowRoot.querySelector(temp2).appendChild(copychessBoardImg[i])
         }
       }
+      this.remove()
     }
 
     // changing z-index
@@ -646,9 +648,11 @@ export class Chess extends window.HTMLElement {
 
           // Dispatch custumEvent on this._chatElement with info from this round
           this._dataThisRound = this.indexAllSquares()
-          this._dataThisRound.isWhitePlayersTurn = this._whitePiecesTurn
-          const eventDataThisRound = new window.CustomEvent('newdata', { detail: this._dataThisRound })
-          this._chatElement.dispatchEvent(eventDataThisRound)
+          if (this._playOnline) {
+            this._dataThisRound.isWhitePlayersTurn = this._whitePiecesTurn
+            const eventDataThisRound = new window.CustomEvent('newdata', { detail: this._dataThisRound })
+            this._chatElement.dispatchEvent(eventDataThisRound)
+          }
 
           // saving in sessionstorage
           if (this._winner.innerText !== 'Black player win!' && this._winner.innerText !== 'White player win!') {

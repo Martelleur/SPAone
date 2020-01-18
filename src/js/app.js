@@ -823,24 +823,10 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
   // Listning on custom event startover
   if (element.nodeName === 'CHESS-APP') {
     element.addEventListener('startover', event => {
-      // console.log(event.detail)
       event.preventDefault()
-      /*
-      if (y < (window.innerHeight - 600)) {
-        y = y + 20
-      } else {
-        y = 70
-      }
-      if (x < (window.innerWidth - 600)) {
-        x = x + 20
-      } else {
-        x = 20
-      }
-      */
 
       // create element and ids for elements
       const copyChessElement = document.createElement('chess-app')
-      // counterChessApplication++
       nameIdApplication = `chess${counterChessApplication}`
       copyChessElement.setAttribute('data-hide', 'false')
       copyChessElement.setAttribute('data-zedindex', 'high')

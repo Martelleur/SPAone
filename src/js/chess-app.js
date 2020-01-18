@@ -295,7 +295,7 @@ export class Chess extends window.HTMLElement {
     this._keyChat = true
     this._key = true
     this._dataThisRound = undefined
-    this._playOnline = false
+    this._playOnline = true
 
     // chesspieces image sources
     this._whitePawnSource = '../imageChess/pawnWhite.png'

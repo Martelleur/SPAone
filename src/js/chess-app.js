@@ -1610,7 +1610,6 @@ export class Chess extends window.HTMLElement {
           if (blackPiecesOptionsFlat[i].childElementCount === 1) {
             if (blackPiecesOptionsFlat[i].firstElementChild.getAttribute('src') === this._whiteKingSource) {
               this._checkStatusWhite.innerText = 'White player is scheck!'
-              window.alert('OBS! White player is check, if still check after this round white player loose!')
               this._status = true
               break
             } else {
@@ -1628,7 +1627,6 @@ export class Chess extends window.HTMLElement {
           if (whitePiecesOptionsFlat[i].childElementCount === 1) {
             if (whitePiecesOptionsFlat[i].firstElementChild.getAttribute('src') === this._blackKingSource) {
               this._checkStatusBlack.innerText = 'Black player is scheck!'
-              window.alert('OBS! Black player is check, if still check after this round black player loose!')
               this._status = true
               break
             } else {

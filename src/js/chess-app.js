@@ -145,6 +145,7 @@ template.innerHTML = /* html */ `
 }
 :host #title {
   cursor: move;
+  text-align: center;
 }
 :host #tools {
   box-sizing: border-box;

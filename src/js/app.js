@@ -844,6 +844,7 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
       moveElement(copyChessElement)
 
       // copy history and historyWrapper from element from
+      // dont work use attributechengecallback insteade
       const copyHistory = element.shadowRoot.querySelector('#historyWrapper').innerHTML
       const copyHistoryButton = element.shadowRoot.querySelector('#history').innerHTML
       console.log(copyHistory)

@@ -316,9 +316,18 @@ export class Chess extends window.HTMLElement {
       const arrRoweValue = arr[0].split(',')
       const arrColumnValue = arr[1].split(',')
       const arrSourceValue = arr[2].split(',')
+      const isWhitePlayersTurn = arr[3]
+
+      if (isWhitePlayersTurn === 'true') {
+        this._activePlayer.innerHTML = 'White players turn!'
+      } else {
+        this._activePlayer.innerHTML = 'Black players turn!'
+      }
+
       console.log(arrRoweValue)
       console.log(arrColumnValue)
       console.log(arrSourceValue)
+      console.log(isWhitePlayersTurn)
       console.log(this._startPositions)
       console.log(this._chessBoardDiv)
       const copychessBoardImg = this._chessBoardImg
@@ -1668,19 +1677,10 @@ export class Chess extends window.HTMLElement {
       }
     }
 
-    // create a div container bigDiv and indexnumber index
-    const index = document.createElement('span')
+    // create a div container bigDiv
     const bigDiv = document.createElement('div')
-    if (this.getAttribute('id').length === 6) {
-      index.textContent = argument.slice(-7, -6)
-    }
-    if (this.getAttribute('id').length === 7) {
-      index.textContent = argument.slice(-8, -7)
-    }
-
-    index.style.color = 'black'
-    bigDiv.style.width = '125px'
-    bigDiv.style.height = '125px'
+    bigDiv.style.width = '150px'
+    bigDiv.style.height = '150px'
     bigDiv.style.display = 'inline-block'
     bigDiv.style.border = '3px solid black'
     bigDiv.appendChild(fragment)
@@ -1692,8 +1692,8 @@ export class Chess extends window.HTMLElement {
     })
 
     this._historyConteiner.appendChild(bigDiv)
-    this._historyConteiner.appendChild(index)
-    this._historyConteiner.style.paddingTop = '2px'
+    this._historyConteiner.style.padding = '2px'
+    this._historyConteiner.style.margin = '2px'
     this._historyConteiner.style.border = '5px solid #0c5cc4'
 
     // Event for bigDiv
@@ -1703,6 +1703,14 @@ export class Chess extends window.HTMLElement {
 
     // creating custom event startover
     bigDiv.addEventListener('dblclick', event => {
+      console.log(this._historyConteiner.childElementCount)
+      console.log(this._historyConteiner.childElementCount % 0)
+      if ((this._historyConteiner.childElementCount % 2) === 0) {
+        data.isWhitePlayersTurn = true
+      } else {
+        data.isWhitePlayersTurn = false
+      }
+      console.log(data)
       const myEvent = new window.CustomEvent('startover', { detail: data })
       this.dispatchEvent(myEvent)
     })

@@ -839,16 +839,9 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
       nameIdApplication = `chess${counterChessApplication}`
       copyChessElement.setAttribute('data-hide', 'false')
       copyChessElement.setAttribute('data-zedindex', 'high')
+      console.log(event.detail)
 
-      // setting new startposition from detail-object sent with the creation of custom-event startover (se chess-app)
-      /*
-      for (let i = 0; i < detail.roweValue.length; i++) {
-        const newPosition = `${event.detail.roweValue[31]}${event.detail.columnValue[31]}${event.detail.imageSource[31]}`
-        const temp = `data-possition${event.detail.roweValue[i]}${event.detail.columnValue[i]}`
-        copyChessElement.setAttribute(, newPosition)
-      }
-      */
-      const temp = `${event.detail.roweValue}|${event.detail.columnValue}|${event.detail.imageSource}`
+      const temp = `${event.detail.roweValue}|${event.detail.columnValue}|${event.detail.imageSource}|${event.detail.isWhitePlayersTurn}`
       copyChessElement.setAttribute('data-newpossitions', temp)
 
       // Adding created elements and use operator moveElement

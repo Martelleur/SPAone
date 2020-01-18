@@ -101,7 +101,10 @@ template.innerHTML = /* html */ `
     </div>
     
     <div id="historyWrapper">
+      <p>Dubbleclick on a chessboard to open up a new chessboard from that startingpoint</p>
+      <p id="roundFromHistory">&nbsp;</p>
       <div id="historyConteiner"></div>
+      <p id="roundFromHistoryAgain">&nbsp;</p>
     </div>
 
     <div id="commentContainer"></div>
@@ -124,7 +127,7 @@ template.innerHTML = /* html */ `
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  text-aligne: center;
+  text-align: center;
   color: white;
   border-collapse: collapse;
 }
@@ -136,7 +139,6 @@ template.innerHTML = /* html */ `
   margin: 0 auto;
 }
 :host #title {
-  text-align: center;
   background-color: #0c5cc4;
   color: white;
   padding: 0;
@@ -173,7 +175,6 @@ template.innerHTML = /* html */ `
   cursor: grab;
 }
 :host #information {
-  text-align: center;
   background-color: black;
 }
 :host #options1 {
@@ -202,10 +203,11 @@ template.innerHTML = /* html */ `
   clear: both;
   color: black;
   background-color: white;
+  margin: 0 auto;
 }
 :host #historyWrapper {
+  display: none;
   clear: both;
-  border: 3px solid black;
 }
 :host .material-icons {
   float: right;
@@ -259,6 +261,7 @@ export class Chess extends window.HTMLElement {
     this._round = 0
     this._information = this.shadowRoot.querySelector('#information')
     this._historyConteiner = this.shadowRoot.querySelector('#historyConteiner')
+    this._historyWrapper = this.shadowRoot.querySelector('#historyWrapper')
     this._winner = this.shadowRoot.querySelector('#winner')
     this._chatConteiner = this.shadowRoot.querySelector('#chatConteiner')
     this._title = this.shadowRoot.querySelector('#title')
@@ -324,8 +327,6 @@ export class Chess extends window.HTMLElement {
       const arrSourceValue = arr[2].split(',')
       const isWhitePlayersTurn = arr[3]
 
-      console.log(isWhitePlayersTurn)
-      console.log(typeof isWhitePlayersTurn)
       if (isWhitePlayersTurn === 'true') {
         this._whitePiecesTurn = true
         this._activePlayer.innerHTML = 'White players turn!'
@@ -703,6 +704,7 @@ export class Chess extends window.HTMLElement {
 
       let round = event.target.value
       if (round === 'clear') {
+        this._historyWrapper.style.display = 'none'
         this._historyConteiner.innerHTML = ''
         this._historyConteiner.style.border = 'none'
       } else if (round === 'history') {
@@ -717,9 +719,11 @@ export class Chess extends window.HTMLElement {
         } catch (error) {
           console.log(error)
         }
+        this._historyWrapper.style.display = 'initial'
       } else {
         this._historyConteiner.innerHTML = ''
         this.showHistory(round)
+        this._historyWrapper.style.display = 'initial'
       }
     })
 
@@ -1690,11 +1694,43 @@ export class Chess extends window.HTMLElement {
     bigDiv.style.padding = '2px'
     bigDiv.setAttribute('class', 'bigDiv')
     bigDiv.appendChild(fragment)
+
+    // Displaying info to the user
     bigDiv.addEventListener('mouseover', event => {
       bigDiv.style.border = '3px solid #0c5cc4'
       bigDiv.style.cursor = 'pointer'
+      let temp
+      if (event.target.className === 'bigDiv') {
+        for (let i = 0; i < this._historyConteiner.querySelectorAll('.bigDiv').length; i++) {
+          if (event.target === this._historyConteiner.querySelectorAll('.bigDiv')[i]) {
+            temp = `Round${i + 1}`
+          }
+        }
+        this.shadowRoot.querySelector('#roundFromHistory').innerHTML = temp
+        this.shadowRoot.querySelector('#roundFromHistoryAgain').innerHTML = temp
+      }
+      if (event.target.className === 'droptarget') {
+        for (let i = 0; i < this._historyConteiner.querySelectorAll('.bigDiv').length; i++) {
+          if (event.target.parentElement === this._historyConteiner.querySelectorAll('.bigDiv')[i]) {
+            temp = `Round${i + 1}`
+          }
+        }
+        this.shadowRoot.querySelector('#roundFromHistory').innerHTML = temp
+        this.shadowRoot.querySelector('#roundFromHistoryAgain').innerHTML = temp
+      }
+      if (event.target.nodeName === 'IMG') {
+        for (let i = 0; i < this._historyConteiner.querySelectorAll('.bigDiv').length; i++) {
+          if (event.target.parentElement.parentElement === this._historyConteiner.querySelectorAll('.bigDiv')[i]) {
+            temp = `Round${i + 1}`
+          }
+        }
+        this.shadowRoot.querySelector('#roundFromHistory').innerHTML = temp
+        this.shadowRoot.querySelector('#roundFromHistoryAgain').innerHTML = temp
+      }
     })
     bigDiv.addEventListener('mouseout', event => {
+      this.shadowRoot.querySelector('#roundFromHistory').innerHTML = '&nbsp;'
+      this.shadowRoot.querySelector('#roundFromHistoryAgain').innerHTML = '&nbsp;'
       bigDiv.style.border = '3px solid black'
       bigDiv.style.cursor = 'default'
     })

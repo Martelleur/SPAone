@@ -199,7 +199,7 @@ export class Memory extends window.HTMLElement {
     }
     if (name === 'id') {
       this._title.innerHTML = `
-      <p id="title">${this.getAttribute('id')}-chess-app
+      <p id="title">${this.getAttribute('id')}-memory-app
         <img id="chessIcon" src="../imageIcons/memory.png" alt="chess icon"></img>
         <style>
           #chessIcon {

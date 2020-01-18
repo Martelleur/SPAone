@@ -143,12 +143,11 @@ export class Chat extends window.HTMLElement {
     this._send = this.shadowRoot.querySelector('#sendButton')
     this._changeUsername = this.shadowRoot.querySelector('#changeUsername')
     this._changeChannel = this.shadowRoot.querySelector('#changeChannel')
-    console.log(window.moment())
-    console.log(window.moment().format('MMMM Do YYYY, h:mm:ss a'))
+    // console.log(window.moment())
+    // console.log(window.moment().format('MMMM Do YYYY, h:mm:ss a'))
     this._picker = new window.EmojiButton({
       position: 'left-end'
     })
-    console.log(this._picker)
     this._picker.on('emoji', emoji => {
       this._input.value += emoji
     })
@@ -156,6 +155,7 @@ export class Chat extends window.HTMLElement {
     this._scrollToBottom = this.shadowRoot.querySelector('#scrollToBottom')
     this._scrollKey = true
     this._key = true
+    console.log(this.parentElement)
   }
 
   static get observedAttributes () {
@@ -211,7 +211,7 @@ export class Chat extends window.HTMLElement {
     // Changing of attribute id
     if (name === 'id') {
       this._title.innerHTML = `
-      <p id="title">${this.getAttribute('id')}-chess-app
+      <p id="title">${this.getAttribute('id')}-chat-app
         <img id="chessIcon" src="../imageIcons/chat.png" alt="chess icon"></img>
         <style>
           #chessIcon {

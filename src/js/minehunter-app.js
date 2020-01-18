@@ -194,7 +194,7 @@ export class Minehunter extends window.HTMLElement {
     }
     if (name === 'id') {
       this._title.innerHTML = `
-      <p id="title">${this.getAttribute('id')}-chess-app
+      <p id="title">${this.getAttribute('id')}-minehunter-app
         <img id="chessIcon" src="../imageIcons/minehunter.png" alt="chess icon"></img>
         <style>
           #chessIcon {

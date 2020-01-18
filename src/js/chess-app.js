@@ -320,47 +320,38 @@ export class Chess extends window.HTMLElement {
       console.log(arrColumnValue)
       console.log(arrSourceValue)
       console.log(this._startPositions)
+      console.log(this._chessBoardDiv)
+      const copychessBoardImg = this._chessBoardImg
+      console.log(copychessBoardImg)
 
-      /*
       for (let i = 0; i < this._chessBoardDivLength; i++) {
         if (this._chessBoardDiv[i].childElementCount === 1) {
-          const copy = this._chessBoardDiv[i].firstElementChild
-          for (let j = 0; j < arrRoweValue.length; j++) {
-            try {
-              // console.log(this._chessBoardDiv[i])
-              if (this._chessBoardDiv[i].firstElementChild.getAttribute('src') === arrSourceValue[j]) {
-                this._chessBoardDiv[i].firstElementChild.remove()
-                console.log(parseInt(arrRoweValue[j]))
-                console.log(parseInt(arrColumnValue[j]) + 1)
-                const temp1 = (parseInt(arrColumnValue[j]) + 1) + (parseInt(arrRoweValue[j])) * 8
-                console.log(temp1)
-                const temp2 = `#dropTarget${temp1}`
-                console.log(this._chessBoardDiv[i].getAttribute('id'))
-                console.log(temp2)
-                this.shadowRoot.querySelector(temp2).appendChild(copy)
-                if (j === 0) {
-                  arrColumnValue.shift()
-                  arrRoweValue.shift()
-                  arrSourceValue.shift()
-                } else {
-                  arrColumnValue.shift()
-                  arrRoweValue.shift()
-                  arrSourceValue.shift()
-                }
-                break
-              }
-            } catch (error) {
-              console.log(error)
-            }
-          }
-          try {
-            this._chessBoardDiv[i].firstElementChild.remove()
-          } catch (error) {
-            console.log(error)
-          }
+          this._chessBoardDiv[i].innerHTML = ''
         }
       }
-      */
+
+      for (let i = 0; i < arrRoweValue.length; i++) {
+        console.log(arrSourceValue[i])
+        console.log(copychessBoardImg[i].getAttribute('src'))
+        if (arrSourceValue[i] === copychessBoardImg[i].getAttribute('src')) {
+          console.log(true)
+          console.log(parseInt(arrRoweValue[i]))
+          console.log(parseInt(arrColumnValue[i]) + 1)
+          const temp1 = (parseInt(arrColumnValue[i]) + 1) + (parseInt(arrRoweValue[i])) * 8
+          console.log(temp1)
+          const temp2 = `#dropTarget${temp1}`
+          this.shadowRoot.querySelector(temp2).appendChild(copychessBoardImg[i])
+        } else {
+          copychessBoardImg[i].setAttribute('src', arrSourceValue[i])
+          console.log(false)
+          console.log(parseInt(arrRoweValue[i]))
+          console.log(parseInt(arrColumnValue[i]) + 1)
+          const temp1 = (parseInt(arrColumnValue[i]) + 1) + (parseInt(arrRoweValue[i])) * 8
+          console.log(temp1)
+          const temp2 = `#dropTarget${temp1}`
+          this.shadowRoot.querySelector(temp2).appendChild(copychessBoardImg[i])
+        }
+      }
     }
 
     // changing z-index

@@ -294,6 +294,7 @@ export class Chess extends window.HTMLElement {
     this._status = false
     this._keyChat = true
     this._key = true
+    this._dataThisRound = undefined
 
     // chesspieces image sources
     this._whitePawnSource = '../imageChess/pawnWhite.png'
@@ -419,7 +420,29 @@ export class Chess extends window.HTMLElement {
   connectedCallback () {
     // Listning on custom-event from chat
     this._chatElement.addEventListener('newmessage', event => {
-      console.log(event.detail)
+      const roweValue = event.detail.data.roweValue
+      const columnValue = event.detail.data.columnValue
+      const imageSource = event.detail.data.imageSource
+      // console.log(roweValue)
+      // console.log(columnValue)
+      // console.log(imageSource)
+      // console.log(JSON.parse(roweValue))
+      // console.log(JSON.parse(columnValue))
+      // console.log(JSON.parse(imageSource))
+      const data = {
+        roweValue: JSON.parse(roweValue),
+        columnValue: JSON.parse(columnValue),
+        imageSource: JSON.parse(imageSource)
+      }
+      console.log(data)
+      console.log(this._dataThisRound)
+      /*
+      if (data === this._dataThisRound) {
+        return
+      }
+      */
+      const myEvent = new window.CustomEvent('startover', { detail: data })
+      this.dispatchEvent(myEvent)
     })
 
     // eventlistener for this._commentBox
@@ -622,15 +645,15 @@ export class Chess extends window.HTMLElement {
           }
 
           // Dispatch custumEvent on this._chatElement with info from this round
-          const dataThisRound = this.indexAllSquares()
-          const eventDataThisRound = new window.CustomEvent('newdata', { detail: dataThisRound })
+          this._dataThisRound = this.indexAllSquares()
+          const eventDataThisRound = new window.CustomEvent('newdata', { detail: this._dataThisRound })
           this._chatElement.dispatchEvent(eventDataThisRound)
 
           // saving in sessionstorage
           if (this._winner.innerText !== 'Black player win!' && this._winner.innerText !== 'White player win!') {
             this._round++
             const argument = `Round${this._round}${this.getAttribute('id')}`
-            window.sessionStorage.setItem(argument, JSON.stringify(dataThisRound))
+            window.sessionStorage.setItem(argument, JSON.stringify(this._dataThisRound))
 
             // adding option to this._history
             const option = document.createElement('option')

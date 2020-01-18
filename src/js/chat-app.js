@@ -451,10 +451,12 @@ export class Chat extends window.HTMLElement {
     // Listning on custom-event newdata dispatched when new data creates from chess-app
     this.addEventListener('newdata', event => {
       console.log(event.detail)
-      const evenDetail = JSON.stringify(event.detail)
+      const roweValue = JSON.stringify(event.detail.roweValue)
+      const columnValue = JSON.stringify(event.detail.columnValue)
+      const imageSource = JSON.stringify(event.detail.imageSource)
       const post = {
         type: this._type,
-        data: evenDetail,
+        data: { roweValue, columnValue, imageSource },
         username: this._username,
         channel: 'privateChannel99',
         key: this._chatKey
@@ -482,8 +484,10 @@ export class Chat extends window.HTMLElement {
       const dataParse = JSON.parse(event.data)
 
       // Dispatch cumstomEvent with info from the message
-      const myEvent = new window.CustomEvent('newmessage', { detail: dataParse })
-      this.dispatchEvent(myEvent)
+      if (dataParse.channel === 'privateChannel99') {
+        const myEvent = new window.CustomEvent('newmessage', { detail: dataParse })
+        this.dispatchEvent(myEvent)
+      }
 
       // Displaying the message recieved
       const d = window.moment().format('MMMM Do YYYY, h:mm:ss a')

@@ -316,18 +316,10 @@ export class Chess extends window.HTMLElement {
       const arrRoweValue = arr[0].split(',')
       const arrColumnValue = arr[1].split(',')
       const arrSourceValue = arr[2].split(',')
-      const isWhitePlayersTurn = arr[3]
-
-      if (isWhitePlayersTurn === 'true') {
-        this._activePlayer.innerHTML = 'White players turn!'
-      } else {
-        this._activePlayer.innerHTML = 'Black players turn!'
-      }
 
       console.log(arrRoweValue)
       console.log(arrColumnValue)
       console.log(arrSourceValue)
-      console.log(isWhitePlayersTurn)
       console.log(this._startPositions)
       console.log(this._chessBoardDiv)
       const copychessBoardImg = this._chessBoardImg
@@ -1683,6 +1675,10 @@ export class Chess extends window.HTMLElement {
     bigDiv.style.height = '150px'
     bigDiv.style.display = 'inline-block'
     bigDiv.style.border = '3px solid black'
+    bigDiv.style.padding = '2px'
+    const bigDivId = `bigDiv${this._round}`
+    bigDiv.setAttribute('id', bigDivId)
+    bigDiv.setAttribute('class', 'bigDiv')
     bigDiv.appendChild(fragment)
     bigDiv.addEventListener('mouseover', event => {
       bigDiv.style.border = '3px solid #0c5cc4'
@@ -1693,7 +1689,6 @@ export class Chess extends window.HTMLElement {
 
     this._historyConteiner.appendChild(bigDiv)
     this._historyConteiner.style.padding = '2px'
-    this._historyConteiner.style.margin = '2px'
     this._historyConteiner.style.border = '5px solid #0c5cc4'
 
     // Event for bigDiv
@@ -1703,13 +1698,6 @@ export class Chess extends window.HTMLElement {
 
     // creating custom event startover
     bigDiv.addEventListener('dblclick', event => {
-      console.log(this._historyConteiner.childElementCount)
-      console.log(this._historyConteiner.childElementCount % 0)
-      if ((this._historyConteiner.childElementCount % 2) === 0) {
-        data.isWhitePlayersTurn = true
-      } else {
-        data.isWhitePlayersTurn = false
-      }
       console.log(data)
       const myEvent = new window.CustomEvent('startover', { detail: data })
       this.dispatchEvent(myEvent)

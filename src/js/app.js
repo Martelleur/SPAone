@@ -841,7 +841,7 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
       copyChessElement.setAttribute('data-zedindex', 'high')
       console.log(event.detail)
 
-      const temp = `${event.detail.roweValue}|${event.detail.columnValue}|${event.detail.imageSource}|${event.detail.isWhitePlayersTurn}`
+      const temp = `${event.detail.roweValue}|${event.detail.columnValue}|${event.detail.imageSource}`
       copyChessElement.setAttribute('data-newpossitions', temp)
 
       // Adding created elements and use operator moveElement

@@ -439,10 +439,6 @@ export class Chess extends window.HTMLElement {
       console.log(data)
       console.log(this._dataThisRound)
 
-      if (data.roweValue === this._dataThisRound.roweValue && data.columnValue === this._dataThisRound.columnValue && data.imageSource === this._dataThisRound.imageSource) {
-        return
-      }
-
       this.remove()
       const myEvent = new window.CustomEvent('startover', { detail: data })
       this.dispatchEvent(myEvent)

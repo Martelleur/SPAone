@@ -127,7 +127,6 @@ template.innerHTML = /* html */ `
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  text-align: center;
   color: white;
   border-collapse: collapse;
 }
@@ -176,6 +175,7 @@ template.innerHTML = /* html */ `
 }
 :host #information {
   background-color: black;
+  text-align: center;
 }
 :host #options1 {
   background-color: green;
@@ -199,13 +199,14 @@ template.innerHTML = /* html */ `
   padding: 2px;
 }
 :host #historyConteiner {
-  border-top: 3px solid black;
+  text-align: center;
   clear: both;
   color: black;
-  background-color: white;
+  background-color: black;
   margin: 0 auto;
 }
 :host #historyWrapper {
+  text-align: center;
   display: none;
   clear: both;
 }
@@ -1732,7 +1733,6 @@ export class Chess extends window.HTMLElement {
 
     this._historyConteiner.appendChild(bigDiv)
     this._historyConteiner.style.padding = '2px'
-    this._historyConteiner.style.border = '5px solid #0c5cc4'
 
     // DispatchEvent custom event startover
     bigDiv.addEventListener('dblclick', event => {

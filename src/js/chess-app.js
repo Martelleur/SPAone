@@ -223,6 +223,9 @@ template.innerHTML = /* html */ `
   display: none;
   background-color: black;
 } 
+:host #chatConteiner {
+  display: none;
+}
 
 </style>
 `
@@ -276,6 +279,10 @@ export class Chess extends window.HTMLElement {
     // tools chess
     this._tools = this.shadowRoot.querySelector('#tools')
     this._chat = this.shadowRoot.querySelector('#chat')
+    this._keyChat = false
+    this._chatElement = document.createElement('chat-app')
+    this._chatElement.setAttribute('data-freezewindow', 'true')
+    this._chatConteiner.appendChild(this._chatElement)
     this._showWhiteOptions = this.shadowRoot.querySelector('#options1')
     this._showBlackOptions = this.shadowRoot.querySelector('#options2')
     this._history = this.shadowRoot.querySelector('#history')
@@ -410,6 +417,11 @@ export class Chess extends window.HTMLElement {
    * @memberof Chess
    */
   connectedCallback () {
+    // Listning on custom-event from chat
+    this._chatElement.addEventListener('newmessage', event => {
+      console.log(event.detail)
+    })
+
     // eventlistener for this._commentBox
     this._commentBox.addEventListener('click', event => {
       if (!this._key) {
@@ -785,18 +797,13 @@ export class Chess extends window.HTMLElement {
         return
       }
 
-      this._chatConteiner.innerHTML = ''
       if (!this._keyChat) {
+        this._chatConteiner.style.display = 'none'
         this._keyChat = true
-        return
+      } else {
+        this._chatConteiner.style.display = 'initial'
+        this._keyChat = false
       }
-
-      this._keyChat = false
-      const chat = document.createElement('chat-app')
-      chat.setAttribute('data-freezewindow', 'true')
-      console.log(chat.getAttribute('data-freezewindow'))
-      this._chatConteiner.appendChild(chat)
-      // this._chatConteiner.style.float = 'left'
     })
   }
 

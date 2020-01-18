@@ -465,8 +465,13 @@ export class Chat extends window.HTMLElement {
     // listning for message from other users
     this._socket.addEventListener('message', event => {
       const dataParse = JSON.parse(event.data)
-      const d = window.moment().format('MMMM Do YYYY, h:mm:ss a')
 
+      // Dispatch cumstomEvent with info from the message
+      const myEvent = new window.CustomEvent('newmessage', { detail: dataParse })
+      this.dispatchEvent(myEvent)
+
+      // Displaying the message recieved
+      const d = window.moment().format('MMMM Do YYYY, h:mm:ss a')
       const p1 = document.createElement('p')
       const p2 = document.createElement('p')
       const p3 = document.createElement('p')

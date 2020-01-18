@@ -829,7 +829,9 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
       const copyChessElement = document.createElement('chess-app')
       nameIdApplication = `chess${counterChessApplication}`
       copyChessElement.setAttribute('data-hide', 'false')
+
       copyChessElement.setAttribute('data-zedindex', 'high')
+
       console.log(event.detail)
 
       const temp = `${event.detail.roweValue}|${event.detail.columnValue}|${event.detail.imageSource}|${event.detail.isWhitePlayersTurn}`
@@ -840,6 +842,14 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
       copyChessElement.style.top = y + 'px'
       copyChessElement.style.left = x + 'px'
       moveElement(copyChessElement)
+
+      // copy history and historyWrapper from element from
+      const copyHistory = element.shadowRoot.querySelector('#historyWrapper').innerHTML
+      const copyHistoryButton = element.shadowRoot.querySelector('#history').innerHTML
+      console.log(copyHistory)
+      console.log(copyHistoryButton)
+      copyChessElement.shadowRoot.querySelector('#historyWrapper').innerHTML = copyHistory
+      copyChessElement.shadowRoot.querySelector('#history').innerHTML = copyHistoryButton
 
       copyChessElement.setAttribute('id', nameIdApplication)
       for (let i = 0; i < document.querySelector('main').children.length; i++) {
@@ -964,6 +974,7 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
           }
         })
       })
+      element.remove()
     })
   }
 })

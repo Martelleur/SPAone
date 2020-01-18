@@ -373,9 +373,7 @@ export class Chess extends window.HTMLElement {
           this.shadowRoot.querySelector(temp2).appendChild(copychessBoardImg[i])
         }
       }
-      this.remove()
     }
-
     // changing z-index
     if (name === 'data-zedindex') {
       if (newValue === 'high') {

@@ -415,6 +415,7 @@ export class Chess extends window.HTMLElement {
       if (!this._key) {
         return
       }
+
       if (this._commentContainer.style.display === '' || this._commentContainer.style.display === 'none') {
         this._commentContainer.style.display = 'initial'
       } else {

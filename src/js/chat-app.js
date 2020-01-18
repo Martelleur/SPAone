@@ -454,9 +454,10 @@ export class Chat extends window.HTMLElement {
       const roweValue = JSON.stringify(event.detail.roweValue)
       const columnValue = JSON.stringify(event.detail.columnValue)
       const imageSource = JSON.stringify(event.detail.imageSource)
+      const isWhitePlayersTurn = JSON.stringify(event.detail.isWhitePlayersTurn)
       const post = {
         type: this._type,
-        data: { roweValue, columnValue, imageSource },
+        data: { roweValue, columnValue, imageSource, isWhitePlayersTurn },
         username: this._username,
         channel: 'privateChannel99',
         key: this._chatKey

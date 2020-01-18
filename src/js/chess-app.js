@@ -423,6 +423,7 @@ export class Chess extends window.HTMLElement {
       const roweValue = event.detail.data.roweValue
       const columnValue = event.detail.data.columnValue
       const imageSource = event.detail.data.imageSource
+      const isWhitePlayersTurn = event.detail.data.isWhitePlayersTurn
       // console.log(roweValue)
       // console.log(columnValue)
       // console.log(imageSource)
@@ -433,7 +434,7 @@ export class Chess extends window.HTMLElement {
         roweValue: JSON.parse(roweValue),
         columnValue: JSON.parse(columnValue),
         imageSource: JSON.parse(imageSource),
-        isWhitePlayersTurn: this._whitePiecesTurn
+        isWhitePlayersTurn: JSON.parse(isWhitePlayersTurn)
       }
       console.log(this._whitePiecesTurn)
       console.log(data)
@@ -645,6 +646,7 @@ export class Chess extends window.HTMLElement {
 
           // Dispatch custumEvent on this._chatElement with info from this round
           this._dataThisRound = this.indexAllSquares()
+          this._dataThisRound.isWhitePlayersTurn = this._whitePiecesTurn
           const eventDataThisRound = new window.CustomEvent('newdata', { detail: this._dataThisRound })
           this._chatElement.dispatchEvent(eventDataThisRound)
 

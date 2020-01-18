@@ -825,7 +825,7 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
     element.addEventListener('startover', event => {
       // console.log(event.detail)
       event.preventDefault()
-
+      /*
       if (y < (window.innerHeight - 600)) {
         y = y + 20
       } else {
@@ -836,10 +836,11 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
       } else {
         x = 20
       }
+      */
 
       // create element and ids for elements
       const copyChessElement = document.createElement('chess-app')
-      counterChessApplication++
+      // counterChessApplication++
       nameIdApplication = `chess${counterChessApplication}`
       copyChessElement.setAttribute('data-hide', 'false')
       copyChessElement.setAttribute('data-zedindex', 'high')

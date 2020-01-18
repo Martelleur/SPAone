@@ -133,8 +133,8 @@ template.innerHTML = /* html */ `
 :host #chessBoard {
   box-sizing: border-box;
   background-color: white;
-  width: 30vw;
-  height: 30vw;
+  width: 40vw;
+  height: 40vw;
   margin: 0 auto;
 }
 :host #title {

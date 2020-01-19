@@ -339,6 +339,7 @@ export class Chess extends window.HTMLElement {
       const arrSourceValue = arr[2].split(',')
       const isWhitePlayersTurn = arr[3]
       const currentRound = arr[4]
+      console.log(currentRound)
 
       if (isWhitePlayersTurn === 'true') {
         this._whitePiecesTurn = true
@@ -435,7 +436,7 @@ export class Chess extends window.HTMLElement {
           this._chessBoardImg[i].setAttribute('data-color', 'undefined')
         }
       }
-
+      /*
       // creating options
       if (this._winner.innerText !== 'Black player win!' && this._winner.innerText !== 'White player win!') {
         for (let i = 0; i < parseInt(currentRound); i++) {
@@ -453,6 +454,7 @@ export class Chess extends window.HTMLElement {
           })
         }
       }
+      */
     }
     // changing z-index
     if (name === 'data-zedindex') {

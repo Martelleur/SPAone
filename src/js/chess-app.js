@@ -885,8 +885,9 @@ export class Chess extends window.HTMLElement {
    */
   disconnectedCallback () {
     console.log(this.getAttribute('id') + ': Goodbye')
-    const temp = this.getAttribute('id')
-    const myEvent = new window.CustomEvent('disconnectedElement', { detail: temp })
+    const temp1 = this.getAttribute('id')
+    const temp2 = this.getAttribute('class')
+    const myEvent = new window.CustomEvent('disconnectedElement', { detail: [temp1, temp2] })
     this.dispatchEvent(myEvent)
   }
 

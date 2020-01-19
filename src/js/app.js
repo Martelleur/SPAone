@@ -903,23 +903,22 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
 
       // Listning on custom event disconnectedElement
       copyChessElement.addEventListener('disconnectedElement', event => {
-        console.log('Goodbye element ' + event.detail)
+        console.log('Goodbye element ' + event.detail[0])
+        const className = event.detail[1]
+
+        for (let i = 0; i < document.querySelector('main').childElementCount; i++) {
+          console.log(document.querySelector('main').children[i].getAttribute('class'))
+          if (document.querySelector('main').children[i].className === className) {
+            document.querySelector('main').children[i].remove()
+          }
+        }
       })
 
       // Listning on custom event deletedWindow
       copyChessElement.addEventListener('deletedWindow', event => {
         document.querySelector('#chessList').style.display = 'initial'
+        counterChessRounds = 0
         window.history.replaceState(stateObj, `${stateObj.id}`, `${copyChessElement.getAttribute('id')}_deleted`)
-
-        console.log(event.detail)
-        const className = event.detail
-        console.log(className)
-        for (let i = 0; i < document.querySelector('main').childElementCount; i++) {
-          console.log(document.querySelector('main').children[i].getAttribute('class'))
-          if (document.querySelector('main').children[i].getAttribute('class') === className) {
-            document.querySelector('main').children[i].remove()
-          }
-        }
       }, { once: true })
 
       // Listning on custom event hidewindow and cache hidden elements in select-element

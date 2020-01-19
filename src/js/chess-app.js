@@ -134,8 +134,8 @@ template.innerHTML = /* html */ `
 :host #chessBoard {
   box-sizing: border-box;
   background-color: white;
-  width: 40vw;
-  height: 40vw;
+  width: 30vw;
+  height: 30vw;
   margin: 0 auto;
 }
 :host #title {
@@ -276,6 +276,7 @@ export class Chess extends window.HTMLElement {
     this._commentContainer.appendChild(this._commentApp)
     this._commentBox = this.shadowRoot.querySelector('#commentBox')
     this._startPositions = this.indexAllSquares()
+    this._copyOfRounds = []
 
     // tools chess
     this._tools = this.shadowRoot.querySelector('#tools')
@@ -441,7 +442,9 @@ export class Chess extends window.HTMLElement {
       console.log(data)
       console.log(this._dataThisRound)
 
-      this.remove()
+      this._copyOfRounds.push(this)
+      this.style.display = 'none'
+      console.log(this._copyOfRounds)
       const myEvent = new window.CustomEvent('startover', { detail: data })
       this.dispatchEvent(myEvent)
     })
@@ -576,6 +579,7 @@ export class Chess extends window.HTMLElement {
           event.target.removeAttribute('data-temp')
 
           const textArgument = `#${data}`
+          console.log(data)
 
           // drop over a img element
           if (event.target.nodeName === 'IMG' && event.target.getAttribute('data-color') !== this.shadowRoot.querySelector(textArgument).getAttribute('data-color')) {
@@ -746,30 +750,7 @@ export class Chess extends window.HTMLElement {
       if (!this._key) {
         return
       }
-
-      let round = event.target.value
-      if (round === 'clear') {
-        this._historyWrapper.style.display = 'none'
-        this._historyConteiner.innerHTML = ''
-        this._historyConteiner.style.border = 'none'
-      } else if (round === 'history') {
-        // console.log('start')
-      } else if (round === 'allRounds') {
-        this._historyConteiner.innerHTML = ''
-        try {
-          for (let i = 3; i < event.target.parentElement.querySelectorAll('option').length; i++) {
-            round = event.target.parentElement.querySelectorAll('option')[i].value
-            this.showHistory(round)
-          }
-        } catch (error) {
-          console.log(error)
-        }
-        this._historyWrapper.style.display = 'initial'
-      } else {
-        this._historyConteiner.innerHTML = ''
-        this.showHistory(round)
-        this._historyWrapper.style.display = 'initial'
-      }
+      this.managingShowHistory(event.target)
     })
 
     // eventlistner for this._adjustableWindow
@@ -1680,6 +1661,7 @@ export class Chess extends window.HTMLElement {
   }
 
   /**
+   * creating rounds from history from data stored in sessionStorage
    * @param {*} argument
    * @memberof Chess
    */
@@ -1687,7 +1669,7 @@ export class Chess extends window.HTMLElement {
     // this._information.innerHTML = ''
     const data = JSON.parse(window.sessionStorage.getItem(argument))
     const fragment = document.createDocumentFragment()
-    console.log(data)
+    // console.log(data)
 
     let counter = 0
     for (let i = 0; i < 8; i++) {
@@ -1811,6 +1793,36 @@ export class Chess extends window.HTMLElement {
       const myEvent = new window.CustomEvent('startover', { detail: data })
       this.dispatchEvent(myEvent)
     })
+  }
+
+  /**
+   * @param {*} element
+   * @memberof Chess
+   */
+  managingShowHistory (element) {
+    let round = element.value
+    if (round === 'clear') {
+      this._historyWrapper.style.display = 'none'
+      this._historyConteiner.innerHTML = ''
+      this._historyConteiner.style.border = 'none'
+    } else if (round === 'history') {
+      // console.log('start')
+    } else if (round === 'allRounds') {
+      this._historyConteiner.innerHTML = ''
+      try {
+        for (let i = 3; i < element.parentElement.querySelectorAll('option').length; i++) {
+          round = element.parentElement.querySelectorAll('option')[i].value
+          this.showHistory(round)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      this._historyWrapper.style.display = 'initial'
+    } else {
+      this._historyConteiner.innerHTML = ''
+      this.showHistory(round)
+      this._historyWrapper.style.display = 'initial'
+    }
   }
 }
 

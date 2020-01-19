@@ -827,10 +827,9 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
 
       // create element and ids for elements
       const copyChessElement = document.createElement('chess-app')
+      counterChessApplication++
       nameIdApplication = `chess${counterChessApplication}`
       copyChessElement.setAttribute('data-hide', 'false')
-
-      copyChessElement.setAttribute('data-zedindex', 'high')
 
       console.log(event.detail)
 
@@ -843,19 +842,11 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
       copyChessElement.style.left = x + 'px'
       moveElement(copyChessElement)
 
-      // copy history and historyWrapper from element from
-      // dont work use attributechengecallback insteade
-      const copyHistory = element.shadowRoot.querySelector('#historyWrapper').innerHTML
-      const copyHistoryButton = element.shadowRoot.querySelector('#history').innerHTML
-      console.log(copyHistory)
-      console.log(copyHistoryButton)
-      copyChessElement.shadowRoot.querySelector('#historyWrapper').innerHTML = copyHistory
-      copyChessElement.shadowRoot.querySelector('#history').innerHTML = copyHistoryButton
-
       copyChessElement.setAttribute('id', nameIdApplication)
       for (let i = 0; i < document.querySelector('main').children.length; i++) {
         document.querySelector('main').children[i].setAttribute('data-zedindex', 'low')
       }
+      copyChessElement.setAttribute('data-zedindex', 'high')
 
       stateObj.element = 'chess-app'
       stateObj.id = copyChessElement.getAttribute('id')
@@ -975,7 +966,6 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
           }
         })
       })
-      element.remove()
     })
   }
 })

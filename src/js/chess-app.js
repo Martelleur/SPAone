@@ -456,6 +456,16 @@ export class Chess extends window.HTMLElement {
       }
       */
     }
+    // changing default values for window
+    if (name === 'class') {
+      if (newValue === 'chessAppOnline') {
+        this.displayBigWindow()
+      }
+      if (newValue === 'chessAppOffline') {
+        this.displayAdjustableWindow()
+      }
+    }
+
     // changing z-index
     if (name === 'data-zedindex') {
       if (newValue === 'high') {
@@ -839,13 +849,7 @@ export class Chess extends window.HTMLElement {
       if (!this._key) {
         return
       }
-
-      this.style.position = 'absolute'
-      this._title.style.cursor = 'move'
-      this._chessConteiner.style.border = 'none'
-      this.style.border = '5px solid #0c5cc4'
-      this.style.outline = '1px solid black'
-      this._chessConteiner.style.height = 'initial'
+      this.displayAdjustableWindow()
       const myEvent = new window.CustomEvent('notBigWindow')
       this.dispatchEvent(myEvent)
     })
@@ -856,14 +860,7 @@ export class Chess extends window.HTMLElement {
       if (!this._key) {
         return
       }
-
-      this.style.position = 'static'
-      this._title.style.cursor = 'default'
-      this._chessConteiner.style.border = '5px solid #0c5cc4'
-      this.style.border = 'none'
-      this.style.outline = 'none'
-      this._chessConteiner.style.height = '89vh'
-      this._chessConteiner.style.backgroundColor = 'black'
+      this.displayBigWindow()
       const myEvent = new window.CustomEvent('bigWindow')
       this.dispatchEvent(myEvent)
     })
@@ -874,12 +871,9 @@ export class Chess extends window.HTMLElement {
       if (!this._key) {
         return
       }
-
       this.setAttribute('data-hide', 'true')
-
       const myEvent = new window.CustomEvent('notBigWindow')
       this.dispatchEvent(myEvent)
-
       const myEvent2 = new window.CustomEvent('hideWindow')
       this.dispatchEvent(myEvent2)
     })
@@ -970,27 +964,29 @@ export class Chess extends window.HTMLElement {
   }
 
   /**
-   * @param {*} target
+   * @param {*} eventTarget
    * @returns
    * @memberof Chess
    */
-  indexTarget (target) {
+  indexTarget (eventTarget) {
     const squares = this.squaresData().matrixSquares
     // console.log(squares)
     for (let i = 0; i < 8; i++) {
       for (let j = 0; j < 8; j++) {
-        if (squares[i][j].getAttribute('id') === target.getAttribute('id')) {
+        if (squares[i][j].getAttribute('id') === eventTarget.getAttribute('id')) {
           return [i, j]
         }
       }
+      this.acceptableSquares()
     }
   }
 
   /**
-   * @param {*} source
-   * @param {*} i
-   * @param {*} j
-   * @param {*} first
+   *
+   * @param {string}
+   * @param {number}
+   * @param {number}
+   * @param {boolean}
    * @returns
    * @memberof Chess
    */
@@ -1907,6 +1903,31 @@ export class Chess extends window.HTMLElement {
       this.showHistory(round)
       this._historyWrapper.style.display = 'initial'
     }
+  }
+
+  /**
+   * @memberof Chess
+   */
+  displayBigWindow () {
+    this.style.position = 'static'
+    this._title.style.cursor = 'default'
+    this._chessConteiner.style.border = '5px solid #0c5cc4'
+    this.style.border = 'none'
+    this.style.outline = 'none'
+    this._chessConteiner.style.height = '89vh'
+    this._chessConteiner.style.backgroundColor = 'black'
+  }
+
+  /**
+   * @memberof Chess
+   */
+  displayAdjustableWindow () {
+    this.style.position = 'absolute'
+    this._title.style.cursor = 'move'
+    this._chessConteiner.style.border = 'none'
+    this.style.border = '5px solid #0c5cc4'
+    this.style.outline = '1px solid black'
+    this._chessConteiner.style.height = 'initial'
   }
 }
 

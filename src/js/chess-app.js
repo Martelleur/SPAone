@@ -348,31 +348,51 @@ export class Chess extends window.HTMLElement {
       }
 
       const copychessBoardImg = this._chessBoardImg
-      // console.log(copychessBoardImg)
 
+      // Clean the chessboard
       for (let i = 0; i < this._chessBoardDivLength; i++) {
         if (this._chessBoardDiv[i].childElementCount === 1) {
           this._chessBoardDiv[i].innerHTML = ''
         }
       }
 
+      // pu the pieces on the new possitions
       for (let i = 0; i < arrRoweValue.length; i++) {
-        // console.log(arrSourceValue[i])
-        // console.log(copychessBoardImg[i].getAttribute('src'))
         if (arrSourceValue[i] === copychessBoardImg[i].getAttribute('src')) {
-          // console.log(true)
-          // console.log(parseInt(arrRoweValue[i]))
-          // console.log(parseInt(arrColumnValue[i]) + 1)
           const temp1 = (parseInt(arrColumnValue[i]) + 1) + (parseInt(arrRoweValue[i])) * 8
-          // console.log(temp1)
           const temp2 = `#dropTarget${temp1}`
           this.shadowRoot.querySelector(temp2).appendChild(copychessBoardImg[i])
         } else {
           copychessBoardImg[i].setAttribute('src', arrSourceValue[i])
-          // console.log(false)
           const temp1 = (parseInt(arrColumnValue[i]) + 1) + (parseInt(arrRoweValue[i])) * 8
           const temp2 = `#dropTarget${temp1}`
           this.shadowRoot.querySelector(temp2).appendChild(copychessBoardImg[i])
+        }
+      }
+
+      // set correct value on pieces
+      for (let i = 0; i < this._chessBoardImgLength; i++) {
+        const temp1 = this._chessBoardImg[i].getAttribute('src')
+        this._chessBoardImg[i].setAttribute('data-first', 'false')
+        const temp2 = this._chessBoardImg[i].parentElement.getAttribute('id').slice(-2)
+        console.log(temp2)
+
+        if (temp1 === this._whiteTowerSource || temp1 === this._whiteHoarseSource || temp1 === this._whiteRunnerSource || temp1 === this._whiteQueenSource || temp1 === this._whiteKingSource || temp1 === this._whitePawnSource) {
+          this._chessBoardImg[i].setAttribute('data-color', 'white')
+        } else {
+          this._chessBoardImg[i].setAttribute('data-color', 'black')
+        }
+
+        if (temp1 === this._whitePawnSource) {
+          if (temp2 === '56' || temp2 === '55' || temp2 === '54' || temp2 === '53' || temp2 === '52' || temp2 === '51' || temp2 === '50' || temp2 === '49') {
+            this._chessBoardImg[i].setAttribute('data-first', 'true')
+          }
+        }
+
+        if (temp1 === this._blackPawnSource) {
+          if (temp2 === 't9' || temp2 === '10' || temp2 === '11' || temp2 === '12' || temp2 === '13' || temp2 === '14' || temp2 === '15' || temp2 === '16') {
+            this._chessBoardImg[i].setAttribute('data-first', 'true')
+          }
         }
       }
     }
@@ -426,21 +446,14 @@ export class Chess extends window.HTMLElement {
       const columnValue = event.detail.data.columnValue
       const imageSource = event.detail.data.imageSource
       const isWhitePlayersTurn = event.detail.data.isWhitePlayersTurn
-      // console.log(roweValue)
-      // console.log(columnValue)
-      // console.log(imageSource)
-      // console.log(JSON.parse(roweValue))
-      // console.log(JSON.parse(columnValue))
-      // console.log(JSON.parse(imageSource))
+
       const data = {
         roweValue: JSON.parse(roweValue),
         columnValue: JSON.parse(columnValue),
         imageSource: JSON.parse(imageSource),
         isWhitePlayersTurn: JSON.parse(isWhitePlayersTurn)
       }
-      console.log(this._whitePiecesTurn)
       console.log(data)
-      console.log(this._dataThisRound)
 
       this._copyOfRounds.push(this)
       this.style.display = 'none'

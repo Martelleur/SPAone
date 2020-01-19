@@ -550,6 +550,7 @@ export class Chat extends window.HTMLElement {
     console.log('Goodby from element')
     const myEvent = new window.CustomEvent('disconnectedElement')
     this.dispatchEvent(myEvent)
+    this._socket.close()
   }
 }
 

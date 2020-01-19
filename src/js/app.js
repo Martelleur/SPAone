@@ -322,6 +322,18 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
 
   // create element and ids for elements
   const element = document.createElement(elementType)
+
+  // Can only play one chessboard when playing online
+  if (element.nodeName === 'CHESS-APP') {
+    if (element._playOnline) {
+      document.querySelector('#chessList').style.display = 'none'
+    }
+    if (element._playOnline && counterChessApplication > 0) {
+      return
+    }
+  }
+
+  // Putting ids on elements
   if (event.target.parentElement.getAttribute('data-create-element') === 'chat-app') {
     counterChatApplication++
     nameIdApplication = `chat${counterChatApplication}`
@@ -346,13 +358,6 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
   }
   element.setAttribute('data-hide', 'false')
   element.setAttribute('data-zedindex', 'high')
-
-  // Can only play one chessboard when playing online
-  if (element.nodeName === 'CHESS-APP' && counterChessApplication > 1) {
-    if (element._playOnline) {
-      return
-    }
-  }
 
   // Adding created elements and use operator moveElement
   document.querySelector('main').appendChild(element)
@@ -449,6 +454,7 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
 
   // Listning on custom event deletedWindow
   element.addEventListener('deletedWindow', event => {
+    document.querySelector('#chessList').style.display = 'initial'
     console.log(document.querySelector('main').children.length)
     const temp = `#${element.getAttribute('id')}Info`
     document.querySelector(temp).remove()
@@ -902,6 +908,7 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
 
       // Listning on custom event deletedWindow
       copyChessElement.addEventListener('deletedWindow', event => {
+        document.querySelector('#chessList').style.display = 'initial'
         window.history.replaceState(stateObj, `${stateObj.id}`, `${copyChessElement.getAttribute('id')}_deleted`)
 
         console.log(event.detail)

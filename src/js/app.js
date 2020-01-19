@@ -249,6 +249,7 @@ let counterChatApplication = 0
 let counterMemoryApplication = 0
 let counterMinehunterApplication = 0
 let counterChessApplication = 0
+let counterChessRounds = 0
 let y = 50
 let x = 0
 
@@ -334,6 +335,7 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
     nameIdApplication = `minehunter${counterMinehunterApplication}`
   }
   if (event.target.parentElement.getAttribute('data-create-element') === 'chess-app') {
+    element.setAttribute('class', 'chessAppOnline')
     counterChessApplication++
     nameIdApplication = `chess${counterChessApplication}`
   }
@@ -344,6 +346,13 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
   }
   element.setAttribute('data-hide', 'false')
   element.setAttribute('data-zedindex', 'high')
+
+  // Can only play one chessboard when playing online
+  if (element.nodeName === 'CHESS-APP' && counterChessApplication > 1) {
+    if (element._playOnline) {
+      return
+    }
+  }
 
   // Adding created elements and use operator moveElement
   document.querySelector('main').appendChild(element)
@@ -435,7 +444,7 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
 
   // Listning on custom event disconnectedElement
   element.addEventListener('disconnectedElement', event => {
-    console.log('Goodbye element')
+    console.log('Goodbye element ' + event.detail)
   })
 
   // Listning on custom event deletedWindow
@@ -825,14 +834,14 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
     element.addEventListener('startover', event => {
       event.preventDefault()
 
-      // create element and ids for elements
+      // create chess-app element and attributes for that element
       const copyChessElement = document.createElement('chess-app')
-      counterChessApplication++
-      nameIdApplication = `chess${counterChessApplication}`
+      counterChessRounds++
+      nameIdApplication = `chess-${counterChessApplication}-round${counterChessRounds}`
       copyChessElement.setAttribute('data-hide', 'false')
-
+      copyChessElement.setAttribute('id', nameIdApplication)
+      copyChessElement.setAttribute('class', 'chessAppOnline')
       console.log(event.detail)
-
       const temp = `${event.detail.roweValue}|${event.detail.columnValue}|${event.detail.imageSource}|${event.detail.isWhitePlayersTurn}`
       copyChessElement.setAttribute('data-newpossitions', temp)
 
@@ -842,7 +851,6 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
       copyChessElement.style.left = x + 'px'
       moveElement(copyChessElement)
 
-      copyChessElement.setAttribute('id', nameIdApplication)
       for (let i = 0; i < document.querySelector('main').children.length; i++) {
         document.querySelector('main').children[i].setAttribute('data-zedindex', 'low')
       }
@@ -889,12 +897,22 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
 
       // Listning on custom event disconnectedElement
       copyChessElement.addEventListener('disconnectedElement', event => {
-        console.log('Goodbye element')
+        console.log('Goodbye element ' + event.detail)
       })
 
       // Listning on custom event deletedWindow
       copyChessElement.addEventListener('deletedWindow', event => {
         window.history.replaceState(stateObj, `${stateObj.id}`, `${copyChessElement.getAttribute('id')}_deleted`)
+
+        console.log(event.detail)
+        const className = event.detail
+        console.log(className)
+        for (let i = 0; i < document.querySelector('main').childElementCount; i++) {
+          console.log(document.querySelector('main').children[i].getAttribute('class'))
+          if (document.querySelector('main').children[i].getAttribute('class') === className) {
+            document.querySelector('main').children[i].remove()
+          }
+        }
       }, { once: true })
 
       // Listning on custom event hidewindow and cache hidden elements in select-element

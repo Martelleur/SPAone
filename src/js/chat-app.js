@@ -455,6 +455,7 @@ export class Chat extends window.HTMLElement {
       const columnValue = JSON.stringify(event.detail.columnValue)
       const imageSource = JSON.stringify(event.detail.imageSource)
       const isWhitePlayersTurn = JSON.stringify(event.detail.isWhitePlayersTurn)
+
       const post = {
         type: this._type,
         data: { roweValue, columnValue, imageSource, isWhitePlayersTurn },
@@ -484,7 +485,7 @@ export class Chat extends window.HTMLElement {
     this._socket.addEventListener('message', event => {
       const dataParse = JSON.parse(event.data)
 
-      // Dispatch cumstomEvent with info from the message
+      // Dispatch cumstomEvent with info from the message from channel privateChannel99
       if (dataParse.channel === 'privateChannel99') {
         const myEvent = new window.CustomEvent('newmessage', { detail: dataParse })
         this.dispatchEvent(myEvent)
@@ -547,8 +548,9 @@ export class Chat extends window.HTMLElement {
    * @memberof Chat
    */
   disconnectedCallback () {
-    console.log('Goodby from element')
-    const myEvent = new window.CustomEvent('disconnectedElement')
+    console.log(this.getAttribute('id') + ': Goodbye')
+    const temp = this.getAttribute('id')
+    const myEvent = new window.CustomEvent('disconnectedElement', { detail: temp })
     this.dispatchEvent(myEvent)
     this._socket.close()
   }

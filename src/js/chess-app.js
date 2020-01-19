@@ -320,7 +320,7 @@ export class Chess extends window.HTMLElement {
    * @memberof Chess
    */
   static get observedAttributes () {
-    return ['id', 'data-hide', 'data-zedindex', 'data-newpossitions']
+    return ['id', 'data-hide', 'data-zedindex', 'data-newpossitions', 'class']
   }
 
   /**
@@ -378,7 +378,6 @@ export class Chess extends window.HTMLElement {
           const temp1 = this._chessBoardImg[i].getAttribute('src')
           this._chessBoardImg[i].setAttribute('data-first', 'false')
           const temp2 = this._chessBoardImg[i].parentElement.getAttribute('id').slice(-2)
-          console.log(temp2)
 
           if (temp1 === this._whiteTowerSource || temp1 === this._whiteHoarseSource || temp1 === this._whiteRunnerSource || temp1 === this._whiteQueenSource || temp1 === this._whiteKingSource || temp1 === this._whitePawnSource) {
             this._chessBoardImg[i].setAttribute('data-color', 'white')
@@ -492,7 +491,6 @@ export class Chess extends window.HTMLElement {
         imageSource: JSON.parse(imageSource),
         isWhitePlayersTurn: JSON.parse(isWhitePlayersTurn)
       }
-      console.log(data)
 
       this._copyOfRounds.push(this)
       this.style.display = 'none'
@@ -635,6 +633,8 @@ export class Chess extends window.HTMLElement {
 
           // drop over a img element
           if (event.target.nodeName === 'IMG' && event.target.getAttribute('data-color') !== this.shadowRoot.querySelector(textArgument).getAttribute('data-color')) {
+            console.log(this._round)
+
             if (event.target.parentNode.style.border === '3px solid blue') {
               const srcArgument = this.shadowRoot.querySelector(textArgument).getAttribute('src')
               const idArgument = this.shadowRoot.querySelector(textArgument).getAttribute('id')
@@ -708,6 +708,7 @@ export class Chess extends window.HTMLElement {
           // Dispatch custumEvent on this._chatElement with info from this round
           this._dataThisRound = this.indexAllSquares()
           if (this._playOnline) {
+            console.log(this._dataThisRound)
             this._dataThisRound.isWhitePlayersTurn = this._whitePiecesTurn
             const eventDataThisRound = new window.CustomEvent('newdata', { detail: this._dataThisRound })
             this._chatElement.dispatchEvent(eventDataThisRound)
@@ -715,7 +716,6 @@ export class Chess extends window.HTMLElement {
 
           // saving in sessionstorage
           if (this._winner.innerText !== 'Black player win!' && this._winner.innerText !== 'White player win!') {
-            this._round++
             const argument = `Round${this._round}${this.getAttribute('id')}`
             window.sessionStorage.setItem(argument, JSON.stringify(this._dataThisRound))
 
@@ -736,6 +736,7 @@ export class Chess extends window.HTMLElement {
       this.pawnToQueen()
 
       // Reset border color, class name and background color
+      this._round++
       for (let i = 0; i < this._chessBoardDivLength; i++) {
         this._chessBoardDiv[i].setAttribute('class', 'droptarget')
         this._chessBoardDiv[i].style.border = '1px solid black'
@@ -756,7 +757,9 @@ export class Chess extends window.HTMLElement {
       const myEvent = new window.CustomEvent('notBigWindow')
       this.dispatchEvent(myEvent)
 
-      const myEvent2 = new window.CustomEvent('deletedWindow')
+      const className = this.getAttribute('class')
+      console.log(className)
+      const myEvent2 = new window.CustomEvent('deletedWindow', { detail: className })
       this.dispatchEvent(myEvent2)
       for (let i = 0; i < this._round; i++) {
         const argument = `Round${i + 1}${this.getAttribute('id')}`
@@ -880,8 +883,9 @@ export class Chess extends window.HTMLElement {
    * @memberof Chess
    */
   disconnectedCallback () {
-    console.log('Goodby from element')
-    const myEvent = new window.CustomEvent('disconnectedElement')
+    console.log(this.getAttribute('id') + ': Goodbye')
+    const temp = this.getAttribute('id')
+    const myEvent = new window.CustomEvent('disconnectedElement', { detail: temp })
     this.dispatchEvent(myEvent)
   }
 

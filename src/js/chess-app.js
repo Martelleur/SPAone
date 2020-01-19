@@ -370,7 +370,6 @@ export class Chess extends window.HTMLElement {
         }
       }
 
-      console.log(this._chessBoardImgLength)
       // set correct value on pieces
       this.pawnToQueen()
       for (let i = 0; i < this._chessBoardImgLength; i++) {
@@ -420,6 +419,7 @@ export class Chess extends window.HTMLElement {
         this._checkStatusWhite.innerText = ''
         this._activePlayer.innerText = ''
         this._winner.innerText = 'White player win!'
+        this._key = false
         for (let i = 0; i < this._chessBoardImgLength; i++) {
           this._chessBoardImg[i].setAttribute('data-color', 'undefined')
         }
@@ -429,6 +429,7 @@ export class Chess extends window.HTMLElement {
         this._checkStatusWhite.innerText = ''
         this._activePlayer.innerText = ''
         this._winner.innerText = 'Black player win!'
+        this._key = false
         for (let i = 0; i < this._chessBoardImgLength; i++) {
           this._chessBoardImg[i].setAttribute('data-color', 'undefined')
         }
@@ -493,7 +494,7 @@ export class Chess extends window.HTMLElement {
       }
 
       this._copyOfRounds.push(this)
-      this.style.display = 'none'
+      // this.style.display = 'none'
       console.log(this._copyOfRounds)
       const myEvent = new window.CustomEvent('startover', { detail: data })
       this.dispatchEvent(myEvent)

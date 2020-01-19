@@ -843,7 +843,7 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
       // create chess-app element and attributes for that element
       const copyChessElement = document.createElement('chess-app')
       counterChessRounds++
-      nameIdApplication = `chess-${counterChessApplication}-round${counterChessRounds}`
+      nameIdApplication = `chess${counterChessApplication}-round${counterChessRounds}`
       copyChessElement.setAttribute('data-hide', 'false')
       copyChessElement.setAttribute('id', nameIdApplication)
       copyChessElement.setAttribute('class', 'chessAppOnline')

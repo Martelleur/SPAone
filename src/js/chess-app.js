@@ -401,6 +401,39 @@ export class Chess extends window.HTMLElement {
           console.log(error)
         }
       }
+
+      // test if playesr is sheck
+      if (this._whitePiecesTurn) {
+        this._whitePiecesTurn = false
+        this.isPlayerSheck('isBlackSheck')
+        this.isPlayerSheck('isWhiteSheck')
+        this._activePlayer.innerHTML = 'Black players turn!'
+      } else {
+        this._whitePiecesTurn = true
+        this.isPlayerSheck('isWhiteSheck')
+        this.isPlayerSheck('isBlackSheck')
+        this._activePlayer.innerHTML = 'White players turn!'
+      }
+
+      // decide winner
+      if (this._activePlayer.innerText === 'White players turn!' && this._checkStatusBlack.innerText === 'Black player is scheck!') {
+        this._checkStatusBlack.innerText = ''
+        this._checkStatusWhite.innerText = ''
+        this._activePlayer.innerText = ''
+        this._winner.innerText = 'White player win!'
+        for (let i = 0; i < this._chessBoardImgLength; i++) {
+          this._chessBoardImg[i].setAttribute('data-color', 'undefined')
+        }
+      }
+      if (this._activePlayer.innerText === 'Black players turn!' && this._checkStatusWhite.innerText === 'White player is scheck!') {
+        this._checkStatusBlack.innerText = ''
+        this._checkStatusWhite.innerText = ''
+        this._activePlayer.innerText = ''
+        this._winner.innerText = 'Black player win!'
+        for (let i = 0; i < this._chessBoardImgLength; i++) {
+          this._chessBoardImg[i].setAttribute('data-color', 'undefined')
+        }
+      }
     }
     // changing z-index
     if (name === 'data-zedindex') {
@@ -626,18 +659,6 @@ export class Chess extends window.HTMLElement {
 
             event.target.appendChild(this.shadowRoot.querySelector(textArgument))
           }
-          // change activePlayer and test if player is scheck
-          if (this._whitePiecesTurn) {
-            this._whitePiecesTurn = false
-            this.isPlayerSheck('isBlackSheck')
-            this.isPlayerSheck('isWhiteSheck')
-            this._activePlayer.innerHTML = 'Black players turn!'
-          } else {
-            this._whitePiecesTurn = true
-            this.isPlayerSheck('isWhiteSheck')
-            this.isPlayerSheck('isBlackSheck')
-            this._activePlayer.innerHTML = 'White players turn!'
-          }
 
           // Reset border color, class name and background color
           for (let i = 0; i < this._chessBoardDivLength; i++) {
@@ -649,23 +670,38 @@ export class Chess extends window.HTMLElement {
             this._chessBoardImg[i].style.backgroundColor = 'white'
           }
 
-          // decide winner
-          if (this._activePlayer.innerText === 'White players turn!' && this._checkStatusBlack.innerText === 'Black player is scheck!') {
-            this._checkStatusBlack.innerText = ''
-            this._checkStatusWhite.innerText = ''
-            this._activePlayer.innerText = ''
-            this._winner.innerText = 'White player win!'
-            for (let i = 0; i < this._chessBoardImgLength; i++) {
-              this._chessBoardImg[i].setAttribute('data-color', 'undefined')
+          // change activePlayer and test if player is scheck
+          if (!this._playOnline) {
+            if (this._whitePiecesTurn) {
+              this._whitePiecesTurn = false
+              this.isPlayerSheck('isBlackSheck')
+              this.isPlayerSheck('isWhiteSheck')
+              this._activePlayer.innerHTML = 'Black players turn!'
+            } else {
+              this._whitePiecesTurn = true
+              this.isPlayerSheck('isWhiteSheck')
+              this.isPlayerSheck('isBlackSheck')
+              this._activePlayer.innerHTML = 'White players turn!'
             }
-          }
-          if (this._activePlayer.innerText === 'Black players turn!' && this._checkStatusWhite.innerText === 'White player is scheck!') {
-            this._checkStatusBlack.innerText = ''
-            this._checkStatusWhite.innerText = ''
-            this._activePlayer.innerText = ''
-            this._winner.innerText = 'Black player win!'
-            for (let i = 0; i < this._chessBoardImgLength; i++) {
-              this._chessBoardImg[i].setAttribute('data-color', 'undefined')
+
+            // decide winner
+            if (this._activePlayer.innerText === 'White players turn!' && this._checkStatusBlack.innerText === 'Black player is scheck!') {
+              this._checkStatusBlack.innerText = ''
+              this._checkStatusWhite.innerText = ''
+              this._activePlayer.innerText = ''
+              this._winner.innerText = 'White player win!'
+              for (let i = 0; i < this._chessBoardImgLength; i++) {
+                this._chessBoardImg[i].setAttribute('data-color', 'undefined')
+              }
+            }
+            if (this._activePlayer.innerText === 'Black players turn!' && this._checkStatusWhite.innerText === 'White player is scheck!') {
+              this._checkStatusBlack.innerText = ''
+              this._checkStatusWhite.innerText = ''
+              this._activePlayer.innerText = ''
+              this._winner.innerText = 'Black player win!'
+              for (let i = 0; i < this._chessBoardImgLength; i++) {
+                this._chessBoardImg[i].setAttribute('data-color', 'undefined')
+              }
             }
           }
 
@@ -1562,10 +1598,11 @@ export class Chess extends window.HTMLElement {
 
   /**
    * @param {string} [color='black']
+   * @param {boolean} [display=true]
    * @returns
    * @memberof Chess
    */
-  evryAcceptableSquare (color = 'black') {
+  evryAcceptableSquare (color = 'black', display = true) {
     const tempObject = this.indexAllSquares()
     const blackPiecesOptions = []
     const whitePiecesOptions = []
@@ -1594,17 +1631,16 @@ export class Chess extends window.HTMLElement {
     const whitePiecesOptionsFlat = whitePiecesOptions.flat()
     // Black players otions
     if (color === 'black') {
-      // console.log('blackPiecesOptionsFlat[i] TEST')
-      for (let i = 0; i < blackPiecesOptionsFlat.length; i++) {
-        // console.log('blackPiecesOptionsFlat[' + i + ']' + blackPiecesOptionsFlat[i])
-        if (blackPiecesOptionsFlat[i] !== undefined) { // Solution for problem moving black hoarse from A7 to B8
-          // console.log(blackPiecesOptionsFlat[i].childElementCount)
-          if (blackPiecesOptionsFlat[i].childElementCount === 1) {
-            if (blackPiecesOptionsFlat[i].firstElementChild.getAttribute('data-color') !== 'black') {
-              blackPiecesOptionsFlat[i].style.border = '3px solid purple'
+      if (display) {
+        for (let i = 0; i < blackPiecesOptionsFlat.length; i++) {
+          if (blackPiecesOptionsFlat[i] !== undefined) { // Solution for problem moving black hoarse from A7 to B8
+            if (blackPiecesOptionsFlat[i].childElementCount === 1) {
+              if (blackPiecesOptionsFlat[i].firstElementChild.getAttribute('data-color') !== 'black') {
+                blackPiecesOptionsFlat[i].style.border = '3px solid purple'
+              }
+            } else {
+              blackPiecesOptionsFlat[i].style.backgroundColor = 'purple'
             }
-          } else {
-            blackPiecesOptionsFlat[i].style.backgroundColor = 'purple'
           }
         }
       }
@@ -1612,14 +1648,16 @@ export class Chess extends window.HTMLElement {
     }
     // White players otions
     if (color === 'white') {
-      for (let i = 0; i < whitePiecesOptionsFlat.length; i++) {
-        if (whitePiecesOptionsFlat[i] !== undefined) { // Solution for problem moving black hoarse from A7 to B8
-          if (whitePiecesOptionsFlat[i].childElementCount === 1) {
-            if (whitePiecesOptionsFlat[i].firstElementChild.getAttribute('data-color') !== 'white') {
-              whitePiecesOptionsFlat[i].style.border = '3px solid green'
+      if (display) {
+        for (let i = 0; i < whitePiecesOptionsFlat.length; i++) {
+          if (whitePiecesOptionsFlat[i] !== undefined) { // Solution for problem moving black hoarse from A7 to B8
+            if (whitePiecesOptionsFlat[i].childElementCount === 1) {
+              if (whitePiecesOptionsFlat[i].firstElementChild.getAttribute('data-color') !== 'white') {
+                whitePiecesOptionsFlat[i].style.border = '3px solid green'
+              }
+            } else {
+              whitePiecesOptionsFlat[i].style.backgroundColor = 'green'
             }
-          } else {
-            whitePiecesOptionsFlat[i].style.backgroundColor = 'green'
           }
         }
       }
@@ -1637,9 +1675,9 @@ export class Chess extends window.HTMLElement {
     let whitePiecesOptionsFlat
 
     if (color === 'isWhiteSheck') {
-      blackPiecesOptionsFlat = this.evryAcceptableSquare('black')
+      blackPiecesOptionsFlat = this.evryAcceptableSquare('black', false)
     } else if (color === 'isBlackSheck') {
-      whitePiecesOptionsFlat = this.evryAcceptableSquare('white')
+      whitePiecesOptionsFlat = this.evryAcceptableSquare('white', false)
     } else {
       return
     }

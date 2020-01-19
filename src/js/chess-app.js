@@ -338,6 +338,7 @@ export class Chess extends window.HTMLElement {
       const arrColumnValue = arr[1].split(',')
       const arrSourceValue = arr[2].split(',')
       const isWhitePlayersTurn = arr[3]
+      const currentRound = arr[4]
 
       if (isWhitePlayersTurn === 'true') {
         this._whitePiecesTurn = true
@@ -434,6 +435,24 @@ export class Chess extends window.HTMLElement {
           this._chessBoardImg[i].setAttribute('data-color', 'undefined')
         }
       }
+
+      // creating options
+      if (this._winner.innerText !== 'Black player win!' && this._winner.innerText !== 'White player win!') {
+        for (let i = 0; i < parseInt(currentRound); i++) {
+          const argument = `Round${i + 1}`
+
+          // adding option to this._history
+          const option = document.createElement('option')
+          option.setAttribute('value', argument)
+          option.innerText = argument
+          this._history.appendChild(option)
+
+          option.addEventListener('mouseover', event => {
+            event.preventDefault()
+            console.log(event.target.value)
+          })
+        }
+      }
     }
     // changing z-index
     if (name === 'data-zedindex') {
@@ -494,7 +513,7 @@ export class Chess extends window.HTMLElement {
       }
 
       this._copyOfRounds.push(this)
-      // this.style.display = 'none'
+      this.style.display = 'none'
       console.log(this._copyOfRounds)
       const myEvent = new window.CustomEvent('startover', { detail: data })
       this.dispatchEvent(myEvent)

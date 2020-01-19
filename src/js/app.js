@@ -848,7 +848,7 @@ document.querySelector('#buttons').addEventListener('click', (event) => {
       copyChessElement.setAttribute('id', nameIdApplication)
       copyChessElement.setAttribute('class', 'chessAppOnline')
       console.log(event.detail)
-      const temp = `${event.detail.roweValue}|${event.detail.columnValue}|${event.detail.imageSource}|${event.detail.isWhitePlayersTurn}`
+      const temp = `${event.detail.roweValue}|${event.detail.columnValue}|${event.detail.imageSource}|${event.detail.isWhitePlayersTurn}|${counterChessRounds}`
       copyChessElement.setAttribute('data-newpossitions', temp)
 
       // Adding created elements and use operator moveElement

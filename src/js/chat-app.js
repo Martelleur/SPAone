@@ -509,7 +509,7 @@ export class Chat extends window.HTMLElement {
 
         dataParse.date = d
         messages.push(dataParse)
-        window.sessionStorage.setItem('messages', JSON.stringify(messages))
+        // window.sessionStorage.setItem('messages', JSON.stringify(messages))
 
         p1.textContent = `Date: ${d}`
         p2.textContent = `Username: ${dataParse.username}`

@@ -356,7 +356,7 @@ export class Chess extends window.HTMLElement {
         }
       }
 
-      // pu the pieces on the new possitions
+      // Put the pieces on the new possitions
       for (let i = 0; i < arrRoweValue.length; i++) {
         if (arrSourceValue[i] === copychessBoardImg[i].getAttribute('src')) {
           const temp1 = (parseInt(arrColumnValue[i]) + 1) + (parseInt(arrRoweValue[i])) * 8
@@ -370,29 +370,35 @@ export class Chess extends window.HTMLElement {
         }
       }
 
+      console.log(this._chessBoardImgLength)
       // set correct value on pieces
+      this.pawnToQueen()
       for (let i = 0; i < this._chessBoardImgLength; i++) {
-        const temp1 = this._chessBoardImg[i].getAttribute('src')
-        this._chessBoardImg[i].setAttribute('data-first', 'false')
-        const temp2 = this._chessBoardImg[i].parentElement.getAttribute('id').slice(-2)
-        console.log(temp2)
+        try {
+          const temp1 = this._chessBoardImg[i].getAttribute('src')
+          this._chessBoardImg[i].setAttribute('data-first', 'false')
+          const temp2 = this._chessBoardImg[i].parentElement.getAttribute('id').slice(-2)
+          console.log(temp2)
 
-        if (temp1 === this._whiteTowerSource || temp1 === this._whiteHoarseSource || temp1 === this._whiteRunnerSource || temp1 === this._whiteQueenSource || temp1 === this._whiteKingSource || temp1 === this._whitePawnSource) {
-          this._chessBoardImg[i].setAttribute('data-color', 'white')
-        } else {
-          this._chessBoardImg[i].setAttribute('data-color', 'black')
-        }
-
-        if (temp1 === this._whitePawnSource) {
-          if (temp2 === '56' || temp2 === '55' || temp2 === '54' || temp2 === '53' || temp2 === '52' || temp2 === '51' || temp2 === '50' || temp2 === '49') {
-            this._chessBoardImg[i].setAttribute('data-first', 'true')
+          if (temp1 === this._whiteTowerSource || temp1 === this._whiteHoarseSource || temp1 === this._whiteRunnerSource || temp1 === this._whiteQueenSource || temp1 === this._whiteKingSource || temp1 === this._whitePawnSource) {
+            this._chessBoardImg[i].setAttribute('data-color', 'white')
+          } else {
+            this._chessBoardImg[i].setAttribute('data-color', 'black')
           }
-        }
 
-        if (temp1 === this._blackPawnSource) {
-          if (temp2 === 't9' || temp2 === '10' || temp2 === '11' || temp2 === '12' || temp2 === '13' || temp2 === '14' || temp2 === '15' || temp2 === '16') {
-            this._chessBoardImg[i].setAttribute('data-first', 'true')
+          if (temp1 === this._whitePawnSource) {
+            if (temp2 === '56' || temp2 === '55' || temp2 === '54' || temp2 === '53' || temp2 === '52' || temp2 === '51' || temp2 === '50' || temp2 === '49') {
+              this._chessBoardImg[i].setAttribute('data-first', 'true')
+            }
           }
+
+          if (temp1 === this._blackPawnSource) {
+            if (temp2 === 't9' || temp2 === '10' || temp2 === '11' || temp2 === '12' || temp2 === '13' || temp2 === '14' || temp2 === '15' || temp2 === '16') {
+              this._chessBoardImg[i].setAttribute('data-first', 'true')
+            }
+          }
+        } catch (error) {
+          console.log(error)
         }
       }
     }
